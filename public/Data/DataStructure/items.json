@@ -1,0 +1,38 @@
+[
+    {
+        "key": 1,
+        "route": "arrays",
+        "items": {
+            "status": "Solved",
+            "title": "two sum",
+            "difficulty": "Easy"
+        }
+    },
+    {
+        "key": 2,
+        "route": "arrays",
+        "items": {
+            "status": "skipped",
+            "title": "three sum",
+            "difficulty": "Hard"
+        }
+    },
+    {
+        "key": 3,
+        "route": "arrays",
+        "items": {
+            "status": "skipped",
+            "title": "four sum",
+            "difficulty": "Hard"
+        }
+    },
+    {
+        "key": 4,
+        "route": "strings",
+        "items": {
+            "status": "solving",
+            "title": "four sum",
+            "difficulty": "Hard"
+        }
+    }
+]

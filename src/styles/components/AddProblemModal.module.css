@@ -1,0 +1,43 @@
+.modalWrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1051;
+}
+.card_header {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+.modal {
+    border-style: solid;
+    border-width: 0.1px;
+    border-color: rgb(179, 179, 179);
+    min-width: 500px;
+    min-height: 330px;
+    background: #2e2f31;
+    border-radius: 5px;
+    position: relative;
+    animation: fadeInDown 0.8s;
+}
+.btnClose {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

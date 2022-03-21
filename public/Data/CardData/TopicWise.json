@@ -1,0 +1,20 @@
+[
+    {
+        "key": 1,
+        "icon": "data-structure.png",
+        "title": "Data Structure",
+        "subtitle": "Practice Array, Stacks, Queues etc..."
+    },
+    {
+        "key": 2,
+        "icon": "algorithms.png",
+        "title": "Algorithms",
+        "subtitle": "Practice Searching, Sorting, Greedy etc... Algorithms"
+    },
+    {
+        "key": 3,
+        "icon": "miscellaneous.png",
+        "title": "Miscellaneous",
+        "subtitle": "Problems related to multiple DS and Algo"
+    }
+]

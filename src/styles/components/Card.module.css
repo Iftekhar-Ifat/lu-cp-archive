@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+
+.card_container {
+    width: 300px;
+    padding: 3%;
+    height: 300px;
+    background: #2e2f31;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}
+.card_container:hover {
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.5);
+}
+.card_subtitle {
+    height: 60px;
+    padding: 2%;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+    text-align: center;
+    color: #ffffff;
+}
+.card_title {
+    padding: 2%;
+    height: 70px;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 27px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+.only_title {
+    height: 112px;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+.icon_div {
+    display: flex;
+    height: 150px;
+    justify-content: center;
+}
+.only_title_icon_div {
+    display: flex;
+    height: 175px;
+    justify-content: center;
+}
+@media (max-width: 700px) {
+    .icon_div {
+        width: 250px;
+        height: 150px;
+    }
+    .card_container {
+        display: flex;
+        padding: 2%;
+        flex-direction: column;
+        align-items: center;
+        width: 250px;
+        height: 250px;
+    }
+    .card_subtitle {
+        width: 215px;
+        height: 60px;
+        font-family: Poppins;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 15px;
+        text-align: center;
+        letter-spacing: 0.1em;
+        color: #ffffff;
+    }
+    .card_title {
+        width: 227px;
+        padding-top: 1%;
+        height: 70px;
+        font-family: Poppins;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #ffffff;
+    }
+    .only_title {
+        width: 227px;
+        height: 100px;
+        font-family: Poppins;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #ffffff;
+    }
+}
