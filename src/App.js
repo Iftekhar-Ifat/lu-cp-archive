@@ -7,6 +7,7 @@ import TopicItems from "./Pages/Dashboard/topic-wise/topic-items/TopicItems";
 import TopicProblem from "./Pages/Dashboard/topic-wise/topic-items/topic-problem/TopicProblem";
 import AuthProvider from "../src/context/AuthProvider";
 import CFladder from "./Pages/Dashboard/cf-ladder/CFladder";
+import CFladderProblems from "./Pages/Dashboard/cf-ladder/cf-ladder-problems/CFladderProblems";
 
 function App() {
     return (
@@ -27,6 +28,10 @@ function App() {
                     <Route
                         path={"/dashboard/codeforces-ladder"}
                         element={<CFladder />}
+                    />
+                    <Route
+                        path={"/dashboard/codeforces-ladder/:ladder"}
+                        element={<CFladderProblems />}
                     />
                 </Routes>
             </Router>

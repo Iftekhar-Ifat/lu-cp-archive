@@ -5,7 +5,7 @@ import styles from "../styles/components/ProblemCard.module.css";
 import StatusCard from "./StatusCard";
 import { deleteHandler } from "./ApiComponents/handleDelete";
 import { Modal } from "@geist-ui/core";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ProblemCard = (props) => {
     const [modalState, setModalState] = useState(false);
@@ -13,11 +13,10 @@ const ProblemCard = (props) => {
     const closeModalHandler = () => {
         setModalState(false);
     };
-    const { route } = useParams();
     const navigate = useNavigate();
 
     const cardRouteHandler = () => {
-        let nextRoute = route.pathname + "/" + props.cardTitle;
+        const nextRoute = props.cardPath + "/" + props.cardTitle;
         navigate(nextRoute);
     };
 

@@ -6,6 +6,7 @@ import SignOutModal from "./AuthComponents/SignOutModal";
 import AuthModal from "./AuthComponents/AuthModal";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Avatar } from "@mui/material";
+import CFhandleModal from "./AddForms/CFhandleModal";
 // import CFhandleModal from "./AddForms/CFhandleModal";
 
 const Header = (props) => {
@@ -15,9 +16,6 @@ const Header = (props) => {
     const [showCfHandleModal, setShowCfHandleModal] = useState(false);
     const [userPhoto, setUserPhoto] = useState("");
     const [currentUserEmail, setCurrentUserEmail] = useState();
-
-    // const { pathname } = useRouter();
-    // const pathCheck = pathname.split("/")[3] === "[CFLabel]";
 
     const modalToggle = () => {
         setShowCfHandleModal(true);
@@ -87,7 +85,7 @@ const Header = (props) => {
                                     src={userPhoto}
                                     style={{ cursor: "pointer" }}
                                 />
-                                {/* {showCfHandleModal && pathCheck ? (
+                                {showCfHandleModal ? (
                                     <CFhandleModal
                                         modalToggle={setShowCfHandleModal}
                                         userCFhandleChange={
@@ -96,7 +94,7 @@ const Header = (props) => {
                                         userCFhandle={props.userCFhandle}
                                         currentUserEmail={currentUserEmail}
                                     />
-                                ) : null} */}
+                                ) : null}
                             </div>
                         </div>
                     ) : (

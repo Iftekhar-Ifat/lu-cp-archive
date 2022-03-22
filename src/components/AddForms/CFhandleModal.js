@@ -26,7 +26,7 @@ const CFhandleModal = (props) => {
             cfHandle: userCFhandle,
         };
         console.log(sendCFhandle);
-        cfHandleInput(sendCFhandle);
+        //cfHandleInput(sendCFhandle);
     };
 
     return (
@@ -47,7 +47,8 @@ const CFhandleModal = (props) => {
                                         color: "white",
                                     }}
                                 >
-                                    Current CF Handle: {props.userCFhandle}
+                                    Current CF Handle:
+                                    {props.userCFhandle}
                                 </h4>
                             ) : (
                                 <h4
