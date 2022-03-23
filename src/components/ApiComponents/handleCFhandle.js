@@ -1,11 +1,7 @@
-export async function cfHandleInput(handle) {
-    fetch("/api/send-cf-handle", {
-        method: "POST",
-        body: JSON.stringify(handle),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+import axios from "axios";
+export function cfHandleInput(handle) {
+    axios
+        .post("http://localhost:5000/send-cf-handle", { handle })
+        .then((res) => console.log(res))
+        .catch((err) => alert(err));
 }

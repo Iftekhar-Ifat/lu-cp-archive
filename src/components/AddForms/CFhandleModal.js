@@ -25,8 +25,7 @@ const CFhandleModal = (props) => {
             userEmail: props.currentUserEmail,
             cfHandle: userCFhandle,
         };
-        console.log(sendCFhandle);
-        //cfHandleInput(sendCFhandle);
+        cfHandleInput(sendCFhandle);
     };
 
     return (

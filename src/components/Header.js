@@ -7,7 +7,7 @@ import AuthModal from "./AuthComponents/AuthModal";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Avatar } from "@mui/material";
 import CFhandleModal from "./AddForms/CFhandleModal";
-// import CFhandleModal from "./AddForms/CFhandleModal";
+import { useParams } from "react-router-dom";
 
 const Header = (props) => {
     const currentUser = useAuth();
@@ -16,6 +16,8 @@ const Header = (props) => {
     const [showCfHandleModal, setShowCfHandleModal] = useState(false);
     const [userPhoto, setUserPhoto] = useState("");
     const [currentUserEmail, setCurrentUserEmail] = useState();
+
+    const currentRoute = useParams();
 
     const modalToggle = () => {
         setShowCfHandleModal(true);
@@ -85,7 +87,7 @@ const Header = (props) => {
                                     src={userPhoto}
                                     style={{ cursor: "pointer" }}
                                 />
-                                {showCfHandleModal ? (
+                                {showCfHandleModal && currentRoute.ladder ? (
                                     <CFhandleModal
                                         modalToggle={setShowCfHandleModal}
                                         userCFhandleChange={

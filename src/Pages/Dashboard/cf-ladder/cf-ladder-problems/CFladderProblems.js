@@ -9,6 +9,7 @@ import { LinearProgress } from "@mui/material";
 const CFladderProblems = () => {
     const [problems, setProblems] = useState([]);
     const [userData, setUserData] = useState([]);
+    const [userCFhandle, setUserCFhandle] = useState();
     const path = useParams();
 
     const currentUser = useAuth();
@@ -56,7 +57,6 @@ const CFladderProblems = () => {
         }
     });
 
-    const [userCFhandle, setUserCFhandle] = useState();
     //getting user's CF data
     const [fetchedCFdata, setFetchedCFdata] = useState();
     useEffect(() => {
