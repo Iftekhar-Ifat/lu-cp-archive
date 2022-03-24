@@ -9,6 +9,7 @@ import AuthProvider from "../src/context/AuthProvider";
 import CFladder from "./Pages/Dashboard/cf-ladder/CFladder";
 import CFladderProblems from "./Pages/Dashboard/cf-ladder/cf-ladder-problems/CFladderProblems";
 import IntraLUcontest from "./Pages/Dashboard/intra-lu-contest/IntraLUcontest";
+import LUPSmarathonContest from "./Pages/Dashboard/lu-problemsolver-marathon-contest/LUPSmarathonContest";
 
 function App() {
     return (
@@ -37,6 +38,10 @@ function App() {
                     <Route
                         path={"/dashboard/intra-lu-contest"}
                         element={<IntraLUcontest />}
+                    />
+                    <Route
+                        path={"/dashboard/lu-problemsolver-marathon-contest"}
+                        element={<LUPSmarathonContest />}
                     />
                 </Routes>
             </Router>

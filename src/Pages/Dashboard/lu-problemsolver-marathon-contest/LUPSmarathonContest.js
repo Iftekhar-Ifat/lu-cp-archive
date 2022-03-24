@@ -7,7 +7,7 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import AddResourcesModal from "../../../components/AddForms/AddResourcesModal";
 
-const IntraLUcontest = () => {
+const LUPSmarathonContest = () => {
     const currentUser = useAuth();
 
     const [userData, setUserData] = useState([]);
@@ -33,7 +33,7 @@ const IntraLUcontest = () => {
         const getPageContent = async () => {
             try {
                 const response = await fetch(
-                    "http://localhost:5000/intra-lu-contest"
+                    "http://localhost:5000/lu-problemsolver-marathon-contest"
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
@@ -59,7 +59,6 @@ const IntraLUcontest = () => {
         setAddProblemToggle(true);
         setShow(true);
     };
-
     return (
         <div>
             <Header />
@@ -103,4 +102,4 @@ const IntraLUcontest = () => {
     );
 };
 
-export default IntraLUcontest;
+export default LUPSmarathonContest;
