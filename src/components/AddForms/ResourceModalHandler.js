@@ -30,7 +30,6 @@ const ResourceModalHandler = ({ setShow }) => {
                 inputRef={resourceTitle}
                 fullWidth
                 label="Resource Title"
-                id="fullWidth"
                 autoComplete="off"
             />
             <Spacer />
@@ -38,7 +37,6 @@ const ResourceModalHandler = ({ setShow }) => {
                 inputRef={resourceUrl}
                 fullWidth
                 label="Resource Url"
-                id="fullWidth"
                 autoComplete="off"
             />
             <Spacer />

@@ -160,7 +160,7 @@ const ProblemCard = (props) => {
                             {props.difficulty}
                         </div>
                         <div className={styles.deleteBtn}>
-                            {props.role == "power" ? (
+                            {props.role === "power" ? (
                                 <IconButton
                                     aria-label="delete"
                                     size="large"

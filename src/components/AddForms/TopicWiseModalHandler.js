@@ -47,7 +47,6 @@ const TopicWiseModalHandler = ({ setShow }) => {
                 inputRef={problemName}
                 fullWidth
                 label="Problem Name"
-                id="fullWidth"
                 autoComplete="off"
             />
             <Spacer />
@@ -55,7 +54,6 @@ const TopicWiseModalHandler = ({ setShow }) => {
                 inputRef={problemUrl}
                 fullWidth
                 label="Problem Url"
-                id="fullWidth"
                 autoComplete="off"
             />
             <Spacer />
