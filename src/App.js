@@ -10,6 +10,8 @@ import CFladder from "./Pages/Dashboard/cf-ladder/CFladder";
 import CFladderProblems from "./Pages/Dashboard/cf-ladder/cf-ladder-problems/CFladderProblems";
 import IntraLUcontest from "./Pages/Dashboard/intra-lu-contest/IntraLUcontest";
 import LUPSmarathonContest from "./Pages/Dashboard/lu-problemsolver-marathon-contest/LUPSmarathonContest";
+import LUPSshortContest from "./Pages/Dashboard/lu-problemsolver-short-contest/LUPSshortContest";
+import ComingSoon from "./Pages/Dashboard/coming-soon/ComingSoon";
 
 function App() {
     return (
@@ -42,6 +44,14 @@ function App() {
                     <Route
                         path={"/dashboard/lu-problemsolver-marathon-contest"}
                         element={<LUPSmarathonContest />}
+                    />
+                    <Route
+                        path={"/dashboard/lu-problemsolver-short-contest"}
+                        element={<LUPSshortContest />}
+                    />
+                    <Route
+                        path={"/dashboard/coming-soon-..."}
+                        element={<ComingSoon />}
                     />
                 </Routes>
             </Router>
