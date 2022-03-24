@@ -46,7 +46,7 @@ const LUPSshortContest = () => {
     }, []);
 
     let userStatus;
-    userData.map((usrDta) => {
+    userData.forEach((usrDta) => {
         const userEmail = usrDta.email;
         if (currentUser?.email === userEmail) {
             userStatus = usrDta.role;
