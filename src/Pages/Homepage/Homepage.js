@@ -57,7 +57,7 @@ const Homepage = () => {
             <footer className={styles.footer}>
                 <a
                     style={{ color: "#c8c8c8" }}
-                    href="https://github.com/Iftekhar-Ifat/lu-cp-archive"
+                    href="https://github.com/Iftekhar-Ifat"
                 >
                     © IFTEKHAR
                 </a>
