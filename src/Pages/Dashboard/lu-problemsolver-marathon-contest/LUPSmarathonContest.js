@@ -17,7 +17,9 @@ const LUPSmarathonContest = () => {
     useEffect(() => {
         const getUserData = async () => {
             try {
-                const response = await fetch("http://localhost:5000/users");
+                const response = await fetch(
+                    "https://hidden-garden-59705.herokuapp.com/users"
+                );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
                 setUserData(data);
@@ -33,7 +35,7 @@ const LUPSmarathonContest = () => {
         const getPageContent = async () => {
             try {
                 const response = await fetch(
-                    "http://localhost:5000/lu-problemsolver-marathon-contest"
+                    "https://hidden-garden-59705.herokuapp.com/lu-problemsolver-marathon-contest"
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();

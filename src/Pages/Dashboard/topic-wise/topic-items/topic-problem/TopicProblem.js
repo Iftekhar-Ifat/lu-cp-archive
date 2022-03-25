@@ -23,7 +23,9 @@ const TopicProblem = () => {
     useEffect(() => {
         const getUserData = async () => {
             try {
-                const response = await fetch("http://localhost:5000/users");
+                const response = await fetch(
+                    "https://hidden-garden-59705.herokuapp.com/users"
+                );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
                 setUserData(data);
@@ -39,7 +41,7 @@ const TopicProblem = () => {
         const getProblems = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/topicProblems/${problemRoute.topicProblems}`
+                    `https://hidden-garden-59705.herokuapp.com/topicProblems/${problemRoute.topicProblems}`
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
@@ -56,7 +58,7 @@ const TopicProblem = () => {
         const getResources = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/resources/${problemRoute.topicProblems}`
+                    `https://hidden-garden-59705.herokuapp.com/resources/${problemRoute.topicProblems}`
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
@@ -88,9 +90,12 @@ const TopicProblem = () => {
         const updateProblemStatus = async () => {
             try {
                 axios
-                    .post("http://localhost:5000/update-problem-status", {
-                        ...problemStatus,
-                    })
+                    .post(
+                        "https://hidden-garden-59705.herokuapp.com/update-problem-status",
+                        {
+                            ...problemStatus,
+                        }
+                    )
                     .then((res) =>
                         res.statusText !== "OK" ? alert(res) : null
                     );

@@ -21,7 +21,9 @@ const CFladderProblems = () => {
     useEffect(() => {
         const getUserData = async () => {
             try {
-                const response = await fetch("http://localhost:5000/users");
+                const response = await fetch(
+                    "https://hidden-garden-59705.herokuapp.com/users"
+                );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
                 setUserData(data);
@@ -37,7 +39,7 @@ const CFladderProblems = () => {
         const getCFProblems = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/codeforces-problems/${path.ladder}`
+                    `https://hidden-garden-59705.herokuapp.com/codeforces-problems/${path.ladder}`
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
