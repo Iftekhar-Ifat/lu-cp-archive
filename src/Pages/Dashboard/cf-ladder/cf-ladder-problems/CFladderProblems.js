@@ -69,7 +69,10 @@ const CFladderProblems = () => {
         };
         fetchCFdata();
     }, [CFhandle]);
-    processCFdata(fetchedCFdata, problems);
+
+    if (CFhandle) {
+        processCFdata(fetchedCFdata, problems);
+    }
 
     // when new handle added
     useEffect(() => {

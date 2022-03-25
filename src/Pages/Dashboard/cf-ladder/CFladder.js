@@ -5,7 +5,6 @@ import styles from "../../../styles/components/TopicWiseDynamic.module.css";
 
 const CFladder = () => {
     const path = window.location.pathname;
-    //console.log(path);
     return (
         <div>
             <Header />
