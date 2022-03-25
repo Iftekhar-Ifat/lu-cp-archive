@@ -21,7 +21,7 @@ const CFProblemModalHandler = ({ setShow }) => {
             difficulty: cfProblemDifficulty,
             route: cfProblemDifficulty,
         };
-        inputHandler(cfProblemData, setBtnDisable);
+        inputHandler(cfProblemData, setShow);
     };
 
     return (
@@ -35,7 +35,6 @@ const CFProblemModalHandler = ({ setShow }) => {
                 inputRef={cfProblemName}
                 fullWidth
                 label="Problem Name"
-                id="fullWidth"
                 autoComplete="off"
             />
             <Spacer />

@@ -5,6 +5,7 @@ import { processData } from "../../../../../components/processDataHandler";
 import DynamicTopicItem from "../../../../../components/DynamicTopicItem";
 import { LinearProgress } from "@mui/material";
 import Header from "../../../../../components/Header";
+import axios from "axios";
 
 const TopicProblem = () => {
     //getting route
@@ -48,7 +49,7 @@ const TopicProblem = () => {
             }
         };
         (async () => await getProblems())();
-    }, []);
+    }, [problemRoute.topicProblems]);
 
     //getting resources
     useEffect(() => {
@@ -65,12 +66,12 @@ const TopicProblem = () => {
             }
         };
         (async () => await getResources())();
-    }, []);
+    }, [problemRoute.topicProblems]);
 
     let userStatus;
     let userProblemStatus;
     userData &&
-        userData?.map((usrDta) => {
+        userData?.forEach((usrDta) => {
             const userEmail = usrDta.email;
             if (currentUser?.email === userEmail) {
                 userStatus = usrDta.role;
@@ -83,29 +84,22 @@ const TopicProblem = () => {
         });
 
     //updating problem state
-    // useEffect(() => {
-    //     const updateProblemStatus = async () => {
-    //         try {
-    //             const response = await fetch(
-    //                 "http://localhost:5000/update-problem-status",
-    //                 {
-    //                     mode: "no-cors",
-    //                     method: "POST",
-    //                     body: JSON.stringify(problemStatus),
-    //                     headers: {
-    //                         "Content-Type": "application/json",
-    //                     },
-    //                 }
-    //             );
-    //             if (!response.ok)
-    //                 throw Error("There was a problem in the server!");
-    //             const data = await response.json();
-    //         } catch (err) {
-    //             console.log(err.message);
-    //         }
-    //     };
-    //     (async () => await updateProblemStatus())();
-    // }, [problemStatus]);
+    useEffect(() => {
+        const updateProblemStatus = async () => {
+            try {
+                axios
+                    .post("http://localhost:5000/update-problem-status", {
+                        ...problemStatus,
+                    })
+                    .then((res) =>
+                        res.statusText !== "OK" ? alert(res) : null
+                    );
+            } catch (err) {
+                console.log(err.message);
+            }
+        };
+        (async () => await updateProblemStatus())();
+    }, [problemStatus]);
 
     return (
         <Fragment>

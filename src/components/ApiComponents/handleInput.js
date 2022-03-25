@@ -1,15 +1,14 @@
 import axios from "axios";
-export async function inputHandler(items, setBtnDisable) {
+export async function inputHandler(items, setShow) {
     axios
         .post("http://localhost:5000/send-data", { ...items })
         .then((res) => {
-            console.log(res);
             if (res.data === "Error") {
                 alert("⚠ Data Already Exists!!!");
-                setBtnDisable(false);
+                setShow(false);
             } else {
                 alert("Data Added Successfully ✅");
-                setBtnDisable(false);
+                setShow(false);
             }
         })
         .catch((err) => alert(err));

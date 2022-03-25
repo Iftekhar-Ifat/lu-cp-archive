@@ -21,16 +21,13 @@ const ProgressBarCard = ({ userProblems, allProblems }) => {
         100: Colors.violet,
     };
 
-    let solvingValue = 10,
-        solvedValue = 20,
-        reviewingValue = 30,
-        skippedValue = 40;
-    // if (userProblems) {
-    //     solvingValue = 100 * (userProblems.solving / totalProblems);
-    //     solvedValue = 100 * (userProblems.solved / totalProblems);
-    //     reviewingValue = 100 * (userProblems.reviewing / totalProblems);
-    //     skippedValue = 100 * (userProblems.skipped / totalProblems);
-    // }
+    let solvingValue, solvedValue, reviewingValue, skippedValue;
+    if (userProblems) {
+        solvingValue = 100 * (userProblems.solving / totalProblems);
+        solvedValue = 100 * (userProblems.solved / totalProblems);
+        reviewingValue = 100 * (userProblems.reviewing / totalProblems);
+        skippedValue = 100 * (userProblems.skipped / totalProblems);
+    }
 
     return (
         <div className={styles.progressbar_div}>

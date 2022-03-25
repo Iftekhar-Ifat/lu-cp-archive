@@ -30,7 +30,7 @@ const CFladderProblems = () => {
             }
         };
         (async () => await getUserData())();
-    }, []);
+    }, [path.ladder]);
 
     //getting cf problems from database
     useEffect(() => {
@@ -47,9 +47,9 @@ const CFladderProblems = () => {
             }
         };
         (async () => await getCFProblems())();
-    }, []);
+    }, [path.ladder]);
 
-    userData.map((usrDta) => {
+    userData.forEach((usrDta) => {
         const userEmail = usrDta.email;
         if (currentUser?.email === userEmail) {
             userStatus = usrDta.role;
