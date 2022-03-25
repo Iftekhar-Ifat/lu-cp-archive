@@ -34,7 +34,7 @@ const TopicWiseModalHandler = ({ setShow }) => {
             url: problemUrl.current.value,
         };
 
-        inputHandler(problemItem, setBtnDisable);
+        inputHandler(problemItem, setShow);
     };
     return (
         <div

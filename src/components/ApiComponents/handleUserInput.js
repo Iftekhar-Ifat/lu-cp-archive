@@ -1,11 +1,7 @@
+import axios from "axios";
 export async function userInputHandler(users) {
-    fetch("/api/send-user", {
-        method: "POST",
-        body: JSON.stringify(users),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+    axios
+        .post("http://localhost:5000/send-user", { ...users })
+        .then((res) => (res.statusText !== "OK" ? alert(res) : null))
+        .catch((err) => alert(err));
 }
