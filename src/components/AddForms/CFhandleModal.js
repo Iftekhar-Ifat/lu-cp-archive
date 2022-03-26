@@ -18,14 +18,24 @@ const CFhandleModal = (props) => {
     const cfHandleRef = useRef();
     let userCFhandle;
     let sendCFhandle;
-    const getUserCfHandle = () => {
+    const getUserCfHandle = async () => {
+        //check if user exist or not
         userCFhandle = cfHandleRef.current.value;
         props.userCFhandleChange(userCFhandle);
         sendCFhandle = {
             userEmail: props.currentUserEmail,
             cfHandle: userCFhandle,
         };
-        cfHandleInput(sendCFhandle);
+        try {
+            const response = await fetch(
+                `https://codeforces.com/api/user.info?handles=${userCFhandle}`
+            );
+            if (!response.ok) throw Error("Did not received expected data");
+            const data = await response.json();
+            cfHandleInput(sendCFhandle);
+        } catch (err) {
+            alert("User doesn't exist❗");
+        }
     };
 
     return (
