@@ -72,7 +72,7 @@ const IntraLUcontest = () => {
                 <div className={styles.wrapper}>
                     <div
                         className={styles.problem_section}
-                        style={{ width: "100%", padding: "5%" }}
+                        style={{ width: "100%" }}
                     >
                         {contests.map((item) => (
                             <LinkCard

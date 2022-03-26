@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import ProblemCard from "./ProblemCard";
 import Fab from "@mui/material/Fab";
@@ -27,7 +27,7 @@ const DynamicCFproblems = (props) => {
                 <div className={styles.wrapper}>
                     <div
                         className={styles.problem_section}
-                        style={{ width: "100%", padding: "5%" }}
+                        style={{ width: "100%" }}
                     >
                         {props.problems.map((problem) => (
                             <ProblemCard
