@@ -51,7 +51,7 @@ const TopicProblem = () => {
             }
         };
         (async () => await getProblems())();
-    }, [problemRoute.topicProblems]);
+    }, []);
 
     //getting resources
     useEffect(() => {
@@ -68,7 +68,7 @@ const TopicProblem = () => {
             }
         };
         (async () => await getResources())();
-    }, [problemRoute.topicProblems]);
+    }, []);
 
     let userStatus;
     let userProblemStatus;
