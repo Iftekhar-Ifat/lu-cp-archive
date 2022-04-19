@@ -12,7 +12,7 @@ const CFladderProblems = () => {
     const [userCFhandle, setUserCFhandle] = useState();
     const path = useParams();
 
-    const currentUser = useAuth();
+    const currentUserEmail = localStorage.getItem("email");
 
     let userStatus;
     let CFhandle;
@@ -53,7 +53,7 @@ const CFladderProblems = () => {
 
     userData.forEach((usrDta) => {
         const userEmail = usrDta.email;
-        if (currentUser?.email === userEmail) {
+        if (currentUserEmail === userEmail) {
             userStatus = usrDta.role;
             CFhandle = usrDta.CFhandle;
         }

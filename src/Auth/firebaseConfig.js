@@ -17,14 +17,24 @@ const firebaseConfig = {
     appId: "1:817736647251:web:cba7f5e2ce2c3c2ad8bca6",
 };
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
+export const auth = getAuth();
 
 export function logout() {
+    localStorage.clear();
     return signOut(auth);
 }
 
 const provider = new GoogleAuthProvider();
 
-export function signInWithGoogle() {
-    return signInWithPopup(auth, provider);
-}
+export const signInWithGoogle = async () => {
+    signInWithPopup(auth, provider)
+        .then((res) => {
+            const email = res.user.email;
+            const profilePic = res.user.photoURL;
+            localStorage.setItem("email", email);
+            localStorage.setItem("profilePic", profilePic);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};

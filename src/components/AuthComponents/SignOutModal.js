@@ -1,14 +1,17 @@
 import React from "react";
 import { Modal } from "@geist-ui/core";
 import { logout } from "../../Auth/firebaseConfig";
+import { useNavigate } from "react-router-dom";
 
 const SignOutModal = ({ signOutTriggerStatus, signOutTriggerStatusChange }) => {
+    let navigate = useNavigate();
     const closeHandler = (event) => {
         signOutTriggerStatusChange(false);
     };
     async function handleSignOut() {
         try {
             await logout();
+            navigate("/");
             closeHandler();
         } catch (err) {
             alert("Error in logout");

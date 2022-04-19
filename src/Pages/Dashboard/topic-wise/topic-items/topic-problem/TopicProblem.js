@@ -12,7 +12,7 @@ const TopicProblem = () => {
     let problemRoute = useParams();
 
     //getting user
-    const currentUser = useAuth();
+    const currentUserEmail = localStorage.getItem("email");
 
     const [userData, setUserData] = useState([]);
     const [problems, setProblems] = useState([]);
@@ -75,7 +75,7 @@ const TopicProblem = () => {
     userData &&
         userData?.forEach((usrDta) => {
             const userEmail = usrDta.email;
-            if (currentUser?.email === userEmail) {
+            if (currentUserEmail === userEmail) {
                 userStatus = usrDta.role;
                 userProblemStatus = processData(
                     usrDta,

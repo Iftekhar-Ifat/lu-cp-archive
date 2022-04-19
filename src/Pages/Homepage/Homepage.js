@@ -7,7 +7,7 @@ import useAuth from "../../hooks/useAuth";
 import AuthModal from "../../components/AuthComponents/AuthModal";
 
 const Homepage = () => {
-    const user = useAuth();
+    const user = localStorage.getItem("email");
     const [showModal, setShowModal] = useState(false);
 
     const navigate = useNavigate();

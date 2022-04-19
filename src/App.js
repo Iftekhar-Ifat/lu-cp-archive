@@ -12,6 +12,7 @@ import IntraLUcontest from "./Pages/Dashboard/intra-lu-contest/IntraLUcontest";
 import LUPSmarathonContest from "./Pages/Dashboard/lu-problemsolver-marathon-contest/LUPSmarathonContest";
 import LUPSshortContest from "./Pages/Dashboard/lu-problemsolver-short-contest/LUPSshortContest";
 import ComingSoon from "./Pages/Dashboard/coming-soon/ComingSoon";
+import PrivateOutlet from "./components/PrivateOutlet";
 
 function App() {
     return (
@@ -19,40 +20,50 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<Homepage />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/dashboard/topic-wise" element={<Topics />} />
-                    <Route
-                        path={"/dashboard/topic-wise/:topicItem"}
-                        element={<TopicItems />}
-                    />
-                    <Route
-                        path={"/dashboard/topic-wise/:topicItem/:topicProblems"}
-                        element={<TopicProblem />}
-                    />
-                    <Route
-                        path={"/dashboard/codeforces-ladder"}
-                        element={<CFladder />}
-                    />
-                    <Route
-                        path={"/dashboard/codeforces-ladder/:ladder"}
-                        element={<CFladderProblems />}
-                    />
-                    <Route
-                        path={"/dashboard/intra-lu-contest"}
-                        element={<IntraLUcontest />}
-                    />
-                    <Route
-                        path={"/dashboard/lu-problemsolver-marathon-contest"}
-                        element={<LUPSmarathonContest />}
-                    />
-                    <Route
-                        path={"/dashboard/lu-problemsolver-short-contest"}
-                        element={<LUPSshortContest />}
-                    />
-                    <Route
-                        path={"/dashboard/coming-soon-..."}
-                        element={<ComingSoon />}
-                    />
+
+                    <Route element={<PrivateOutlet />}>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route
+                            path="/dashboard/topic-wise"
+                            element={<Topics />}
+                        />
+                        <Route
+                            path={"/dashboard/topic-wise/:topicItem"}
+                            element={<TopicItems />}
+                        />
+                        <Route
+                            path={
+                                "/dashboard/topic-wise/:topicItem/:topicProblems"
+                            }
+                            element={<TopicProblem />}
+                        />
+                        <Route
+                            path={"/dashboard/codeforces-ladder"}
+                            element={<CFladder />}
+                        />
+                        <Route
+                            path={"/dashboard/codeforces-ladder/:ladder"}
+                            element={<CFladderProblems />}
+                        />
+                        <Route
+                            path={"/dashboard/intra-lu-contest"}
+                            element={<IntraLUcontest />}
+                        />
+                        <Route
+                            path={
+                                "/dashboard/lu-problemsolver-marathon-contest"
+                            }
+                            element={<LUPSmarathonContest />}
+                        />
+                        <Route
+                            path={"/dashboard/lu-problemsolver-short-contest"}
+                            element={<LUPSshortContest />}
+                        />
+                        <Route
+                            path={"/dashboard/coming-soon-..."}
+                            element={<ComingSoon />}
+                        />
+                    </Route>
                 </Routes>
             </Router>
         </AuthProvider>

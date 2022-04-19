@@ -33,7 +33,7 @@ const AuthModal = ({ modalStatus, setModalStatus }) => {
                     userInputHandler(userData);
                 })
                 .catch((error) => {
-                    alert(error.message);
+                    console.log(error);
                 });
         } catch (err) {
             alert(err.message);

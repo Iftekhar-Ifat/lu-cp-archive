@@ -10,7 +10,10 @@ import CFhandleModal from "./AddForms/CFhandleModal";
 import { useParams } from "react-router-dom";
 
 const Header = (props) => {
-    const currentUser = useAuth();
+    const currentUser = localStorage.getItem("email");
+    const userEmail = localStorage.getItem("email");
+    const userPhotoUrl = localStorage.getItem("profilePic");
+
     const [signOutTriggerd, setSignOutTriggerd] = useState(false);
     const [showSignInModal, setShowSignInModal] = useState(false);
     const [showCfHandleModal, setShowCfHandleModal] = useState(false);
@@ -24,12 +27,12 @@ const Header = (props) => {
     };
     useEffect(() => {
         let isMounted = true;
-        if (currentUser?.photoURL) {
-            setUserPhoto(currentUser.photoURL);
-            setCurrentUserEmail(currentUser.email);
+        if (currentUser) {
+            setUserPhoto(userPhotoUrl);
+            setCurrentUserEmail(userEmail);
         }
         isMounted = false;
-    }, [currentUser]);
+    });
 
     const signOutHandler = () => {
         setSignOutTriggerd(true);

@@ -10,7 +10,7 @@ export default function useAuth() {
             setCurrentUser(user)
         );
         return unsubscribe;
-    }, []);
+    });
 
     return currentUser;
 }
