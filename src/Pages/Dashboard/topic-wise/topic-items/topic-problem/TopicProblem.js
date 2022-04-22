@@ -75,7 +75,9 @@ const TopicProblem = () => {
     useEffect(() => {
         const getTags = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/all-tags`);
+                const response = await fetch(
+                    `https://hidden-garden-59705.herokuapp.com/all-tags`
+                );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
                 setAllTags(data[0].tags);
