@@ -10,8 +10,9 @@ import {
 } from "@mui/material";
 import { Spacer } from "@geist-ui/core";
 import { inputHandler } from "../ApiComponents/handleInput";
+import Tags from "../Tags";
 
-const TopicWiseModalHandler = ({ setShow }) => {
+const TopicWiseModalHandler = ({ setShow, allTags }) => {
     const path = window.location.pathname.split("/").pop();
     // getting input for problem
     const problemName = useRef();
@@ -22,19 +23,24 @@ const TopicWiseModalHandler = ({ setShow }) => {
     };
 
     const [btnDisable, setBtnDisable] = useState(false);
+    const [problemTags, setProblemTags] = useState([]);
 
     const getProblemInfo = () => {
         setBtnDisable(true);
-
         const problemItem = {
             itemId: "topic-wise",
             title: problemName.current.value,
             difficulty: problemDifficulty,
             route: path,
             url: problemUrl.current.value,
+            tags: problemTags,
         };
-
-        inputHandler(problemItem, setShow);
+        if (Object.keys(problemItem).length === 0) {
+            alert("Please fill up the form❗");
+            setBtnDisable(false);
+        } else {
+            inputHandler(problemItem, setShow);
+        }
     };
     return (
         <div
@@ -80,6 +86,12 @@ const TopicWiseModalHandler = ({ setShow }) => {
                     />
                 </RadioGroup>
             </FormControl>
+            <Spacer />
+            <Tags
+                setProblemTags={setProblemTags}
+                problemTags={problemTags}
+                allTags={allTags}
+            />
             <Spacer />
             <div
                 style={{

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import InfoIcon from "@mui/icons-material/Info";
 import styles from "../styles/components/ProblemCard.module.css";
 import StatusCard from "./StatusCard";
 import { deleteHandler } from "./ApiComponents/handleDelete";
 import { Modal } from "@geist-ui/core";
 import { useNavigate } from "react-router-dom";
+import { Tooltip, Typography } from "@mui/material";
 
 const ProblemCard = (props) => {
     const [modalState, setModalState] = useState(false);
@@ -13,6 +15,7 @@ const ProblemCard = (props) => {
     const closeModalHandler = () => {
         setModalState(false);
     };
+
     const navigate = useNavigate();
 
     const cardRouteHandler = () => {
@@ -24,6 +27,11 @@ const ProblemCard = (props) => {
     const [statusColor, setStatusColor] = useState("#3f3f46");
     const [fakeStatusColor, setFakeStatusColor] = useState("#3f3f46");
     const [firstRender, setFirstRender] = useState(0);
+
+    let allTags = "";
+    if (props.tags) {
+        allTags = props.tags.join(", ");
+    }
 
     const toggleStatus = () => {
         if (!dropdownActive) {
@@ -158,6 +166,26 @@ const ProblemCard = (props) => {
                             }
                         >
                             {props.difficulty}
+                            <Tooltip
+                                title={
+                                    allTags ? (
+                                        <Typography
+                                            fontSize={15}
+                                            align="center"
+                                        >
+                                            {allTags}
+                                        </Typography>
+                                    ) : (
+                                        ""
+                                    )
+                                }
+                                arrow
+                                placement="top"
+                            >
+                                <IconButton aria-label="delete" size="large">
+                                    <InfoIcon style={{ color: "white" }} />
+                                </IconButton>
+                            </Tooltip>
                         </div>
                         <div className={styles.deleteBtn}>
                             {props.role === "power" ? (

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
-import useAuth from "../../../../hooks/useAuth";
 import { processCFdata } from "../../../../components/ProcessCFdata";
 import DynamicCFproblems from "../../../../components/DynamicCFproblems";
 import Header from "../../../../components/Header";
@@ -17,6 +16,7 @@ const CFladderProblems = () => {
     let userStatus;
     let CFhandle;
 
+    console.count("counter");
     //getting user data
     useEffect(() => {
         const getUserData = async () => {

@@ -10,6 +10,7 @@ const AddProblemModal = ({
     addProblemModalStatusChange,
     show,
     setShow,
+    allTags,
 }) => {
     if (!show) {
         return null;
@@ -45,6 +46,7 @@ const AddProblemModal = ({
                             modalFor={"problems"}
                             show={show}
                             setShow={setShow}
+                            allTags={allTags}
                         />
                     </div>
                 </OutsideClickHandler>

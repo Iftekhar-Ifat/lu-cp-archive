@@ -79,6 +79,69 @@ const CFladder = () => {
                             cardTitle={"1600"}
                             solvedPercentage={0}
                         />
+
+                        <ProblemCard
+                            cardPath={path}
+                            cardSize={70}
+                            cardTitle={"1700"}
+                            solvedPercentage={0}
+                        />
+
+                        <ProblemCard
+                            cardPath={path}
+                            cardSize={70}
+                            cardTitle={"1800"}
+                            solvedPercentage={0}
+                        />
+
+                        <ProblemCard
+                            cardPath={path}
+                            cardSize={70}
+                            cardTitle={"1900"}
+                            solvedPercentage={0}
+                        />
+
+                        <ProblemCard
+                            cardPath={path}
+                            cardSize={70}
+                            cardTitle={"2000"}
+                            solvedPercentage={0}
+                        />
+
+                        <ProblemCard
+                            cardPath={path}
+                            cardSize={70}
+                            cardTitle={"2100"}
+                            solvedPercentage={0}
+                        />
+
+                        <ProblemCard
+                            cardPath={path}
+                            cardSize={70}
+                            cardTitle={"2200"}
+                            solvedPercentage={0}
+                        />
+
+                        <ProblemCard
+                            cardPath={path}
+                            cardSize={70}
+                            cardTitle={"2300"}
+                            solvedPercentage={0}
+                        />
+
+                        <ProblemCard
+                            cardPath={path}
+                            cardSize={70}
+                            cardTitle={"2400"}
+                            solvedPercentage={0}
+                        />
+
+                        <ProblemCard
+                            cardPath={path}
+                            cardSize={70}
+                            cardTitle={"2500"}
+                            solvedPercentage={0}
+                        />
                     </div>
                 </div>
             </div>

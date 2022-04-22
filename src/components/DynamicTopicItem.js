@@ -36,6 +36,7 @@ const DynamicTopicItem = (props) => {
                                 role={props.userRole}
                                 problemStatusChange={props.problemStatusChange}
                                 statusColor={problem.color}
+                                tags={problem.tags}
                             />
                         ))}
                         {props.userRole === "power" ? (
@@ -69,7 +70,11 @@ const DynamicTopicItem = (props) => {
                 </div>
             </div>
             {addProblemToggle ? (
-                <AddProblemModal show={show} setShow={setShow} />
+                <AddProblemModal
+                    show={show}
+                    setShow={setShow}
+                    allTags={props.allTags}
+                />
             ) : null}
         </div>
     );

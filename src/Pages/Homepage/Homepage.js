@@ -3,7 +3,6 @@ import styles from "../../styles/Homepage/homepage.module.css";
 import { Button } from "@geist-ui/core";
 import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import AuthModal from "../../components/AuthComponents/AuthModal";
 
 const Homepage = () => {

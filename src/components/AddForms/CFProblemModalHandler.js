@@ -21,7 +21,13 @@ const CFProblemModalHandler = ({ setShow }) => {
             difficulty: cfProblemDifficulty,
             route: cfProblemDifficulty,
         };
-        inputHandler(cfProblemData, setShow);
+        const isEmpty = Object.keys(cfProblemData).length === 0;
+        if (!isEmpty) {
+            alert("Please fill up the form❗");
+            setBtnDisable(false);
+        } else {
+            inputHandler(cfProblemData, setShow);
+        }
     };
 
     return (
