@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { processData } from "../../../../../components/processDataHandler";
 import DynamicTopicItem from "../../../../../components/DynamicTopicItem";
-import { LinearProgress } from "@mui/material";
+import { LinearProgress, Stack } from "@mui/material";
 import Header from "../../../../../components/Header";
 import axios from "axios";
 
@@ -20,77 +20,54 @@ const TopicProblem = () => {
     const [firstRender, setFirstRender] = useState(true);
     const [allTags, setAllTags] = useState([]);
 
-    //getting problems
-    useEffect(() => {
-        const getProblems = async () => {
-            try {
-                const response = await fetch(
-                    `https://hidden-garden-59705.herokuapp.com/topicProblems/${problemRoute.topicProblems}`
-                );
-                if (!response.ok) throw Error("Did not received expected data");
-                const data = await response.json();
-                setProblems(data);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-        (async () => await getProblems())();
-    }, [currentUserEmail]);
-
-    //getting resources
-    useEffect(() => {
-        const getResources = async () => {
-            try {
-                const response = await fetch(
-                    `https://hidden-garden-59705.herokuapp.com/resources/${problemRoute.topicProblems}`
-                );
-                if (!response.ok) throw Error("Did not received expected data");
-                const data = await response.json();
-                setResources(data);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-        (async () => await getResources())();
-    }, [currentUserEmail]);
-
-    //getting user Data
-    useEffect(() => {
-        const getUserData = async () => {
-            try {
-                const response = await fetch(
-                    "https://hidden-garden-59705.herokuapp.com/users"
-                );
-                if (!response.ok) throw Error("Did not received expected data");
-                const data = await response.json();
-                setUserData(data);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-        (async () => await getUserData())();
-    }, [currentUserEmail]);
-
-    //getting tags
-    useEffect(() => {
-        const getTags = async () => {
-            try {
-                const response = await fetch(
-                    `https://hidden-garden-59705.herokuapp.com/all-tags`
-                );
-                if (!response.ok) throw Error("Did not received expected data");
-                const data = await response.json();
-                setAllTags(data[0].tags);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-        (async () => await getTags())();
-    }, [currentUserEmail]);
-
     let userStatus;
     let userProblemStatus;
-    userData &&
+
+    //getting problems
+    const getProblems = async () => {
+        try {
+            axios
+                .get(
+                    `https://hidden-garden-59705.herokuapp.com/topicProblems/${problemRoute.topicProblems}`
+                )
+                .then((response) => {
+                    setProblems(response.data);
+                });
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
+    //getting resources
+    const getResources = async () => {
+        try {
+            axios
+                .get(
+                    `https://hidden-garden-59705.herokuapp.com/resources/${problemRoute.topicProblems}`
+                )
+                .then((response) => {
+                    setResources(response.data);
+                });
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
+    //getting user Data
+    const getUserData = async () => {
+        try {
+            axios
+                .get("https://hidden-garden-59705.herokuapp.com/users")
+                .then((response) => {
+                    setUserData(response.data);
+                });
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
+    // processing data
+    if (userData) {
         userData?.forEach((usrDta) => {
             const userEmail = usrDta.email;
             if (currentUserEmail === userEmail) {
@@ -102,6 +79,35 @@ const TopicProblem = () => {
                 );
             }
         });
+    }
+
+    //getting tags
+    const getTags = async () => {
+        try {
+            axios
+                .get(`https://hidden-garden-59705.herokuapp.com/all-tags`)
+                .then((response) => {
+                    setAllTags(response.data[0].tags);
+                });
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
+    useEffect(() => {
+        (async () => {
+            const getUserFunction = getUserData();
+            const getProblemsFunction = getProblems();
+            const getResourcesFunction = getResources();
+            const getTagsFunction = getTags();
+            return Promise.all([
+                getUserFunction,
+                getProblemsFunction,
+                getResourcesFunction,
+                getTagsFunction,
+            ]);
+        })();
+    }, [currentUserEmail]);
 
     //updating problem state
     useEffect(() => {
@@ -118,20 +124,22 @@ const TopicProblem = () => {
                                 ...problemStatus,
                             }
                         )
-                        .then((res) =>
-                            res.statusText !== "OK" ? alert(res) : null
-                        );
+                        .then((res) => {
+                            getUserData();
+                        });
                 } catch (err) {
                     console.log(err.message);
                 }
             };
-            (async () => await updateProblemStatus())();
+            (async () => {
+                await updateProblemStatus();
+            })();
         }
     }, [problemStatus]);
 
     return (
         <Fragment>
-            {userData && userProblemStatus ? (
+            {userData.length && userProblemStatus ? (
                 <DynamicTopicItem
                     problems={problems}
                     userRole={userStatus}
@@ -143,7 +151,9 @@ const TopicProblem = () => {
             ) : (
                 <Fragment>
                     <Header />
-                    <LinearProgress />
+                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                        <LinearProgress color="inherit" />
+                    </Stack>
                 </Fragment>
             )}
         </Fragment>

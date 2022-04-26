@@ -3,7 +3,6 @@ import Homepage from "./Pages/Homepage/Homepage";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Topics from "./Pages/Dashboard/topic-wise/Topics";
-import TopicItems from "./Pages/Dashboard/topic-wise/topic-items/TopicItems";
 import TopicProblem from "./Pages/Dashboard/topic-wise/topic-items/topic-problem/TopicProblem";
 import AuthProvider from "../src/context/AuthProvider";
 import CFladder from "./Pages/Dashboard/cf-ladder/CFladder";
@@ -11,8 +10,8 @@ import CFladderProblems from "./Pages/Dashboard/cf-ladder/cf-ladder-problems/CFl
 import IntraLUcontest from "./Pages/Dashboard/intra-lu-contest/IntraLUcontest";
 import LUPSmarathonContest from "./Pages/Dashboard/lu-problemsolver-marathon-contest/LUPSmarathonContest";
 import LUPSshortContest from "./Pages/Dashboard/lu-problemsolver-short-contest/LUPSshortContest";
-import ComingSoon from "./Pages/Dashboard/coming-soon/ComingSoon";
 import PrivateOutlet from "./components/PrivateOutlet";
+import UserGuide from "./Pages/Dashboard/user-guide/UserGuide";
 
 function App() {
     return (
@@ -28,13 +27,7 @@ function App() {
                             element={<Topics />}
                         />
                         <Route
-                            path={"/dashboard/topic-wise/:topicItem"}
-                            element={<TopicItems />}
-                        />
-                        <Route
-                            path={
-                                "/dashboard/topic-wise/:topicItem/:topicProblems"
-                            }
+                            path={"/dashboard/topic-wise/:topicProblems"}
                             element={<TopicProblem />}
                         />
                         <Route
@@ -60,8 +53,8 @@ function App() {
                             element={<LUPSshortContest />}
                         />
                         <Route
-                            path={"/dashboard/coming-soon-..."}
-                            element={<ComingSoon />}
+                            path={"/dashboard/user-guide"}
+                            element={<UserGuide />}
                         />
                     </Route>
                 </Routes>

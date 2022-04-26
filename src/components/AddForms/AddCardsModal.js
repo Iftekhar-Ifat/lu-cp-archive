@@ -3,9 +3,9 @@ import React, { useState, useRef } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import styles from "../../styles/components/AddProblemModal.module.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, FormLabel } from "@mui/material";
 import { Spacer } from "@geist-ui/core";
-import { tagsHandler } from "../ApiComponents/handleTags";
+import { cardsHandler } from "../ApiComponents/handleCards";
 
 const AddTagsModal = ({ show, setShow }) => {
     const theme = createTheme({
@@ -20,20 +20,21 @@ const AddTagsModal = ({ show, setShow }) => {
 
     const [btnDisable, setBtnDisable] = useState(false);
 
-    const tagsTitle = useRef();
+    const cardTitle = useRef();
 
-    const getTagHandler = () => {
+    const getCardHandler = () => {
         setBtnDisable(true);
-        const tagItem = {
-            itemId: "tags",
-            tags: tagsTitle.current.value,
+        const cardItem = {
+            itemId: "cards",
+            icon: "",
+            title: cardTitle.current.value,
+            subtitle: "",
         };
-        if (tagItem.tags.length === 0) {
+        if (cardItem.title.length === 0) {
             alert("Please fill up the form❗");
             setBtnDisable(false);
         } else {
-            tagsHandler(tagItem, setShow);
-            setBtnDisable(false);
+            cardsHandler(cardItem, setShow);
         }
     };
     if (!show) {
@@ -61,16 +62,19 @@ const AddTagsModal = ({ show, setShow }) => {
                                 />
                             </div>
                         </div>
+
                         <div
                             style={{
                                 padding: "3%",
                                 justifyContent: "space-evenly",
                             }}
                         >
+                            <FormLabel>Add Card</FormLabel>
+                            <Spacer />
                             <TextField
-                                inputRef={tagsTitle}
+                                inputRef={cardTitle}
                                 fullWidth
-                                label="Tag Title"
+                                label="Card Title"
                                 autoComplete="off"
                             />
                             <Spacer />
@@ -93,10 +97,10 @@ const AddTagsModal = ({ show, setShow }) => {
                                 <Button
                                     variant="contained"
                                     color="neutral"
-                                    onClick={getTagHandler}
+                                    onClick={getCardHandler}
                                     disabled={btnDisable}
                                 >
-                                    Add Tag
+                                    Add Card
                                 </Button>
                             </div>
                         </div>

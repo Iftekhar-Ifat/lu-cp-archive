@@ -1,3 +1,5 @@
+// This page doesn't have any functionality
+
 import React, { useState, useEffect } from "react";
 import Header from "../../../../components/Header";
 import Card from "../../../../components/Card";

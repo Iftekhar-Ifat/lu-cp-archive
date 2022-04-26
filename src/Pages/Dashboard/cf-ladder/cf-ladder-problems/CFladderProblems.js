@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import { processCFdata } from "../../../../components/ProcessCFdata";
 import DynamicCFproblems from "../../../../components/DynamicCFproblems";
 import Header from "../../../../components/Header";
-import { LinearProgress } from "@mui/material";
+import { LinearProgress, Stack } from "@mui/material";
+import axios from "axios";
 
 const CFladderProblems = () => {
     const [problems, setProblems] = useState([]);
@@ -16,40 +17,33 @@ const CFladderProblems = () => {
     let userStatus;
     let CFhandle;
 
-    console.count("counter");
     //getting user data
-    useEffect(() => {
-        const getUserData = async () => {
-            try {
-                const response = await fetch(
-                    "https://hidden-garden-59705.herokuapp.com/users"
-                );
-                if (!response.ok) throw Error("Did not received expected data");
-                const data = await response.json();
-                setUserData(data);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-        (async () => await getUserData())();
-    }, [path.ladder]);
+    const getUserData = async () => {
+        try {
+            axios
+                .get("https://hidden-garden-59705.herokuapp.com/users")
+                .then((response) => {
+                    setUserData(response.data);
+                });
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
 
     //getting cf problems from database
-    useEffect(() => {
-        const getCFProblems = async () => {
-            try {
-                const response = await fetch(
+    const getCFProblems = async () => {
+        try {
+            axios
+                .get(
                     `https://hidden-garden-59705.herokuapp.com/codeforces-problems/${path.ladder}`
-                );
-                if (!response.ok) throw Error("Did not received expected data");
-                const data = await response.json();
-                setProblems(data);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-        (async () => await getCFProblems())();
-    }, [path.ladder]);
+                )
+                .then((response) => {
+                    setProblems(response.data);
+                });
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
 
     userData.forEach((usrDta) => {
         const userEmail = usrDta.email;
@@ -59,16 +53,26 @@ const CFladderProblems = () => {
         }
     });
 
+    useEffect(() => {
+        (async () => {
+            const getUserFunction = getUserData();
+            const getCFProblemsFunction = getCFProblems();
+            return Promise.all([getUserFunction, getCFProblemsFunction]);
+        })();
+    }, [path.ladder]);
+
     //getting user's CF data
     const [fetchedCFdata, setFetchedCFdata] = useState();
+
+    const fetchCFdata = async () => {
+        axios
+            .get(`https://codeforces.com/api/user.status?handle=${CFhandle}`)
+            .then((response) => {
+                setFetchedCFdata(response.data);
+            });
+    };
+
     useEffect(() => {
-        const fetchCFdata = async () => {
-            const response = await fetch(
-                `https://codeforces.com/api/user.status?handle=${CFhandle}`
-            );
-            const newData = await response.json();
-            setFetchedCFdata(newData);
-        };
         fetchCFdata();
     }, [CFhandle]);
 
@@ -103,7 +107,7 @@ const CFladderProblems = () => {
 
     return (
         <Fragment>
-            {userData && problems ? (
+            {userData.length && problems.length ? (
                 <DynamicCFproblems
                     userCFhandle={CFhandle}
                     userCFhandleChange={setUserCFhandle}
@@ -113,7 +117,9 @@ const CFladderProblems = () => {
             ) : (
                 <Fragment>
                     <Header />
-                    <LinearProgress />
+                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                        <LinearProgress color="inherit" />
+                    </Stack>
                 </Fragment>
             )}
         </Fragment>

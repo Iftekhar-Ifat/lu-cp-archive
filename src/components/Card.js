@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../styles/components/Card.module.css";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +12,30 @@ const Card = (props) => {
         navigate(processedRoute);
     };
 
-    if (props.subtitle) {
+    if (props.title === "Add Card") {
+        return (
+            <a
+                onClick={() => {
+                    props.setToggleAddCardModal(true);
+                    props.setShow(true);
+                }}
+            >
+                <div>
+                    <div className={styles.card_container}>
+                        <div className={styles.only_title_icon_div}>
+                            <img
+                                src={`${props.icon}`}
+                                alt="card icon"
+                                width={175}
+                                height={175}
+                            />
+                        </div>
+                        <div className={styles.only_title}>{props.title}</div>
+                    </div>
+                </div>
+            </a>
+        );
+    } else if (props.subtitle) {
         return (
             <a onClick={routeHandler}>
                 <div>
@@ -20,7 +43,7 @@ const Card = (props) => {
                         <div className={styles.icon_div}>
                             <img
                                 src={`/images/Cards/${props.icon}`}
-                                alt="card picture"
+                                alt="card icon"
                                 width={150}
                                 height={150}
                             />
@@ -40,8 +63,8 @@ const Card = (props) => {
                     <div className={styles.card_container}>
                         <div className={styles.only_title_icon_div}>
                             <img
-                                src={`/images/Cards/${props.icon}`}
-                                alt="card picture"
+                                src={`${props.icon}`}
+                                alt="card icon"
                                 width={175}
                                 height={175}
                             />

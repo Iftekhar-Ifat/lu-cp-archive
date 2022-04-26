@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../../components/Header";
 import styles from "../../../styles/components/TopicWiseDynamic.module.css";
 
-const ComingSoon = () => {
+const UserGuide = () => {
     return (
         <div>
             <Header />
@@ -23,4 +23,4 @@ const ComingSoon = () => {
     );
 };
 
-export default ComingSoon;
+export default UserGuide;

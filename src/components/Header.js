@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/components/Header.module.css";
 import { Button } from "@geist-ui/core";
-import useAuth from "../hooks/useAuth";
 import SignOutModal from "./AuthComponents/SignOutModal";
 import AuthModal from "./AuthComponents/AuthModal";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Avatar } from "@mui/material";
 import CFhandleModal from "./AddForms/CFhandleModal";
-import { useParams } from "react-router-dom";
 
 const Header = (props) => {
     const currentUser = localStorage.getItem("email");
     const userEmail = localStorage.getItem("email");
     const userPhotoUrl = localStorage.getItem("profilePic");
-
     const [signOutTriggerd, setSignOutTriggerd] = useState(false);
     const [showSignInModal, setShowSignInModal] = useState(false);
     const [showCfHandleModal, setShowCfHandleModal] = useState(false);
     const [userPhoto, setUserPhoto] = useState("");
     const [currentUserEmail, setCurrentUserEmail] = useState();
-
-    const currentRoute = useParams();
 
     const modalToggle = () => {
         setShowCfHandleModal(true);
@@ -90,7 +85,7 @@ const Header = (props) => {
                                     src={userPhoto}
                                     style={{ cursor: "pointer" }}
                                 />
-                                {showCfHandleModal && currentRoute.ladder ? (
+                                {showCfHandleModal ? (
                                     <CFhandleModal
                                         modalToggle={setShowCfHandleModal}
                                         userCFhandleChange={
