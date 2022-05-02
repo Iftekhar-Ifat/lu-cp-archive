@@ -5,7 +5,6 @@ ol {
     padding: 0;
     counter-reset: item;
     font-size: 18px;
-    /* padding-bottom: 2em; */
 }
 
 li {
@@ -50,7 +49,6 @@ ol > li:before {
     padding: 1%;
 }
 .header_div {
-    width: 100%;
     display: flex;
     justify-content: center;
 }
@@ -75,5 +73,32 @@ ol > li:before {
         flex-direction: column;
         justify-content: space-between;
         margin-top: 5%;
+    }
+    .header_style {
+        font-size: 24px;
+        text-align: center;
+    }
+    .contents {
+        flex-direction: column;
+        font-size: 14px;
+        text-align: center;
+    }
+    .img_container {
+        justify-content: unset;
+        width: auto;
+    }
+    img {
+        width: 100%;
+        object-fit: contain;
+    }
+    ul {
+        padding-inline-start: 0px;
+    }
+    ol > li {
+        padding: 0 0 0 0em;
+    }
+
+    ol > li:before {
+        padding-right: 0em;
     }
 }
