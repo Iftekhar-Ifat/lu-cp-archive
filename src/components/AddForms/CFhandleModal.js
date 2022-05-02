@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import OutsideClickHandler from "react-outside-click-handler";
 import styles from "../../styles/components/CFhandleModal.module.css";
@@ -15,13 +15,17 @@ const CFhandleModal = (props) => {
             },
         },
     });
+
+    const currentCFhandle = localStorage.getItem("cf-handle");
+    const [btnDisable, setBtnDisable] = useState(false);
+
     const cfHandleRef = useRef();
     let userCFhandle;
     let sendCFhandle;
     const getUserCfHandle = async () => {
+        setBtnDisable(true);
         //check if user exist or not
         userCFhandle = cfHandleRef.current.value;
-        props.userCFhandleChange(userCFhandle);
         sendCFhandle = {
             userEmail: props.currentUserEmail,
             cfHandle: userCFhandle,
@@ -32,9 +36,11 @@ const CFhandleModal = (props) => {
             );
             if (!response.ok) throw Error("Did not received expected data");
             const data = await response.json();
-            cfHandleInput(sendCFhandle);
+            await cfHandleInput(sendCFhandle);
+            setBtnDisable(false);
         } catch (err) {
             alert("User doesn't exist❗");
+            setBtnDisable(false);
         }
     };
 
@@ -48,7 +54,7 @@ const CFhandleModal = (props) => {
                 <div className={styles.dropdown_content}>
                     <div className={styles.options_container}>
                         <div className={styles.options}>
-                            {props.userCFhandle ? (
+                            {currentCFhandle ? (
                                 <h4
                                     style={{
                                         margin: "0px",
@@ -57,7 +63,7 @@ const CFhandleModal = (props) => {
                                     }}
                                 >
                                     Current CF Handle:
-                                    {props.userCFhandle}
+                                    {currentCFhandle}
                                 </h4>
                             ) : (
                                 <h4
@@ -82,6 +88,7 @@ const CFhandleModal = (props) => {
                                 color="neutral"
                                 style={{ width: "70%", height: "40px" }}
                                 onClick={getUserCfHandle}
+                                disabled={btnDisable}
                             >
                                 Add
                             </Button>

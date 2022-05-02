@@ -65,18 +65,24 @@ const CFladderProblems = () => {
     const [fetchedCFdata, setFetchedCFdata] = useState();
 
     const fetchCFdata = async () => {
-        axios
-            .get(`https://codeforces.com/api/user.status?handle=${CFhandle}`)
-            .then((response) => {
-                setFetchedCFdata(response.data);
-            });
+        try {
+            axios
+                .get(
+                    `https://codeforces.com/api/user.status?handle=${CFhandle}`
+                )
+                .then((response) => {
+                    setFetchedCFdata(response.data);
+                });
+        } catch (err) {
+            console.log("codeforces down");
+        }
     };
 
     useEffect(() => {
         fetchCFdata();
     }, [CFhandle]);
 
-    if (CFhandle) {
+    if (CFhandle && fetchedCFdata) {
         processCFdata(fetchedCFdata, problems);
     }
 
@@ -98,6 +104,8 @@ const CFladderProblems = () => {
                     alert(
                         `${data.result[0].handle} handle successfully added! ✅. Reload to see the changes`
                     );
+                    localStorage.clear();
+                    localStorage.setItem("cf-handle", data.result[0].handle);
                 })
                 .catch((err) => {
                     alert(err.message);

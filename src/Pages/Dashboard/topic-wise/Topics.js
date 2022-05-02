@@ -58,7 +58,7 @@ const Topics = () => {
             const getCardInfoFunction = await gettingCards();
             return Promise.all([getUserFunction, getCardInfoFunction]);
         })();
-    }, [currentUserEmail]);
+    }, [cardInfo]);
 
     return (
         <div>

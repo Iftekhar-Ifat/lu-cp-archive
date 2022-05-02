@@ -4,11 +4,14 @@ import { Modal, Spacer } from "@geist-ui/core";
 import { signInWithGoogle } from "../../Auth/firebaseConfig";
 import useAuth from "../../hooks/useAuth";
 import { userInputHandler } from "../ApiComponents/handleUserInput";
+import { useNavigate } from "react-router-dom";
 
 const AuthModal = ({ modalStatus, setModalStatus }) => {
     const modalToggle = () => {
         setModalStatus(false);
     };
+
+    const navigate = useNavigate();
 
     const currentUser = useAuth();
     const [loading, setLoading] = useState(false);
@@ -44,22 +47,7 @@ const AuthModal = ({ modalStatus, setModalStatus }) => {
     return (
         <div>
             {currentUser ? (
-                <Modal visible={modalStatus} onClose={modalToggle}>
-                    <Modal.Title>Login / Register</Modal.Title>
-                    <Spacer />
-                    <Modal.Subtitle>You are Logged in</Modal.Subtitle>
-                    <Spacer />
-                    <Spacer />
-                    <div className={styles.button_container}>
-                        <button
-                            className={styles.login_with_google_btn}
-                            onClick={signInHnadler}
-                            disabled={true}
-                        >
-                            Sign in with Google
-                        </button>
-                    </div>
-                </Modal>
+                navigate("/dashboard")
             ) : (
                 <Modal visible={modalStatus} onClose={modalToggle}>
                     <Modal.Title>Login / Register</Modal.Title>
