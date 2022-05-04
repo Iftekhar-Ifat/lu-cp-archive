@@ -53,12 +53,16 @@ const Topics = () => {
     }
 
     useEffect(() => {
+        let isMounted = true;
         (async () => {
             const getUserFunction = await getUserData();
             const getCardInfoFunction = await gettingCards();
             return Promise.all([getUserFunction, getCardInfoFunction]);
         })();
-    }, [cardInfo]);
+        return () => {
+            isMounted = false;
+        };
+    }, [userData]);
 
     return (
         <div>
@@ -69,7 +73,7 @@ const Topics = () => {
                     <div className={styles.card_container}>
                         {cardInfo.map((cardData) => (
                             <Card
-                                key={cardData.key}
+                                key={cardData._id}
                                 icon={cardData.icon}
                                 title={cardData.title}
                                 subtitle={cardData.subtitle}
