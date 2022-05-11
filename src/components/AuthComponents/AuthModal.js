@@ -33,6 +33,10 @@ const AuthModal = ({ modalStatus, setModalStatus }) => {
                             skipped: [],
                         },
                     };
+                    const email = result.user.email;
+                    const profilePic = result.user.photoURL;
+                    localStorage.setItem("email", email);
+                    localStorage.setItem("profilePic", profilePic);
                     userInputHandler(userData);
                 })
                 .catch((error) => {

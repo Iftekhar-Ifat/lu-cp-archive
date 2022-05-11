@@ -27,14 +27,5 @@ export function logout() {
 const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
-    signInWithPopup(auth, provider)
-        .then((res) => {
-            const email = res.user.email;
-            const profilePic = res.user.photoURL;
-            localStorage.setItem("email", email);
-            localStorage.setItem("profilePic", profilePic);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    return signInWithPopup(auth, provider);
 };
