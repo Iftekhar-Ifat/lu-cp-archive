@@ -17,8 +17,17 @@ const ResourceModalHandler = ({ setShow }) => {
             url: resourceUrl.current.value,
             route: path,
         };
-        const isEmpty = Object.keys(resourceItem).length === 0;
-        if (!isEmpty) {
+
+        let isEmpty = false;
+
+        const resourcesItemArray = Object.values(resourceItem);
+        resourcesItemArray.forEach((element) => {
+            if (element === "") {
+                isEmpty = true;
+            }
+        });
+
+        if (isEmpty) {
             alert("Please fill up the form❗");
             setBtnDisable(false);
         } else {

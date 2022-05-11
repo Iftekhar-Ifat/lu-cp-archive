@@ -35,7 +35,15 @@ const TopicWiseModalHandler = ({ setShow, allTags }) => {
             url: problemUrl.current.value,
             tags: problemTags,
         };
-        const isEmpty = Object.keys(problemItem).length === 0;
+        let isEmpty = false;
+
+        const problemItemArray = Object.values(problemItem);
+        problemItemArray.forEach((element) => {
+            if (element === "") {
+                isEmpty = true;
+            }
+        });
+
         if (isEmpty) {
             alert("Please fill up the form❗");
             setBtnDisable(false);

@@ -115,7 +115,7 @@ const CFladderProblems = () => {
 
     return (
         <Fragment>
-            {userData.length && problems.length ? (
+            {userData.length ? (
                 <DynamicCFproblems
                     userCFhandle={CFhandle}
                     userCFhandleChange={setUserCFhandle}
