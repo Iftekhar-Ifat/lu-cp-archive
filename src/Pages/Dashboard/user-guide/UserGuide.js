@@ -5,7 +5,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 const UserGuide = () => {
     return (
-        <div>
+        <div style={{ overflow: "auto" }}>
             <Header />
             <div
                 className={styles.container}

@@ -38,7 +38,6 @@ ol > li:before {
     height: 90vh;
     padding-left: 10%;
     padding-right: 10%;
-    overflow: auto;
 }
 .wrapper {
     display: flex;
