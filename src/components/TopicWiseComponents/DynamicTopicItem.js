@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Header from "./Header";
-import styles from "../styles/components/TopicWiseDynamic.module.css";
-import ProblemCard from "./ProblemCard";
-import Resources from "./Resources";
-import ProgressBarCard from "./ProgressBarCard";
-import AddProblemModal from "./AddForms/AddProblemModal";
+import Header from "../Header";
+import styles from "../../styles/components/TopicWiseDynamic.module.css";
+import ProblemCard from "../TopicWiseComponents/ProblemCard";
+import Resources from "../Resources";
+import ProgressBarCard from "../TopicWiseComponents/ProgressBarCard";
+import AddProblemModal from "../AddForms/AddProblemModal";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 

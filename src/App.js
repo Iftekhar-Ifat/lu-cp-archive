@@ -12,6 +12,7 @@ import LUPSmarathonContest from "./Pages/Dashboard/lu-problemsolver-marathon-con
 import LUPSshortContest from "./Pages/Dashboard/lu-problemsolver-short-contest/LUPSshortContest";
 import PrivateOutlet from "./components/PrivateOutlet";
 import UserGuide from "./Pages/Dashboard/user-guide/UserGuide";
+import UpcomingContest from "./Pages/Dashboard/upcoming-contest/UpcomingContest";
 
 function App() {
     return (
@@ -19,7 +20,6 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<Homepage />} />
-
                     <Route element={<PrivateOutlet />}>
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route
@@ -55,6 +55,10 @@ function App() {
                         <Route
                             path={"/dashboard/user-guide"}
                             element={<UserGuide />}
+                        />
+                        <Route
+                            path={"/dashboard/upcoming-contest"}
+                            element={<UpcomingContest />}
                         />
                     </Route>
                 </Routes>

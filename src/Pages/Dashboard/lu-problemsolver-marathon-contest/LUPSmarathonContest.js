@@ -6,6 +6,7 @@ import styles from "../../../styles/components/TopicWiseDynamic.module.css";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import AddResourcesModal from "../../../components/AddForms/AddResourcesModal";
+import { LinearProgress, Stack } from "@mui/material";
 
 const LUPSmarathonContest = () => {
     const currentUser = useAuth();
@@ -64,39 +65,46 @@ const LUPSmarathonContest = () => {
     return (
         <div>
             <Header />
-            <div
-                className={styles.container}
-                style={{ paddingLeft: "20%", paddingRight: "20%" }}
-            >
-                <div className={styles.wrapper}>
-                    <div
-                        className={styles.problem_section}
-                        style={{ width: "100%" }}
-                    >
-                        {contests.map((item) => (
-                            <LinkCard
-                                key={item._id}
-                                cardURL={item.url}
-                                cardTitle={item.title}
-                            />
-                        ))}
+            {contests.length ? (
+                <div
+                    className={styles.container}
+                    style={{ paddingLeft: "20%", paddingRight: "20%" }}
+                >
+                    <div className={styles.wrapper}>
+                        <div
+                            className={styles.problem_section}
+                            style={{ width: "100%" }}
+                        >
+                            {contests.map((item) => (
+                                <LinkCard
+                                    key={item._id}
+                                    cardURL={item.url}
+                                    cardTitle={item.title}
+                                />
+                            ))}
 
-                        {userStatus === "power" ? (
-                            <div className={styles.add_btn}>
-                                <Fab
-                                    size="medium"
-                                    color="secondary"
-                                    aria-label="add"
-                                    style={{ background: "#2E2F31" }}
-                                    onClick={addProblemHandler}
-                                >
-                                    <AddIcon />
-                                </Fab>
-                            </div>
-                        ) : null}
+                            {userStatus === "power" ? (
+                                <div className={styles.add_btn}>
+                                    <Fab
+                                        size="medium"
+                                        color="secondary"
+                                        aria-label="add"
+                                        style={{ background: "#2E2F31" }}
+                                        onClick={addProblemHandler}
+                                    >
+                                        <AddIcon />
+                                    </Fab>
+                                </div>
+                            ) : null}
+                        </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <Stack sx={{ width: "100%", color: "grey.500" }}>
+                    <LinearProgress color="inherit" />
+                </Stack>
+            )}
+
             {addProblemToggle ? (
                 <AddResourcesModal show={show} setShow={setShow} />
             ) : null}

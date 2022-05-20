@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "./Header";
-import ProblemCard from "./ProblemCard";
+import ProblemCard from "./TopicWiseComponents/ProblemCard";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import styles from "../styles/components/TopicWiseDynamic.module.css";

@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "../styles/components/StatusCard.module.css";
+import styles from "../../styles/components/StatusCard.module.css";
 import { Code, Check, ChevronsLeft, X } from "@geist-ui/icons";
 import OutsideClickHandler from "react-outside-click-handler";
-import Colors from "../styles/colors";
-import useAuth from "../hooks/useAuth";
+import Colors from "../colors";
+import useAuth from "../../hooks/useAuth";
 
 const StatusCard = (props) => {
     const currentUser = useAuth();

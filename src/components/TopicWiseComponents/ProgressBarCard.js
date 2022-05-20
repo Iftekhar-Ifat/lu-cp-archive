@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "../styles/components/ProgressBarCard.module.css";
+import styles from "../../styles/components/ProgressBarCard.module.css";
 import { Code, Check, ChevronsLeft, X } from "@geist-ui/icons";
 import { Progress } from "@geist-ui/core";
-import Colors from "../styles/colors";
+import Colors from "../../styles/colors";
 
 const ProgressBarCard = ({ userProblems, allProblems }) => {
     let totalProblems = allProblems.length;
