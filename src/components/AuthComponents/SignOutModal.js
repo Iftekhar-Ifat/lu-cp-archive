@@ -19,7 +19,11 @@ const SignOutModal = ({ signOutTriggerStatus, signOutTriggerStatusChange }) => {
     }
     return (
         <div>
-            <Modal visible={signOutTriggerStatus} onClose={closeHandler}>
+            <Modal
+                visible={signOutTriggerStatus}
+                onClose={closeHandler}
+                style={{ overflow: "none" }}
+            >
                 <Modal.Title>Sign Out!</Modal.Title>
                 <Modal.Subtitle>Do you want to sign out?</Modal.Subtitle>
                 <Modal.Action onClick={handleSignOut}>Sign out</Modal.Action>

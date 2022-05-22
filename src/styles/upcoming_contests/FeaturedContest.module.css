@@ -1,0 +1,41 @@
+.wrapper {
+    padding-left: 20%;
+    padding-right: 20%;
+    height: auto;
+}
+
+.container {
+    height: auto;
+    padding-bottom: 1%;
+}
+
+.title_bar {
+    color: white;
+    display: flex;
+    padding-bottom: 1%;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.1vw;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.heading {
+    display: flex;
+    justify-content: center;
+    font-family: "Ropa Sans", sans-serif;
+    letter-spacing: 0.1em;
+}
+
+.card_section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.add_btn {
+    z-index: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
