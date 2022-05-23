@@ -4,11 +4,7 @@ import ContestCard from "./ContestCard";
 import moment from "moment";
 import "moment-timezone";
 
-const UpcomingOnlineContest = ({
-    codeforcesContests,
-    atcoderContests,
-    codechefContests,
-}) => {
+const UpcomingOnlineContest = (props) => {
     // codeforcesContests.map((contest) =>
     //     console.log(
     //         moment
@@ -16,6 +12,10 @@ const UpcomingOnlineContest = ({
     //             .format("Do MMM YY, h:mm a")
     //     )
     // );
+    //console.log(typeof props.contest);
+    // props.contest = props.contest.filter((item) => {
+    //     return item.in_24_hours !== "Yes";
+    // });
 
     return (
         <div className={styles.wrapper}>
@@ -35,28 +35,39 @@ const UpcomingOnlineContest = ({
                     <span style={{ width: "30%" }}>Starting Time</span>
                     <span style={{ width: "20%" }}>Duration</span>
                 </div>
-                {codeforcesContests?.length ? (
+                {props.allContests.length ? (
                     <div className={styles.card_section}>
-                        {codeforcesContests.map((CFcontest) => (
+                        {props.allContests.map((contest) => (
                             <ContestCard
-                                key={CFcontest.url}
-                                contest={CFcontest}
-                                platform="Codeforces"
-                                // atcoderContests={atcoderContests}
-                                // codechefContests={codechefContests}
+                                key={contest.url}
+                                contest={contest}
+                                platform={contest.platform}
                             />
                         ))}
+                    </div>
+                ) : null}
+                {/* {codechefContests.length ? (
+                    <div className={styles.card_section}>
                         {codechefContests.map((CCcontest) => (
                             <ContestCard
                                 key={CCcontest.url}
                                 contest={CCcontest}
                                 platform="Codechef"
-                                // atcoderContests={atcoderContests}
-                                // codechefContests={codechefContests}
                             />
                         ))}
                     </div>
                 ) : null}
+                {atcoderContests.length ? (
+                    <div className={styles.card_section}>
+                        {atcoderContests.map((ACcontest) => (
+                            <ContestCard
+                                key={ACcontest.url}
+                                contest={ACcontest}
+                                platform="Atcoder"
+                            />
+                        ))}
+                    </div>
+                ) : null} */}
             </div>
         </div>
     );

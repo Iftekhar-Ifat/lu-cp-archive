@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import Header from "../../../components/Header";
 import FeatureContests from "../../../components/UpcomingContestComponents/FeatureContests";
 import UpcomingOnlineContest from "../../../components/UpcomingContestComponents/UpcomingOnlineContest";
+import { LinearProgress, Stack } from "@mui/material";
 import axios from "axios";
 
 const UpcomingContest = () => {
     const [codeforcesContests, setCodeforcesContests] = useState({});
     const [atcoderContests, setAtcoderContests] = useState({});
     const [codechefContests, setCodechefContests] = useState({});
+    const [allContests, setAllContests] = useState({});
 
     //getting user
     const currentUserEmail = localStorage.getItem("email");
@@ -18,6 +20,9 @@ const UpcomingContest = () => {
             axios
                 .get(`https://kontests.net/api/v1/codeforces`)
                 .then((response) => {
+                    response.data.forEach((element) => {
+                        element["platform"] = "Codeforces";
+                    });
                     setCodeforcesContests(response.data);
                 });
         } catch (err) {
@@ -31,6 +36,9 @@ const UpcomingContest = () => {
             axios
                 .get(`https://kontests.net/api/v1/at_coder`)
                 .then((response) => {
+                    response.data.forEach((element) => {
+                        element["platform"] = "Atcoder";
+                    });
                     setAtcoderContests(response.data);
                 });
         } catch (err) {
@@ -44,6 +52,9 @@ const UpcomingContest = () => {
             axios
                 .get(`https://kontests.net/api/v1/code_chef`)
                 .then((response) => {
+                    response.data.forEach((element) => {
+                        element["platform"] = "Codechef";
+                    });
                     setCodechefContests(response.data);
                 });
         } catch (err) {
@@ -51,32 +62,44 @@ const UpcomingContest = () => {
         }
     };
 
+    //concating all contests
+    const getAllContest = () => {
+        setTimeout(() => {
+            let data = Object.assign(
+                codeforcesContests,
+                codechefContests,
+                atcoderContests
+            );
+            console.log(data);
+            setAllContests(data);
+        }, "2000");
+    };
+    getAllContest();
+
     useEffect(() => {
         (async () => {
-            const getCFcontestFunction = getCodeforcesContest();
-            const getACcontestFunction = getAtcoderContest();
-            const getCCcontestFunction = getCodeChefContest();
+            const getCFcontestFunction = await getCodeforcesContest();
+            const getACcontestFunction = await getAtcoderContest();
+            const getCCcontestFunction = await getCodeChefContest();
             return Promise.all([
                 getCFcontestFunction,
                 getACcontestFunction,
                 getCCcontestFunction,
             ]);
         })();
-    }, [currentUserEmail]);
+    });
 
     return (
         <div>
             <Header />
             <FeatureContests />
-            {codeforcesContests.length ||
-            codechefContests.length ||
-            atcoderContests.length ? (
-                <UpcomingOnlineContest
-                    codeforcesContests={codeforcesContests}
-                    atcoderContests={atcoderContests}
-                    codechefContests={codechefContests}
-                />
-            ) : null}
+            {allContests.length ? (
+                <UpcomingOnlineContest allContests={allContests} />
+            ) : (
+                <Stack sx={{ width: "100%", color: "grey.500" }}>
+                    <LinearProgress color="inherit" />
+                </Stack>
+            )}
         </div>
     );
 };

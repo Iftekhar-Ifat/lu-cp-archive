@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const ContestCard = (props) => {
+    //console.log(props.contest);
     return (
         <div className={styles.card_container}>
             <div className={styles.card_items}>
