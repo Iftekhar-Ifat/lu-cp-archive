@@ -6,88 +6,59 @@ import { LinearProgress, Stack } from "@mui/material";
 import axios from "axios";
 
 const UpcomingContest = () => {
-    const [codeforcesContests, setCodeforcesContests] = useState({});
-    const [atcoderContests, setAtcoderContests] = useState({});
-    const [codechefContests, setCodechefContests] = useState({});
     const [allContests, setAllContests] = useState({});
 
-    //getting user
-    const currentUserEmail = localStorage.getItem("email");
+    //getting upcoming contest data
+    const fetchContestData = async () => {
+        const codeforcesContestAPI = "https://kontests.net/api/v1/codeforces";
+        const codechefContestAPI = "https://kontests.net/api/v1/code_chef";
+        const atcoderContestAPI = "https://kontests.net/api/v1/at_coder";
 
-    //getting codeforces upcoming contests
-    const getCodeforcesContest = async () => {
         try {
+            const getCodeforcesContest = axios.get(codeforcesContestAPI);
+            const getCodechefContest = axios.get(codechefContestAPI);
+            const getAtcoderContest = axios.get(atcoderContestAPI);
             axios
-                .get(`https://kontests.net/api/v1/codeforces`)
-                .then((response) => {
-                    response.data.forEach((element) => {
-                        element["platform"] = "Codeforces";
-                    });
-                    setCodeforcesContests(response.data);
-                });
-        } catch (err) {
-            console.log(err.message);
+                .all([
+                    getCodeforcesContest,
+                    getCodechefContest,
+                    getAtcoderContest,
+                ])
+                .then(
+                    axios.spread((...fetchedContest) => {
+                        let allContestData = [];
+                        let counter = 1;
+                        fetchedContest.forEach((element) => {
+                            if (counter === 1) {
+                                element.data.forEach((contest) => {
+                                    contest["platform"] = "Codeforces";
+                                });
+                            } else if (counter === 2) {
+                                element.data.forEach((contest) => {
+                                    contest["platform"] = "Codechef";
+                                });
+                            } else {
+                                element.data.forEach((contest) => {
+                                    contest["platform"] = "Atcoder";
+                                });
+                            }
+                            counter++;
+                            allContestData.push(...element.data);
+                        });
+                        setAllContests(allContestData);
+                    })
+                );
+        } catch (error) {
+            console.log(error);
         }
     };
-
-    //getting atcoder upcoming contests
-    const getAtcoderContest = async () => {
-        try {
-            axios
-                .get(`https://kontests.net/api/v1/at_coder`)
-                .then((response) => {
-                    response.data.forEach((element) => {
-                        element["platform"] = "Atcoder";
-                    });
-                    setAtcoderContests(response.data);
-                });
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
-
-    //getting codechef upcoming contests
-    const getCodeChefContest = async () => {
-        try {
-            axios
-                .get(`https://kontests.net/api/v1/code_chef`)
-                .then((response) => {
-                    response.data.forEach((element) => {
-                        element["platform"] = "Codechef";
-                    });
-                    setCodechefContests(response.data);
-                });
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
-
-    //concating all contests
-    const getAllContest = () => {
-        setTimeout(() => {
-            let data = Object.assign(
-                codeforcesContests,
-                codechefContests,
-                atcoderContests
-            );
-            console.log(data);
-            setAllContests(data);
-        }, "2000");
-    };
-    getAllContest();
 
     useEffect(() => {
         (async () => {
-            const getCFcontestFunction = await getCodeforcesContest();
-            const getACcontestFunction = await getAtcoderContest();
-            const getCCcontestFunction = await getCodeChefContest();
-            return Promise.all([
-                getCFcontestFunction,
-                getACcontestFunction,
-                getCCcontestFunction,
-            ]);
+            const getContestData = await fetchContestData();
+            return Promise.all([getContestData]);
         })();
-    });
+    }, []);
 
     return (
         <div>
