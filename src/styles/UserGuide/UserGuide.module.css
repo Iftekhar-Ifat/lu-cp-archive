@@ -53,7 +53,7 @@ ol > li:before {
     justify-content: center;
 }
 .header_style {
-    font-family: Inter;
+    font-family: "Inter", sans-serif;
     color: white;
     text-decoration: underline;
     text-underline-position: under;

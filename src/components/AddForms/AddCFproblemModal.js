@@ -1,5 +1,5 @@
 import { X } from "@geist-ui/icons";
-import React, { useRef, useState } from "react";
+import React from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import styles from "../../styles/components/AddProblemModal.module.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";

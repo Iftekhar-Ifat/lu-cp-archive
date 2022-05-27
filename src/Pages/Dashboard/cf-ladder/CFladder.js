@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../../components/Header";
-import ProblemCard from "../../../components/ProblemCard";
+import ProblemCard from "../../../components/TopicWiseComponents/ProblemCard";
 import styles from "../../../styles/components/TopicWiseDynamic.module.css";
 
 const CFladder = () => {

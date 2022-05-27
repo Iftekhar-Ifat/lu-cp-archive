@@ -1,4 +1,4 @@
-import Colors from "../styles/colors";
+import Colors from "../../styles/colors";
 export function processData(userProblems, allProblems) {
     if (userProblems) {
         const solving = userProblems.status.solving;

@@ -31,6 +31,12 @@
     },
     {
         "key": 6,
+        "icon": "upcoming_contest.png",
+        "title": "Upcoming Contest",
+        "subtitle": "Time-Table of the upcoming contest on various sites."
+    },
+    {
+        "key": 7,
         "icon": "user_guide.png",
         "title": "User Guide",
         "subtitle": "Check how to get the most out of LUCA"

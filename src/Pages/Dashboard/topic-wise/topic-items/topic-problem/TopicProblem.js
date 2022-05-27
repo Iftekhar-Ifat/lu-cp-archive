@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { processData } from "../../../../../components/processDataHandler";
-import DynamicTopicItem from "../../../../../components/DynamicTopicItem";
+import { processData } from "../../../../../components/TopicWiseComponents/processDataHandler";
+import DynamicTopicItem from "../../../../../components/TopicWiseComponents/DynamicTopicItem";
 import { LinearProgress, Stack } from "@mui/material";
 import Header from "../../../../../components/Header";
 import axios from "axios";

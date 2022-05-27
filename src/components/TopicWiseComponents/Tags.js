@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import AddTagsModal from "./AddForms/AddTagsModal";
+import AddTagsModal from "../AddForms/AddTagsModal";
 
 const Tags = ({ problemTags, setProblemTags, allTags }) => {
     const handleTagChange = (event) => {

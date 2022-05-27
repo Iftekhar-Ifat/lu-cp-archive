@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Spacer } from "@geist-ui/core";
 import { inputHandler } from "../ApiComponents/handleInput";
-import Tags from "../Tags";
+import Tags from "../TopicWiseComponents/Tags";
 
 const TopicWiseModalHandler = ({ setShow, allTags }) => {
     const path = window.location.pathname.split("/").pop();
