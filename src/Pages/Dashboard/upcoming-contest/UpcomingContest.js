@@ -45,6 +45,11 @@ const UpcomingContest = () => {
                             counter++;
                             allContestData.push(...element.data);
                         });
+                        allContestData.sort(
+                            (a, b) =>
+                                new Date(a.start_time).getTime() -
+                                new Date(b.start_time).getTime()
+                        );
                         setAllContests(allContestData);
                     })
                 );
@@ -63,7 +68,7 @@ const UpcomingContest = () => {
     return (
         <div>
             <Header />
-            <FeatureContests />
+            {/* <FeatureContests /> */}
             {allContests.length ? (
                 <UpcomingOnlineContest allContests={allContests} />
             ) : (

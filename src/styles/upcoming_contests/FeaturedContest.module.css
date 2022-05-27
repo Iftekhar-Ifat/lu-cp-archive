@@ -1,6 +1,6 @@
 .wrapper {
-    padding-left: 20%;
-    padding-right: 20%;
+    padding-left: 15%;
+    padding-right: 15%;
     height: auto;
 }
 
@@ -38,4 +38,14 @@
     width: 100%;
     display: flex;
     justify-content: center;
+}
+
+@media (max-width: 930px) {
+    .wrapper {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+    .title_bar {
+        display: none;
+    }
 }

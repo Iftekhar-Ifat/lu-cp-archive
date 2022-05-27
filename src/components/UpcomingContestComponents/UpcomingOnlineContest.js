@@ -1,22 +1,9 @@
 import React from "react";
 import styles from "../../styles/upcoming_contests/FeaturedContest.module.css";
 import ContestCard from "./ContestCard";
-import moment from "moment";
 import "moment-timezone";
 
 const UpcomingOnlineContest = (props) => {
-    // codeforcesContests.map((contest) =>
-    //     console.log(
-    //         moment
-    //             .tz(`${contest.start_time}`, "Asia/Dhaka")
-    //             .format("Do MMM YY, h:mm a")
-    //     )
-    // );
-    //console.log(typeof props.contest);
-    // props.contest = props.contest.filter((item) => {
-    //     return item.in_24_hours !== "Yes";
-    // });
-
     return (
         <div className={styles.wrapper}>
             <div className={styles.container}>
@@ -25,6 +12,7 @@ const UpcomingOnlineContest = (props) => {
                         style={{
                             color: "white",
                             borderBottom: "3px solid white",
+                            textAlign: "center",
                         }}
                     >
                         Upcoming Online Contest
@@ -32,8 +20,9 @@ const UpcomingOnlineContest = (props) => {
                 </div>
                 <div className={styles.title_bar}>
                     <span style={{ width: "40%" }}>Contest</span>
-                    <span style={{ width: "30%" }}>Starting Time</span>
+                    <span style={{ width: "20%" }}>Starting Time</span>
                     <span style={{ width: "20%" }}>Duration</span>
+                    <span style={{ width: "20%" }}>Time Left</span>
                 </div>
                 {props.allContests.length ? (
                     <div className={styles.card_section}>

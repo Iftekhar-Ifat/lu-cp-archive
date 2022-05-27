@@ -4,6 +4,7 @@
     border-radius: 10px;
     background-color: #2e2f31;
     padding: 1%;
+    margin-bottom: 2%;
 }
 
 .card_items {
@@ -21,7 +22,7 @@
 }
 
 .starting_time {
-    width: 30%;
+    width: 20%;
     text-align: center;
     color: white;
 }
@@ -34,4 +35,33 @@
 
 .deleteBtn {
     width: 10%;
+}
+
+.time_left {
+    width: 20%;
+    text-align: center;
+    color: white;
+}
+
+.contest_icon {
+    height: 20px;
+    width: 30px;
+}
+
+@media (max-width: 930px) {
+    .card_items {
+        justify-content: space-evenly;
+    }
+    .contest_link {
+        width: 35%;
+    }
+    .starting_time {
+        width: 25%;
+    }
+    .duration {
+        width: 20%;
+    }
+    .time_left {
+        width: 20%;
+    }
 }
