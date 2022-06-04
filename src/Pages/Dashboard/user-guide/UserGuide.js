@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Header from "../../../components/Header";
 import styles from "../../../styles/UserGuide/UserGuide.module.css";
 import InfoIcon from "@mui/icons-material/Info";
 
 const UserGuide = () => {
     return (
-        <div style={{ overflow: "auto" }}>
+        <Fragment>
             <Header />
             <div
                 className={styles.container}
@@ -114,7 +114,7 @@ const UserGuide = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </Fragment>
     );
 };
 
