@@ -10,6 +10,7 @@ const CFladderProblems = () => {
     const [problems, setProblems] = useState([]);
     const [userData, setUserData] = useState([]);
     const [userCFhandle, setUserCFhandle] = useState();
+    const [isCFonline, setIsCFonline] = useState(false);
     const path = useParams();
 
     const currentUserEmail = localStorage.getItem("email");
@@ -45,6 +46,23 @@ const CFladderProblems = () => {
         }
     };
 
+    //checking whether codeforces is online or not
+    const getCodeforcesStatus = async () => {
+        try {
+            axios
+                .get(
+                    `https://codeforces.com/api/user.status?handle=Fefer_Ivan&from=1&count=10`
+                )
+                .then((response) => {
+                    if (response.data.status === "OK") {
+                        setIsCFonline(true);
+                    }
+                });
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
     userData.forEach((usrDta) => {
         const userEmail = usrDta.email;
         if (currentUserEmail === userEmail) {
@@ -57,7 +75,12 @@ const CFladderProblems = () => {
         (async () => {
             const getUserFunction = getUserData();
             const getCFProblemsFunction = getCFProblems();
-            return Promise.all([getUserFunction, getCFProblemsFunction]);
+            const isCFonline = getCodeforcesStatus();
+            return Promise.all([
+                getUserFunction,
+                getCFProblemsFunction,
+                isCFonline,
+            ]);
         })();
     }, [path.ladder]);
 
@@ -82,7 +105,7 @@ const CFladderProblems = () => {
         fetchCFdata();
     }, [CFhandle]);
 
-    if (CFhandle && fetchedCFdata) {
+    if (CFhandle && fetchedCFdata && isCFonline) {
         processCFdata(fetchedCFdata, problems);
     }
 

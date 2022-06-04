@@ -1,7 +1,5 @@
 import React, { Fragment } from "react";
 import styles from "../../styles/upcoming_contests/ContestCard.module.css";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import moment from "moment";
 import Countdown from "react-countdown";
 
@@ -24,6 +22,7 @@ const ContestCard = (props) => {
                                             height: "100%",
                                             objectFit: "contain",
                                         }}
+                                        alt="site-icon"
                                     />
                                 ) : props.contest.platform === "Codechef" ? (
                                     <img
@@ -53,17 +52,7 @@ const ContestCard = (props) => {
                                 .format("Do MMM, h:mm a")}
                         </span>
                         <span className={styles.duration}>
-                            {moment
-                                .utc(
-                                    moment
-                                        .duration(
-                                            `${props.contest.duration}`,
-                                            "seconds"
-                                        )
-                                        .asMilliseconds()
-                                )
-                                .format("HH:mm")}{" "}
-                            hr
+                            {(+props.contest.duration / 3600).toFixed(2)} hr
                         </span>
                         <div className={styles.time_left}>
                             <Countdown
