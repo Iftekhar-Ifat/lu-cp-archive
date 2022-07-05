@@ -20,20 +20,18 @@ const Homepage = () => {
     };
 
     return (
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", height: "100vh" }}>
             <Header />
             <div className={styles.background}>
                 <div className={styles.background_container}>
                     <div className={styles.title}>
                         Leading University Competitive Programming Archive
                     </div>
-                    <div className={styles.height_div1}></div>
                     <div className={styles.sub_title}>
                         {`< Learn > / < Practice >`}
                         <br></br>
                         <b>{`Have fun`}</b>
                     </div>
-                    <div className={styles.height_div2}></div>
                     <div className={styles.button_div}>
                         <Button
                             type="secondary"
