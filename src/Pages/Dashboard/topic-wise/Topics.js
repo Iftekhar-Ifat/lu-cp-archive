@@ -22,9 +22,7 @@ const Topics = () => {
     const gettingCards = async () => {
         try {
             axios
-                .get(
-                    "https://lu-cp-archive-backend-production.up.railway.app/cards"
-                )
+                .get("https://lu-cp-archive-backend.onrender.com/cards")
                 .then((response) => {
                     setCardInfo(response.data);
                 });
@@ -37,9 +35,7 @@ const Topics = () => {
     const getUserData = async () => {
         try {
             axios
-                .get(
-                    "https://lu-cp-archive-backend-production.up.railway.app/users"
-                )
+                .get("https://lu-cp-archive-backend.onrender.com/users")
                 .then((response) => {
                     setUserData(response.data);
                 });

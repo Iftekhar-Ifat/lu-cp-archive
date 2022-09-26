@@ -1,12 +1,9 @@
 import axios from "axios";
 export async function tagsHandler(items, setShow) {
     axios
-        .post(
-            "https://lu-cp-archive-backend-production.up.railway.app/update-tags",
-            {
-                ...items,
-            }
-        )
+        .post("https://lu-cp-archive-backend.onrender.com/update-tags", {
+            ...items,
+        })
         .then((res) => {
             if (res.data === "Error") {
                 alert("⚠ Data Already Exists!!!");
