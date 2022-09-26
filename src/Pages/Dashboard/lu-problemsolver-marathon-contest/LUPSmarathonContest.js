@@ -19,7 +19,7 @@ const LUPSmarathonContest = () => {
         const getUserData = async () => {
             try {
                 const response = await fetch(
-                    "https://hidden-garden-59705.herokuapp.com/users"
+                    "https://lu-cp-archive-backend-production.up.railway.app/users"
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
@@ -36,7 +36,7 @@ const LUPSmarathonContest = () => {
         const getPageContent = async () => {
             try {
                 const response = await fetch(
-                    "https://hidden-garden-59705.herokuapp.com/lu-problemsolver-marathon-contest"
+                    "https://lu-cp-archive-backend-production.up.railway.app/lu-problemsolver-marathon-contest"
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();

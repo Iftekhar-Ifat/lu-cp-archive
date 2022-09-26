@@ -2,9 +2,12 @@ import axios from "axios";
 export async function cfHandleInput(handle) {
     const userCFhandle = handle.cfHandle;
     axios
-        .post("https://hidden-garden-59705.herokuapp.com/send-cf-handle", {
-            handle,
-        })
+        .post(
+            "https://lu-cp-archive-backend-production.up.railway.app/send-cf-handle",
+            {
+                handle,
+            }
+        )
         .then(
             (res) =>
                 alert(

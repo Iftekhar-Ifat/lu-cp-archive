@@ -19,7 +19,7 @@ const LUPSshortContest = () => {
         const getUserData = async () => {
             try {
                 const response = await fetch(
-                    "https://hidden-garden-59705.herokuapp.com/users"
+                    "https://lu-cp-archive-backend-production.up.railway.app/users"
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
@@ -36,7 +36,7 @@ const LUPSshortContest = () => {
         const getPageContent = async () => {
             try {
                 const response = await fetch(
-                    "https://hidden-garden-59705.herokuapp.com/lu-problemsolver-short-contest"
+                    "https://lu-cp-archive-backend-production.up.railway.app/lu-problemsolver-short-contest"
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();

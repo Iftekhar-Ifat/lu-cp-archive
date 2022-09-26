@@ -28,7 +28,7 @@ const TopicProblem = () => {
         try {
             axios
                 .get(
-                    `https://hidden-garden-59705.herokuapp.com/topicProblems/${problemRoute.topicProblems}`
+                    `https://lu-cp-archive-backend-production.up.railway.app/topicProblems/${problemRoute.topicProblems}`
                 )
                 .then((response) => {
                     setProblems(response.data);
@@ -43,7 +43,7 @@ const TopicProblem = () => {
         try {
             axios
                 .get(
-                    `https://hidden-garden-59705.herokuapp.com/resources/${problemRoute.topicProblems}`
+                    `https://lu-cp-archive-backend-production.up.railway.app/resources/${problemRoute.topicProblems}`
                 )
                 .then((response) => {
                     setResources(response.data);
@@ -57,7 +57,9 @@ const TopicProblem = () => {
     const getUserData = async () => {
         try {
             axios
-                .get("https://hidden-garden-59705.herokuapp.com/users")
+                .get(
+                    "https://lu-cp-archive-backend-production.up.railway.app/users"
+                )
                 .then((response) => {
                     setUserData(response.data);
                 });
@@ -85,7 +87,9 @@ const TopicProblem = () => {
     const getTags = async () => {
         try {
             axios
-                .get(`https://hidden-garden-59705.herokuapp.com/all-tags`)
+                .get(
+                    `https://lu-cp-archive-backend-production.up.railway.app/all-tags`
+                )
                 .then((response) => {
                     setAllTags(response.data[0].tags);
                 });
@@ -119,7 +123,7 @@ const TopicProblem = () => {
                 try {
                     axios
                         .post(
-                            "https://hidden-garden-59705.herokuapp.com/update-problem-status",
+                            "https://lu-cp-archive-backend-production.up.railway.app/update-problem-status",
                             {
                                 ...problemStatus,
                             }

@@ -1,9 +1,12 @@
 import axios from "axios";
 export async function cardsHandler(items, setShow) {
     axios
-        .post("https://hidden-garden-59705.herokuapp.com/add-cards", {
-            ...items,
-        })
+        .post(
+            "https://lu-cp-archive-backend-production.up.railway.app/add-cards",
+            {
+                ...items,
+            }
+        )
         .then((res) => {
             if (res.data === "Error") {
                 alert("⚠ Data Already Exists!!!");
@@ -15,5 +18,3 @@ export async function cardsHandler(items, setShow) {
         })
         .catch((err) => alert(err));
 }
-
-//

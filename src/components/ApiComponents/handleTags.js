@@ -1,9 +1,12 @@
 import axios from "axios";
 export async function tagsHandler(items, setShow) {
     axios
-        .post("https://hidden-garden-59705.herokuapp.com/update-tags", {
-            ...items,
-        })
+        .post(
+            "https://lu-cp-archive-backend-production.up.railway.app/update-tags",
+            {
+                ...items,
+            }
+        )
         .then((res) => {
             if (res.data === "Error") {
                 alert("⚠ Data Already Exists!!!");

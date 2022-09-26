@@ -18,7 +18,7 @@ const IntraLUcontest = () => {
         const getUserData = async () => {
             try {
                 const response = await fetch(
-                    "https://hidden-garden-59705.herokuapp.com/users"
+                    "https://lu-cp-archive-backend-production.up.railway.app/users"
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
@@ -35,7 +35,7 @@ const IntraLUcontest = () => {
         const getPageContent = async () => {
             try {
                 const response = await fetch(
-                    "https://hidden-garden-59705.herokuapp.com/intra-lu-contest"
+                    "https://lu-cp-archive-backend-production.up.railway.app/intra-lu-contest"
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();

@@ -22,7 +22,9 @@ const CFladderProblems = () => {
     const getUserData = async () => {
         try {
             axios
-                .get("https://hidden-garden-59705.herokuapp.com/users")
+                .get(
+                    "https://lu-cp-archive-backend-production.up.railway.app/users"
+                )
                 .then((response) => {
                     setUserData(response.data);
                 });
@@ -36,7 +38,7 @@ const CFladderProblems = () => {
         try {
             axios
                 .get(
-                    `https://hidden-garden-59705.herokuapp.com/codeforces-problems/${path.ladder}`
+                    `https://lu-cp-archive-backend-production.up.railway.app/codeforces-problems/${path.ladder}`
                 )
                 .then((response) => {
                     setProblems(response.data);
