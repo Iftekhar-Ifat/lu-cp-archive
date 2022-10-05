@@ -7,6 +7,7 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import AddResourcesModal from "../../../components/AddForms/AddResourcesModal";
 import { LinearProgress, Stack } from "@mui/material";
+import ColdStartNotification from "../../../components/ColdStartNotification";
 
 const LUPSshortContest = () => {
     const currentUser = useAuth();
@@ -100,9 +101,12 @@ const LUPSshortContest = () => {
                     </div>
                 </div>
             ) : (
-                <Stack sx={{ width: "100%", color: "grey.500" }}>
-                    <LinearProgress color="inherit" />
-                </Stack>
+                <>
+                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                        <LinearProgress color="inherit" />
+                    </Stack>
+                    <ColdStartNotification />
+                </>
             )}
 
             {addProblemToggle ? (

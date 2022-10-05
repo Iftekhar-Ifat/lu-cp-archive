@@ -5,6 +5,7 @@ import styles from "../../../styles/Dashboard/dashboard.module.css";
 import AddCardsModal from "../../../components/AddForms/AddCardsModal";
 import axios from "axios";
 import { LinearProgress, Stack } from "@mui/material";
+import ColdStartNotification from "../../../components/ColdStartNotification";
 
 const Topics = () => {
     const [cardInfo, setCardInfo] = useState([]);
@@ -90,9 +91,12 @@ const Topics = () => {
                     </div>
                 </div>
             ) : (
-                <Stack sx={{ width: "100%", color: "grey.500" }}>
-                    <LinearProgress color="inherit" />
-                </Stack>
+                <>
+                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                        <LinearProgress color="inherit" />
+                    </Stack>
+                    <ColdStartNotification />
+                </>
             )}
             {toggleAddCardModal ? (
                 <AddCardsModal show={show} setShow={setShow} />

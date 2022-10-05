@@ -4,6 +4,6 @@ export async function userInputHandler(users) {
         .post("https://lu-cp-archive-backend.onrender.com/send-user", {
             ...users,
         })
-        .then((res) => (res.statusText !== "OK" ? alert(res) : null))
-        .catch((err) => alert(err));
+        .then()
+        .catch((err) => console.log(err));
 }

@@ -5,6 +5,7 @@ import DynamicCFproblems from "../../../../components/DynamicCFproblems";
 import Header from "../../../../components/Header";
 import { LinearProgress, Stack } from "@mui/material";
 import axios from "axios";
+import ColdStartNotification from "../../../../components/ColdStartNotification";
 
 const CFladderProblems = () => {
     const [problems, setProblems] = useState([]);
@@ -148,9 +149,12 @@ const CFladderProblems = () => {
             ) : (
                 <Fragment>
                     <Header />
-                    <Stack sx={{ width: "100%", color: "grey.500" }}>
-                        <LinearProgress color="inherit" />
-                    </Stack>
+                    <>
+                        <Stack sx={{ width: "100%", color: "grey.500" }}>
+                            <LinearProgress color="inherit" />
+                        </Stack>
+                        <ColdStartNotification />
+                    </>
                 </Fragment>
             )}
         </Fragment>

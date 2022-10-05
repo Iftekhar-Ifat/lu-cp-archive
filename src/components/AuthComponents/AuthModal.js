@@ -43,7 +43,7 @@ const AuthModal = ({ modalStatus, setModalStatus }) => {
                     console.log(error);
                 });
         } catch (err) {
-            alert(err.message);
+            console.log(err.message);
         }
         setLoading(false);
     };
