@@ -63,7 +63,7 @@ const Topics = () => {
         return () => {
             isMounted = false;
         };
-    }, [userData]);
+    }, []);
 
     return (
         <div>
