@@ -1,7 +1,7 @@
 import axios from "axios";
 export async function cardsHandler(items, setShow) {
     axios
-        .post("https://hidden-garden-59705.herokuapp.com/add-cards", {
+        .post("https://lu-cp-archive-backend.onrender.com/add-cards", {
             ...items,
         })
         .then((res) => {
@@ -15,5 +15,3 @@ export async function cardsHandler(items, setShow) {
         })
         .catch((err) => alert(err));
 }
-
-//

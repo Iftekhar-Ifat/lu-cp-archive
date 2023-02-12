@@ -1,7 +1,7 @@
 import axios from "axios";
 export async function inputHandler(items, setShow) {
     axios
-        .post("https://hidden-garden-59705.herokuapp.com/send-data", {
+        .post("https://lu-cp-archive-backend.onrender.com/send-data", {
             ...items,
         })
         .then((res) => {

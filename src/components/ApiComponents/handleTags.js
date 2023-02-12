@@ -1,7 +1,7 @@
 import axios from "axios";
 export async function tagsHandler(items, setShow) {
     axios
-        .post("https://hidden-garden-59705.herokuapp.com/update-tags", {
+        .post("https://lu-cp-archive-backend.onrender.com/update-tags", {
             ...items,
         })
         .then((res) => {

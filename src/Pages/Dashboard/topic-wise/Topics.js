@@ -5,6 +5,7 @@ import styles from "../../../styles/Dashboard/dashboard.module.css";
 import AddCardsModal from "../../../components/AddForms/AddCardsModal";
 import axios from "axios";
 import { LinearProgress, Stack } from "@mui/material";
+import ColdStartNotification from "../../../components/ColdStartNotification";
 
 const Topics = () => {
     const [cardInfo, setCardInfo] = useState([]);
@@ -22,7 +23,7 @@ const Topics = () => {
     const gettingCards = async () => {
         try {
             axios
-                .get("https://hidden-garden-59705.herokuapp.com/cards")
+                .get("https://lu-cp-archive-backend.onrender.com/cards")
                 .then((response) => {
                     setCardInfo(response.data);
                 });
@@ -35,7 +36,7 @@ const Topics = () => {
     const getUserData = async () => {
         try {
             axios
-                .get("https://hidden-garden-59705.herokuapp.com/users")
+                .get("https://lu-cp-archive-backend.onrender.com/users")
                 .then((response) => {
                     setUserData(response.data);
                 });
@@ -62,7 +63,7 @@ const Topics = () => {
         return () => {
             isMounted = false;
         };
-    }, [userData]);
+    }, []);
 
     return (
         <div>
@@ -90,9 +91,12 @@ const Topics = () => {
                     </div>
                 </div>
             ) : (
-                <Stack sx={{ width: "100%", color: "grey.500" }}>
-                    <LinearProgress color="inherit" />
-                </Stack>
+                <>
+                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                        <LinearProgress color="inherit" />
+                    </Stack>
+                    <ColdStartNotification />
+                </>
             )}
             {toggleAddCardModal ? (
                 <AddCardsModal show={show} setShow={setShow} />

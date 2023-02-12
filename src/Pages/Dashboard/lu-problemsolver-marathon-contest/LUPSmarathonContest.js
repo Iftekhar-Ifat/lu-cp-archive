@@ -7,6 +7,7 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import AddResourcesModal from "../../../components/AddForms/AddResourcesModal";
 import { LinearProgress, Stack } from "@mui/material";
+import ColdStartNotification from "../../../components/ColdStartNotification";
 
 const LUPSmarathonContest = () => {
     const currentUser = useAuth();
@@ -19,7 +20,7 @@ const LUPSmarathonContest = () => {
         const getUserData = async () => {
             try {
                 const response = await fetch(
-                    "https://hidden-garden-59705.herokuapp.com/users"
+                    "https://lu-cp-archive-backend.onrender.com/users"
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
@@ -36,7 +37,7 @@ const LUPSmarathonContest = () => {
         const getPageContent = async () => {
             try {
                 const response = await fetch(
-                    "https://hidden-garden-59705.herokuapp.com/lu-problemsolver-marathon-contest"
+                    "https://lu-cp-archive-backend.onrender.com/lu-problemsolver-marathon-contest"
                 );
                 if (!response.ok) throw Error("Did not received expected data");
                 const data = await response.json();
@@ -100,9 +101,12 @@ const LUPSmarathonContest = () => {
                     </div>
                 </div>
             ) : (
-                <Stack sx={{ width: "100%", color: "grey.500" }}>
-                    <LinearProgress color="inherit" />
-                </Stack>
+                <>
+                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                        <LinearProgress color="inherit" />
+                    </Stack>
+                    <ColdStartNotification />
+                </>
             )}
 
             {addProblemToggle ? (

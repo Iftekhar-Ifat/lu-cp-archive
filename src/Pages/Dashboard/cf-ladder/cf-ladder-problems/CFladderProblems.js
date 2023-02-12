@@ -5,6 +5,7 @@ import DynamicCFproblems from "../../../../components/DynamicCFproblems";
 import Header from "../../../../components/Header";
 import { LinearProgress, Stack } from "@mui/material";
 import axios from "axios";
+import ColdStartNotification from "../../../../components/ColdStartNotification";
 
 const CFladderProblems = () => {
     const [problems, setProblems] = useState([]);
@@ -22,7 +23,7 @@ const CFladderProblems = () => {
     const getUserData = async () => {
         try {
             axios
-                .get("https://hidden-garden-59705.herokuapp.com/users")
+                .get("https://lu-cp-archive-backend.onrender.com/users")
                 .then((response) => {
                     setUserData(response.data);
                 });
@@ -36,7 +37,7 @@ const CFladderProblems = () => {
         try {
             axios
                 .get(
-                    `https://hidden-garden-59705.herokuapp.com/codeforces-problems/${path.ladder}`
+                    `https://lu-cp-archive-backend.onrender.com/codeforces-problems/${path.ladder}`
                 )
                 .then((response) => {
                     setProblems(response.data);
@@ -148,9 +149,12 @@ const CFladderProblems = () => {
             ) : (
                 <Fragment>
                     <Header />
-                    <Stack sx={{ width: "100%", color: "grey.500" }}>
-                        <LinearProgress color="inherit" />
-                    </Stack>
+                    <>
+                        <Stack sx={{ width: "100%", color: "grey.500" }}>
+                            <LinearProgress color="inherit" />
+                        </Stack>
+                        <ColdStartNotification />
+                    </>
                 </Fragment>
             )}
         </Fragment>
