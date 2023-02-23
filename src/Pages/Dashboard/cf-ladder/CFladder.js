@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../../../components/Header";
 import ProblemCard from "../../../components/TopicWiseComponents/ProblemCard";
 import styles from "../../../styles/components/TopicWiseDynamic.module.css";
 
@@ -7,7 +6,6 @@ const CFladder = () => {
     const path = window.location.pathname;
     return (
         <div>
-            <Header />
             <div
                 className={styles.container}
                 style={{ paddingLeft: "20%", paddingRight: "20%" }}

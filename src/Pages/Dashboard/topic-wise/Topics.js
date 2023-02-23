@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../../components/Header";
 import Card from "../../../components/Card";
 import styles from "../../../styles/Dashboard/dashboard.module.css";
 import AddCardsModal from "../../../components/AddForms/AddCardsModal";
 import axios from "axios";
 import { LinearProgress, Stack } from "@mui/material";
 import ColdStartNotification from "../../../components/ColdStartNotification";
+import { useAuth } from "../../../context/AuthProvider";
 
 const Topics = () => {
     const [cardInfo, setCardInfo] = useState([]);
@@ -14,61 +14,41 @@ const Topics = () => {
     const [show, setShow] = useState(false);
 
     //getting current user
-    const currentUserEmail = localStorage.getItem("email");
-
-    //current user role
-    let userRole;
-
-    // card data fetching
-    const gettingCards = async () => {
-        try {
-            axios
-                .get("https://lu-cp-archive-backend.onrender.com/cards")
-                .then((response) => {
-                    setCardInfo(response.data);
-                });
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
-
-    //getting user data
-    const getUserData = async () => {
-        try {
-            axios
-                .get("https://lu-cp-archive-backend.onrender.com/users")
-                .then((response) => {
-                    setUserData(response.data);
-                });
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
-    if (userData) {
-        userData?.forEach((usrDta) => {
-            const userEmail = usrDta.email;
-            if (currentUserEmail === userEmail) {
-                userRole = usrDta.role;
-            }
-        });
-    }
+    const currentUserEmail = useAuth().currentUser.email;
 
     useEffect(() => {
-        let isMounted = true;
-        (async () => {
-            const getUserFunction = await getUserData();
-            const getCardInfoFunction = await gettingCards();
-            return Promise.all([getUserFunction, getCardInfoFunction]);
-        })();
-        return () => {
-            isMounted = false;
+        // card data fetching
+        const getCardData = async () => {
+            try {
+                axios
+                    .get("https://lu-cp-archive-backend.onrender.com/cards")
+                    .then((response) => {
+                        setCardInfo(response.data);
+                    });
+            } catch (err) {
+                console.log(err.message);
+            }
         };
-    }, []);
+        //getting user data
+        const getUserData = async () => {
+            try {
+                axios
+                    .get("https://lu-cp-archive-backend.onrender.com/users", {
+                        params: { currentUserEmail: currentUserEmail },
+                    })
+                    .then((response) => {
+                        setUserData(response.data);
+                    });
+            } catch (err) {
+                console.log(err.message);
+            }
+        };
+        Promise.all([getCardData(), getUserData()]);
+    }, [currentUserEmail]);
 
     return (
         <div>
-            <Header />
-            {cardInfo.length && userData.length ? (
+            {cardInfo && userData ? (
                 <div className={styles.body_container}>
                     <div className={styles.height1}></div>
                     <div className={styles.card_container}>
@@ -80,7 +60,7 @@ const Topics = () => {
                                 subtitle={cardData.subtitle}
                             />
                         ))}
-                        {userRole === "power" ? (
+                        {userData.role === "power" ? (
                             <Card
                                 icon="https://i.ibb.co/tJnhkbF/add-card.png"
                                 title="Add Card"

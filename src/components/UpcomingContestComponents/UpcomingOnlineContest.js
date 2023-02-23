@@ -35,28 +35,6 @@ const UpcomingOnlineContest = (props) => {
                         ))}
                     </div>
                 ) : null}
-                {/* {codechefContests.length ? (
-                    <div className={styles.card_section}>
-                        {codechefContests.map((CCcontest) => (
-                            <ContestCard
-                                key={CCcontest.url}
-                                contest={CCcontest}
-                                platform="Codechef"
-                            />
-                        ))}
-                    </div>
-                ) : null}
-                {atcoderContests.length ? (
-                    <div className={styles.card_section}>
-                        {atcoderContests.map((ACcontest) => (
-                            <ContestCard
-                                key={ACcontest.url}
-                                contest={ACcontest}
-                                platform="Atcoder"
-                            />
-                        ))}
-                    </div>
-                ) : null} */}
             </div>
         </div>
     );

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "./Header";
 import ProblemCard from "./TopicWiseComponents/ProblemCard";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -16,10 +15,6 @@ const DynamicCFproblems = (props) => {
     };
     return (
         <div>
-            <Header
-                userCFhandle={props.userCFhandle}
-                userCFhandleChange={props.userCFhandleChange}
-            />
             <div
                 className={styles.container}
                 style={{ paddingLeft: "20%", paddingRight: "20%" }}

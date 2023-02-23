@@ -1,70 +1,62 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../../components/Header";
 import LinkCard from "../../../components/LinkCard";
-import useAuth from "../../../hooks/useAuth";
 import styles from "../../../styles/components/TopicWiseDynamic.module.css";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import AddResourcesModal from "../../../components/AddForms/AddResourcesModal";
+import { useAuth } from "../../../context/AuthProvider";
+import axios from "axios";
 
 const IntraLUcontest = () => {
-    const currentUser = useAuth();
+    const currentUserEmail = useAuth().currentUser.email;
 
     const [userData, setUserData] = useState([]);
     const [contests, setContests] = useState([]);
-
-    //getting user Data
-    useEffect(() => {
-        const getUserData = async () => {
-            try {
-                const response = await fetch(
-                    "https://lu-cp-archive-backend.onrender.com/users"
-                );
-                if (!response.ok) throw Error("Did not received expected data");
-                const data = await response.json();
-                setUserData(data);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-        (async () => await getUserData())();
-    }, []);
-
-    // getting page contents
-    useEffect(() => {
-        const getPageContent = async () => {
-            try {
-                const response = await fetch(
-                    "https://lu-cp-archive-backend.onrender.com/intra-lu-contest"
-                );
-                if (!response.ok) throw Error("Did not received expected data");
-                const data = await response.json();
-                setContests(data);
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-        (async () => await getPageContent())();
-    }, []);
-
-    let userStatus;
-    userData.forEach((usrDta) => {
-        const userEmail = usrDta.email;
-        if (currentUser?.email === userEmail) {
-            userStatus = usrDta.role;
-        }
-    });
-
+    const [loading, setLoading] = useState(false);
     const [addProblemToggle, setAddProblemToggle] = useState(false);
     const [show, setShow] = useState(false);
+
+    useEffect(() => {
+        setLoading(true);
+        //getting user Data
+        const getUserData = async () => {
+            try {
+                axios
+                    .get("https://lu-cp-archive-backend.onrender.com/users", {
+                        params: { currentUserEmail: currentUserEmail },
+                    })
+                    .then((response) => {
+                        setUserData(response.data);
+                    });
+            } catch (err) {
+                console.log(err.message);
+            }
+        };
+
+        const getPageContent = async () => {
+            try {
+                axios
+                    .get("https://lu-cp-archive-backend.onrender.com/intra-lu-contest")
+                    .then((response) => {
+                        setContests(response.data);
+                    });
+            } catch (err) {
+                console.log(err.message);
+            }
+        };
+
+        Promise.all([getUserData(), getPageContent()]);
+        setLoading(false);
+    }, [currentUserEmail]);
+
     const addProblemHandler = () => {
         setAddProblemToggle(true);
         setShow(true);
     };
 
+    //
     return (
         <div>
-            <Header />
             <div
                 className={styles.container}
                 style={{ paddingLeft: "20%", paddingRight: "20%" }}
@@ -82,7 +74,7 @@ const IntraLUcontest = () => {
                             />
                         ))}
 
-                        {userStatus === "power" ? (
+                        {userData.role === "power" ? (
                             <div className={styles.add_btn}>
                                 <Fab
                                     size="medium"

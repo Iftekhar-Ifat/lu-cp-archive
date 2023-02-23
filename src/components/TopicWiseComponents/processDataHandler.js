@@ -1,6 +1,13 @@
 import Colors from "../../styles/colors";
-export function processData(userProblems, allProblems) {
-    if (userProblems) {
+export async function processData(userProblems, allProblems) {
+    if (
+        !userProblems ||
+        !Object.keys(userProblems).length ||
+        !allProblems ||
+        !Object.keys(allProblems).length
+    ) {
+        return "Loading data...";
+    } else {
         const solving = userProblems.status.solving;
         const solved = userProblems.status.solved;
         const reviewing = userProblems.status.reviewing;

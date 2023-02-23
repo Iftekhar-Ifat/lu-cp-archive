@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "../Header";
 import styles from "../../styles/components/TopicWiseDynamic.module.css";
 import ProblemCard from "../TopicWiseComponents/ProblemCard";
 import Resources from "../Resources";
@@ -18,7 +17,6 @@ const DynamicTopicItem = (props) => {
 
     return (
         <div>
-            <Header currentUserEmail={props.currentUserEmail} />
             <div className={styles.container}>
                 <div className={styles.wrapper}>
                     <div className={styles.problem_section}>
@@ -57,7 +55,7 @@ const DynamicTopicItem = (props) => {
                         ) : null}
                     </div>
                     <div className={styles.sidebar_container}>
-                        <ProgressBarCard
+                        {/* <ProgressBarCard
                             userProblems={props.userProblems}
                             allProblems={props.problems}
                         />
@@ -65,7 +63,7 @@ const DynamicTopicItem = (props) => {
                             key={props.resources._id}
                             userRole={props.userRole}
                             resources={props.resources}
-                        />
+                        /> */}
                     </div>
                 </div>
             </div>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/Dashboard/dashboard.module.css";
-import Header from "../../components/Header";
 import Card from "../../components/Card";
 
 const Dashboard = () => {
@@ -17,7 +16,6 @@ const Dashboard = () => {
 
     return (
         <div>
-            <Header />
             <div className={styles.body_container}>
                 <div className={styles.height1}></div>
                 <div className={styles.card_container}>
