@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../../components/Header";
-import FeatureContests from "../../../components/UpcomingContestComponents/FeatureContests";
 import UpcomingOnlineContest from "../../../components/UpcomingContestComponents/UpcomingOnlineContest";
 import { LinearProgress, Stack } from "@mui/material";
 import axios from "axios";
-import ColdStartNotification from "../../../components/ColdStartNotification";
 
 const UpcomingContest = () => {
     const [allContests, setAllContests] = useState({});
@@ -68,8 +65,6 @@ const UpcomingContest = () => {
 
     return (
         <div>
-            <Header />
-            {/* <FeatureContests /> */}
             {allContests.length ? (
                 <UpcomingOnlineContest allContests={allContests} />
             ) : (
@@ -77,7 +72,6 @@ const UpcomingContest = () => {
                     <Stack sx={{ width: "100%", color: "grey.500" }}>
                         <LinearProgress color="inherit" />
                     </Stack>
-                    <ColdStartNotification />
                 </>
             )}
         </div>

@@ -10,8 +10,13 @@ const SignOutModal = ({ signOutTriggerStatus, signOutTriggerStatusChange }) => {
     };
     async function handleSignOut() {
         try {
-            await logout();
-            navigate("/");
+            await logout()
+                .then((response) => {
+                    navigate("/");
+                })
+                .catch((error) => {
+                    alert("Error in logout");
+                });
             closeHandler();
         } catch (err) {
             alert("Error in logout");

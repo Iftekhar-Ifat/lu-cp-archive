@@ -14,11 +14,12 @@ const Card = (props) => {
 
     if (props.title === "Add Card") {
         return (
-            <a
+            <div
                 onClick={() => {
                     props.setToggleAddCardModal(true);
                     props.setShow(true);
                 }}
+                style={{ cursor: "pointer" }}
             >
                 <div>
                     <div className={styles.card_container}>
@@ -33,11 +34,11 @@ const Card = (props) => {
                         <div className={styles.only_title}>{props.title}</div>
                     </div>
                 </div>
-            </a>
+            </div>
         );
     } else if (props.subtitle) {
         return (
-            <a onClick={routeHandler}>
+            <div onClick={routeHandler} style={{ cursor: "pointer" }}>
                 <div>
                     <div className={styles.card_container}>
                         <div className={styles.icon_div}>
@@ -54,11 +55,11 @@ const Card = (props) => {
                         </div>
                     </div>
                 </div>
-            </a>
+            </div>
         );
     } else {
         return (
-            <a onClick={routeHandler}>
+            <div onClick={routeHandler} style={{ cursor: "pointer" }}>
                 <div>
                     <div className={styles.card_container}>
                         <div className={styles.only_title_icon_div}>
@@ -72,7 +73,7 @@ const Card = (props) => {
                         <div className={styles.only_title}>{props.title}</div>
                     </div>
                 </div>
-            </a>
+            </div>
         );
     }
 };

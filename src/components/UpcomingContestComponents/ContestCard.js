@@ -26,6 +26,7 @@ const ContestCard = (props) => {
                                     />
                                 ) : props.contest.platform === "Codechef" ? (
                                     <img
+                                        alt="platform-icon"
                                         src="../images/icons/codechef_icon.png"
                                         style={{
                                             width: "100%",
@@ -35,6 +36,7 @@ const ContestCard = (props) => {
                                     />
                                 ) : (
                                     <img
+                                        alt="platform-icon"
                                         src="../images/icons/atcoder_icon.png"
                                         style={{
                                             width: "100%",

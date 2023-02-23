@@ -43,7 +43,7 @@ const ProblemCard = (props) => {
 
     if (props.cardSize === 70) {
         return (
-            <a
+            <div
                 className={styles.problem_card_container}
                 onClick={cardRouteHandler}
             >
@@ -66,11 +66,11 @@ const ProblemCard = (props) => {
                         </div>
                     </div>
                 </div>
-            </a>
+            </div>
         );
     } else if (props.cardSize === 50) {
         return (
-            <a
+            <div
                 className={styles.problem_card_container}
                 href={props.problemUrl}
             >
@@ -97,7 +97,7 @@ const ProblemCard = (props) => {
                         </div>
                     </div>
                 )}
-            </a>
+            </div>
         );
     } else {
         return (
@@ -147,9 +147,7 @@ const ProblemCard = (props) => {
                                         }
                                         problemUrl={props.url}
                                     />
-                                ) : (
-                                    ""
-                                )}
+                                ) : null}
                             </div>
                         </div>
                         <a className={styles.title} href={`${props.url}`}>

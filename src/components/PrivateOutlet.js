@@ -1,8 +1,10 @@
 import React, { Fragment } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
 
 const PrivateOutlet = () => {
-    const userExist = localStorage.getItem("email");
+    const user = useAuth();
+    let userExist = user.currentUser;
     return <Fragment>{userExist ? <Outlet /> : <Navigate to="/" />}</Fragment>;
 };
 

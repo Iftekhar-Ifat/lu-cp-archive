@@ -2,113 +2,78 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
 import { processCFdata } from "../../../../components/ProcessCFdata";
 import DynamicCFproblems from "../../../../components/DynamicCFproblems";
-import Header from "../../../../components/Header";
 import { LinearProgress, Stack } from "@mui/material";
 import axios from "axios";
 import ColdStartNotification from "../../../../components/ColdStartNotification";
+import { useAuth } from "../../../../context/AuthProvider";
 
 const CFladderProblems = () => {
     const [problems, setProblems] = useState([]);
+    const [processedProblems, setProcessedProblems] = useState([]);
     const [userData, setUserData] = useState([]);
     const [userCFhandle, setUserCFhandle] = useState();
-    const [isCFonline, setIsCFonline] = useState(false);
+    const [loading, setLoading] = useState(false);
     const path = useParams();
 
-    const currentUserEmail = localStorage.getItem("email");
-
-    let userStatus;
-    let CFhandle;
-
-    //getting user data
-    const getUserData = async () => {
-        try {
-            axios
-                .get("https://lu-cp-archive-backend.onrender.com/users")
-                .then((response) => {
-                    setUserData(response.data);
-                });
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
-
-    //getting cf problems from database
-    const getCFProblems = async () => {
-        try {
-            axios
-                .get(
-                    `https://lu-cp-archive-backend.onrender.com/codeforces-problems/${path.ladder}`
-                )
-                .then((response) => {
-                    setProblems(response.data);
-                });
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
-
-    //checking whether codeforces is online or not
-    const getCodeforcesStatus = async () => {
-        try {
-            axios
-                .get(
-                    `https://codeforces.com/api/user.status?handle=Fefer_Ivan&from=1&count=10`
-                )
-                .then((response) => {
-                    if (response.data.status === "OK") {
-                        setIsCFonline(true);
-                    }
-                });
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
-
-    userData.forEach((usrDta) => {
-        const userEmail = usrDta.email;
-        if (currentUserEmail === userEmail) {
-            userStatus = usrDta.role;
-            CFhandle = usrDta.CFhandle;
-        }
-    });
+    const currentUserEmail = useAuth().currentUser.email;
 
     useEffect(() => {
-        (async () => {
-            const getUserFunction = getUserData();
-            const getCFProblemsFunction = getCFProblems();
-            const isCFonline = getCodeforcesStatus();
-            return Promise.all([
-                getUserFunction,
-                getCFProblemsFunction,
-                isCFonline,
-            ]);
-        })();
-    }, [path.ladder]);
+        setLoading(true);
+        //getting user data
+        const getUserData = async () => {
+            try {
+                axios
+                    .get("https://lu-cp-archive-backend.onrender.com/users", {
+                        params: { currentUserEmail: currentUserEmail },
+                    })
+                    .then((response) => {
+                        setUserData(response.data);
+                    });
+            } catch (err) {
+                console.log(err.message);
+            }
+        };
 
-    //getting user's CF data
-    const [fetchedCFdata, setFetchedCFdata] = useState();
-
-    const fetchCFdata = async () => {
-        try {
-            axios
-                .get(
-                    `https://codeforces.com/api/user.status?handle=${CFhandle}`
-                )
-                .then((response) => {
-                    setFetchedCFdata(response.data);
-                });
-        } catch (err) {
-            console.log("codeforces down");
-        }
-    };
+        //getting cf problems from database
+        const getCFProblems = async () => {
+            try {
+                axios
+                    .get(
+                        `https://lu-cp-archive-backend.onrender.com/codeforces-problems/${path.ladder}`
+                    )
+                    .then((response) => {
+                        setProblems(response.data);
+                    });
+            } catch (err) {
+                console.log(err.message);
+            }
+        };
+        Promise.all([getUserData(), getCFProblems()]);
+        setLoading(false);
+    }, [currentUserEmail, path.ladder]);
 
     useEffect(() => {
-        fetchCFdata();
-    }, [CFhandle]);
-
-    if (CFhandle && fetchedCFdata && isCFonline) {
-        processCFdata(fetchedCFdata, problems);
-    }
+        if (userData) {
+            //checking whether codeforces is online or not
+            try {
+                axios
+                    .get(
+                        `https://codeforces.com/api/user.status?handle=${userData.CFhandle}`
+                    )
+                    .then((response) => {
+                        if (response.data.status === "OK") {
+                            let cfDataWithVerdict = processCFdata(
+                                response.data,
+                                problems
+                            );
+                            setProcessedProblems(cfDataWithVerdict);
+                        }
+                    });
+            } catch (err) {
+                console.log(err.message);
+            }
+        }
+    }, [problems, userData]);
 
     // when new handle added
     useEffect(() => {
@@ -124,40 +89,37 @@ const CFladderProblems = () => {
                     }
                 })
                 .then((data) => {
-                    processCFdata(data, problems);
                     alert(
                         `${data.result[0].handle} handle successfully added! ✅. Reload to see the changes`
                     );
-                    localStorage.clear();
-                    localStorage.setItem("cf-handle", data.result[0].handle);
                 })
                 .catch((err) => {
                     alert(err.message);
                 });
         }
-    }, [problems, userCFhandle]);
+    }, [userCFhandle]);
 
     return (
-        <Fragment>
-            {userData.length ? (
-                <DynamicCFproblems
-                    userCFhandle={CFhandle}
-                    userCFhandleChange={setUserCFhandle}
-                    problems={problems}
-                    userStatus={userStatus}
-                />
-            ) : (
-                <Fragment>
-                    <Header />
+        <>
+            {loading ? (
+                (console.log("loading"),
+                (
                     <>
                         <Stack sx={{ width: "100%", color: "grey.500" }}>
                             <LinearProgress color="inherit" />
                         </Stack>
                         <ColdStartNotification />
                     </>
-                </Fragment>
+                ))
+            ) : (
+                <DynamicCFproblems
+                    userCFhandle={userData.CFhandle}
+                    userCFhandleChange={setUserCFhandle}
+                    problems={problems}
+                    userStatus={userData.role}
+                />
             )}
-        </Fragment>
+        </>
     );
 };
 

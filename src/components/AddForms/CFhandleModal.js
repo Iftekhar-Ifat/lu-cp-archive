@@ -4,8 +4,10 @@ import OutsideClickHandler from "react-outside-click-handler";
 import styles from "../../styles/components/CFhandleModal.module.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { cfHandleInput } from "../ApiComponents/handleCFhandle";
+import { useAuth } from "../../context/AuthProvider";
 
 const CFhandleModal = (props) => {
+    let currentUserEmail = useAuth().currentUser.email;
     const theme = createTheme({
         palette: {
             mode: "dark",
@@ -27,7 +29,7 @@ const CFhandleModal = (props) => {
         //check if user exist or not
         userCFhandle = cfHandleRef.current.value;
         sendCFhandle = {
-            userEmail: props.currentUserEmail,
+            userEmail: currentUserEmail,
             cfHandle: userCFhandle,
         };
         try {

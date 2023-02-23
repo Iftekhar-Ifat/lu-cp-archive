@@ -3,12 +3,12 @@ import styles from "../../styles/components/StatusCard.module.css";
 import { Code, Check, ChevronsLeft, X } from "@geist-ui/icons";
 import OutsideClickHandler from "react-outside-click-handler";
 import Colors from "../colors";
-import useAuth from "../../hooks/useAuth";
+import { useAuth } from "../../context/AuthProvider";
 
 const StatusCard = (props) => {
-    const currentUser = useAuth();
+    const currentUserEmail = useAuth().currentUser.email;
     const toggleBtn = (statusColor) => {
-        if (currentUser) {
+        if (currentUserEmail) {
             props.toggleStat(false);
             if (statusColor) {
                 props.color(statusColor);
@@ -18,9 +18,9 @@ const StatusCard = (props) => {
         }
     };
     const getStatus = (statusText) => {
-        if (currentUser) {
+        if (currentUserEmail) {
             props.problemStatusChange({
-                email: currentUser?.email,
+                email: currentUserEmail,
                 status: statusText,
                 url: `${props.problemUrl}`,
             });

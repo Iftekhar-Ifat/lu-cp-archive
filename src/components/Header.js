@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "../styles/components/Header.module.css";
 import { Button } from "@geist-ui/core";
 import SignOutModal from "./AuthComponents/SignOutModal";
@@ -6,35 +6,17 @@ import AuthModal from "./AuthComponents/AuthModal";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Avatar } from "@mui/material";
 import CFhandleModal from "./AddForms/CFhandleModal";
+import { useAuth } from "../context/AuthProvider";
 
 const Header = (props) => {
-    const currentUser = localStorage.getItem("email");
-    const userEmail = localStorage.getItem("email");
-    const userPhotoUrl = localStorage.getItem("profilePic");
+    const user = useAuth();
+
     const [signOutTriggerd, setSignOutTriggerd] = useState(false);
     const [showSignInModal, setShowSignInModal] = useState(false);
     const [showCfHandleModal, setShowCfHandleModal] = useState(false);
-    const [userPhoto, setUserPhoto] = useState("");
-    const [currentUserEmail, setCurrentUserEmail] = useState();
 
     const modalToggle = () => {
         setShowCfHandleModal(true);
-    };
-    useEffect(() => {
-        let isMounted = true;
-        if (currentUser) {
-            setUserPhoto(userPhotoUrl);
-            setCurrentUserEmail(userEmail);
-        }
-        isMounted = false;
-    });
-
-    const signOutHandler = () => {
-        setSignOutTriggerd(true);
-    };
-
-    const signInHandler = () => {
-        setShowSignInModal(true);
     };
 
     const theme = createTheme({
@@ -65,14 +47,16 @@ const Header = (props) => {
                             </a>
                         </div>
                     </div>
-                    {currentUser ? (
+                    {user.currentUser !== null ? (
                         <div className={styles.auth_container}>
                             <div className={styles.logout_btn}>
                                 <Button
                                     type="secondary"
                                     ghost
                                     auto
-                                    onClick={signOutHandler}
+                                    onClick={() => {
+                                        setSignOutTriggerd(true);
+                                    }}
                                 >
                                     Sign Out
                                 </Button>
@@ -82,7 +66,7 @@ const Header = (props) => {
                                 onClick={modalToggle}
                             >
                                 <Avatar
-                                    src={userPhoto}
+                                    src={user.currentUser.photoURL}
                                     style={{ cursor: "pointer" }}
                                 />
                                 {showCfHandleModal ? (
@@ -92,7 +76,6 @@ const Header = (props) => {
                                             props.userCFhandleChange
                                         }
                                         userCFhandle={props.userCFhandle}
-                                        currentUserEmail={currentUserEmail}
                                     />
                                 ) : null}
                             </div>
@@ -104,16 +87,12 @@ const Header = (props) => {
                                     type="secondary"
                                     ghost
                                     auto
-                                    onClick={signInHandler}
+                                    onClick={() => {
+                                        setShowSignInModal(true);
+                                    }}
                                 >
                                     Sign In
                                 </Button>
-                                {showSignInModal ? (
-                                    <AuthModal
-                                        modalStatus={showSignInModal}
-                                        setModalStatus={setShowSignInModal}
-                                    />
-                                ) : null}
                             </div>
                         </div>
                     )}
@@ -121,6 +100,12 @@ const Header = (props) => {
                         <SignOutModal
                             signOutTriggerStatus={signOutTriggerd}
                             signOutTriggerStatusChange={setSignOutTriggerd}
+                        />
+                    ) : null}
+                    {showSignInModal ? (
+                        <AuthModal
+                            modalStatus={showSignInModal}
+                            setModalStatus={setShowSignInModal}
                         />
                     ) : null}
                 </div>

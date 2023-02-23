@@ -1,12 +1,10 @@
 import React, { Fragment } from "react";
-import Header from "../../../components/Header";
 import styles from "../../../styles/UserGuide/UserGuide.module.css";
 import InfoIcon from "@mui/icons-material/Info";
 
 const UserGuide = () => {
     return (
         <Fragment>
-            <Header />
             <div
                 className={styles.container}
                 style={{ paddingLeft: "20%", paddingRight: "20%" }}

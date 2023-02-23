@@ -46,6 +46,7 @@ const Tags = ({ problemTags, setProblemTags, allTags }) => {
                     >
                         {allTags.map((element) => (
                             <FormControlLabel
+                                key={element}
                                 style={{ color: "white" }}
                                 label={element}
                                 control={
@@ -59,28 +60,14 @@ const Tags = ({ problemTags, setProblemTags, allTags }) => {
                                 }
                             />
                         ))}
-
-                        {/* <FormControlLabel
-                            style={{ color: "white" }}
-                            label="{element}"
-                            control={
-                                <Checkbox
-                                    value="{element}"
-                                    checked={problemTags.includes("{element}")}
-                                    onChange={handleTagChange}
-                                />
-                            }
-                        /> */}
                         <div
                             style={{
                                 display: "flex",
                                 justifyContent: "center",
                             }}
                         >
-                            <IconButton>
-                                <AddCircleRoundedIcon
-                                    onClick={addTagsHandler}
-                                />
+                            <IconButton onClick={addTagsHandler}>
+                                <AddCircleRoundedIcon />
                             </IconButton>
                         </div>
                     </div>
