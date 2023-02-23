@@ -70,9 +70,9 @@ const ProblemCard = (props) => {
         );
     } else if (props.cardSize === 50) {
         return (
-            <div
-                className={styles.problem_card_container}
+            <a
                 href={props.problemUrl}
+                className={styles.problem_card_container}
             >
                 {props.verdict === "AC" ? (
                     <div
@@ -97,7 +97,7 @@ const ProblemCard = (props) => {
                         </div>
                     </div>
                 )}
-            </div>
+            </a>
         );
     } else {
         return (
