@@ -21,36 +21,26 @@ const LUPSshortContest = () => {
     useEffect(() => {
         setLoading(true);
         //getting user Data
-        const getUserData = async () => {
-            try {
-                axios
-                    .get("https://lu-cp-archive-backend.onrender.com/users", {
-                        params: { currentUserEmail: currentUserEmail },
-                    })
-                    .then((response) => {
-                        setUserData(response.data);
-                    });
-            } catch (err) {
-                console.log(err.message);
+        const getUserData = axios.get(
+            "https://lu-cp-archive-backend.onrender.com/users",
+            {
+                params: { currentUserEmail: currentUserEmail },
             }
-        };
+        );
 
-        const getPageContent = async () => {
-            try {
-                axios
-                    .get(
-                        "https://lu-cp-archive-backend.onrender.com/lu-problemsolver-short-contest"
-                    )
-                    .then((response) => {
-                        setContests(response.data);
-                    });
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
+        const getPageContent = axios.get(
+            "https://lu-cp-archive-backend.onrender.com/lu-problemsolver-short-contest"
+        );
 
-        Promise.all([getUserData(), getPageContent()]);
-        setLoading(false);
+        Promise.all([getUserData, getPageContent])
+            .then((response) => {
+                setUserData(response[0].data);
+                setContests(response[1].data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
     }, [currentUserEmail]);
 
     const addProblemHandler = () => {

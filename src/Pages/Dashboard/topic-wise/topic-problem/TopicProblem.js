@@ -38,65 +38,39 @@ const TopicProblem = () => {
     useEffect(() => {
         setLoading(true);
         //getting problems
-        const getProblems = async () => {
-            try {
-                axios
-                    .get(
-                        `https://lu-cp-archive-backend.onrender.com/topicProblems/${problemRoute.topicProblems}`
-                    )
-                    .then((response) => {
-                        setProblems(response.data);
-                    });
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
+        const getProblems = axios.get(
+            `https://lu-cp-archive-backend.onrender.com/topicProblems/${problemRoute.topicProblems}`
+        );
 
         //getting resources
-        const getResources = async () => {
-            try {
-                axios
-                    .get(
-                        `https://lu-cp-archive-backend.onrender.com/resources/${problemRoute.topicProblems}`
-                    )
-                    .then((response) => {
-                        setResources(response.data);
-                    });
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
+        const getResources = axios.get(
+            `https://lu-cp-archive-backend.onrender.com/resources/${problemRoute.topicProblems}`
+        );
 
         //getting user Data
-        const getUserData = async () => {
-            try {
-                axios
-                    .get("https://lu-cp-archive-backend.onrender.com/users", {
-                        params: { currentUserEmail: currentUserEmail },
-                    })
-                    .then((response) => {
-                        setUserData(response.data);
-                    });
-            } catch (err) {
-                console.log(err.message);
+        const getUserData = axios.get(
+            "https://lu-cp-archive-backend.onrender.com/users",
+            {
+                params: { currentUserEmail: currentUserEmail },
             }
-        };
+        );
 
         //getting tags
-        const getTags = async () => {
-            try {
-                axios
-                    .get(`https://lu-cp-archive-backend.onrender.com/all-tags`)
-                    .then((response) => {
-                        setAllTags(response.data[0].tags);
-                    });
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
+        const getTags = axios.get(
+            `https://lu-cp-archive-backend.onrender.com/all-tags`
+        );
 
-        Promise.all([getProblems(), getResources(), getUserData(), getTags()]);
-        setLoading(false);
+        Promise.all([getProblems, getResources, getUserData, getTags])
+            .then((response) => {
+                setProblems(response[0].data);
+                setResources(response[1].data);
+                setUserData(response[2].data);
+                setAllTags(response[3].data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
     }, [currentUserEmail, problemRoute.topicProblems]);
 
     useEffect(() => {
