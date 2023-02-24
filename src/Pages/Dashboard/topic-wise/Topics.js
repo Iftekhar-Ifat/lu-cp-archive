@@ -12,43 +12,42 @@ const Topics = () => {
     const [userData, setUserData] = useState([]);
     const [toggleAddCardModal, setToggleAddCardModal] = useState(false);
     const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     //getting current user
     const currentUserEmail = useAuth().currentUser.email;
 
     useEffect(() => {
+        setLoading(true);
         // card data fetching
-        const getCardData = async () => {
-            try {
-                axios
-                    .get("https://lu-cp-archive-backend.onrender.com/cards")
-                    .then((response) => {
-                        setCardInfo(response.data);
-                    });
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
+        const getCardData = axios.get(
+            "https://lu-cp-archive-backend.onrender.com/cards"
+        );
+
         //getting user data
-        const getUserData = async () => {
-            try {
-                axios
-                    .get("https://lu-cp-archive-backend.onrender.com/users", {
-                        params: { currentUserEmail: currentUserEmail },
-                    })
-                    .then((response) => {
-                        setUserData(response.data);
-                    });
-            } catch (err) {
-                console.log(err.message);
+        const getUserData = axios.get(
+            "https://lu-cp-archive-backend.onrender.com/users",
+            {
+                params: { currentUserEmail: currentUserEmail },
             }
-        };
-        Promise.all([getCardData(), getUserData()]);
+        );
+
+        Promise.all([getCardData, getUserData])
+            .then((responses) => {
+                setCardInfo(responses[0].data);
+                setUserData(responses[1].data);
+            })
+            .catch((error) => {
+                console.log(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }, [currentUserEmail]);
 
     return (
         <div>
-            {cardInfo && userData ? (
+            {!loading ? (
                 <div className={styles.body_container}>
                     <div className={styles.height1}></div>
                     <div className={styles.card_container}>

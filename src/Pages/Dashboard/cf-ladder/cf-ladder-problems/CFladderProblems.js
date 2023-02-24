@@ -20,36 +20,22 @@ const CFladderProblems = () => {
     useEffect(() => {
         setLoading(true);
         //getting user data
-        const getUserData = async () => {
-            try {
-                axios
-                    .get("https://lu-cp-archive-backend.onrender.com/users", {
-                        params: { currentUserEmail: currentUserEmail },
-                    })
-                    .then((response) => {
-                        setUserData(response.data);
-                    });
-            } catch (err) {
-                console.log(err.message);
+        const getUserData = axios.get(
+            "https://lu-cp-archive-backend.onrender.com/users",
+            {
+                params: { currentUserEmail: currentUserEmail },
             }
-        };
+        );
 
         //getting cf problems from database
-        const getCFProblems = async () => {
-            try {
-                axios
-                    .get(
-                        `https://lu-cp-archive-backend.onrender.com/codeforces-problems/${path.ladder}`
-                    )
-                    .then((response) => {
-                        setProblems(response.data);
-                    });
-            } catch (err) {
-                console.log(err.message);
-            }
-        };
-        Promise.all([getUserData(), getCFProblems()]);
-        setLoading(false);
+        const getCFProblems = axios.get(
+            `https://lu-cp-archive-backend.onrender.com/codeforces-problems/${path.ladder}`
+        );
+        Promise.all([getUserData, getCFProblems]).then((response) => {
+            setUserData(response[0].data);
+            setProblems(response[1].data);
+            setLoading(false);
+        });
     }, [currentUserEmail, path.ladder]);
 
     useEffect(() => {
@@ -102,15 +88,12 @@ const CFladderProblems = () => {
     return (
         <>
             {loading ? (
-                (console.log("loading"),
-                (
-                    <>
-                        <Stack sx={{ width: "100%", color: "grey.500" }}>
-                            <LinearProgress color="inherit" />
-                        </Stack>
-                        <ColdStartNotification />
-                    </>
-                ))
+                <>
+                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                        <LinearProgress color="inherit" />
+                    </Stack>
+                    <ColdStartNotification />
+                </>
             ) : (
                 <DynamicCFproblems
                     userCFhandle={userData.CFhandle}
