@@ -10,7 +10,7 @@ LU-CP-Archive is a **MERN** stack application aimed to aid students who are comp
 -   Previous Inter/Intra programming contest problems
     !["intra-contest"](./public/images/readme/intra-lu-contest.png)
 
--   Codeforces ladder from 800-2500 (each ladder contains the top 50 questions solved by LU's top programmer)Topic-wise problems
+-   Codeforces ladder from 800-2500 (each ladder contains the top 50 questions solved by LU's top programmer)
     !["cf-ladder"](./public/images/readme/cf-ladder.png)
 
 -   Upcoming online contests timetable, etc.
