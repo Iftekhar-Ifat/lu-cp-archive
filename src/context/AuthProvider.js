@@ -12,8 +12,8 @@ const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
 
-    function logOut() {
-        return signOut();
+    function logout() {
+        return signOut(auth);
     }
 
     const provider = new GoogleAuthProvider();
@@ -33,7 +33,7 @@ const AuthProvider = ({ children }) => {
 
     const userContext = {
         currentUser,
-        logOut,
+        logout,
         signInWithGoogle,
     };
     return (

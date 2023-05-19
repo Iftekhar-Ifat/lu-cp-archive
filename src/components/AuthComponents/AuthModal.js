@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import styles from "../../styles/components/AuthModal.module.css";
 import { Modal, Spacer } from "@geist-ui/core";
-import { signInWithGoogle } from "../../Auth/firebaseConfig";
 import { userInputHandler } from "../ApiComponents/handleUserInput";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthProvider";
 
 const AuthModal = ({ modalStatus, setModalStatus }) => {
+    const { signInWithGoogle } = useAuth();
     const modalToggle = () => {
         setModalStatus(false);
     };

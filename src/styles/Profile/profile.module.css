@@ -1,0 +1,26 @@
+.wrapper{
+    margin-top: 3%;
+    margin-left: 25%;
+    margin-right: 25%;
+    color: white;
+}
+
+.user_photo{
+    margin-left: 3%;
+    height: 96px;
+    width: 96px;
+    border-radius: 50%;
+}
+
+.web_title{
+    margin-right: 30px;
+    display: flex;
+    align-items: end;
+}
+
+.handle_wrapper{
+    width: auto;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}

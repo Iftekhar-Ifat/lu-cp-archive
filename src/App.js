@@ -14,6 +14,7 @@ import UserGuide from "./Pages/Dashboard/user-guide/UserGuide";
 import UpcomingContest from "./Pages/Dashboard/upcoming-contest/UpcomingContest";
 import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
+import Profile from "./Pages/Profile/Profile";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                     <Route path="/" element={<Homepage />} />
                     <Route element={<PrivateOutlet />}>
                         <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/profile" element={<Profile />} />
                         <Route
                             path="/dashboard/topic-wise"
                             element={<Topics />}

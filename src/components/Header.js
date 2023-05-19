@@ -5,18 +5,22 @@ import SignOutModal from "./AuthComponents/SignOutModal";
 import AuthModal from "./AuthComponents/AuthModal";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Avatar } from "@mui/material";
-import CFhandleModal from "./AddForms/CFhandleModal";
 import { useAuth } from "../context/AuthProvider";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const Header = (props) => {
+const Header = () => {
     const user = useAuth();
 
     const [signOutTriggerd, setSignOutTriggerd] = useState(false);
     const [showSignInModal, setShowSignInModal] = useState(false);
-    const [showCfHandleModal, setShowCfHandleModal] = useState(false);
 
-    const modalToggle = () => {
-        setShowCfHandleModal(true);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const gotoProfile = () => {
+        if (location.pathname !== "/profile") {
+            navigate("/profile");
+        }
     };
 
     const theme = createTheme({
@@ -63,21 +67,12 @@ const Header = (props) => {
                             </div>
                             <div
                                 className={styles.signIn_btn}
-                                onClick={modalToggle}
+                                onClick={gotoProfile}
                             >
                                 <Avatar
                                     src={user.currentUser.photoURL}
                                     style={{ cursor: "pointer" }}
                                 />
-                                {showCfHandleModal ? (
-                                    <CFhandleModal
-                                        modalToggle={setShowCfHandleModal}
-                                        userCFhandleChange={
-                                            props.userCFhandleChange
-                                        }
-                                        userCFhandle={props.userCFhandle}
-                                    />
-                                ) : null}
                             </div>
                         </div>
                     ) : (
