@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import Card from "../../../components/Card";
-import styles from "../../../styles/Dashboard/dashboard.module.css";
-import AddCardsModal from "../../../components/AddForms/AddCardsModal";
-import axios from "axios";
-import { LinearProgress, Stack } from "@mui/material";
-import ColdStartNotification from "../../../components/ColdStartNotification";
-import { useAuth } from "../../../context/AuthProvider";
+import React, { useState, useEffect } from 'react';
+import Card from '../../../components/Card.jsx';
+import styles from '../../../styles/Dashboard/dashboard.module.css';
+import AddCardsModal from '../../../components/AddForms/AddCardsModal.jsx';
+import axios from 'axios';
+import { LinearProgress, Stack } from '@mui/material';
+import ColdStartNotification from '../../../components/ColdStartNotification.jsx';
+import { useAuth } from '../../../context/AuthProvider.jsx';
 
 const Topics = () => {
     const [cardInfo, setCardInfo] = useState([]);
@@ -21,23 +21,23 @@ const Topics = () => {
         setLoading(true);
         // card data fetching
         const getCardData = axios.get(
-            "https://lu-cp-archive-backend.onrender.com/cards"
+            'https://lu-cp-archive-backend.onrender.com/cards'
         );
 
         //getting user data
         const getUserData = axios.get(
-            "https://lu-cp-archive-backend.onrender.com/users",
+            'https://lu-cp-archive-backend.onrender.com/users',
             {
                 params: { currentUserEmail: currentUserEmail },
             }
         );
 
         Promise.all([getCardData, getUserData])
-            .then((responses) => {
+            .then(responses => {
                 setCardInfo(responses[0].data);
                 setUserData(responses[1].data);
             })
-            .catch((error) => {
+            .catch(error => {
                 console.log(error.message);
             })
             .finally(() => {
@@ -51,7 +51,7 @@ const Topics = () => {
                 <div className={styles.body_container}>
                     <div className={styles.height1}></div>
                     <div className={styles.card_container}>
-                        {cardInfo.map((cardData) => (
+                        {cardInfo.map(cardData => (
                             <Card
                                 key={cardData._id}
                                 icon={cardData.icon}
@@ -59,7 +59,7 @@ const Topics = () => {
                                 subtitle={cardData.subtitle}
                             />
                         ))}
-                        {userData.role === "power" ? (
+                        {userData.role === 'power' ? (
                             <Card
                                 icon="https://i.ibb.co/tJnhkbF/add-card.png"
                                 title="Add Card"
@@ -71,7 +71,7 @@ const Topics = () => {
                 </div>
             ) : (
                 <>
-                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                    <Stack sx={{ width: '100%', color: 'grey.500' }}>
                         <LinearProgress color="inherit" />
                     </Stack>
                     <ColdStartNotification />

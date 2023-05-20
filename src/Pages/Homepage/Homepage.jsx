@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import styles from "../../styles/Homepage/homepage.module.css";
-import { Button } from "@geist-ui/core";
-import { useNavigate } from "react-router-dom";
-import AuthModal from "../../components/AuthComponents/AuthModal";
-import { useAuth } from "../../context/AuthProvider";
+import React, { useState } from 'react';
+import styles from '../../styles/Homepage/homepage.module.css';
+import { Button } from '@geist-ui/core';
+import { useNavigate } from 'react-router-dom';
+import AuthModal from '../../components/AuthComponents/AuthModal';
+import { useAuth } from '../../context/AuthProvider.jsx';
 
 const Homepage = () => {
     const user = useAuth();
@@ -13,7 +13,7 @@ const Homepage = () => {
 
     const loadDashboardHandler = () => {
         if (user.currentUser !== null) {
-            navigate("/dashboard");
+            navigate('/dashboard');
         } else {
             setShowModal(true);
         }
@@ -50,7 +50,7 @@ const Homepage = () => {
             </div>
             <footer className={styles.footer}>
                 <a
-                    style={{ color: "#c8c8c8" }}
+                    style={{ color: '#c8c8c8' }}
                     href="https://github.com/Iftekhar-Ifat/lu-cp-archive"
                 >
                     © IFTEKHAR

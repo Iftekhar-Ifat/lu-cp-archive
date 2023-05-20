@@ -1,23 +1,23 @@
-import React from "react";
-import styles from "../../styles/components/StatusCard.module.css";
-import { Code, Check, ChevronsLeft, X } from "@geist-ui/icons";
-import OutsideClickHandler from "react-outside-click-handler";
-import Colors from "../colors";
-import { useAuth } from "../../context/AuthProvider";
+import React from 'react';
+import styles from '../../styles/components/StatusCard.module.css';
+import { Code, Check, ChevronsLeft, X } from '@geist-ui/icons';
+import OutsideClickHandler from 'react-outside-click-handler';
+import Colors from '../colors';
+import { useAuth } from '../../context/AuthProvider.jsx';
 
-const StatusCard = (props) => {
+const StatusCard = props => {
     const currentUserEmail = useAuth().currentUser.email;
-    const toggleBtn = (statusColor) => {
+    const toggleBtn = statusColor => {
         if (currentUserEmail) {
             props.toggleStat(false);
             if (statusColor) {
                 props.color(statusColor);
             } else {
-                props.color("#3f3f46");
+                props.color('#3f3f46');
             }
         }
     };
-    const getStatus = (statusText) => {
+    const getStatus = statusText => {
         if (currentUserEmail) {
             props.problemStatusChange({
                 email: currentUserEmail,
@@ -25,7 +25,7 @@ const StatusCard = (props) => {
                 url: `${props.problemUrl}`,
             });
         } else {
-            alert("You need to Signed In !");
+            alert('You need to Signed In !');
         }
     };
 
@@ -42,7 +42,7 @@ const StatusCard = (props) => {
                             className={styles.button_container}
                             onClick={() => {
                                 toggleBtn(`${Colors.orange}`);
-                                getStatus("solving");
+                                getStatus('solving');
                             }}
                         >
                             <Code size={28} color={`${Colors.orange}`} />
@@ -52,7 +52,7 @@ const StatusCard = (props) => {
                             className={styles.button_container}
                             onClick={() => {
                                 toggleBtn(`${Colors.green}`);
-                                getStatus("solved");
+                                getStatus('solved');
                             }}
                         >
                             <Check size={28} color={`${Colors.green}`} />
@@ -62,7 +62,7 @@ const StatusCard = (props) => {
                             className={styles.button_container}
                             onClick={() => {
                                 toggleBtn(`${Colors.violet}`);
-                                getStatus("reviewing");
+                                getStatus('reviewing');
                             }}
                         >
                             <ChevronsLeft
@@ -75,7 +75,7 @@ const StatusCard = (props) => {
                             className={styles.button_container}
                             onClick={() => {
                                 toggleBtn(`${Colors.red}`);
-                                getStatus("skipped");
+                                getStatus('skipped');
                             }}
                         >
                             <X size={28} color={`${Colors.red}`} />

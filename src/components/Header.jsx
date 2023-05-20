@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import styles from "../styles/components/Header.module.css";
-import { Button } from "@geist-ui/core";
-import SignOutModal from "./AuthComponents/SignOutModal";
-import AuthModal from "./AuthComponents/AuthModal";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Avatar } from "@mui/material";
-import { useAuth } from "../context/AuthProvider";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from 'react';
+import styles from '../styles/components/Header.module.css';
+import { Button } from '@geist-ui/core';
+import SignOutModal from './AuthComponents/SignOutModal';
+import AuthModal from './AuthComponents/AuthModal';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Avatar } from '@mui/material';
+import { useAuth } from '../context/AuthProvider.jsx';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Header = () => {
     const user = useAuth();
@@ -18,17 +18,17 @@ const Header = () => {
     const location = useLocation();
 
     const gotoProfile = () => {
-        if (location.pathname !== "/profile") {
-            navigate("/profile");
+        if (location.pathname !== '/profile') {
+            navigate('/profile');
         }
     };
 
     const theme = createTheme({
         palette: {
-            mode: "dark",
+            mode: 'dark',
             neutral: {
-                main: "#18181b",
-                contrastText: "#fff",
+                main: '#18181b',
+                contrastText: '#fff',
             },
         },
     });
@@ -40,7 +40,7 @@ const Header = () => {
                     <div className={styles.logo_container}>
                         <div className="logo-btn">
                             <a href="/">
-                                <div style={{ cursor: "pointer" }}>
+                                <div style={{ cursor: 'pointer' }}>
                                     <img
                                         src="/images/Homepage/logo.png"
                                         alt="logo"
@@ -71,7 +71,7 @@ const Header = () => {
                             >
                                 <Avatar
                                     src={user.currentUser.photoURL}
-                                    style={{ cursor: "pointer" }}
+                                    style={{ cursor: 'pointer' }}
                                 />
                             </div>
                         </div>

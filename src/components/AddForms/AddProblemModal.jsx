@@ -1,26 +1,20 @@
-import { X } from "@geist-ui/icons";
-import React from "react";
-import OutsideClickHandler from "react-outside-click-handler";
-import styles from "../../styles/components/AddProblemModal.module.css";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import ModalItems from "./ModalItems";
+import { X } from '@geist-ui/icons';
+import React from 'react';
+import OutsideClickHandler from 'react-outside-click-handler';
+import styles from '../../styles/components/AddProblemModal.module.css';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import ModalItems from './ModalItems';
 
-const AddProblemModal = ({
-    addProblemModalStatus,
-    addProblemModalStatusChange,
-    show,
-    setShow,
-    allTags,
-}) => {
+const AddProblemModal = ({ show, setShow, allTags }) => {
     if (!show) {
         return null;
     }
     const theme = createTheme({
         palette: {
-            mode: "dark",
+            mode: 'dark',
             neutral: {
-                main: "#18181b",
-                contrastText: "#fff",
+                main: '#18181b',
+                contrastText: '#fff',
             },
         },
     });
@@ -34,7 +28,7 @@ const AddProblemModal = ({
                 >
                     <div className={styles.modal}>
                         <div className={styles.card_header}>
-                            <div style={{ cursor: "pointer" }}>
+                            <div style={{ cursor: 'pointer' }}>
                                 <X
                                     size={28}
                                     onClick={() => setShow(false)}
@@ -43,7 +37,7 @@ const AddProblemModal = ({
                             </div>
                         </div>
                         <ModalItems
-                            modalFor={"problems"}
+                            modalFor={'problems'}
                             show={show}
                             setShow={setShow}
                             allTags={allTags}

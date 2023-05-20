@@ -1,24 +1,24 @@
-import React, { useRef, useState } from "react";
-import { Button, TextField } from "@mui/material";
-import OutsideClickHandler from "react-outside-click-handler";
-import styles from "../../styles/components/CFhandleModal.module.css";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { cfHandleInput } from "../ApiComponents/handleCFhandle";
-import { useAuth } from "../../context/AuthProvider";
+import React, { useRef, useState } from 'react';
+import { Button, TextField } from '@mui/material';
+import OutsideClickHandler from 'react-outside-click-handler';
+import styles from '../../styles/components/CFhandleModal.module.css';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { cfHandleInput } from '../ApiComponents/handleCFhandle';
+import { useAuth } from '../../context/AuthProvider.jsx';
 
-const CFhandleModal = (props) => {
+const CFhandleModal = props => {
     let currentUserEmail = useAuth().currentUser.email;
     const theme = createTheme({
         palette: {
-            mode: "dark",
+            mode: 'dark',
             neutral: {
-                main: "#18181b",
-                contrastText: "#fff",
+                main: '#18181b',
+                contrastText: '#fff',
             },
         },
     });
 
-    const currentCFhandle = localStorage.getItem("cf-handle");
+    const currentCFhandle = localStorage.getItem('cf-handle');
     const [btnDisable, setBtnDisable] = useState(false);
 
     const cfHandleRef = useRef();
@@ -36,7 +36,7 @@ const CFhandleModal = (props) => {
             const response = await fetch(
                 `https://codeforces.com/api/user.info?handles=${userCFhandle}`
             );
-            if (!response.ok) throw Error("Did not received expected data");
+            if (!response.ok) throw Error('Did not received expected data');
             const data = await response.json();
             await cfHandleInput(sendCFhandle);
             setBtnDisable(false);
@@ -59,9 +59,9 @@ const CFhandleModal = (props) => {
                             {currentCFhandle ? (
                                 <h4
                                     style={{
-                                        margin: "0px",
-                                        padding: "0px",
-                                        color: "white",
+                                        margin: '0px',
+                                        padding: '0px',
+                                        color: 'white',
                                     }}
                                 >
                                     Current CF Handle:
@@ -70,9 +70,9 @@ const CFhandleModal = (props) => {
                             ) : (
                                 <h4
                                     style={{
-                                        margin: "0px",
-                                        padding: "0px",
-                                        color: "white",
+                                        margin: '0px',
+                                        padding: '0px',
+                                        color: 'white',
                                     }}
                                 >
                                     Add Your CF Handle
@@ -81,14 +81,14 @@ const CFhandleModal = (props) => {
 
                             <TextField
                                 inputRef={cfHandleRef}
-                                style={{ margin: "15px" }}
+                                style={{ margin: '15px' }}
                                 id="outlined-size-small"
                                 size="small"
                             />
                             <Button
                                 variant="contained"
                                 color="neutral"
-                                style={{ width: "70%", height: "40px" }}
+                                style={{ width: '70%', height: '40px' }}
                                 onClick={getUserCfHandle}
                                 disabled={btnDisable}
                             >

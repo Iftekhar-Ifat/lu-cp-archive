@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react';
 import {
     TextField,
     Button,
@@ -7,18 +7,18 @@ import {
     RadioGroup,
     Radio,
     FormControlLabel,
-} from "@mui/material";
-import { Spacer } from "@geist-ui/core";
-import { inputHandler } from "../ApiComponents/handleInput";
-import Tags from "../TopicWiseComponents/Tags";
+} from '@mui/material';
+import { Spacer } from '@geist-ui/core';
+import { inputHandler } from '../ApiComponents/handleInput';
+import Tags from '../TopicWiseComponents/Tags.jsx';
 
 const TopicWiseModalHandler = ({ setShow, allTags }) => {
-    const path = window.location.pathname.split("/").pop();
+    const path = window.location.pathname.split('/').pop();
     // getting input for problem
     const problemName = useRef();
     const problemUrl = useRef();
-    const [problemDifficulty, setProblemDifficulty] = useState("");
-    const getProblemDifficulty = (event) => {
+    const [problemDifficulty, setProblemDifficulty] = useState('');
+    const getProblemDifficulty = event => {
         setProblemDifficulty(event.target.value);
     };
 
@@ -28,7 +28,7 @@ const TopicWiseModalHandler = ({ setShow, allTags }) => {
     const getProblemInfo = () => {
         setBtnDisable(true);
         const problemItem = {
-            itemId: "topic-wise",
+            itemId: 'topic-wise',
             title: problemName.current.value,
             difficulty: problemDifficulty,
             route: path,
@@ -38,14 +38,14 @@ const TopicWiseModalHandler = ({ setShow, allTags }) => {
         let isEmpty = false;
 
         const problemItemArray = Object.values(problemItem);
-        problemItemArray.forEach((element) => {
-            if (element === "") {
+        problemItemArray.forEach(element => {
+            if (element === '') {
                 isEmpty = true;
             }
         });
 
         if (isEmpty) {
-            alert("Please fill up the form❗");
+            alert('Please fill up the form❗');
             setBtnDisable(false);
         } else {
             inputHandler(problemItem, setShow);
@@ -54,8 +54,8 @@ const TopicWiseModalHandler = ({ setShow, allTags }) => {
     return (
         <div
             style={{
-                padding: "3%",
-                justifyContent: "space-evenly",
+                padding: '3%',
+                justifyContent: 'space-evenly',
             }}
         >
             <TextField
@@ -76,20 +76,20 @@ const TopicWiseModalHandler = ({ setShow, allTags }) => {
                 <FormLabel>Problem Difficulty</FormLabel>
                 <RadioGroup onChange={getProblemDifficulty}>
                     <FormControlLabel
-                        style={{ color: "white" }}
+                        style={{ color: 'white' }}
                         value="Easy"
                         control={<Radio />}
                         label="Easy"
                     />
                     <FormControlLabel
                         value="Medium"
-                        style={{ color: "white" }}
+                        style={{ color: 'white' }}
                         control={<Radio />}
                         label="Medium"
                     />
                     <FormControlLabel
                         value="Hard"
-                        style={{ color: "white" }}
+                        style={{ color: 'white' }}
                         control={<Radio />}
                         label="Hard"
                     />
@@ -104,9 +104,9 @@ const TopicWiseModalHandler = ({ setShow, allTags }) => {
             <Spacer />
             <div
                 style={{
-                    display: "flex",
-                    width: "100%",
-                    justifyContent: "space-evenly",
+                    display: 'flex',
+                    width: '100%',
+                    justifyContent: 'space-evenly',
                 }}
             >
                 <Button

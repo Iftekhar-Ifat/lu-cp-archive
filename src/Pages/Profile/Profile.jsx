@@ -1,17 +1,17 @@
-import React from "react";
-import styles from "../../styles/Profile/profile.module.css";
-import { useAuth } from "../../context/AuthProvider";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { IconButton, TextField } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import React from 'react';
+import styles from '../../styles/Profile/profile.module.css';
+import { useAuth } from '../../context/AuthProvider.jsx';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { IconButton, TextField } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Profile = () => {
     const theme = createTheme({
         palette: {
-            mode: "dark",
+            mode: 'dark',
             neutral: {
-                main: "#18181b",
-                contrastText: "#fff",
+                main: '#18181b',
+                contrastText: '#fff',
             },
         },
     });
@@ -32,7 +32,7 @@ const Profile = () => {
 
                 <div
                     style={{
-                        fontSize: "20px",
+                        fontSize: '20px',
                     }}
                 >
                     Handles
@@ -42,16 +42,16 @@ const Profile = () => {
                         <img
                             src="../images/icons/codeforces_icon.png"
                             style={{
-                                width: "40px",
-                                height: "40px",
-                                objectFit: "contain",
+                                width: '40px',
+                                height: '40px',
+                                objectFit: 'contain',
                             }}
                             alt="site-icon"
                         />
                         <div
                             style={{
-                                paddingLeft: "10px",
-                                fontSize: "20px",
+                                paddingLeft: '10px',
+                                fontSize: '20px',
                             }}
                         >
                             Codeforces

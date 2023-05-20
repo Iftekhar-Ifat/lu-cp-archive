@@ -1,15 +1,15 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { processData } from "../../../../components/TopicWiseComponents/processDataHandler";
-import styles from "../../../../styles/components/TopicWiseDynamic.module.css";
-import { Fab, LinearProgress, Stack } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import axios from "axios";
-import { useAuth } from "../../../../context/AuthProvider";
-import Resources from "../../../../components/Resources";
-import ProblemCard from "../../../../components/TopicWiseComponents/ProblemCard";
-import AddProblemModal from "../../../../components/AddForms/AddProblemModal";
-import ProgressBarCard from "../../../../components/TopicWiseComponents/ProgressBarCard";
+import React, { Fragment, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { processData } from '../../../../components/TopicWiseComponents/processDataHandler';
+import styles from '../../../../styles/components/TopicWiseDynamic.module.css';
+import { Fab, LinearProgress, Stack } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import axios from 'axios';
+import { useAuth } from '../../../../context/AuthProvider.jsx';
+import Resources from '../../../../components/Resources.jsx';
+import ProblemCard from '../../../../components/TopicWiseComponents/ProblemCard.jsx';
+import AddProblemModal from '../../../../components/AddForms/AddProblemModal.jsx';
+import ProgressBarCard from '../../../../components/TopicWiseComponents/ProgressBarCard.jsx';
 
 const TopicProblem = () => {
     //getting route
@@ -49,7 +49,7 @@ const TopicProblem = () => {
 
         //getting user Data
         const getUserData = axios.get(
-            "https://lu-cp-archive-backend.onrender.com/users",
+            'https://lu-cp-archive-backend.onrender.com/users',
             {
                 params: { currentUserEmail: currentUserEmail },
             }
@@ -61,14 +61,14 @@ const TopicProblem = () => {
         );
 
         Promise.all([getProblems, getResources, getUserData, getTags])
-            .then((response) => {
+            .then(response => {
                 setProblems(response[0].data);
                 setResources(response[1].data);
                 setUserData(response[2].data);
                 setAllTags(response[3].data);
                 setLoading(false);
             })
-            .catch((error) => {
+            .catch(error => {
                 console.log(error.message);
             });
     }, [currentUserEmail, problemRoute.topicProblems]);
@@ -76,10 +76,10 @@ const TopicProblem = () => {
     useEffect(() => {
         if (userData && problems) {
             processData(userData, problems)
-                .then((processedData) => {
+                .then(processedData => {
                     setUserProblemStatus(processedData);
                 })
-                .catch((error) => console.error(error));
+                .catch(error => console.error(error));
         }
     }, [userData, problems]);
 
@@ -87,7 +87,7 @@ const TopicProblem = () => {
     useEffect(() => {
         try {
             axios.post(
-                "https://lu-cp-archive-backend.onrender.com/update-problem-status",
+                'https://lu-cp-archive-backend.onrender.com/update-problem-status',
                 {
                     ...problemStatus,
                 }
@@ -100,7 +100,7 @@ const TopicProblem = () => {
     return (
         <Fragment>
             {loading ? (
-                <Stack sx={{ width: "100%", color: "grey.500" }}>
+                <Stack sx={{ width: '100%', color: 'grey.500' }}>
                     <LinearProgress color="inherit" />
                 </Stack>
             ) : (
@@ -117,7 +117,7 @@ const TopicProblem = () => {
                                         Difficulty
                                     </div>
                                 </div>
-                                {problems.map((problem) => (
+                                {problems.map(problem => (
                                     <ProblemCard
                                         key={problem._id}
                                         title={problem.title}
@@ -129,14 +129,14 @@ const TopicProblem = () => {
                                         tags={problem.tags}
                                     />
                                 ))}
-                                {userData.role === "power" ? (
+                                {userData.role === 'power' ? (
                                     <div className={styles.add_btn}>
                                         <Fab
                                             size="medium"
                                             color="secondary"
                                             aria-label="add"
                                             style={{
-                                                background: "#2E2F31",
+                                                background: '#2E2F31',
                                                 zIndex: 0,
                                             }}
                                             onClick={addProblemHandler}
@@ -155,8 +155,8 @@ const TopicProblem = () => {
                                 ) : (
                                     <Stack
                                         sx={{
-                                            width: "100%",
-                                            color: "grey.500",
+                                            width: '100%',
+                                            color: 'grey.500',
                                         }}
                                     >
                                         <LinearProgress color="inherit" />

@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import styles from "../../styles/Dashboard/dashboard.module.css";
-import Card from "../../components/Card";
+import React, { useState, useEffect } from 'react';
+import styles from '../../styles/Dashboard/dashboard.module.css';
+import Card from '../../components/Card.jsx';
 
 const Dashboard = () => {
     const [cardInfo, setCardInfo] = useState([]);
 
     // card data fetching
     useEffect(() => {
-        fetch("./Data/CardData/DashboardData.json")
-            .then((res) => res.json())
-            .then((data) => {
+        fetch('./Data/CardData/DashboardData.json')
+            .then(res => res.json())
+            .then(data => {
                 setCardInfo(data);
             });
     }, []);
@@ -19,7 +19,7 @@ const Dashboard = () => {
             <div className={styles.body_container}>
                 <div className={styles.height1}></div>
                 <div className={styles.card_container}>
-                    {cardInfo.map((cardData) => (
+                    {cardInfo.map(cardData => (
                         <Card
                             key={cardData.key}
                             icon={cardData.icon}

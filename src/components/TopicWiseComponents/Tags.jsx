@@ -5,20 +5,20 @@ import {
     FormGroup,
     FormLabel,
     IconButton,
-} from "@mui/material";
-import React, { useState } from "react";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import AddTagsModal from "../AddForms/AddTagsModal";
+} from '@mui/material';
+import React, { useState } from 'react';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import AddTagsModal from '../AddForms/AddTagsModal';
 
 const Tags = ({ problemTags, setProblemTags, allTags }) => {
-    const handleTagChange = (event) => {
+    const handleTagChange = event => {
         const index = problemTags.indexOf(event.target.value);
         if (index === -1) {
             setProblemTags([...problemTags, event.target.value]);
         } else {
             setProblemTags(
                 problemTags.filter(
-                    (problemTags) => problemTags !== event.target.value
+                    problemTags => problemTags !== event.target.value
                 )
             );
         }
@@ -38,16 +38,16 @@ const Tags = ({ problemTags, setProblemTags, allTags }) => {
                 <FormGroup>
                     <div
                         style={{
-                            display: "grid",
-                            gridTemplateColumns: "1fr 1fr 1fr ",
-                            maxHeight: "80px",
-                            overflowY: "auto",
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr 1fr ',
+                            maxHeight: '80px',
+                            overflowY: 'auto',
                         }}
                     >
-                        {allTags.map((element) => (
+                        {allTags[0].tags.map(element => (
                             <FormControlLabel
                                 key={element}
-                                style={{ color: "white" }}
+                                style={{ color: 'white' }}
                                 label={element}
                                 control={
                                     <Checkbox
@@ -62,8 +62,8 @@ const Tags = ({ problemTags, setProblemTags, allTags }) => {
                         ))}
                         <div
                             style={{
-                                display: "flex",
-                                justifyContent: "center",
+                                display: 'flex',
+                                justifyContent: 'center',
                             }}
                         >
                             <IconButton onClick={addTagsHandler}>

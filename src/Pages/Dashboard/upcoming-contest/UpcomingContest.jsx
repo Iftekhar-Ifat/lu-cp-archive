@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import UpcomingOnlineContest from "../../../components/UpcomingContestComponents/UpcomingOnlineContest";
-import { LinearProgress, Stack } from "@mui/material";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import UpcomingOnlineContest from '../../../components/UpcomingContestComponents/UpcomingOnlineContest.jsx';
+import { LinearProgress, Stack } from '@mui/material';
+import axios from 'axios';
 
 const UpcomingContest = () => {
     const [allContests, setAllContests] = useState({});
 
     //getting upcoming contest data
     const fetchContestData = async () => {
-        const codeforcesContestAPI = "https://kontests.net/api/v1/codeforces";
-        const codechefContestAPI = "https://kontests.net/api/v1/code_chef";
-        const atcoderContestAPI = "https://kontests.net/api/v1/at_coder";
+        const codeforcesContestAPI = 'https://kontests.net/api/v1/codeforces';
+        const codechefContestAPI = 'https://kontests.net/api/v1/code_chef';
+        const atcoderContestAPI = 'https://kontests.net/api/v1/at_coder';
 
         try {
             const getCodeforcesContest = axios.get(codeforcesContestAPI);
@@ -26,18 +26,18 @@ const UpcomingContest = () => {
                     axios.spread((...fetchedContest) => {
                         let allContestData = [];
                         let counter = 1;
-                        fetchedContest.forEach((element) => {
+                        fetchedContest.forEach(element => {
                             if (counter === 1) {
-                                element.data.forEach((contest) => {
-                                    contest["platform"] = "Codeforces";
+                                element.data.forEach(contest => {
+                                    contest['platform'] = 'Codeforces';
                                 });
                             } else if (counter === 2) {
-                                element.data.forEach((contest) => {
-                                    contest["platform"] = "Codechef";
+                                element.data.forEach(contest => {
+                                    contest['platform'] = 'Codechef';
                                 });
                             } else {
-                                element.data.forEach((contest) => {
-                                    contest["platform"] = "Atcoder";
+                                element.data.forEach(contest => {
+                                    contest['platform'] = 'Atcoder';
                                 });
                             }
                             counter++;
@@ -69,7 +69,7 @@ const UpcomingContest = () => {
                 <UpcomingOnlineContest allContests={allContests} />
             ) : (
                 <>
-                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                    <Stack sx={{ width: '100%', color: 'grey.500' }}>
                         <LinearProgress color="inherit" />
                     </Stack>
                 </>

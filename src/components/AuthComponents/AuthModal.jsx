@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import styles from "../../styles/components/AuthModal.module.css";
-import { Modal, Spacer } from "@geist-ui/core";
-import { userInputHandler } from "../ApiComponents/handleUserInput";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider";
+import React, { useState } from 'react';
+import styles from '../../styles/components/AuthModal.module.css';
+import { Modal, Spacer } from '@geist-ui/core';
+import { userInputHandler } from '../ApiComponents/handleUserInput';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthProvider.jsx';
 
 const AuthModal = ({ modalStatus, setModalStatus }) => {
     const { signInWithGoogle } = useAuth();
@@ -18,12 +18,12 @@ const AuthModal = ({ modalStatus, setModalStatus }) => {
         setLoading(true);
         try {
             await signInWithGoogle()
-                .then((result) => {
+                .then(result => {
                     const userData = {
                         name: result.user.displayName,
                         email: result.user.email,
-                        role: "standard",
-                        CFhandle: "",
+                        role: 'standard',
+                        CFhandle: '',
                         status: {
                             solving: [],
                             solved: [],
@@ -33,7 +33,7 @@ const AuthModal = ({ modalStatus, setModalStatus }) => {
                     };
                     userInputHandler(userData);
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                 });
         } catch (err) {
@@ -41,7 +41,7 @@ const AuthModal = ({ modalStatus, setModalStatus }) => {
         }
         setLoading(false);
         setModalStatus(false);
-        navigate("/dashboard");
+        navigate('/dashboard');
     };
 
     return (

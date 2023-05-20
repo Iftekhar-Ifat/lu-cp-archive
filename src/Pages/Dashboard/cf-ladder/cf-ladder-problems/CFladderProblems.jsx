@@ -1,11 +1,11 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { useParams } from "react-router-dom";
-import { processCFdata } from "../../../../components/ProcessCFdata";
-import DynamicCFproblems from "../../../../components/DynamicCFproblems";
-import { LinearProgress, Stack } from "@mui/material";
-import axios from "axios";
-import ColdStartNotification from "../../../../components/ColdStartNotification";
-import { useAuth } from "../../../../context/AuthProvider";
+import React, { useState, useEffect, Fragment } from 'react';
+import { useParams } from 'react-router-dom';
+import { processCFdata } from '../../../../components/ProcessCFdata';
+import DynamicCFproblems from '../../../../components/DynamicCFproblems.jsx';
+import { LinearProgress, Stack } from '@mui/material';
+import axios from 'axios';
+import ColdStartNotification from '../../../../components/ColdStartNotification.jsx';
+import { useAuth } from '../../../../context/AuthProvider.jsx';
 
 const CFladderProblems = () => {
     const [problems, setProblems] = useState([]);
@@ -21,7 +21,7 @@ const CFladderProblems = () => {
         setLoading(true);
         //getting user data
         const getUserData = axios.get(
-            "https://lu-cp-archive-backend.onrender.com/users",
+            'https://lu-cp-archive-backend.onrender.com/users',
             {
                 params: { currentUserEmail: currentUserEmail },
             }
@@ -31,7 +31,7 @@ const CFladderProblems = () => {
         const getCFProblems = axios.get(
             `https://lu-cp-archive-backend.onrender.com/codeforces-problems/${path.ladder}`
         );
-        Promise.all([getUserData, getCFProblems]).then((response) => {
+        Promise.all([getUserData, getCFProblems]).then(response => {
             setUserData(response[0].data);
             setProblems(response[1].data);
             setLoading(false);
@@ -46,8 +46,8 @@ const CFladderProblems = () => {
                     .get(
                         `https://codeforces.com/api/user.status?handle=${userData.CFhandle}`
                     )
-                    .then((response) => {
-                        if (response.data.status === "OK") {
+                    .then(response => {
+                        if (response.data.status === 'OK') {
                             let cfDataWithVerdict = processCFdata(
                                 response.data,
                                 problems
@@ -67,19 +67,19 @@ const CFladderProblems = () => {
             fetch(
                 `https://codeforces.com/api/user.info?handles=${userCFhandle}`
             )
-                .then((response) => {
+                .then(response => {
                     if (!response.ok) {
-                        throw Error("Could not fetch the user info! ❗");
+                        throw Error('Could not fetch the user info! ❗');
                     } else {
                         return response.json();
                     }
                 })
-                .then((data) => {
+                .then(data => {
                     alert(
                         `${data.result[0].handle} handle successfully added! ✅. Reload to see the changes`
                     );
                 })
-                .catch((err) => {
+                .catch(err => {
                     alert(err.message);
                 });
         }
@@ -89,7 +89,7 @@ const CFladderProblems = () => {
         <>
             {loading ? (
                 <>
-                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                    <Stack sx={{ width: '100%', color: 'grey.500' }}>
                         <LinearProgress color="inherit" />
                     </Stack>
                     <ColdStartNotification />

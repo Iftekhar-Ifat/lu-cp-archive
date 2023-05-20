@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import InfoIcon from "@mui/icons-material/Info";
-import styles from "../../styles/components/ProblemCard.module.css";
-import StatusCard from "../TopicWiseComponents/StatusCard";
-import { deleteHandler } from "../ApiComponents/handleDelete";
-import { Modal } from "@geist-ui/core";
-import { useNavigate } from "react-router-dom";
-import { Tooltip, Typography } from "@mui/material";
+import React, { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
+import styles from '../../styles/components/ProblemCard.module.css';
+import StatusCard from './StatusCard';
+import { deleteHandler } from '../ApiComponents/handleDelete';
+import { Modal } from '@geist-ui/core';
+import { useNavigate } from 'react-router-dom';
+import { Tooltip, Typography } from '@mui/material';
 
-const ProblemCard = (props) => {
+const ProblemCard = props => {
     const [modalState, setModalState] = useState(false);
     const deleteModalHandler = () => setModalState(true);
     const closeModalHandler = () => {
@@ -19,18 +19,18 @@ const ProblemCard = (props) => {
     const navigate = useNavigate();
 
     const cardRouteHandler = () => {
-        const nextRoute = props.cardPath + "/" + props.cardTitle;
+        const nextRoute = props.cardPath + '/' + props.cardTitle;
         navigate(nextRoute);
     };
 
     const [dropdownActive, setDropdownsActive] = useState(false);
-    const [statusColor, setStatusColor] = useState("#3f3f46");
-    const [fakeStatusColor, setFakeStatusColor] = useState("#3f3f46");
+    const [statusColor, setStatusColor] = useState('#3f3f46');
+    const [fakeStatusColor, setFakeStatusColor] = useState('#3f3f46');
     const [firstRender, setFirstRender] = useState(0);
 
-    let allTags = "";
+    let allTags = '';
     if (props.tags) {
-        allTags = props.tags.join(", ");
+        allTags = props.tags.join(', ');
     }
 
     const toggleStatus = () => {
@@ -53,7 +53,7 @@ const ProblemCard = (props) => {
                         props.solvedPercentage >= 53
                             ? {
                                   height: `${props.cardSize}px`,
-                                  color: "black",
+                                  color: 'black',
                               }
                             : {
                                   height: `${props.cardSize}px`,
@@ -74,10 +74,10 @@ const ProblemCard = (props) => {
                 href={props.problemUrl}
                 className={styles.problem_card_container}
             >
-                {props.verdict === "AC" ? (
+                {props.verdict === 'AC' ? (
                     <div
                         className={styles.card_container_large}
-                        style={{ background: "#04FF87", color: "black" }}
+                        style={{ background: '#04FF87', color: 'black' }}
                     >
                         <div className={styles.card_wrapper}>
                             <div className={styles.card_title}>
@@ -88,7 +88,7 @@ const ProblemCard = (props) => {
                 ) : (
                     <div
                         className={styles.card_container_large}
-                        style={{ background: "#2e2f31" }}
+                        style={{ background: '#2e2f31' }}
                     >
                         <div className={styles.card_wrapper}>
                             <div className={styles.card_title}>
@@ -110,23 +110,23 @@ const ProblemCard = (props) => {
                                     firstRender === 0 && props.statusColor
                                         ? {
                                               background: `${props.statusColor}`,
-                                              width: "40px",
-                                              height: "40px",
-                                              borderRadius: "50px",
-                                              border: "none",
-                                              cursor: "pointer",
-                                              display: "flex",
-                                              position: "relative",
+                                              width: '40px',
+                                              height: '40px',
+                                              borderRadius: '50px',
+                                              border: 'none',
+                                              cursor: 'pointer',
+                                              display: 'flex',
+                                              position: 'relative',
                                           }
                                         : {
                                               background: `${fakeStatusColor}`,
-                                              width: "40px",
-                                              height: "40px",
-                                              borderRadius: "50px",
-                                              border: "none",
-                                              cursor: "pointer",
-                                              display: "flex",
-                                              position: "relative",
+                                              width: '40px',
+                                              height: '40px',
+                                              borderRadius: '50px',
+                                              border: 'none',
+                                              cursor: 'pointer',
+                                              display: 'flex',
+                                              position: 'relative',
                                           }
                                 }
                                 onClick={toggleStatus}
@@ -134,12 +134,12 @@ const ProblemCard = (props) => {
                             <div>
                                 {dropdownActive ? (
                                     <StatusCard
-                                        color={(color) => {
+                                        color={color => {
                                             setFirstRender(1);
                                             setStatusColor(color);
                                             setFakeStatusColor(color);
                                         }}
-                                        toggleStat={(toggle) =>
+                                        toggleStat={toggle =>
                                             setDropdownsActive(toggle)
                                         }
                                         problemStatusChange={
@@ -151,16 +151,16 @@ const ProblemCard = (props) => {
                             </div>
                         </div>
                         <a className={styles.title} href={`${props.url}`}>
-                            {props.title}{" "}
+                            {props.title}{' '}
                         </a>
                         <div
                             className={styles.difficulty}
                             style={
-                                props.difficulty === "Easy"
-                                    ? { color: "#00FF00" }
-                                    : props.difficulty === "Medium"
-                                    ? { color: "#FF6400" }
-                                    : { color: "#FF0000" }
+                                props.difficulty === 'Easy'
+                                    ? { color: '#00FF00' }
+                                    : props.difficulty === 'Medium'
+                                    ? { color: '#FF6400' }
+                                    : { color: '#FF0000' }
                             }
                         >
                             {props.difficulty}
@@ -174,25 +174,25 @@ const ProblemCard = (props) => {
                                             {allTags}
                                         </Typography>
                                     ) : (
-                                        ""
+                                        ''
                                     )
                                 }
                                 arrow
                                 placement="top"
                             >
                                 <IconButton aria-label="delete" size="large">
-                                    <InfoIcon style={{ color: "white" }} />
+                                    <InfoIcon style={{ color: 'white' }} />
                                 </IconButton>
                             </Tooltip>
                         </div>
                         <div className={styles.deleteBtn}>
-                            {props.role === "power" ? (
+                            {props.role === 'power' ? (
                                 <IconButton
                                     aria-label="delete"
                                     size="large"
                                     onClick={deleteModalHandler}
                                 >
-                                    <DeleteIcon style={{ color: "white" }} />
+                                    <DeleteIcon style={{ color: 'white' }} />
                                 </IconButton>
                             ) : null}
                         </div>

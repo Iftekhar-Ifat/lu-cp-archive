@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import LinkCard from "../../../components/LinkCard";
-import styles from "../../../styles/components/TopicWiseDynamic.module.css";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-import AddResourcesModal from "../../../components/AddForms/AddResourcesModal";
-import { LinearProgress, Stack } from "@mui/material";
-import ColdStartNotification from "../../../components/ColdStartNotification";
-import axios from "axios";
-import { useAuth } from "../../../context/AuthProvider";
+import React, { useState, useEffect } from 'react';
+import { LinearProgress, Stack } from '@mui/material';
+import LinkCard from '../../../components/LinkCard.jsx';
+import styles from '../../../styles/components/TopicWiseDynamic.module.css';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import AddResourcesModal from '../../../components/AddForms/AddResourcesModal.jsx';
+import { useAuth } from '../../../context/AuthProvider.jsx';
+import axios from 'axios';
+import ColdStartNotification from '../../../components/ColdStartNotification.jsx';
 
-const LUPSshortContest = () => {
+const IntraLUcontest = () => {
     const currentUserEmail = useAuth().currentUser.email;
 
     const [userData, setUserData] = useState([]);
@@ -22,25 +22,21 @@ const LUPSshortContest = () => {
         setLoading(true);
         //getting user Data
         const getUserData = axios.get(
-            "https://lu-cp-archive-backend.onrender.com/users",
+            'https://lu-cp-archive-backend.onrender.com/users',
             {
                 params: { currentUserEmail: currentUserEmail },
             }
         );
 
         const getPageContent = axios.get(
-            "https://lu-cp-archive-backend.onrender.com/lu-problemsolver-short-contest"
+            'https://lu-cp-archive-backend.onrender.com/intra-lu-contest'
         );
 
-        Promise.all([getUserData, getPageContent])
-            .then((response) => {
-                setUserData(response[0].data);
-                setContests(response[1].data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.log(error.message);
-            });
+        Promise.all([getUserData, getPageContent]).then(response => {
+            setUserData(response[0].data);
+            setContests(response[1].data);
+            setLoading(false);
+        });
     }, [currentUserEmail]);
 
     const addProblemHandler = () => {
@@ -48,26 +44,30 @@ const LUPSshortContest = () => {
         setShow(true);
     };
 
+    //
     return (
         <div>
             {loading ? (
                 <>
-                    <Stack sx={{ width: "100%", color: "grey.500" }}>
+                    <Stack sx={{ width: '100%', color: 'grey.500' }}>
                         <LinearProgress color="inherit" />
                     </Stack>
                     <ColdStartNotification />
                 </>
+            ) : null}
+            {addProblemToggle ? (
+                <AddResourcesModal show={show} setShow={setShow} />
             ) : (
                 <div
                     className={styles.container}
-                    style={{ paddingLeft: "20%", paddingRight: "20%" }}
+                    style={{ paddingLeft: '20%', paddingRight: '20%' }}
                 >
                     <div className={styles.wrapper}>
                         <div
                             className={styles.problem_section}
-                            style={{ width: "100%" }}
+                            style={{ width: '100%' }}
                         >
-                            {contests.map((item) => (
+                            {contests.map(item => (
                                 <LinkCard
                                     key={item._id}
                                     cardURL={item.url}
@@ -75,13 +75,13 @@ const LUPSshortContest = () => {
                                 />
                             ))}
 
-                            {userData.role === "power" ? (
+                            {userData.role === 'power' ? (
                                 <div className={styles.add_btn}>
                                     <Fab
                                         size="medium"
                                         color="secondary"
                                         aria-label="add"
-                                        style={{ background: "#2E2F31" }}
+                                        style={{ background: '#2E2F31' }}
                                         onClick={addProblemHandler}
                                     >
                                         <AddIcon />
@@ -92,12 +92,8 @@ const LUPSshortContest = () => {
                     </div>
                 </div>
             )}
-
-            {addProblemToggle ? (
-                <AddResourcesModal show={show} setShow={setShow} />
-            ) : null}
         </div>
     );
 };
 
-export default LUPSshortContest;
+export default IntraLUcontest;

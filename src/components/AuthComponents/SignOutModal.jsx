@@ -1,7 +1,7 @@
-import React from "react";
-import { Modal } from "@geist-ui/core";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider";
+import React from 'react';
+import { Modal } from '@geist-ui/core';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthProvider.jsx';
 
 const SignOutModal = ({ signOutTriggerStatus, signOutTriggerStatusChange }) => {
     const { logout } = useAuth();
@@ -13,14 +13,14 @@ const SignOutModal = ({ signOutTriggerStatus, signOutTriggerStatusChange }) => {
         try {
             await logout()
                 .then(() => {
-                    navigate("/");
+                    navigate('/');
                 })
                 .catch(() => {
-                    alert("Error in logout");
+                    alert('Error in logout');
                 });
             closeHandler();
         } catch (err) {
-            alert("Error in logout");
+            alert('Error in logout');
         }
     }
     return (
@@ -28,7 +28,7 @@ const SignOutModal = ({ signOutTriggerStatus, signOutTriggerStatusChange }) => {
             <Modal
                 visible={signOutTriggerStatus}
                 onClose={closeHandler}
-                style={{ overflow: "none" }}
+                style={{ overflow: 'none' }}
             >
                 <Modal.Title>Sign Out!</Modal.Title>
                 <Modal.Subtitle>Do you want to sign out?</Modal.Subtitle>

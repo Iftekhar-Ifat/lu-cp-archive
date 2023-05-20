@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import styles from "../../styles/components/TopicWiseDynamic.module.css";
-import ProblemCard from "../TopicWiseComponents/ProblemCard";
-import Resources from "../Resources";
-import ProgressBarCard from "../TopicWiseComponents/ProgressBarCard";
-import AddProblemModal from "../AddForms/AddProblemModal";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
+import React, { useState } from 'react';
+import styles from '../../styles/components/TopicWiseDynamic.module.css';
+import ProblemCard from './ProblemCard';
+import Resources from '../Resources';
+import ProgressBarCard from './ProgressBarCard';
+import AddProblemModal from '../AddForms/AddProblemModal';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 
-const DynamicTopicItem = (props) => {
+const DynamicTopicItem = props => {
     const [addProblemToggle, setAddProblemToggle] = useState(false);
     const [show, setShow] = useState(false);
     const addProblemHandler = () => {
@@ -25,7 +25,7 @@ const DynamicTopicItem = (props) => {
                             <div className={styles.title_div}>Title</div>
                             <div className={styles.difficulty}>Difficulty</div>
                         </div>
-                        {props.problems.map((problem) => (
+                        {props.problems.map(problem => (
                             <ProblemCard
                                 key={problem._id}
                                 title={problem.title}
@@ -37,14 +37,14 @@ const DynamicTopicItem = (props) => {
                                 tags={problem.tags}
                             />
                         ))}
-                        {props.userRole === "power" ? (
+                        {props.userRole === 'power' ? (
                             <div className={styles.add_btn}>
                                 <Fab
                                     size="medium"
                                     color="secondary"
                                     aria-label="add"
                                     style={{
-                                        background: "#2E2F31",
+                                        background: '#2E2F31',
                                         zIndex: 0,
                                     }}
                                     onClick={addProblemHandler}
