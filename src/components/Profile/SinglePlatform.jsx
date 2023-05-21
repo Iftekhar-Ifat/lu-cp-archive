@@ -3,6 +3,7 @@ import styles from '../../styles/Profile/profile.module.css';
 import { Grid } from '@mui/material';
 
 const SinglePlatform = ({ platform, isRegistered }) => {
+    // change the props isRegistered to SEE the difference
     console.log(isRegistered);
     console.log(platform);
     return (
