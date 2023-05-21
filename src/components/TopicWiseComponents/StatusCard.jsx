@@ -1,8 +1,7 @@
-import React from 'react';
 import styles from '../../styles/components/StatusCard.module.css';
 import { Code, Check, ChevronsLeft, X } from '@geist-ui/icons';
 import OutsideClickHandler from 'react-outside-click-handler';
-import Colors from '../colors';
+import { Colors } from '../colors';
 import { useAuth } from '../../context/AuthProvider.jsx';
 
 const StatusCard = props => {

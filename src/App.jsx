@@ -1,4 +1,3 @@
-import React from 'react';
 import Homepage from './Pages/Homepage/Homepage.jsx';
 import Dashboard from './Pages/Dashboard/Dashboard.jsx';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -65,7 +64,9 @@ function App() {
                                 element={<LUPSmarathonContest />}
                             />
                             <Route
-                                path={'/dashboard/lu-problemsolver-short-contest'}
+                                path={
+                                    '/dashboard/lu-problemsolver-short-contest'
+                                }
                                 element={<LUPSshortContest />}
                             />
                             <Route

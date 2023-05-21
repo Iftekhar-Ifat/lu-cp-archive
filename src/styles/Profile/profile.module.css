@@ -29,12 +29,14 @@
     flex-direction: column !important;
     flex-wrap: wrap;
     margin-top: 10px !important;
-    background-color: #2E2F31;
-    background: #2E2F31;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background-color: #2e2f31;
+    background: #2e2f31;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25),
+        0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     overflow: hidden;
-    padding: 25px 0;
+    padding-top: 15px;
+    padding-bottom: 25px;
 }
 
 .icon_and_name {
@@ -52,21 +54,20 @@
     padding-top: 5px;
 }
 
-.hr{
+.hr {
     width: 100%;
     margin-left: -2px;
     color: #242424 !important;
 }
-.info{
+.info {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     width: 95%;
-    margin-left:-2%;
-    padding: 7px 0;
+    margin-left: -2%;
     margin-top: 10px;
 }
-.input{
+.input {
     width: 65%;
     border: 1px solid #747474;
     background-color: transparent;
@@ -75,14 +76,14 @@
     color: #999;
     font-size: 16px;
 }
-input:focus{
+input:focus {
     outline: none;
 }
 
-.save_button{
+.save_button {
     background-color: #242424;
     color: #fff;
-    padding:7px 12px;
+    padding: 7px 12px;
     border-radius: 10px;
     outline: none;
     border: none;
@@ -90,7 +91,7 @@ input:focus{
     cursor: pointer;
 }
 
-.extra_info{
+.extra_info {
     margin-left: 15px;
     width: 100%;
     font-size: 16px;

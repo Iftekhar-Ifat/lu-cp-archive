@@ -1,58 +1,37 @@
-import { X } from "@geist-ui/icons";
-import React from "react";
-import OutsideClickHandler from "react-outside-click-handler";
-import styles from "../../styles/components/AddProblemModal.module.css";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import ModalItems from "./ModalItems";
+import { X } from '@geist-ui/icons';
+import OutsideClickHandler from 'react-outside-click-handler';
+import styles from '../../styles/components/AddProblemModal.module.css';
+import ModalItems from './ModalItems';
 
-const AddResourcesModal = ({
-    addProblemModalStatus,
-    addProblemModalStatusChange,
-    show,
-    setShow,
-}) => {
+const AddResourcesModal = ({ show, setShow }) => {
     if (!show) {
         return null;
     }
-    const theme = createTheme({
-        palette: {
-            mode: "dark",
-            neutral: {
-                main: "#18181b",
-                contrastText: "#fff",
-            },
-        },
-    });
     return (
-        <ThemeProvider theme={theme}>
-            <div className={styles.modalWrapper}>
-                <OutsideClickHandler
-                    onOutsideClick={() => {
-                        setShow(false);
-                    }}
-                >
-                    <div
-                        className={styles.modal}
-                        style={{ minHeight: "250px" }}
-                    >
-                        <div className={styles.card_header}>
-                            <div style={{ cursor: "pointer" }}>
-                                <X
-                                    size={28}
-                                    onClick={() => setShow(false)}
-                                    color="white"
-                                />
-                            </div>
+        <div className={styles.modalWrapper}>
+            <OutsideClickHandler
+                onOutsideClick={() => {
+                    setShow(false);
+                }}
+            >
+                <div className={styles.modal} style={{ minHeight: '250px' }}>
+                    <div className={styles.card_header}>
+                        <div style={{ cursor: 'pointer' }}>
+                            <X
+                                size={28}
+                                onClick={() => setShow(false)}
+                                color="white"
+                            />
                         </div>
-                        <ModalItems
-                            modalFor={"resources"}
-                            show={show}
-                            setShow={setShow}
-                        />
                     </div>
-                </OutsideClickHandler>
-            </div>
-        </ThemeProvider>
+                    <ModalItems
+                        modalFor={'resources'}
+                        show={show}
+                        setShow={setShow}
+                    />
+                </div>
+            </OutsideClickHandler>
+        </div>
     );
 };
 

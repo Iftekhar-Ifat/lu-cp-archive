@@ -1,25 +1,24 @@
-import React from "react";
-import styles from "../styles/components/Card.module.css";
-import { useNavigate } from "react-router-dom";
+import styles from '../styles/components/Card.module.css';
+import { useNavigate } from 'react-router-dom';
 
-const Card = (props) => {
+const Card = props => {
     const navigate = useNavigate();
     const routeHandler = () => {
         let processedRoute =
             window.location.pathname +
-            "/" +
-            props.title.replace(/\s+/g, "-").toLowerCase();
+            '/' +
+            props.title.replace(/\s+/g, '-').toLowerCase();
         navigate(processedRoute);
     };
 
-    if (props.title === "Add Card") {
+    if (props.title === 'Add Card') {
         return (
             <div
                 onClick={() => {
                     props.setToggleAddCardModal(true);
                     props.setShow(true);
                 }}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: 'pointer' }}
             >
                 <div>
                     <div className={styles.card_container}>
@@ -38,7 +37,7 @@ const Card = (props) => {
         );
     } else if (props.subtitle) {
         return (
-            <div onClick={routeHandler} style={{ cursor: "pointer" }}>
+            <div onClick={routeHandler} style={{ cursor: 'pointer' }}>
                 <div>
                     <div className={styles.card_container}>
                         <div className={styles.icon_div}>
@@ -59,7 +58,7 @@ const Card = (props) => {
         );
     } else {
         return (
-            <div onClick={routeHandler} style={{ cursor: "pointer" }}>
+            <div onClick={routeHandler} style={{ cursor: 'pointer' }}>
                 <div>
                     <div className={styles.card_container}>
                         <div className={styles.only_title_icon_div}>

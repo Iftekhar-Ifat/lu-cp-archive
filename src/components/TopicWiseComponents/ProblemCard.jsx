@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InfoIcon from '@mui/icons-material/Info';
@@ -24,7 +24,7 @@ const ProblemCard = props => {
     };
 
     const [dropdownActive, setDropdownsActive] = useState(false);
-    const [statusColor, setStatusColor] = useState('#3f3f46');
+    const [, setStatusColor] = useState('#3f3f46');
     const [fakeStatusColor, setFakeStatusColor] = useState('#3f3f46');
     const [firstRender, setFirstRender] = useState(0);
 
@@ -181,7 +181,7 @@ const ProblemCard = props => {
                                 placement="top"
                             >
                                 <IconButton aria-label="delete" size="large">
-                                    <InfoIcon style={{ color: 'white' }} />
+                                    <InfoIcon />
                                 </IconButton>
                             </Tooltip>
                         </div>
@@ -192,7 +192,7 @@ const ProblemCard = props => {
                                     size="large"
                                     onClick={deleteModalHandler}
                                 >
-                                    <DeleteIcon style={{ color: 'white' }} />
+                                    <DeleteIcon />
                                 </IconButton>
                             ) : null}
                         </div>

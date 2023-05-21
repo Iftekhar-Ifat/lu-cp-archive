@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from '../../styles/Profile/profile.module.css';
 import { useAuth } from '../../context/AuthProvider';
 
@@ -12,9 +11,13 @@ const NameAndImage = () => {
                 src={user.currentUser.photoURL}
                 className={styles.user_photo}
             />
-            <h2 style={{ marginTop: '20px', fontSize: '32px', fontWeight: 500 }}>{user.currentUser.displayName}</h2>
+            <h2
+                style={{ marginTop: '20px', fontSize: '32px', fontWeight: 500 }}
+            >
+                {user.currentUser.displayName}
+            </h2>
         </div>
-    )
-}
+    );
+};
 
-export default NameAndImage
+export default NameAndImage;

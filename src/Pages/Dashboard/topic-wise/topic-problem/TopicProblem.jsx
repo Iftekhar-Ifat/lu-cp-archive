@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { processData } from '../../../../components/TopicWiseComponents/processDataHandler';
 import styles from '../../../../styles/components/TopicWiseDynamic.module.css';
@@ -141,7 +141,9 @@ const TopicProblem = () => {
                                             }}
                                             onClick={addProblemHandler}
                                         >
-                                            <AddIcon />
+                                            <AddIcon
+                                                style={{ color: 'white' }}
+                                            />
                                         </Fab>
                                     </div>
                                 ) : null}
