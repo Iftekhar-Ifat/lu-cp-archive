@@ -44,6 +44,7 @@ const Profile = () => {
             accuracy: 80
         }
     ];
+    const isRegistered = true;
     return (
         <Container maxWidth="lg" className={styles.wrapper}>
             {/* name and image component */}
@@ -53,7 +54,7 @@ const Profile = () => {
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                 {
                     platforms.map((item, index) => {
-                        return (<SinglePlatform key={index} platform={item} />);
+                        return (<SinglePlatform key={index} platform={item} isRegistered={isRegistered} />);
                     })
                 }
             </Grid>

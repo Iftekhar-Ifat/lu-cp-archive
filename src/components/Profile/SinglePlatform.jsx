@@ -2,7 +2,9 @@ import React from 'react'
 import styles from '../../styles/Profile/profile.module.css';
 import { Grid } from '@mui/material';
 
-const SinglePlatform = ({ platform }) => {
+const SinglePlatform = ({ platform, isRegistered }) => {
+    console.log(isRegistered);
+    console.log(platform);
     return (
         <Grid item xs={2} sm={4} md={4} >
             <div className={styles.card_wrapper}>
@@ -27,8 +29,24 @@ const SinglePlatform = ({ platform }) => {
                     {/* input */}
                     <input type="text" className={styles.input} placeholder='enter your handle...' />
                     {/* save button */}
-                    <button className={styles.save_button}>Save</button>
+                    {
+                        isRegistered ? <button className={styles.save_button}>Edit</button> : <button className={styles.save_button}>Save</button>
+                    }
                 </div>
+                {
+                    isRegistered && (
+                        <>
+                            <div className={styles.extra_info}>
+                                <p>Current Rating: <span style={{ color: '#5BD9EA', fontWeight: 600 }}>{platform.rating}</span></p>
+                                <p style={{ marginTop: '-10px' }} >(Max Ratting: <span style={{ color: '#5BD9EA', fontWeight: 600 }}>{platform.maxRating}</span>) </p>
+                            </div>
+                            <div className={styles.extra_info}>
+                                <p>Current Rank: <span style={{ color: '#B799FF', fontWeight: 600 }}>{platform.rank}</span></p>
+                                <p style={{ marginTop: '-10px' }} >(Max Ranking: <span style={{ color: '#5BD9EA', fontWeight: 600 }}>{platform.maxRank}</span>) </p>
+                            </div>
+                        </>
+                    )
+                }
             </div>
         </Grid>
 
