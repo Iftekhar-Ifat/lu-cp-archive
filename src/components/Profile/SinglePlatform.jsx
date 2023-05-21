@@ -7,7 +7,7 @@ const SinglePlatform = ({ platform, isRegistered }) => {
     console.log(isRegistered);
     console.log(platform);
     return (
-        <Grid item xs={2} sm={4} md={4} >
+        <Grid item xs={2} sm={4} md={4} style={{marginBottom: '3rem'}}>
             <div className={styles.card_wrapper}>
                 {/* icon and name */}
                 <div className={styles.icon_and_name}>
