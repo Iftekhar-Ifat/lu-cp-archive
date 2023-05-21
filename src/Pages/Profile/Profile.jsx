@@ -1,75 +1,63 @@
 import React from 'react';
 import styles from '../../styles/Profile/profile.module.css';
 import { useAuth } from '../../context/AuthProvider.jsx';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { IconButton, TextField } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Container, Grid, IconButton, TextField } from '@mui/material';
+import NameAndImage from '../../components/Profile/NameAndImage';
+import SinglePlatform from '../../components/Profile/SinglePlatform';
 
 const Profile = () => {
-    const theme = createTheme({
-        palette: {
-            mode: 'dark',
-            neutral: {
-                main: '#18181b',
-                contrastText: '#fff',
-            },
-        },
-    });
-
     const user = useAuth();
-
+    const platforms = [
+        {
+            name: 'Codeforces',
+            link: 'https://codeforces.com/profile/abhishek_080',
+            icon: '/images/icons/codeforces_icon.png',
+            rating: 1600,
+            maxRating: 1600,
+            rank: 'Newbie',
+            maxRank: 'Newbie',
+            solved: 0,
+            attempted: 0,
+            accuracy: 0,
+        }, {
+            name: 'Codechef',
+            link: 'https://www.codechef.com/users/abhishek_080',
+            icon: '/images/icons/codechef_icon.png',
+            rating: 1600,
+            maxRating: 1600,
+            rank: 'Newbie',
+            maxRank: 'Newbie',
+            solved: 0,
+            attempted: 0,
+            accuracy: 0,
+        },
+        {
+            name: 'Vjudge',
+            link: 'https://www.vjudge.net/profile/VJudgeUser',
+            icon: '/images/icons/codeforces_icon.png',
+            rating: 1900,
+            maxRating: 2000,
+            rank: 'Specialist',
+            maxRank: 'Expert',
+            solved: 120,
+            attempted: 150,
+            accuracy: 80
+        }
+    ];
     return (
-        <ThemeProvider theme={theme}>
-            <div className={styles.wrapper}>
-                <div>
-                    <img
-                        alt="user_photo"
-                        src={user.currentUser.photoURL}
-                        className={styles.user_photo}
-                    />
-                    <h2>{user.currentUser.displayName}</h2>
-                </div>
-
-                <div
-                    style={{
-                        fontSize: '20px',
-                    }}
-                >
-                    Handles
-                </div>
-                <div className={styles.handle_wrapper}>
-                    <div className={styles.web_title}>
-                        <img
-                            src="../images/icons/codeforces_icon.png"
-                            style={{
-                                width: '40px',
-                                height: '40px',
-                                objectFit: 'contain',
-                            }}
-                            alt="site-icon"
-                        />
-                        <div
-                            style={{
-                                paddingLeft: '10px',
-                                fontSize: '20px',
-                            }}
-                        >
-                            Codeforces
-                        </div>
-                    </div>
-                    <div>
-                        <TextField
-                            id="outlined-basic"
-                            label="Outlined"
-                            variant="outlined"
-                        />
-                    </div>
-                    <IconButton aria-label="delete">
-                        <DeleteIcon />
-                    </IconButton>
-                </div>
-            </div>
-        </ThemeProvider>
+        <Container maxWidth="lg" className={styles.wrapper}>
+            {/* name and image component */}
+            <NameAndImage />
+            <hr />
+            {/* card for info showing */}
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                {
+                    platforms.map((item, index) => {
+                        return (<SinglePlatform key={index} platform={item} />);
+                    })
+                }
+            </Grid>
+        </Container>
     );
 };
 

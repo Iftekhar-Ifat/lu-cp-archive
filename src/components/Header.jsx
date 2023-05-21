@@ -3,7 +3,6 @@ import styles from '../styles/components/Header.module.css';
 import { Button } from '@geist-ui/core';
 import SignOutModal from './AuthComponents/SignOutModal';
 import AuthModal from './AuthComponents/AuthModal';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Avatar } from '@mui/material';
 import { useAuth } from '../context/AuthProvider.jsx';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -23,18 +22,7 @@ const Header = () => {
         }
     };
 
-    const theme = createTheme({
-        palette: {
-            mode: 'dark',
-            neutral: {
-                main: '#18181b',
-                contrastText: '#fff',
-            },
-        },
-    });
-
     return (
-        <ThemeProvider theme={theme}>
             <header className={styles.header}>
                 <div className={styles.header_container}>
                     <div className={styles.logo_container}>
@@ -105,7 +93,6 @@ const Header = () => {
                     ) : null}
                 </div>
             </header>
-        </ThemeProvider>
     );
 };
 
