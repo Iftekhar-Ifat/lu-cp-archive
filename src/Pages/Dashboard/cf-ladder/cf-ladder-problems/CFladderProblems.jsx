@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { processCFdata } from '../../../../components/ProcessCFdata';
 import DynamicCFproblems from '../../../../components/DynamicCFproblems.jsx';

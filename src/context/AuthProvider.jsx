@@ -1,9 +1,10 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 import { auth } from '../lib/firebase';
 import { signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const AuthContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
     return useContext(AuthContext);
 }

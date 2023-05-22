@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import LinkCard from '../../../components/LinkCard.jsx';
 import styles from '../../../styles/components/TopicWiseDynamic.module.css';
 import Fab from '@mui/material/Fab';

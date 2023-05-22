@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Card from '../../../components/Card.jsx';
 import styles from '../../../styles/Dashboard/dashboard.module.css';
 import AddCardsModal from '../../../components/AddForms/AddCardsModal.jsx';

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import UpcomingOnlineContest from '../../../components/UpcomingContestComponents/UpcomingOnlineContest.jsx';
 import { LinearProgress, Stack } from '@mui/material';
 import axios from 'axios';
