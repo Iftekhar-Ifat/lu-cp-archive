@@ -1,18 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import styles from '../../styles/Dashboard/dashboard.module.css';
 import Card from '../../components/Card.jsx';
 
 const Dashboard = () => {
-    const [cardInfo, setCardInfo] = useState([]);
+    const { data: cardInfo, isLoading } = useQuery({
+        queryKey: ['cardInfo'],
+        queryFn: async () => {
+            const result = await axios.get(
+                './Data/CardData/DashboardData.json'
+            );
+            return result.data;
+        },
+        cacheTime: Infinity,
+    });
 
-    // card data fetching
-    useEffect(() => {
-        fetch('./Data/CardData/DashboardData.json')
-            .then(res => res.json())
-            .then(data => {
-                setCardInfo(data);
-            });
-    }, []);
+    if (isLoading) {
+        return <h1 style={{ color: 'white' }}>Loading...</h1>;
+    }
 
     return (
         <div>

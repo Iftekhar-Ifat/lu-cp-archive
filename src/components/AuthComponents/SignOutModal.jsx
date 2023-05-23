@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal } from '@geist-ui/core';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider.jsx';
