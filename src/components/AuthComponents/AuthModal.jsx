@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from '../../styles/components/AuthModal.module.css';
 import { Modal, Spacer } from '@geist-ui/core';
 import { userInputHandler } from '../ApiComponents/handleUserInput';
@@ -23,7 +23,7 @@ const AuthModal = ({ modalStatus, setModalStatus }) => {
                         name: result.user.displayName,
                         email: result.user.email,
                         role: 'standard',
-                        CFhandle: '',
+                        handles: [],
                         status: {
                             solving: [],
                             solved: [],

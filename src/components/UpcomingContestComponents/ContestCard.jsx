@@ -1,9 +1,9 @@
-import React, { Fragment } from "react";
-import styles from "../../styles/upcoming_contests/ContestCard.module.css";
-import moment from "moment";
-import Countdown from "react-countdown";
+import { Fragment } from 'react';
+import styles from '../../styles/upcoming_contests/ContestCard.module.css';
+import moment from 'moment';
+import Countdown from 'react-countdown';
 
-const ContestCard = (props) => {
+const ContestCard = props => {
     return (
         <Fragment>
             {props.contest ? (
@@ -14,24 +14,24 @@ const ContestCard = (props) => {
                             href={`${props.contest.url}`}
                         >
                             <div className={styles.contest_icon}>
-                                {props.contest.platform === "Codeforces" ? (
+                                {props.contest.platform === 'Codeforces' ? (
                                     <img
                                         src="../images/icons/codeforces_icon.png"
                                         style={{
-                                            width: "100%",
-                                            height: "100%",
-                                            objectFit: "contain",
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'contain',
                                         }}
                                         alt="site-icon"
                                     />
-                                ) : props.contest.platform === "Codechef" ? (
+                                ) : props.contest.platform === 'Codechef' ? (
                                     <img
                                         alt="platform-icon"
                                         src="../images/icons/codechef_icon.png"
                                         style={{
-                                            width: "100%",
-                                            height: "100%",
-                                            objectFit: "contain",
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'contain',
                                         }}
                                     />
                                 ) : (
@@ -39,9 +39,9 @@ const ContestCard = (props) => {
                                         alt="platform-icon"
                                         src="../images/icons/atcoder_icon.png"
                                         style={{
-                                            width: "100%",
-                                            height: "100%",
-                                            objectFit: "contain",
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'contain',
                                         }}
                                     />
                                 )}
@@ -50,8 +50,8 @@ const ContestCard = (props) => {
                         </a>
                         <span className={styles.starting_time}>
                             {moment
-                                .tz(`${props.contest.start_time}`, "Asia/Dhaka")
-                                .format("Do MMM, h:mm a")}
+                                .tz(`${props.contest.start_time}`, 'Asia/Dhaka')
+                                .format('Do MMM, h:mm a')}
                         </span>
                         <span className={styles.duration}>
                             {(+props.contest.duration / 3600).toFixed(2)} hr

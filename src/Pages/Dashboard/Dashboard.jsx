@@ -2,9 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import styles from '../../styles/Dashboard/dashboard.module.css';
 import Card from '../../components/Card.jsx';
+import Loading from '../../components/Loading';
 
 const Dashboard = () => {
-    const { data: cardInfo, isLoading } = useQuery({
+    const cardInfo = useQuery({
         queryKey: ['cardInfo'],
         queryFn: async () => {
             const result = await axios.get(
@@ -13,10 +14,11 @@ const Dashboard = () => {
             return result.data;
         },
         cacheTime: Infinity,
+        staleTime: Infinity,
     });
 
-    if (isLoading) {
-        return <h1 style={{ color: 'white' }}>Loading...</h1>;
+    if (cardInfo.isLoading) {
+        return <Loading />;
     }
 
     return (
@@ -24,7 +26,7 @@ const Dashboard = () => {
             <div className={styles.body_container}>
                 <div className={styles.height1}></div>
                 <div className={styles.card_container}>
-                    {cardInfo.map(cardData => (
+                    {cardInfo.data.map(cardData => (
                         <Card
                             key={cardData.key}
                             icon={cardData.icon}
