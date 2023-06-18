@@ -6,7 +6,7 @@ import Loading from '../../components/Loading';
 
 const Dashboard = () => {
     const cardInfo = useQuery({
-        queryKey: ['cardInfo'],
+        queryKey: ['dashboardCards'],
         queryFn: async () => {
             const result = await axios.get(
                 './Data/CardData/DashboardData.json'
