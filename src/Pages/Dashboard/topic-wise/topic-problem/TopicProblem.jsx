@@ -1,8 +1,8 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { processData } from '../../../../components/TopicWiseComponents/processDataHandler';
 import styles from '../../../../styles/components/TopicWiseDynamic.module.css';
-import { Fab, LinearProgress, Stack } from '@mui/material';
+import { Fab, LinearProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
 import { useAuth } from '../../../../context/AuthProvider.jsx';
@@ -10,21 +10,24 @@ import Resources from '../../../../components/Resources.jsx';
 import ProblemCard from '../../../../components/TopicWiseComponents/ProblemCard.jsx';
 import AddProblemModal from '../../../../components/AddForms/AddProblemModal.jsx';
 import ProgressBarCard from '../../../../components/TopicWiseComponents/ProgressBarCard.jsx';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getUserData } from '../../../../components/queries/TopicProblemsQuery';
+import {
+    getProblemData,
+    getResourcesData,
+    getTagsData,
+} from '../../../../components/queries/TopicProblemsQuery';
+import Loading from '../../../../components/Loading';
 
 const TopicProblem = () => {
     //getting route
     let problemRoute = useParams();
 
+    const queryClient = useQueryClient();
     //getting user
     const currentUserEmail = useAuth().currentUser.email;
 
-    const [userData, setUserData] = useState([]);
-    const [problems, setProblems] = useState([]);
-    const [resources, setResources] = useState([]);
     const [problemStatus, setProblemStatus] = useState();
-    const [allTags, setAllTags] = useState([]);
-    const [loading, setLoading] = useState(true);
-
     const [userProblemStatus, setUserProblemStatus] = useState();
 
     // add problem
@@ -35,154 +38,139 @@ const TopicProblem = () => {
         setShow(true);
     };
 
-    useEffect(() => {
-        setLoading(true);
-        //getting problems
-        const getProblems = axios.get(
-            `https://lu-cp-archive-backend.onrender.com/topicProblems/${problemRoute.topicProblems}`
-        );
+    const userData = useQuery({
+        queryKey: ['userData'],
+        queryFn: () => getUserData(currentUserEmail),
+        cacheTime: Infinity,
+        staleTime: Infinity,
+    });
+    const problems = useQuery({
+        queryKey: [`${problemRoute.topicProblems}_Problems`],
+        queryFn: () => getProblemData(problemRoute),
+        cacheTime: Infinity,
+        staleTime: Infinity,
+    });
+    const resources = useQuery({
+        queryKey: [`${problemRoute.topicProblems}_Resources`],
+        queryFn: () => getResourcesData(problemRoute),
+        cacheTime: Infinity,
+        staleTime: Infinity,
+    });
 
-        //getting resources
-        const getResources = axios.get(
-            `https://lu-cp-archive-backend.onrender.com/resources/${problemRoute.topicProblems}`
-        );
-
-        //getting user Data
-        const getUserData = axios.get(
-            'https://lu-cp-archive-backend.onrender.com/users',
-            {
-                params: { currentUserEmail: currentUserEmail },
-            }
-        );
-
-        //getting tags
-        const getTags = axios.get(
-            `https://lu-cp-archive-backend.onrender.com/all-tags`
-        );
-
-        Promise.all([getProblems, getResources, getUserData, getTags])
-            .then(response => {
-                setProblems(response[0].data);
-                setResources(response[1].data);
-                setUserData(response[2].data);
-                setAllTags(response[3].data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.log(error.message);
-            });
-    }, [currentUserEmail, problemRoute.topicProblems]);
+    const allTags = useQuery({
+        queryKey: ['topicwiseTags'],
+        queryFn: getTagsData,
+        cacheTime: Infinity,
+        staleTime: Infinity,
+    });
 
     useEffect(() => {
-        if (userData && problems) {
-            processData(userData, problems)
+        if (userData.isSuccess && problems.isSuccess) {
+            processData(userData.data, problems.data)
                 .then(processedData => {
                     setUserProblemStatus(processedData);
                 })
                 .catch(error => console.error(error));
         }
-    }, [userData, problems]);
+    }, [userData.isSuccess, problems.isSuccess, userData.data, problems.data]);
 
     //updating problem state
     useEffect(() => {
         try {
-            axios.post(
-                'https://lu-cp-archive-backend.onrender.com/update-problem-status',
-                {
-                    ...problemStatus,
-                }
-            );
+            axios
+                .post(
+                    'https://lu-cp-archive-backend.onrender.com/update-problem-status',
+                    {
+                        ...problemStatus,
+                    }
+                )
+                .then(() => {
+                    queryClient.invalidateQueries('userData');
+                });
         } catch (err) {
             console.log(err.message);
         }
-    }, [problemStatus]);
+    }, [problemStatus, queryClient]);
+
+    if (
+        userData.isLoading ||
+        problems.isLoading ||
+        resources.isLoading ||
+        allTags.isLoading
+    ) {
+        return (
+            <>
+                <Loading />
+                <LinearProgress color="inherit" />
+            </>
+        );
+    }
 
     return (
-        <Fragment>
-            {loading ? (
-                <Stack sx={{ width: '100%', color: 'grey.500' }}>
-                    <LinearProgress color="inherit" />
-                </Stack>
-            ) : (
-                <div>
-                    <div className={styles.container}>
-                        <div className={styles.wrapper}>
-                            <div className={styles.problem_section}>
-                                <div className={styles.problem_section_header}>
-                                    <div className={styles.status}>Status</div>
-                                    <div className={styles.title_div}>
-                                        Title
-                                    </div>
-                                    <div className={styles.difficulty}>
-                                        Difficulty
-                                    </div>
-                                </div>
-                                {problems.map(problem => (
-                                    <ProblemCard
-                                        key={problem._id}
-                                        title={problem.title}
-                                        url={problem.url}
-                                        difficulty={problem.difficulty}
-                                        role={userData.role}
-                                        problemStatusChange={setProblemStatus}
-                                        statusColor={problem.color}
-                                        tags={problem.tags}
-                                    />
-                                ))}
-                                {userData.role === 'power' ? (
-                                    <div className={styles.add_btn}>
-                                        <Fab
-                                            size="medium"
-                                            color="secondary"
-                                            aria-label="add"
-                                            style={{
-                                                background: '#2E2F31',
-                                                zIndex: 0,
-                                            }}
-                                            onClick={addProblemHandler}
-                                        >
-                                            <AddIcon
-                                                style={{ color: 'white' }}
-                                            />
-                                        </Fab>
-                                    </div>
-                                ) : null}
-                            </div>
-                            <div className={styles.sidebar_container}>
-                                {userProblemStatus ? (
-                                    <ProgressBarCard
-                                        userProblems={userProblemStatus}
-                                        allProblems={problems}
-                                    />
-                                ) : (
-                                    <Stack
-                                        sx={{
-                                            width: '100%',
-                                            color: 'grey.500',
-                                        }}
-                                    >
-                                        <LinearProgress color="inherit" />
-                                    </Stack>
-                                )}
-
-                                <Resources
-                                    key={resources._id}
-                                    userRole={userData.role}
-                                    resources={resources}
-                                />
-                            </div>
+        <div>
+            <div className={styles.container}>
+                <div className={styles.wrapper}>
+                    <div className={styles.problem_section}>
+                        <div className={styles.problem_section_header}>
+                            <div className={styles.status}>Status</div>
+                            <div className={styles.title_div}>Title</div>
+                            <div className={styles.difficulty}>Difficulty</div>
                         </div>
+                        {problems.data.map(problem => (
+                            <ProblemCard
+                                key={problem._id}
+                                title={problem.title}
+                                url={problem.url}
+                                difficulty={problem.difficulty}
+                                role={userData.data.role}
+                                problemStatusChange={setProblemStatus}
+                                statusColor={problem.color}
+                                tags={problem.tags}
+                            />
+                        ))}
+                        {userData.data.role === 'power' ? (
+                            <div className={styles.add_btn}>
+                                <Fab
+                                    size="medium"
+                                    color="secondary"
+                                    aria-label="add"
+                                    style={{
+                                        background: '#2E2F31',
+                                        zIndex: 0,
+                                    }}
+                                    onClick={addProblemHandler}
+                                >
+                                    <AddIcon style={{ color: 'white' }} />
+                                </Fab>
+                            </div>
+                        ) : null}
                     </div>
-                    {addProblemToggle ? (
-                        <AddProblemModal
-                            show={show}
-                            setShow={setShow}
-                            allTags={allTags}
+                    <div className={styles.sidebar_container}>
+                        {userProblemStatus ? (
+                            <ProgressBarCard
+                                userProblems={userProblemStatus}
+                                allProblems={problems.data}
+                            />
+                        ) : (
+                            <Loading />
+                        )}
+
+                        <Resources
+                            key={resources._id}
+                            userRole={userData.data.role}
+                            resources={resources.data}
                         />
-                    ) : null}
+                    </div>
                 </div>
-            )}
-        </Fragment>
+            </div>
+            {addProblemToggle ? (
+                <AddProblemModal
+                    show={show}
+                    setShow={setShow}
+                    allTags={allTags.data}
+                />
+            ) : null}
+        </div>
     );
 };
 

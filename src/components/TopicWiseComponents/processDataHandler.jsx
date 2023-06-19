@@ -1,65 +1,56 @@
-import Colors from "../../styles/colors";
+import Colors from '../../styles/colors';
 export async function processData(userProblems, allProblems) {
-    if (
-        !userProblems ||
-        !Object.keys(userProblems).length ||
-        !allProblems ||
-        !Object.keys(allProblems).length
-    ) {
-        return "Loading data...";
-    } else {
-        const solving = userProblems.status.solving;
-        const solved = userProblems.status.solved;
-        const reviewing = userProblems.status.reviewing;
-        const skipped = userProblems.status.skipped;
+    const solving = userProblems.status.solving;
+    const solved = userProblems.status.solved;
+    const reviewing = userProblems.status.reviewing;
+    const skipped = userProblems.status.skipped;
 
-        let solvingProblem = 0;
-        let solvedProblem = 0;
-        let reviewingProblem = 0;
-        let skippedProblem = 0;
+    let solvingProblem = 0;
+    let solvedProblem = 0;
+    let reviewingProblem = 0;
+    let skippedProblem = 0;
 
-        allProblems.map((problem) =>
-            solving.forEach((element) => {
-                if (element === problem.url) {
-                    Object.assign(problem, { color: Colors.orange });
-                    solvingProblem++;
-                }
-            })
-        );
+    allProblems.map(problem =>
+        solving.forEach(element => {
+            if (element === problem.url) {
+                Object.assign(problem, { color: Colors.orange });
+                solvingProblem++;
+            }
+        })
+    );
 
-        allProblems.map((problem) =>
-            solved.forEach((element) => {
-                if (element === problem.url) {
-                    Object.assign(problem, { color: Colors.green });
-                    solvedProblem++;
-                }
-            })
-        );
+    allProblems.map(problem =>
+        solved.forEach(element => {
+            if (element === problem.url) {
+                Object.assign(problem, { color: Colors.green });
+                solvedProblem++;
+            }
+        })
+    );
 
-        allProblems.map((problem) =>
-            reviewing.forEach((element) => {
-                if (element === problem.url) {
-                    Object.assign(problem, { color: Colors.violet });
-                    reviewingProblem++;
-                }
-            })
-        );
+    allProblems.map(problem =>
+        reviewing.forEach(element => {
+            if (element === problem.url) {
+                Object.assign(problem, { color: Colors.violet });
+                reviewingProblem++;
+            }
+        })
+    );
 
-        allProblems.map((problem) =>
-            skipped.forEach((element) => {
-                if (element === problem.url) {
-                    Object.assign(problem, { color: Colors.red });
-                    skippedProblem++;
-                }
-            })
-        );
+    allProblems.map(problem =>
+        skipped.forEach(element => {
+            if (element === problem.url) {
+                Object.assign(problem, { color: Colors.red });
+                skippedProblem++;
+            }
+        })
+    );
 
-        const userProblemStatus = {
-            solving: solvingProblem,
-            solved: solvedProblem,
-            reviewing: reviewingProblem,
-            skipped: skippedProblem,
-        };
-        return userProblemStatus;
-    }
+    const userProblemStatus = {
+        solving: solvingProblem,
+        solved: solvedProblem,
+        reviewing: reviewingProblem,
+        skipped: skippedProblem,
+    };
+    return userProblemStatus;
 }
