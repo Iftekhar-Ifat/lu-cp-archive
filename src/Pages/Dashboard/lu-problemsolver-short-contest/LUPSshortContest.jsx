@@ -11,6 +11,7 @@ import {
     getUserData,
 } from '../../../components/queries/LUPSshortContestQuery.js';
 import Loading from '../../../components/Loading.jsx';
+import ColdStartNotification from '../../../components/ColdStartNotification.jsx';
 
 const LUPSshortContest = () => {
     const currentUserEmail = useAuth().currentUser.email;
@@ -37,7 +38,12 @@ const LUPSshortContest = () => {
     };
 
     if (userData.isLoading || contests.isLoading) {
-        return <Loading />;
+        return (
+            <>
+                <Loading />
+                <ColdStartNotification />
+            </>
+        );
     }
 
     return (

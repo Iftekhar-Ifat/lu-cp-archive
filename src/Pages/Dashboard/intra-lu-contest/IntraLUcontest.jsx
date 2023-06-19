@@ -11,6 +11,7 @@ import {
 } from '../../../components/queries/IntraLUContestQuery.js';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../../../components/Loading.jsx';
+import ColdStartNotification from '../../../components/ColdStartNotification.jsx';
 
 const IntraLUcontest = () => {
     const currentUserEmail = useAuth().currentUser.email;
@@ -37,7 +38,12 @@ const IntraLUcontest = () => {
     };
 
     if (userData.isLoading || contests.isLoading) {
-        return <Loading />;
+        return (
+            <>
+                <Loading />
+                <ColdStartNotification />
+            </>
+        );
     }
 
     return (
