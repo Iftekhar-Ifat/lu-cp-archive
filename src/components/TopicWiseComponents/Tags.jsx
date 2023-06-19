@@ -6,7 +6,7 @@ import {
     FormLabel,
     IconButton,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import AddTagsModal from '../AddForms/AddTagsModal';
 

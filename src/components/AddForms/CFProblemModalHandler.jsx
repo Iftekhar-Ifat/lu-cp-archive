@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
-import { TextField, Button } from "@mui/material";
-import { Spacer } from "@geist-ui/core";
-import { inputHandler } from "../ApiComponents/handleInput";
+import { useState, useRef } from 'react';
+import { TextField, Button } from '@mui/material';
+import { Spacer } from '@geist-ui/core';
+import { inputHandler } from '../ApiComponents/handleInput';
 
 const CFProblemModalHandler = ({ setShow }) => {
-    const path = window.location.pathname.split("/").pop();
+    const path = window.location.pathname.split('/').pop();
     // getting input for problem
     const cfProblemName = useRef();
     const cfProblemUrl = useRef();
@@ -15,7 +15,7 @@ const CFProblemModalHandler = ({ setShow }) => {
     const getCfProblemInfo = () => {
         setBtnDisable(true);
         const cfProblemData = {
-            itemId: "cf-problems",
+            itemId: 'cf-problems',
             title: cfProblemName.current.value,
             url: cfProblemUrl.current.value,
             difficulty: cfProblemDifficulty,
@@ -25,7 +25,7 @@ const CFProblemModalHandler = ({ setShow }) => {
             cfProblemData.title.length === 0 ||
             cfProblemData.url.length === 0
         ) {
-            alert("Please fill up the form❗");
+            alert('Please fill up the form❗');
             setBtnDisable(false);
         } else {
             inputHandler(cfProblemData, setShow);
@@ -35,8 +35,8 @@ const CFProblemModalHandler = ({ setShow }) => {
     return (
         <div
             style={{
-                padding: "3%",
-                justifyContent: "space-evenly",
+                padding: '3%',
+                justifyContent: 'space-evenly',
             }}
         >
             <TextField
@@ -57,9 +57,9 @@ const CFProblemModalHandler = ({ setShow }) => {
             <Spacer />
             <div
                 style={{
-                    display: "flex",
-                    width: "100%",
-                    justifyContent: "space-evenly",
+                    display: 'flex',
+                    width: '100%',
+                    justifyContent: 'space-evenly',
                 }}
             >
                 <Button

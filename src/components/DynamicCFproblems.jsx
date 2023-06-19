@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import ProblemCard from "./TopicWiseComponents/ProblemCard";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-import styles from "../styles/components/TopicWiseDynamic.module.css";
-import AddCFproblemModal from "./AddForms/AddCFproblemModal";
+import { useState } from 'react';
+import ProblemCard from './TopicWiseComponents/ProblemCard';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import styles from '../styles/components/TopicWiseDynamic.module.css';
+import AddCFproblemModal from './AddForms/AddCFproblemModal';
 
-const DynamicCFproblems = (props) => {
+const DynamicCFproblems = props => {
     const [addProblemToggle, setAddProblemToggle] = useState(false);
     const [show, setShow] = useState(false);
 
@@ -17,14 +17,14 @@ const DynamicCFproblems = (props) => {
         <div>
             <div
                 className={styles.container}
-                style={{ paddingLeft: "20%", paddingRight: "20%" }}
+                style={{ paddingLeft: '20%', paddingRight: '20%' }}
             >
                 <div className={styles.wrapper}>
                     <div
                         className={styles.problem_section}
-                        style={{ width: "100%" }}
+                        style={{ width: '100%' }}
                     >
-                        {props.problems.map((problem) => (
+                        {props.problems.map(problem => (
                             <ProblemCard
                                 key={problem._id}
                                 cardSize={50}
@@ -34,13 +34,13 @@ const DynamicCFproblems = (props) => {
                                 verdict={problem.verdict}
                             />
                         ))}
-                        {props.userStatus === "power" ? (
+                        {props.userStatus === 'power' ? (
                             <div className={styles.add_btn}>
                                 <Fab
                                     size="medium"
                                     color="secondary"
                                     aria-label="add"
-                                    style={{ background: "#2E2F31" }}
+                                    style={{ background: '#2E2F31' }}
                                     onClick={addProblemHandler}
                                 >
                                     <AddIcon />

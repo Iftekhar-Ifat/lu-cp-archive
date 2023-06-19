@@ -1,18 +1,18 @@
-import React, { useState, useRef } from "react";
-import { TextField, Button } from "@mui/material";
-import { Spacer } from "@geist-ui/core";
-import { inputHandler } from "../ApiComponents/handleInput";
+import { useState, useRef } from 'react';
+import { TextField, Button } from '@mui/material';
+import { Spacer } from '@geist-ui/core';
+import { inputHandler } from '../ApiComponents/handleInput';
 
 const ResourceModalHandler = ({ setShow }) => {
     const [btnDisable, setBtnDisable] = useState(false);
-    const path = window.location.pathname.split("/").pop();
+    const path = window.location.pathname.split('/').pop();
     //getting input for resources
     const resourceTitle = useRef();
     const resourceUrl = useRef();
     const getResourcesInfo = () => {
         setBtnDisable(true);
         const resourceItem = {
-            itemId: "resources",
+            itemId: 'resources',
             title: resourceTitle.current.value,
             url: resourceUrl.current.value,
             route: path,
@@ -21,14 +21,14 @@ const ResourceModalHandler = ({ setShow }) => {
         let isEmpty = false;
 
         const resourcesItemArray = Object.values(resourceItem);
-        resourcesItemArray.forEach((element) => {
-            if (element === "") {
+        resourcesItemArray.forEach(element => {
+            if (element === '') {
                 isEmpty = true;
             }
         });
 
         if (isEmpty) {
-            alert("Please fill up the form❗");
+            alert('Please fill up the form❗');
             setBtnDisable(false);
         } else {
             inputHandler(resourceItem, setShow);
@@ -37,8 +37,8 @@ const ResourceModalHandler = ({ setShow }) => {
     return (
         <div
             style={{
-                padding: "3%",
-                justifyContent: "space-evenly",
+                padding: '3%',
+                justifyContent: 'space-evenly',
             }}
         >
             <TextField
@@ -57,9 +57,9 @@ const ResourceModalHandler = ({ setShow }) => {
             <Spacer />
             <div
                 style={{
-                    display: "flex",
-                    width: "100%",
-                    justifyContent: "space-evenly",
+                    display: 'flex',
+                    width: '100%',
+                    justifyContent: 'space-evenly',
                 }}
             >
                 <Button

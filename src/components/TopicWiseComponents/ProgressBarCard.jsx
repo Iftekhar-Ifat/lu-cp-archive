@@ -1,8 +1,7 @@
-import React from "react";
-import styles from "../../styles/components/ProgressBarCard.module.css";
-import { Code, Check, ChevronsLeft, X } from "@geist-ui/icons";
-import { Progress } from "@geist-ui/core";
-import Colors from "../../styles/colors";
+import styles from '../../styles/components/ProgressBarCard.module.css';
+import { Code, Check, ChevronsLeft, X } from '@geist-ui/icons';
+import { Progress } from '@geist-ui/core';
+import Colors from '../../styles/colors';
 
 const ProgressBarCard = ({ userProblems, allProblems }) => {
     let totalProblems = allProblems.length;
@@ -35,25 +34,25 @@ const ProgressBarCard = ({ userProblems, allProblems }) => {
                     <Code size={28} color={`${Colors.orange}`} />
                     <div className={styles.text_title}>Solving</div>
                 </div>
-                <Progress value={solvingValue || "undefined"} colors={orange} />
+                <Progress value={solvingValue || 'undefined'} colors={orange} />
                 <div className={styles.title_div}>
                     <Check size={28} color={`${Colors.green}`} />
                     <div className={styles.text_title}>Solved</div>
                 </div>
-                <Progress value={solvedValue || "undefined"} colors={green} />
+                <Progress value={solvedValue || 'undefined'} colors={green} />
                 <div className={styles.title_div}>
                     <ChevronsLeft size={28} color={`${Colors.violet}`} />
                     <div className={styles.text_title}>Reviewing</div>
                 </div>
                 <Progress
-                    value={reviewingValue || "undefined"}
+                    value={reviewingValue || 'undefined'}
                     colors={violet}
                 />
                 <div className={styles.title_div}>
                     <X size={28} color={`${Colors.red}`} />
                     <div className={styles.text_title}>Skipped</div>
                 </div>
-                <Progress value={skippedValue || "undefined"} colors={red} />
+                <Progress value={skippedValue || 'undefined'} colors={red} />
             </div>
         </div>
     );

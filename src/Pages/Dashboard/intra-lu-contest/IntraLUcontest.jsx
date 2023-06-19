@@ -1,60 +1,47 @@
-import { useState, useEffect } from 'react';
-import { LinearProgress, Stack } from '@mui/material';
+import { useState } from 'react';
 import LinkCard from '../../../components/LinkCard.jsx';
 import styles from '../../../styles/components/TopicWiseDynamic.module.css';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import AddResourcesModal from '../../../components/AddForms/AddResourcesModal.jsx';
 import { useAuth } from '../../../context/AuthProvider.jsx';
-import axios from 'axios';
-import ColdStartNotification from '../../../components/ColdStartNotification.jsx';
+import {
+    getUserData,
+    getIntraLUContestData,
+} from '../../../components/queries/IntraLUContestQuery.js';
+import { useQuery } from '@tanstack/react-query';
+import Loading from '../../../components/Loading.jsx';
 
 const IntraLUcontest = () => {
     const currentUserEmail = useAuth().currentUser.email;
 
-    const [userData, setUserData] = useState([]);
-    const [contests, setContests] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [addProblemToggle, setAddProblemToggle] = useState(false);
     const [show, setShow] = useState(false);
 
-    useEffect(() => {
-        setLoading(true);
-        //getting user Data
-        const getUserData = axios.get(
-            'https://lu-cp-archive-backend.onrender.com/users',
-            {
-                params: { currentUserEmail: currentUserEmail },
-            }
-        );
-
-        const getPageContent = axios.get(
-            'https://lu-cp-archive-backend.onrender.com/intra-lu-contest'
-        );
-
-        Promise.all([getUserData, getPageContent]).then(response => {
-            setUserData(response[0].data);
-            setContests(response[1].data);
-            setLoading(false);
-        });
-    }, [currentUserEmail]);
+    const userData = useQuery({
+        queryKey: ['userData'],
+        queryFn: () => getUserData(currentUserEmail),
+        cacheTime: Infinity,
+        staleTime: Infinity,
+    });
+    const contests = useQuery({
+        queryKey: ['intra-lu-contests'],
+        queryFn: getIntraLUContestData,
+        cacheTime: Infinity,
+        staleTime: Infinity,
+    });
 
     const addProblemHandler = () => {
         setAddProblemToggle(true);
         setShow(true);
     };
 
-    //
+    if (userData.isLoading || contests.isLoading) {
+        return <Loading />;
+    }
+
     return (
         <div>
-            {loading ? (
-                <>
-                    <Stack sx={{ width: '100%', color: 'grey.500' }}>
-                        <LinearProgress color="inherit" />
-                    </Stack>
-                    <ColdStartNotification />
-                </>
-            ) : null}
             {addProblemToggle ? (
                 <AddResourcesModal show={show} setShow={setShow} />
             ) : (
@@ -67,7 +54,7 @@ const IntraLUcontest = () => {
                             className={styles.problem_section}
                             style={{ width: '100%' }}
                         >
-                            {contests.map(item => (
+                            {contests.data.map(item => (
                                 <LinkCard
                                     key={item._id}
                                     cardURL={item.url}
@@ -75,7 +62,7 @@ const IntraLUcontest = () => {
                                 />
                             ))}
 
-                            {userData.role === 'power' ? (
+                            {userData.data.role === 'power' ? (
                                 <div className={styles.add_btn}>
                                     <Fab
                                         size="medium"
@@ -84,7 +71,7 @@ const IntraLUcontest = () => {
                                         style={{ background: '#2E2F31' }}
                                         onClick={addProblemHandler}
                                     >
-                                        <AddIcon />
+                                        <AddIcon style={{ color: 'white' }} />
                                     </Fab>
                                 </div>
                             ) : null}
