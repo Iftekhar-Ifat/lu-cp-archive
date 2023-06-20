@@ -1,4 +1,3 @@
-import React from 'react';
 import ProblemCard from '../../../components/TopicWiseComponents/ProblemCard.jsx';
 import styles from '../../../styles/components/TopicWiseDynamic.module.css';
 
