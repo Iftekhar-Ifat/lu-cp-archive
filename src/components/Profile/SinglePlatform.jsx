@@ -3,14 +3,21 @@ import { Grid, IconButton, TextField } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import { useRef, useState } from 'react';
+import { platformHandleInput } from '../ApiComponents/handlePlatformHandle';
+import { useAuth } from '../../context/AuthProvider';
 
 const SinglePlatform = ({ platform, isRegistered }) => {
+    let currentUserEmail = useAuth().currentUser.email;
     const [textFieldMode, setTextFieldMode] = useState(false);
     const handleRef = useRef();
 
     const getHandle = () => {
-        console.log(handleRef.current.value);
-        console.log(platform.name);
+        let handleInfo = {
+            userEmail: currentUserEmail,
+            platform: platform.name,
+            handle: handleRef.current.value,
+        };
+        platformHandleInput(handleInfo);
     };
 
     const toggleTextFieldMode = () => {

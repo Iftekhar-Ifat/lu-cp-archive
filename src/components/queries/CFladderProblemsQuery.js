@@ -25,20 +25,3 @@ async function getCFproblemsData(path) {
 }
 
 export { getUserData, getCFproblemsData };
-
-// if (userData.isSuccess && problems.isSuccess) {
-//     //checking whether codeforces is online or not
-//     try {
-//         axios
-//             .get(
-//                 `https://codeforces.com/api/user.status?handle=${userData.data.CFhandle}`
-//             )
-//             .then(response => {
-//                 if (response.data.status === 'OK') {
-//                     processCFdata(response.data, problems.data);
-//                 }
-//             });
-//     } catch (err) {
-//         console.log(err.message);
-//     }
-// }
