@@ -16,6 +16,8 @@ import Header from './components/Header.jsx';
 import Profile from './Pages/Profile/Profile.jsx';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material';
+import NotFound from './Pages/NotFound.jsx';
+import Leaderboard from './Pages/Leaderboard/Leaderboard.jsx';
 
 function App() {
     const theme = createTheme({
@@ -30,10 +32,11 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <Router>
+                <Header />
                 <ScrollToTop>
-                    <Header />
                     <Routes>
                         <Route path="/" element={<Homepage />} />
+                        <Route path="/leaderboard" element={<Leaderboard />} />
                         <Route element={<PrivateOutlet />}>
                             <Route path="/dashboard" element={<Dashboard />} />
                             <Route path="/profile" element={<Profile />} />
@@ -78,6 +81,7 @@ function App() {
                                 element={<UpcomingContest />}
                             />
                         </Route>
+                        <Route path={'*'} element={<NotFound />} />
                     </Routes>
                 </ScrollToTop>
             </Router>
