@@ -1,0 +1,22 @@
+.container {
+    padding-left: 15%;
+    padding-right: 15%;
+}
+.header_div {
+    display: flex;
+    justify-content: center;
+}
+.header_style {
+    font-family: 'Inter', sans-serif;
+    color: white;
+    text-decoration: underline;
+    text-underline-position: under;
+    text-align: center;
+}
+
+.footer {
+    margin: 20px;
+    color: #959595;
+    text-align: center;
+    font-size: small;
+}

@@ -13,30 +13,36 @@
     },
     {
         "key": 3,
+        "icon": "leaderboard.png",
+        "title": "Leaderboard",
+        "subtitle": "Leaderboard of LU's competitive programers"
+    },
+    {
+        "key": 4,
         "icon": "intra_lu.png",
         "title": "Intra LU Contest",
         "subtitle": "Problems from previous onsite LU contests"
     },
     {
-        "key": 4,
+        "key": 5,
         "icon": "short_contest.png",
         "title": "Lu Problemsolver short contest",
         "subtitle": "Short Contests organized by LU Problem Solvers"
     },
     {
-        "key": 5,
+        "key": 6,
         "icon": "long_contest.png",
         "title": "Lu Problemsolver Marathon contest",
         "subtitle": "Long Contests organized by LU Problem Solvers"
     },
     {
-        "key": 6,
+        "key": 7,
         "icon": "upcoming_contest.png",
         "title": "Upcoming Contest",
         "subtitle": "Time-Table of the upcoming contest on various sites."
     },
     {
-        "key": 7,
+        "key": 8,
         "icon": "user_guide.png",
         "title": "User Guide",
         "subtitle": "Check how to get the most out of LUCA"

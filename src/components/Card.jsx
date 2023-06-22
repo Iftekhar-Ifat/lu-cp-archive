@@ -4,11 +4,15 @@ import { useNavigate } from 'react-router-dom';
 const Card = props => {
     const navigate = useNavigate();
     const routeHandler = () => {
-        let processedRoute =
-            window.location.pathname +
-            '/' +
-            props.title.replace(/\s+/g, '-').toLowerCase();
-        navigate(processedRoute);
+        if (props.title.toLowerCase() === 'leaderboard') {
+            navigate('/leaderboard');
+        } else {
+            let processedRoute =
+                window.location.pathname +
+                '/' +
+                props.title.replace(/\s+/g, '-').toLowerCase();
+            navigate(processedRoute);
+        }
     };
 
     if (props.title === 'Add Card') {
