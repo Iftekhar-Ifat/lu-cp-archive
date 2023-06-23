@@ -119,7 +119,6 @@ const Leaderboard = () => {
             <MaterialReactTable
                 columns={columns}
                 data={data}
-                enableStickyHeader
                 enableColumnActions={false}
                 enableColumnFilters={false}
                 enablePagination={false}

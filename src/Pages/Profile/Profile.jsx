@@ -47,12 +47,12 @@ const Profile = () => {
         <Container maxWidth="lg" className={styles.wrapper}>
             {/* name and image component */}
             <NameAndImage />
-            <hr />
+            <hr style={{ marginTop: '1rem', marginBottom: '1rem' }} />
             {/* card for info showing */}
             <Grid
                 container
                 spacing={{ xs: 2, md: 3 }}
-                columns={{ xs: 4, sm: 8, md: 12 }}
+                columns={{ xs: 2, sm: 8, md: 12 }}
             >
                 {platforms.map((item, index) => {
                     return (
