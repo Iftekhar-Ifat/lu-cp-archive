@@ -6,7 +6,17 @@ async function getUserData(currentUserEmail) {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
         });
-        return result.data;
+        let cfHandle;
+        result.data.handles.forEach(item => {
+            if (item.platform === 'Codeforces') {
+                cfHandle = item.handle;
+            }
+        });
+        const userObject = {
+            userRole: result.data.role,
+            userHandle: cfHandle,
+        };
+        return userObject;
     } catch (error) {
         console.error('Error:', error.message);
         throw error;

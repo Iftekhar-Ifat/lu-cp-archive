@@ -33,7 +33,7 @@ const CFladderProblems = () => {
             try {
                 axios
                     .get(
-                        `https://codeforces.com/api/user.status?handle=${userData.data.CFhandle}`
+                        `https://codeforces.com/api/user.status?handle=${userData.data.userHandle}`
                     )
                     .then(response => {
                         if (response.data.status === 'OK') {
@@ -73,9 +73,9 @@ const CFladderProblems = () => {
 
     return (
         <DynamicCFproblems
-            userCFhandle={userData.data.CFhandle}
+            userCFhandle={userData.data.userHandle}
             problems={problems.data}
-            userStatus={userData.data.role}
+            userStatus={userData.data.userRole}
         />
     );
 };
