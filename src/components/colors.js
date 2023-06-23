@@ -16,4 +16,16 @@ const ratingColors = {
     gray: '#808080',
 };
 
-export { Colors, ratingColors };
+const rankColors = {
+    legendary_grandmaster: '#FF0000',
+    international_grandmaster: '#FF0000',
+    grandmaster: '#FF0000',
+    international_master: '#FF8C00',
+    master: '#FF8C00',
+    candidate_master: '#AA00AA',
+    expert: '#0000FF',
+    specialist: '#03A89E',
+    pupil: '#008000',
+    newbie: '#808080',
+};
+export { Colors, ratingColors, rankColors };

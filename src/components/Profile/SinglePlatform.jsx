@@ -7,8 +7,12 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useRef, useState } from 'react';
 import { platformHandleInput } from '../ApiComponents/handlePlatformHandle';
 import { useAuth } from '../../context/AuthProvider';
+import cf_icon from '../../../public/images/icons/codeforces_icon.png';
+import { getCFInfo } from '../queries/ProfileQuery';
+import { useQuery } from '@tanstack/react-query';
+import { getRatingColor } from './getColors';
 
-const SinglePlatform = ({ platform, isRegistered }) => {
+const SinglePlatform = ({ hasAccount }) => {
     let currentUserEmail = useAuth().currentUser.email;
 
     const [textFieldMode, setTextFieldMode] = useState(false);
@@ -17,13 +21,12 @@ const SinglePlatform = ({ platform, isRegistered }) => {
 
     const getHandle = () => {
         const value = handleRef.current.value;
-        console.log(value);
         if (value.trim() === '') {
             setError(true);
         } else {
             let handleInfo = {
                 userEmail: currentUserEmail,
-                platform: platform.name,
+                platform: 'codeforces',
                 handle: value,
             };
             platformHandleInput(handleInfo);
@@ -43,25 +46,39 @@ const SinglePlatform = ({ platform, isRegistered }) => {
         }
     };
 
+    const userCFinfo = useQuery({
+        queryKey: ['user-cf-info'],
+        queryFn: () => getCFInfo(hasAccount),
+        cacheTime: Infinity,
+        staleTime: Infinity,
+    });
+
+    let currentRatingColor;
+    let maxRatingColor;
+    if (userCFinfo.isSuccess) {
+        currentRatingColor = getRatingColor(userCFinfo.data.rating);
+        maxRatingColor = getRatingColor(userCFinfo.data.maxRating);
+    }
+
     return (
         <Grid item xs={2} sm={4} md={4}>
             <div className={styles.card_wrapper}>
                 {/* icon and name */}
                 <div className={styles.icon_and_name}>
                     <img
-                        src={platform.icon}
+                        src={cf_icon}
                         style={{ width: '50px', height: '45px' }}
                         alt="icon-image"
                     />
-                    <p className={styles.platform_name}> {platform.name}</p>
+                    <p className={styles.platform_name}> Codeforces</p>
                 </div>
                 <hr className={styles.hr} />
-                {isRegistered ? (
+                {hasAccount ? (
                     <div>
                         <div className={styles.info}>
                             <div>
                                 <TextField
-                                    label="Has a handle"
+                                    label={hasAccount}
                                     disabled={!textFieldMode}
                                     error={error}
                                     helperText={
@@ -98,58 +115,60 @@ const SinglePlatform = ({ platform, isRegistered }) => {
                                 )}
                             </div>
                         </div>
-                        <div style={{ width: '100%' }}>
-                            <div className={styles.extra_info}>
-                                <p>
-                                    Current Rating:{' '}
-                                    <span
-                                        style={{
-                                            color: '#5BD9EA',
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        {platform.rating}
-                                    </span>
-                                </p>
-                                <p style={{ marginTop: '-10px' }}>
-                                    (Max Ratting:{' '}
-                                    <span
-                                        style={{
-                                            color: '#5BD9EA',
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        {platform.maxRating}
-                                    </span>
-                                    ){' '}
-                                </p>
+                        {userCFinfo.isSuccess ? (
+                            <div style={{ width: '100%' }}>
+                                <div className={styles.extra_info}>
+                                    <p>
+                                        Current Rating:{' '}
+                                        <span
+                                            style={{
+                                                color: `${currentRatingColor}`,
+                                                fontWeight: 600,
+                                            }}
+                                        >
+                                            {userCFinfo.data.rating}
+                                        </span>
+                                    </p>
+                                    <p style={{ marginTop: '-10px' }}>
+                                        (Max Ratting:{' '}
+                                        <span
+                                            style={{
+                                                color: `${maxRatingColor}`,
+                                                fontWeight: 600,
+                                            }}
+                                        >
+                                            {userCFinfo.data.maxRating}
+                                        </span>
+                                        ){' '}
+                                    </p>
+                                </div>
+                                <div className={styles.extra_info}>
+                                    <p>
+                                        Current Rank:{' '}
+                                        <span
+                                            style={{
+                                                color: `${currentRatingColor}`,
+                                                fontWeight: 600,
+                                            }}
+                                        >
+                                            {userCFinfo.data.rank}
+                                        </span>
+                                    </p>
+                                    <p style={{ marginTop: '-10px' }}>
+                                        (Max Ranking:{' '}
+                                        <span
+                                            style={{
+                                                color: `${maxRatingColor}`,
+                                                fontWeight: 600,
+                                            }}
+                                        >
+                                            {userCFinfo.data.maxRank}
+                                        </span>
+                                        ){' '}
+                                    </p>
+                                </div>
                             </div>
-                            <div className={styles.extra_info}>
-                                <p>
-                                    Current Rank:{' '}
-                                    <span
-                                        style={{
-                                            color: '#B799FF',
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        {platform.rank}
-                                    </span>
-                                </p>
-                                <p style={{ marginTop: '-10px' }}>
-                                    (Max Ranking:{' '}
-                                    <span
-                                        style={{
-                                            color: '#5BD9EA',
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        {platform.maxRank}
-                                    </span>
-                                    ){' '}
-                                </p>
-                            </div>
-                        </div>
+                        ) : null}
                     </div>
                 ) : (
                     <div style={{ marginTop: '10px' }}>

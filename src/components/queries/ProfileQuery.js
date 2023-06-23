@@ -8,7 +8,7 @@ async function getUserData(currentUserEmail) {
         });
         let cfHandle;
         result.data.handles.forEach(item => {
-            if (item.platform === 'codeforces') {
+            if (item.platform === 'Codeforces') {
                 cfHandle = item.handle;
             }
         });
@@ -23,15 +23,15 @@ async function getUserData(currentUserEmail) {
     }
 }
 
-async function getCFproblemsData(path) {
-    const cfProblemsAPI = `https://lu-cp-archive-backend.onrender.com/codeforces-problems/${path.ladder}`;
+async function getCFInfo(cfHandle) {
+    const cfInfoAPI = `https://codeforces.com/api/user.info?handles=${cfHandle}`;
     try {
-        const result = await axios.get(cfProblemsAPI);
-        return result.data;
+        const result = await axios.get(cfInfoAPI);
+        return result.data.result[0];
     } catch (error) {
         console.error('Error:', error.message);
         throw error;
     }
 }
 
-export { getUserData, getCFproblemsData };
+export { getUserData, getCFInfo };

@@ -20,7 +20,7 @@ const CFladderProblems = () => {
     const queryClient = useQueryClient();
 
     const userData = useQuery({
-        queryKey: ['userData'],
+        queryKey: ['userData-cf-ladder'],
         queryFn: () => getUserData(currentUserEmail),
         cacheTime: Infinity,
         staleTime: Infinity,
@@ -30,26 +30,28 @@ const CFladderProblems = () => {
         queryFn: () => getCFproblemsData(path),
         enabled: userData.isSuccess,
         onSuccess: data => {
-            try {
-                axios
-                    .get(
-                        `https://codeforces.com/api/user.status?handle=${userData.data.userHandle}`
-                    )
-                    .then(response => {
-                        if (response.data.status === 'OK') {
-                            const modifiedProblemData = processCFdata(
-                                response.data,
-                                data
-                            );
-                            queryClient.setQueryData(
-                                [`cf-problems-${path.ladder}`],
-                                modifiedProblemData
-                            );
-                            setModifiedProblemsData(true);
-                        }
-                    });
-            } catch (err) {
-                console.log(err.message);
+            if (userData.data.userHandle.trim() !== '') {
+                try {
+                    axios
+                        .get(
+                            `https://codeforces.com/api/user.status?handle=${userData.data.userHandle}`
+                        )
+                        .then(response => {
+                            if (response.data.status === 'OK') {
+                                const modifiedProblemData = processCFdata(
+                                    response.data,
+                                    data
+                                );
+                                queryClient.setQueryData(
+                                    [`cf-problems-${path.ladder}`],
+                                    modifiedProblemData
+                                );
+                                setModifiedProblemsData(true);
+                            }
+                        });
+                } catch (err) {
+                    console.log(err.message);
+                }
             }
         },
         cacheTime: Infinity,
