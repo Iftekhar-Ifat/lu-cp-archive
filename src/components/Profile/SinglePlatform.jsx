@@ -7,7 +7,6 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useRef, useState } from 'react';
 import { platformHandleInput } from '../ApiComponents/handlePlatformHandle';
 import { useAuth } from '../../context/AuthProvider';
-import cf_icon from '../../../public/images/icons/codeforces_icon.png';
 import { getCFInfo } from '../queries/ProfileQuery';
 import { useQuery } from '@tanstack/react-query';
 import { getRatingColor } from './getColors';
@@ -66,7 +65,7 @@ const SinglePlatform = ({ hasAccount }) => {
                 {/* icon and name */}
                 <div className={styles.icon_and_name}>
                     <img
-                        src={cf_icon}
+                        src="/images/icons/codeforces_icon.png"
                         style={{ width: '50px', height: '45px' }}
                         alt="icon-image"
                     />

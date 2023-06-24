@@ -4,21 +4,21 @@ import NameAndImage from '../../components/Profile/NameAndImage.jsx';
 import SinglePlatform from '../../components/Profile/SinglePlatform.jsx';
 import { useAuth } from '../../context/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
-import { getUserData } from '../../components/queries/ProfileQuery';
+import { getUserCFData } from '../../components/queries/ProfileQuery';
 import Loading from '../../components/Loading';
 import ColdStartNotification from '../../components/ColdStartNotification';
 
 const Profile = () => {
     const currentUserEmail = useAuth().currentUser.email;
 
-    const userData = useQuery({
-        queryKey: ['userData-profile'],
-        queryFn: () => getUserData(currentUserEmail),
+    const userCFData = useQuery({
+        queryKey: ['user-cf-handle'],
+        queryFn: () => getUserCFData(currentUserEmail),
         cacheTime: Infinity,
         staleTime: Infinity,
     });
 
-    if (userData.isLoading) {
+    if (userCFData.isLoading) {
         return (
             <>
                 <Loading />;
@@ -36,7 +36,7 @@ const Profile = () => {
                 spacing={{ xs: 2, md: 3 }}
                 columns={{ xs: 2, sm: 8, md: 12 }}
             >
-                <SinglePlatform hasAccount={userData.data.userHandle} />
+                <SinglePlatform hasAccount={userCFData.data.userHandle} />
             </Grid>
         </Container>
     );

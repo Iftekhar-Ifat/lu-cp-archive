@@ -47,7 +47,7 @@ async function getUserRatingCF(userHandle) {
     try {
         // Fetch user rating from Codeforces API
         const response = await axios.get(
-            `https://codeforces.com/api/user.info?handle=${userHandle}`
+            `https://codeforces.com/api/user.info?handles=${userHandle}`
         );
         const result = response.data.result[0];
         const userRating = result.rating;

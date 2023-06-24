@@ -1,0 +1,100 @@
+import axios from 'axios';
+import {
+    getTotalContestParticipationLastMonthCF,
+    getTotalProblemsSolvedLastMonthCF,
+    getUserRatingCF,
+} from '../LeaderBoardComponents/CFuserStats';
+
+const multiplier = {
+    rating: 1.5,
+    aboveProblem: 5,
+    belowProblem: 2,
+    contest: 10,
+};
+
+async function getUserData(currentUserEmail) {
+    const userDataAPI = 'https://lu-cp-archive-backend.onrender.com/users';
+    try {
+        const result = await axios.get(userDataAPI, {
+            params: { currentUserEmail: currentUserEmail },
+        });
+        return result.data;
+    } catch (error) {
+        console.error('Error:', error.message);
+        throw error;
+    }
+}
+
+async function getAllUserCFhandleData() {
+    const userDataAPI = 'http://localhost:5000/users';
+    try {
+        let allUserCFhandle = [];
+        await axios.get(userDataAPI).then(users => {
+            users.data.forEach(user => {
+                let userName = user.name;
+                let userHandle;
+                user.handles.forEach(handleObject => {
+                    if (handleObject.platform === 'codeforces') {
+                        userHandle = handleObject.handle;
+                    }
+                });
+                let eachUserObject = {
+                    name: userName,
+                    handle: userHandle,
+                };
+                allUserCFhandle.push(eachUserObject);
+            });
+        });
+        return allUserCFhandle;
+    } catch (error) {
+        console.error('Error:', error.message);
+        throw error;
+    }
+}
+
+async function generatePoints() {
+    try {
+        let allLeaderboardData = [];
+        const users = await getAllUserCFhandleData();
+        users.forEach(async user => {
+            const userCFrating = await getUserRatingCF(user.handle);
+            const totalProblemSolvedLastMonthCF =
+                await getTotalProblemsSolvedLastMonthCF(
+                    user.handle,
+                    userCFrating
+                );
+            const totalContestParticipation =
+                await getTotalContestParticipationLastMonthCF(user.handle);
+
+            const ratingPoint = userCFrating * multiplier.rating;
+            const aboveProblemPoint =
+                totalProblemSolvedLastMonthCF.aboveRating *
+                multiplier.aboveProblem;
+            const belowProblemPoint =
+                totalProblemSolvedLastMonthCF.belowRating *
+                multiplier.belowProblem;
+            const contestParticipationPoint =
+                totalContestParticipation * multiplier.contest;
+
+            const totalPoint =
+                (ratingPoint +
+                    aboveProblemPoint +
+                    belowProblemPoint +
+                    contestParticipationPoint) /
+                10;
+
+            const userRankData = {
+                name: user.name,
+                handle: user.handle,
+                point: totalPoint,
+            };
+            allLeaderboardData.push(userRankData);
+        });
+        return allLeaderboardData;
+    } catch (error) {
+        console.error('Error:', error.message);
+        throw error;
+    }
+}
+
+export { getUserData, getAllUserCFhandleData, generatePoints };

@@ -1,113 +1,36 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import styles from '../../styles/Leaderboard/Leaderboard.module.css';
 import { MaterialReactTable } from 'material-react-table';
+import {
+    leaderboardColumns,
+    leaderboardData,
+} from '../../components/LeaderBoardComponents/LeaderboardData';
+import { useAuth } from '../../context/AuthProvider';
+import { useQuery } from '@tanstack/react-query';
+import {
+    generatePoints,
+    getUserData,
+} from '../../components/queries/LeaderboardQuery';
+import { Button } from '@geist-ui/core';
+
 const Leaderboard = () => {
-    // const demoItems = [
-    //     {
-    //         name: 'Iftekhar Ahmed',
-    //         handles: [
-    //             {
-    //                 platform: 'codeforces',
-    //                 handle: 'ryu',
-    //             },
-    //             {
-    //                 platform: 'codechef',
-    //                 handle: 'ryu2',
-    //             },
-    //         ],
-    //     },
-    // ];
+    const currentUser = useAuth().currentUser;
+    const [isLoading, setIsLoading] = useState(false);
 
-    const data = [
-        {
-            firstName: 'Dylan',
-            lastName: 'Murray',
-            email: 'dmurray@yopmail.com',
-            city: 'East Daphne',
-        },
-        {
-            firstName: 'Raquel',
-            lastName: 'Kohler',
-            email: 'rkholer33@yopmail.com',
-            city: 'Columbus',
-        },
-        {
-            firstName: 'Ervin',
-            lastName: 'Reinger',
-            email: 'ereinger@mailinator.com',
-            city: 'South Linda',
-        },
-        {
-            firstName: 'Brittany',
-            lastName: 'McCullough',
-            email: 'bmccullough44@mailinator.com',
-            city: 'Lincoln',
-        },
-        {
-            firstName: 'Branson',
-            lastName: 'Frami',
-            email: 'bframi@yopmain.com',
-            city: 'New York',
-        },
-        {
-            firstName: 'Kevin',
-            lastName: 'Klein',
-            email: 'kklien@mailinator.com',
-            city: 'Nebraska',
-        },
-        {
-            firstName: 'Dylan',
-            lastName: 'Murray',
-            email: 'dmurray@yopmail.com',
-            city: 'East Daphne',
-        },
-    ];
+    const userData = useQuery({
+        queryKey: ['userData'],
+        queryFn: () => getUserData(currentUser.email),
+        cacheTime: Infinity,
+        staleTime: Infinity,
+    });
 
-    const columns = useMemo(
-        () => [
-            {
-                accessorKey: 'firstName',
-                header: 'First Name',
-                muiTableHeadCellProps: {
-                    align: 'center',
-                },
-                muiTableBodyCellProps: {
-                    align: 'center',
-                },
-            },
-            {
-                accessorKey: 'lastName',
-                header: 'Last Name',
-                muiTableHeadCellProps: {
-                    align: 'center',
-                },
-                muiTableBodyCellProps: {
-                    align: 'center',
-                },
-            },
-            {
-                accessorKey: 'email',
-                header: 'Email',
-                muiTableHeadCellProps: {
-                    align: 'center',
-                },
-                muiTableBodyCellProps: {
-                    align: 'center',
-                },
-            },
-            {
-                accessorKey: 'city',
-                header: 'City',
-                muiTableHeadCellProps: {
-                    align: 'center',
-                },
-                muiTableBodyCellProps: {
-                    align: 'center',
-                },
-            },
-        ],
-        []
-    );
+    const columns = useMemo(() => leaderboardColumns, []);
+
+    const handleGenerateLeaderboard = async () => {
+        setIsLoading(true);
+        console.log(await generatePoints());
+        setIsLoading(false);
+    };
 
     return (
         <div className={styles.container}>
@@ -118,14 +41,13 @@ const Leaderboard = () => {
             </div>
             <MaterialReactTable
                 columns={columns}
-                data={data}
+                data={leaderboardData}
                 enableColumnActions={false}
                 enableColumnFilters={false}
                 enablePagination={false}
                 enableSorting={false}
                 enableBottomToolbar={false}
                 muiTableHeadCellProps={{
-                    //simple styling with the `sx` prop, works just like a style prop in this example
                     sx: {
                         fontWeight: 'bold',
                         fontSize: '22px',
@@ -143,6 +65,21 @@ const Leaderboard = () => {
                     },
                 }}
             />
+            {userData.isSuccess && userData.data.role === 'power' ? (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                        type="secondary"
+                        ghost
+                        loading={isLoading}
+                        auto
+                        scale={2}
+                        onClick={handleGenerateLeaderboard}
+                    >
+                        Generate Leaderboard
+                    </Button>
+                </div>
+            ) : null}
+
             <div className={styles.footer}>
                 <i>The algorithm to generate rating is maintained by LU ACM</i>
             </div>
