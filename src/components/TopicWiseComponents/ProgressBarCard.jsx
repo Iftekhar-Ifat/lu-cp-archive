@@ -1,5 +1,8 @@
 import styles from '../../styles/components/ProgressBarCard.module.css';
-import { Code, Check, ChevronsLeft, X } from '@geist-ui/icons';
+import Code from '@geist-ui/icons/code';
+import Check from '@geist-ui/icons/check';
+import ChevronsLeft from '@geist-ui/icons/chevronLeft';
+import X from '@geist-ui/icons/x';
 import { Progress } from '@geist-ui/core';
 import Colors from '../../styles/colors';
 

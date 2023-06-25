@@ -1,4 +1,4 @@
-import { X } from '@geist-ui/icons';
+import X from '@geist-ui/icons/x';
 import OutsideClickHandler from 'react-outside-click-handler';
 import styles from '../../styles/components/AddProblemModal.module.css';
 import ModalItems from './ModalItems';

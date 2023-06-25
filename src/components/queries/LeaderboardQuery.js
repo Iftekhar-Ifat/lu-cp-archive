@@ -42,7 +42,9 @@ async function getAllUserCFhandleData() {
                     name: userName,
                     handle: userHandle,
                 };
-                allUserCFhandle.push(eachUserObject);
+                if (userName && userHandle) {
+                    allUserCFhandle.push(eachUserObject);
+                }
             });
         });
         return allUserCFhandle;
@@ -56,40 +58,44 @@ async function generatePoints() {
     try {
         let allLeaderboardData = [];
         const users = await getAllUserCFhandleData();
-        users.forEach(async user => {
-            const userCFrating = await getUserRatingCF(user.handle);
-            const totalProblemSolvedLastMonthCF =
-                await getTotalProblemsSolvedLastMonthCF(
-                    user.handle,
-                    userCFrating
-                );
-            const totalContestParticipation =
-                await getTotalContestParticipationLastMonthCF(user.handle);
 
-            const ratingPoint = userCFrating * multiplier.rating;
-            const aboveProblemPoint =
-                totalProblemSolvedLastMonthCF.aboveRating *
-                multiplier.aboveProblem;
-            const belowProblemPoint =
-                totalProblemSolvedLastMonthCF.belowRating *
-                multiplier.belowProblem;
-            const contestParticipationPoint =
-                totalContestParticipation * multiplier.contest;
+        await Promise.all(
+            users.map(async user => {
+                const userCFrating = await getUserRatingCF(user.handle);
+                const totalProblemSolvedLastMonthCF =
+                    await getTotalProblemsSolvedLastMonthCF(
+                        user.handle,
+                        userCFrating
+                    );
+                const totalContestParticipation =
+                    await getTotalContestParticipationLastMonthCF(user.handle);
 
-            const totalPoint =
-                (ratingPoint +
-                    aboveProblemPoint +
-                    belowProblemPoint +
-                    contestParticipationPoint) /
-                10;
+                const ratingPoint = userCFrating * multiplier.rating;
+                const aboveProblemPoint =
+                    totalProblemSolvedLastMonthCF.aboveRating *
+                    multiplier.aboveProblem;
+                const belowProblemPoint =
+                    totalProblemSolvedLastMonthCF.belowRating *
+                    multiplier.belowProblem;
+                const contestParticipationPoint =
+                    totalContestParticipation * multiplier.contest;
 
-            const userRankData = {
-                name: user.name,
-                handle: user.handle,
-                point: totalPoint,
-            };
-            allLeaderboardData.push(userRankData);
-        });
+                const totalPoint =
+                    (ratingPoint +
+                        aboveProblemPoint +
+                        belowProblemPoint +
+                        contestParticipationPoint) /
+                    10;
+
+                const userRankData = {
+                    name: user.name,
+                    codeforces: user.handle,
+                    point: totalPoint,
+                };
+                allLeaderboardData.push(userRankData);
+            })
+        );
+
         return allLeaderboardData;
     } catch (error) {
         console.error('Error:', error.message);
@@ -97,4 +103,20 @@ async function generatePoints() {
     }
 }
 
-export { getUserData, getAllUserCFhandleData, generatePoints };
+function sortAndAddRank(array) {
+    // Filter out objects with non-numeric "point" property
+    array = array.filter(
+        obj => typeof obj.point === 'number' && !isNaN(obj.point)
+    );
+    // Sort the array in decreasing order based on "point"
+    array.sort((a, b) => b.point - a.point);
+
+    // Add rank number to each object
+    array.forEach((obj, index) => {
+        obj.rank = index + 1;
+    });
+
+    return array;
+}
+
+export { getUserData, getAllUserCFhandleData, generatePoints, sortAndAddRank };

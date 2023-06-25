@@ -54,7 +54,7 @@ async function getUserRatingCF(userHandle) {
 
         return userRating;
     } catch (error) {
-        return error.message;
+        console.log(error.message);
     }
 }
 
