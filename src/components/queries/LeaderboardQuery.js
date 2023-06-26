@@ -25,6 +25,17 @@ async function getUserData(currentUserEmail) {
     }
 }
 
+async function getLeaderboardData() {
+    const leaderboardAPI = 'http://localhost:5000/leaderboard';
+    try {
+        const result = await axios.get(leaderboardAPI);
+        return result.data[0];
+    } catch (error) {
+        console.error('Error:', error.message);
+        throw error;
+    }
+}
+
 async function getAllUserCFhandleData() {
     const userDataAPI = 'http://localhost:5000/users';
     try {
@@ -119,4 +130,10 @@ function sortAndAddRank(array) {
     return array;
 }
 
-export { getUserData, getAllUserCFhandleData, generatePoints, sortAndAddRank };
+export {
+    getUserData,
+    getAllUserCFhandleData,
+    generatePoints,
+    sortAndAddRank,
+    getLeaderboardData,
+};

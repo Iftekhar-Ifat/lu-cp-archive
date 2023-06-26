@@ -3,18 +3,21 @@ import styles from '../../styles/Leaderboard/Leaderboard.module.css';
 import { MaterialReactTable } from 'material-react-table';
 import {
     leaderboardColumns,
-    leaderboardData,
+    // leaderboardData,
 } from '../../components/LeaderBoardComponents/LeaderboardData';
 import { useAuth } from '../../context/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import {
     generatePoints,
+    getLeaderboardData,
     getUserData,
     sortAndAddRank,
 } from '../../components/queries/LeaderboardQuery';
 import { Button } from '@geist-ui/core';
 import Save from '@geist-ui/icons/save';
 import { leaderboardSave } from '../../components/ApiComponents/handleSaveLeaderboard';
+import Loading from '../../components/Loading';
+import ColdStartNotification from '../../components/ColdStartNotification';
 
 const Leaderboard = () => {
     const currentUser = useAuth().currentUser;
@@ -25,6 +28,13 @@ const Leaderboard = () => {
     const userData = useQuery({
         queryKey: ['userData'],
         queryFn: () => getUserData(currentUser.email),
+        cacheTime: Infinity,
+        staleTime: Infinity,
+    });
+
+    const leaderboardData = useQuery({
+        queryKey: ['leaderboard'],
+        queryFn: getLeaderboardData,
         cacheTime: Infinity,
         staleTime: Infinity,
     });
@@ -52,6 +62,14 @@ const Leaderboard = () => {
         setIsSaving(false);
     };
 
+    if (leaderboardData.isLoading) {
+        return (
+            <>
+                <Loading />;
+                <ColdStartNotification />
+            </>
+        );
+    }
     return (
         <div className={styles.container}>
             <div className={styles.header_div}>
@@ -59,9 +77,10 @@ const Leaderboard = () => {
                     <u>Programmer&apos;s Leaderboard</u>
                 </h1>
             </div>
+            {}
             <MaterialReactTable
                 columns={columns}
-                data={leaderboardData}
+                data={leaderboardData.data.leaderboard}
                 enableColumnActions={false}
                 enableColumnFilters={false}
                 enablePagination={false}
