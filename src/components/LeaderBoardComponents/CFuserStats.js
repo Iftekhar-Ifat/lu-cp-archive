@@ -5,7 +5,7 @@ async function getTotalProblemsSolvedLastMonthCF(
     userHandle,
     userCurrentRating
 ) {
-    const maxRetries = 3;
+    const maxRetries = 5;
     let retries = 0;
 
     while (retries < maxRetries) {
@@ -64,7 +64,7 @@ async function getTotalProblemsSolvedLastMonthCF(
 }
 
 async function getUserRatingCF(userHandle) {
-    const maxRetries = 3;
+    const maxRetries = 5;
     let retries = 0;
 
     while (retries < maxRetries) {
@@ -100,7 +100,7 @@ async function getUserRatingCF(userHandle) {
 }
 
 async function getTotalContestParticipationLastMonthCF(userHandle) {
-    const maxRetries = 3;
+    const maxRetries = 5;
     let retries = 0;
 
     while (retries < maxRetries) {
