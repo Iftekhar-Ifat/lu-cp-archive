@@ -1,17 +1,17 @@
-import axios from "axios";
+import axios from 'axios';
 export async function tagsHandler(items, setShow) {
     axios
-        .post("https://lu-cp-archive-backend.onrender.com/update-tags", {
+        .post('https://chartreuse-green-dog-garb.cyclic.app/update-tags', {
             ...items,
         })
-        .then((res) => {
-            if (res.data === "Error") {
-                alert("⚠ Data Already Exists!!!");
+        .then(res => {
+            if (res.data === 'Error') {
+                alert('⚠ Data Already Exists!!!');
                 setShow(false);
             } else {
-                alert("Data Added Successfully ✅");
+                alert('Data Added Successfully ✅');
                 setShow(false);
             }
         })
-        .catch((err) => alert(err));
+        .catch(err => alert(err));
 }
