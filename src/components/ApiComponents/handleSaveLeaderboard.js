@@ -1,7 +1,10 @@
 import axios from 'axios';
 export async function leaderboardSave(leaderboardInfo) {
     axios
-        .post('http://localhost:5000/send-leaderboard', leaderboardInfo)
+        .post(
+            'https://lu-cp-archive-backend.onrender.com/send-leaderboard',
+            leaderboardInfo
+        )
         .then(response => {
             if (response.status === 200) {
                 alert(

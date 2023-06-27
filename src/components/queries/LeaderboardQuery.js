@@ -26,7 +26,8 @@ async function getUserData(currentUserEmail) {
 }
 
 async function getLeaderboardData() {
-    const leaderboardAPI = 'http://localhost:5000/leaderboard';
+    const leaderboardAPI =
+        'https://lu-cp-archive-backend.onrender.com/leaderboard';
     try {
         const result = await axios.get(leaderboardAPI);
         return result.data[0];
@@ -37,7 +38,7 @@ async function getLeaderboardData() {
 }
 
 async function getAllUserCFhandleData() {
-    const userDataAPI = 'http://localhost:5000/users';
+    const userDataAPI = 'https://lu-cp-archive-backend.onrender.com/users';
     try {
         let allUserCFhandle = [];
         await axios.get(userDataAPI).then(users => {

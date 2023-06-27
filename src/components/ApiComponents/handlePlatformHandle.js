@@ -2,7 +2,7 @@ import axios from 'axios';
 export async function platformHandleInput(handleInfo) {
     console.log(handleInfo);
     axios
-        .post('http://localhost:5000/send-handle', {
+        .post('https://lu-cp-archive-backend.onrender.com/send-handle', {
             handleInfo,
         })
         .then(() =>
