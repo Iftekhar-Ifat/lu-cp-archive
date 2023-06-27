@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://lu-cp-archive-backend.onrender.com/users';
+    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
@@ -15,7 +15,7 @@ async function getUserData(currentUserEmail) {
 
 async function getIntraLUContestData() {
     const intraLUContestAPI =
-        'https://lu-cp-archive-backend.onrender.com/intra-lu-contest';
+        'https://chartreuse-green-dog-garb.cyclic.app/intra-lu-contest';
     try {
         const result = await axios.get(intraLUContestAPI);
         return result.data;

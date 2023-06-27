@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 async function getProblemData(problemRoute) {
-    const problemDataAPI = `https://lu-cp-archive-backend.onrender.com/topicProblems/${problemRoute.topicProblems}`;
+    const problemDataAPI = `https://chartreuse-green-dog-garb.cyclic.app/topicProblems/${problemRoute.topicProblems}`;
     try {
         const result = await axios.get(problemDataAPI);
         return result.data;
@@ -12,7 +12,7 @@ async function getProblemData(problemRoute) {
 }
 
 async function getResourcesData(problemRoute) {
-    const resourcesDataAPI = `https://lu-cp-archive-backend.onrender.com/resources/${problemRoute.topicProblems}`;
+    const resourcesDataAPI = `https://chartreuse-green-dog-garb.cyclic.app/resources/${problemRoute.topicProblems}`;
     try {
         const result = await axios.get(resourcesDataAPI);
         return result.data;
@@ -23,7 +23,7 @@ async function getResourcesData(problemRoute) {
 }
 
 async function getTagsData() {
-    const tagsDataAPI = `https://lu-cp-archive-backend.onrender.com/all-tags`;
+    const tagsDataAPI = `https://chartreuse-green-dog-garb.cyclic.app/all-tags`;
     try {
         const result = await axios.get(tagsDataAPI);
         return result.data;
@@ -34,7 +34,7 @@ async function getTagsData() {
 }
 
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://lu-cp-archive-backend.onrender.com/users';
+    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },

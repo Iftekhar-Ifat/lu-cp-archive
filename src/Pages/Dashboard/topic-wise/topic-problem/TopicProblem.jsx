@@ -79,7 +79,7 @@ const TopicProblem = () => {
         try {
             axios
                 .post(
-                    'https://lu-cp-archive-backend.onrender.com/update-problem-status',
+                    'https://chartreuse-green-dog-garb.cyclic.app/update-problem-status',
                     {
                         ...problemStatus,
                     }

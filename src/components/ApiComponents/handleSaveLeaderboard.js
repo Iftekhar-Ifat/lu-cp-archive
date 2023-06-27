@@ -2,7 +2,7 @@ import axios from 'axios';
 export async function leaderboardSave(leaderboardInfo) {
     axios
         .post(
-            'https://lu-cp-archive-backend.onrender.com/send-leaderboard',
+            'https://chartreuse-green-dog-garb.cyclic.app/send-leaderboard',
             leaderboardInfo
         )
         .then(response => {

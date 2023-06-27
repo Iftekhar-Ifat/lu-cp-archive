@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://lu-cp-archive-backend.onrender.com/users';
+    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
@@ -15,7 +15,7 @@ async function getUserData(currentUserEmail) {
 
 async function getLUPSmarathonContestData() {
     const lupsMarathonContestAPI =
-        'https://lu-cp-archive-backend.onrender.com/lu-problemsolver-marathon-contest';
+        'https://chartreuse-green-dog-garb.cyclic.app/lu-problemsolver-marathon-contest';
     try {
         const result = await axios.get(lupsMarathonContestAPI);
         return result.data;

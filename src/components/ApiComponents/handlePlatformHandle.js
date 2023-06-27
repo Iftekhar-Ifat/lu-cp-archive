@@ -2,7 +2,7 @@ import axios from 'axios';
 export async function platformHandleInput(handleInfo) {
     console.log(handleInfo);
     axios
-        .post('https://lu-cp-archive-backend.onrender.com/send-handle', {
+        .post('https://chartreuse-green-dog-garb.cyclic.app/send-handle', {
             handleInfo,
         })
         .then(() =>
@@ -13,4 +13,4 @@ export async function platformHandleInput(handleInfo) {
         .catch(err => alert(err));
 }
 
-// 'https://lu-cp-archive-backend.onrender.com/send-handle'
+// 'https://lu-cp-archive-backend.onrender.com'

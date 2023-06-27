@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 async function getUserCFData(currentUserEmail) {
-    const userDataAPI = 'https://lu-cp-archive-backend.onrender.com/users';
+    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
     try {
         let userObject;
         await axios

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://lu-cp-archive-backend.onrender.com/users';
+    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
@@ -24,7 +24,7 @@ async function getUserData(currentUserEmail) {
 }
 
 async function getCFproblemsData(path) {
-    const cfProblemsAPI = `https://lu-cp-archive-backend.onrender.com/codeforces-problems/${path.ladder}`;
+    const cfProblemsAPI = `https://chartreuse-green-dog-garb.cyclic.app/codeforces-problems/${path.ladder}`;
     try {
         const result = await axios.get(cfProblemsAPI);
         return result.data;

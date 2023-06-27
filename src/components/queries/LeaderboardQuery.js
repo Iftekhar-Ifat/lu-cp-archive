@@ -13,7 +13,7 @@ const multiplier = {
 };
 
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://lu-cp-archive-backend.onrender.com/users';
+    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
@@ -27,7 +27,7 @@ async function getUserData(currentUserEmail) {
 
 async function getLeaderboardData() {
     const leaderboardAPI =
-        'https://lu-cp-archive-backend.onrender.com/leaderboard';
+        'https://chartreuse-green-dog-garb.cyclic.app/leaderboard';
     try {
         const result = await axios.get(leaderboardAPI);
         return result.data[0];
@@ -38,7 +38,7 @@ async function getLeaderboardData() {
 }
 
 async function getAllUserCFhandleData() {
-    const userDataAPI = 'https://lu-cp-archive-backend.onrender.com/users';
+    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
     try {
         let allUserCFhandle = [];
         await axios.get(userDataAPI).then(users => {
