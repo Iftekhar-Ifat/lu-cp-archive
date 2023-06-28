@@ -1,10 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import styles from '../../styles/Leaderboard/Leaderboard.module.css';
 import { MaterialReactTable } from 'material-react-table';
-import {
-    leaderboardColumns,
-    // leaderboardData,
-} from '../../components/LeaderBoardComponents/LeaderboardData';
+import { leaderboardColumns } from '../../components/LeaderBoardComponents/LeaderboardData';
 import { useAuth } from '../../context/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -18,6 +15,8 @@ import Save from '@geist-ui/icons/save';
 import { leaderboardSave } from '../../components/ApiComponents/handleSaveLeaderboard';
 import Loading from '../../components/Loading';
 import ColdStartNotification from '../../components/ColdStartNotification';
+import { Box, IconButton, Tooltip } from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
 
 const Leaderboard = () => {
     const currentUser = useAuth().currentUser;
@@ -61,6 +60,37 @@ const Leaderboard = () => {
         await leaderboardSave(fetchedLeaderboard);
         setIsSaving(false);
     };
+    const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
+        fetchedLeaderboard[row.index] = values;
+
+        // Sort the array in decreasing order based on "point"
+        fetchedLeaderboard.sort((a, b) => b.point - a.point);
+
+        // Add rank number to each object
+        fetchedLeaderboard.forEach((obj, index) => {
+            obj.rank = index + 1;
+        });
+
+        setFetchedLeaderboard([...fetchedLeaderboard]);
+
+        exitEditingMode(); //required to exit editing mode and close modal
+    };
+
+    const handleDeleteRow = useCallback(
+        row => {
+            if (
+                !confirm(
+                    `Are you sure you want to delete ${row.getValue('name')}`
+                )
+            ) {
+                return;
+            }
+            //send api delete request here, then refetch or update local table data for re-render
+            fetchedLeaderboard.splice(row.index, 1);
+            setFetchedLeaderboard([...fetchedLeaderboard]);
+        },
+        [fetchedLeaderboard]
+    );
 
     if (leaderboardData.isLoading) {
         return (
@@ -124,11 +154,33 @@ const Leaderboard = () => {
                     <MaterialReactTable
                         columns={columns}
                         data={fetchedLeaderboard}
+                        enableEditing={true}
+                        onEditingRowSave={handleSaveRowEdits}
                         enableColumnActions={false}
                         enableColumnFilters={false}
                         enablePagination={false}
                         enableSorting={false}
                         enableBottomToolbar={false}
+                        renderRowActions={({ row, table }) => (
+                            <Box sx={{ display: 'flex', gap: '1rem' }}>
+                                <Tooltip arrow placement="left" title="Edit">
+                                    <IconButton
+                                        onClick={() => table.setEditingRow(row)}
+                                    >
+                                        <Edit />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip arrow placement="right" title="Delete">
+                                    <IconButton
+                                        color="error"
+                                        onClick={() => handleDeleteRow(row)}
+                                    >
+                                        <Delete />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
+                        )}
+                        ren
                         muiTableHeadCellProps={{
                             sx: {
                                 fontWeight: 'bold',
