@@ -1,7 +1,10 @@
 import axios from 'axios';
+
+const API = import.meta.env.VITE_BACKEND_API;
+
 export async function cardsHandler(items, setShow) {
     axios
-        .post('https://chartreuse-green-dog-garb.cyclic.app/add-cards', {
+        .post(`${API}/add-cards`, {
             ...items,
         })
         .then(res => {

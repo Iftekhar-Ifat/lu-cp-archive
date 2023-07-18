@@ -1,23 +1,25 @@
+import AddIcon from '@mui/icons-material/Add';
+import { Fab, LinearProgress } from '@mui/material';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { processData } from '../../../../components/TopicWiseComponents/processDataHandler';
-import styles from '../../../../styles/components/TopicWiseDynamic.module.css';
-import { Fab, LinearProgress } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import axios from 'axios';
-import { useAuth } from '../../../../context/AuthProvider.jsx';
+import AddProblemModal from '../../../../components/AddForms/AddProblemModal.jsx';
+import Loading from '../../../../components/Loading';
 import Resources from '../../../../components/Resources.jsx';
 import ProblemCard from '../../../../components/TopicWiseComponents/ProblemCard.jsx';
-import AddProblemModal from '../../../../components/AddForms/AddProblemModal.jsx';
 import ProgressBarCard from '../../../../components/TopicWiseComponents/ProgressBarCard.jsx';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getUserData } from '../../../../components/queries/TopicProblemsQuery';
+import { processData } from '../../../../components/TopicWiseComponents/processDataHandler';
 import {
     getProblemData,
     getResourcesData,
     getTagsData,
+    getUserData,
 } from '../../../../components/queries/TopicProblemsQuery';
-import Loading from '../../../../components/Loading';
+import { useAuth } from '../../../../context/AuthProvider.jsx';
+import styles from '../../../../styles/components/TopicWiseDynamic.module.css';
+
+const API = import.meta.env.VITE_BACKEND_API;
 
 const TopicProblem = () => {
     //getting route
@@ -78,12 +80,9 @@ const TopicProblem = () => {
     useEffect(() => {
         try {
             axios
-                .post(
-                    'https://chartreuse-green-dog-garb.cyclic.app/update-problem-status',
-                    {
-                        ...problemStatus,
-                    }
-                )
+                .post(`${API}/update-problem-status`, {
+                    ...problemStatus,
+                })
                 .then(() => {
                     queryClient.invalidateQueries('userData');
                 });

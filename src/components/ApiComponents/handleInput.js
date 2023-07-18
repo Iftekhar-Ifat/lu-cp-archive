@@ -1,7 +1,9 @@
 import axios from 'axios';
+const API = import.meta.env.VITE_BACKEND_API;
+
 export async function inputHandler(items, setShow) {
     axios
-        .post('https://chartreuse-green-dog-garb.cyclic.app/send-data', {
+        .post(`${API}/send-data`, {
             ...items,
         })
         .then(res => {

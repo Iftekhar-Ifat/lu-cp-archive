@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API = import.meta.env.VITE_BACKEND_API;
+
 async function getUserCFData(currentUserEmail) {
-    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
+    const userDataAPI = `${API}/users`;
     try {
         let userObject;
         await axios
@@ -39,4 +41,4 @@ async function getCFInfo(cfHandle) {
     }
 }
 
-export { getUserCFData, getCFInfo };
+export { getCFInfo, getUserCFData };

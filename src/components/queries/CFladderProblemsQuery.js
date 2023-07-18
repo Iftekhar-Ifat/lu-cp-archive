@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API = import.meta.env.VITE_BACKEND_API;
+
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
+    const userDataAPI = `${API}/users`;
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
@@ -24,7 +26,7 @@ async function getUserData(currentUserEmail) {
 }
 
 async function getCFproblemsData(path) {
-    const cfProblemsAPI = `https://chartreuse-green-dog-garb.cyclic.app/codeforces-problems/${path.ladder}`;
+    const cfProblemsAPI = `${API}/codeforces-problems/${path.ladder}`;
     try {
         const result = await axios.get(cfProblemsAPI);
         return result.data;
@@ -34,4 +36,4 @@ async function getCFproblemsData(path) {
     }
 }
 
-export { getUserData, getCFproblemsData };
+export { getCFproblemsData, getUserData };

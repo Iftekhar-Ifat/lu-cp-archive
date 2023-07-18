@@ -1,7 +1,10 @@
 import axios from 'axios';
+
+const API = import.meta.env.VITE_BACKEND_API;
+
 export async function userInputHandler(users) {
     axios
-        .post('https://chartreuse-green-dog-garb.cyclic.app/send-user', {
+        .post(`${API}/send-user`, {
             ...users,
         })
         .then()

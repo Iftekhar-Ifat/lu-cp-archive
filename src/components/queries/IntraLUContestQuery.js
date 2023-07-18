@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
+    const userDataAPI = '{import.meta.env.VITE_BACKEND_API}/users';
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
@@ -15,7 +15,7 @@ async function getUserData(currentUserEmail) {
 
 async function getIntraLUContestData() {
     const intraLUContestAPI =
-        'https://chartreuse-green-dog-garb.cyclic.app/intra-lu-contest';
+        '{import.meta.env.VITE_BACKEND_API}/intra-lu-contest';
     try {
         const result = await axios.get(intraLUContestAPI);
         return result.data;
@@ -25,4 +25,4 @@ async function getIntraLUContestData() {
     }
 }
 
-export { getUserData, getIntraLUContestData };
+export { getIntraLUContestData, getUserData };

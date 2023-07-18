@@ -1,10 +1,10 @@
 import axios from 'axios';
+
+const API = import.meta.env.VITE_BACKEND_API;
+
 export async function leaderboardSave(leaderboardInfo) {
     axios
-        .post(
-            'https://chartreuse-green-dog-garb.cyclic.app/send-leaderboard',
-            leaderboardInfo
-        )
+        .post(`${API}/send-leaderboard`, leaderboardInfo)
         .then(response => {
             if (response.status === 200) {
                 alert(

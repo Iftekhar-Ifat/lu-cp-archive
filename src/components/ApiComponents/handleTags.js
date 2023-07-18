@@ -1,7 +1,10 @@
 import axios from 'axios';
+
+const API = import.meta.env.VITE_BACKEND_API;
+
 export async function tagsHandler(items, setShow) {
     axios
-        .post('https://chartreuse-green-dog-garb.cyclic.app/update-tags', {
+        .post(`${API}/update-tags`, {
             ...items,
         })
         .then(res => {
