@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API = import.meta.env.VITE_BACKEND_API;
+
 async function getUserData(currentUserEmail) {
-    const userDataAPI = '{import.meta.env.VITE_BACKEND_API}/users';
+    const userDataAPI = `${API}/users`;
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
@@ -14,8 +16,7 @@ async function getUserData(currentUserEmail) {
 }
 
 async function getIntraLUContestData() {
-    const intraLUContestAPI =
-        '{import.meta.env.VITE_BACKEND_API}/intra-lu-contest';
+    const intraLUContestAPI = `${API}/intra-lu-contest`;
     try {
         const result = await axios.get(intraLUContestAPI);
         return result.data;
