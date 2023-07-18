@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API = import.meta.env.VITE_BACKEND_API;
+
 async function getProblemData(problemRoute) {
-    const problemDataAPI = `https://chartreuse-green-dog-garb.cyclic.app/topicProblems/${problemRoute.topicProblems}`;
+    const problemDataAPI = `${API}/topicProblems/${problemRoute.topicProblems}`;
     try {
         const result = await axios.get(problemDataAPI);
         return result.data;
@@ -12,7 +14,7 @@ async function getProblemData(problemRoute) {
 }
 
 async function getResourcesData(problemRoute) {
-    const resourcesDataAPI = `https://chartreuse-green-dog-garb.cyclic.app/resources/${problemRoute.topicProblems}`;
+    const resourcesDataAPI = `${API}/resources/${problemRoute.topicProblems}`;
     try {
         const result = await axios.get(resourcesDataAPI);
         return result.data;
@@ -23,7 +25,7 @@ async function getResourcesData(problemRoute) {
 }
 
 async function getTagsData() {
-    const tagsDataAPI = `https://chartreuse-green-dog-garb.cyclic.app/all-tags`;
+    const tagsDataAPI = `${API}/all-tags`;
     try {
         const result = await axios.get(tagsDataAPI);
         return result.data;
@@ -34,7 +36,7 @@ async function getTagsData() {
 }
 
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
+    const userDataAPI = `${API}/users`;
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
@@ -46,4 +48,4 @@ async function getUserData(currentUserEmail) {
     }
 }
 
-export { getProblemData, getResourcesData, getUserData, getTagsData };
+export { getProblemData, getResourcesData, getTagsData, getUserData };

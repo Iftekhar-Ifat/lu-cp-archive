@@ -1,7 +1,10 @@
 import axios from 'axios';
+
+const API = import.meta.env.VITE_BACKEND_API;
+
 export function deleteHandler(itemUrl, setModalState) {
     axios
-        .delete('https://chartreuse-green-dog-garb.cyclic.app/delete-data', {
+        .delete(`${API}/delete-data`, {
             data: { url: itemUrl },
         })
         .then(res => {

@@ -12,8 +12,10 @@ const multiplier = {
     contest: 10,
 };
 
+const API = import.meta.env.VITE_BACKEND_API_LOCAL;
+
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
+    const userDataAPI = `${API}/users`;
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
@@ -26,8 +28,7 @@ async function getUserData(currentUserEmail) {
 }
 
 async function getLeaderboardData() {
-    const leaderboardAPI =
-        'https://chartreuse-green-dog-garb.cyclic.app/leaderboard';
+    const leaderboardAPI = `${API}/leaderboard`;
     try {
         const result = await axios.get(leaderboardAPI);
         return result.data[0];
@@ -38,7 +39,7 @@ async function getLeaderboardData() {
 }
 
 async function getAllUserCFhandleData() {
-    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
+    const userDataAPI = `${API}/users`;
     try {
         let allUserCFhandle = [];
         await axios.get(userDataAPI).then(users => {
@@ -116,20 +117,32 @@ async function generatePoints() {
     }
 }
 
-function sortAndAddRank(array) {
-    // Filter out objects with non-numeric "point" property
-    array = array.filter(
+async function sortAndAddRank(leaderboard) {
+    // Filter out "point" (Just in case it gives NaN)
+    leaderboard.filter(
         obj => typeof obj.point === 'number' && !isNaN(obj.point)
     );
     // Sort the array in decreasing order based on "point"
-    array.sort((a, b) => b.point - a.point);
+    leaderboard.sort((a, b) => b.point - a.point);
 
     // Add rank number to each object
-    array.forEach((obj, index) => {
+    leaderboard.forEach((obj, index) => {
         obj.rank = index + 1;
     });
+}
 
-    return array;
+async function addPerformance(cpOfLeaderboard) {
+    for (let i = 0; i < cpOfLeaderboard.length; i++) {
+        cpOfLeaderboard[i].performance = parseInt(
+            cpOfLeaderboard[i].performance
+        );
+        if (Number(cpOfLeaderboard[i].performance)) {
+            cpOfLeaderboard[i].point =
+                cpOfLeaderboard[i].point + cpOfLeaderboard[i].performance;
+        } else {
+            cpOfLeaderboard[i].performance = 0;
+        }
+    }
 }
 
 async function waitBeforeNextUser() {
@@ -138,10 +151,26 @@ async function waitBeforeNextUser() {
     return new Promise(resolve => setTimeout(resolve, delay));
 }
 
+async function replaceUserData(generatedData, fetchedData) {
+    for (let i = 0; i < generatedData.length; i++) {
+        for (let j = 0; j < fetchedData.length; j++) {
+            if (
+                generatedData[i]['codeforces'] === fetchedData[j]['codeforces']
+            ) {
+                fetchedData[j] = generatedData[i];
+                console.log(fetchedData[j]);
+                break;
+            }
+        }
+    }
+}
+
 export {
-    getUserData,
-    getAllUserCFhandleData,
+    addPerformance,
     generatePoints,
-    sortAndAddRank,
+    getAllUserCFhandleData,
     getLeaderboardData,
+    getUserData,
+    replaceUserData,
+    sortAndAddRank,
 };

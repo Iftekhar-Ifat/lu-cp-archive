@@ -105,4 +105,4 @@ const leaderboardAdminColumns = [
     },
 ];
 
-export { leaderboardColumns, leaderboardAdminColumns };
+export { leaderboardAdminColumns, leaderboardColumns };

@@ -1,8 +1,11 @@
 import axios from 'axios';
+
+const API = import.meta.env.VITE_BACKEND_API;
+
 export async function platformHandleInput(handleInfo) {
     console.log(handleInfo);
     axios
-        .post('https://chartreuse-green-dog-garb.cyclic.app/send-handle', {
+        .post(`${API}/send-handle`, {
             handleInfo,
         })
         .then(() =>
@@ -13,4 +16,4 @@ export async function platformHandleInput(handleInfo) {
         .catch(err => alert(err));
 }
 
-// 'https://lu-cp-archive-backend.onrender.com'
+// 'https://lu-cp-archive-VITE_BACKEND.onrender.com'

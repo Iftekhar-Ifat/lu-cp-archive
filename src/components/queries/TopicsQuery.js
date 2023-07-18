@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API = import.meta.env.VITE_BACKEND_API;
+
 async function getCardData() {
-    const cardDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/cards';
+    const cardDataAPI = `${API}/cards`;
     try {
         const result = await axios.get(cardDataAPI);
         return result.data;
@@ -12,7 +14,7 @@ async function getCardData() {
 }
 
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
+    const userDataAPI = `${API}/users`;
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },

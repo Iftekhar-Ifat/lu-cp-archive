@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API = import.meta.env.VITE_BACKEND_API;
+
 async function getUserData(currentUserEmail) {
-    const userDataAPI = 'https://chartreuse-green-dog-garb.cyclic.app/users';
+    const userDataAPI = `${API}/users`;
     try {
         const result = await axios.get(userDataAPI, {
             params: { currentUserEmail: currentUserEmail },
@@ -14,8 +16,7 @@ async function getUserData(currentUserEmail) {
 }
 
 async function getLUPSshortContestData() {
-    const lupsShortContestAPI =
-        'https://chartreuse-green-dog-garb.cyclic.app/lu-problemsolver-short-contest';
+    const lupsShortContestAPI = `${API}/lu-problemsolver-short-contest`;
     try {
         const result = await axios.get(lupsShortContestAPI);
         return result.data;
@@ -25,4 +26,4 @@ async function getLUPSshortContestData() {
     }
 }
 
-export { getUserData, getLUPSshortContestData };
+export { getLUPSshortContestData, getUserData };
