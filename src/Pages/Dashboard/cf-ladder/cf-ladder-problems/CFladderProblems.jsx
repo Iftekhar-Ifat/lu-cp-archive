@@ -1,16 +1,16 @@
-import { useParams } from 'react-router-dom';
-import { processCFdata } from '../../../../components/ProcessCFdata';
-import DynamicCFproblems from '../../../../components/DynamicCFproblems.jsx';
-import axios from 'axios';
-import ColdStartNotification from '../../../../components/ColdStartNotification.jsx';
-import { useAuth } from '../../../../context/AuthProvider.jsx';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import ColdStartNotification from '../../../../components/ColdStartNotification.jsx';
+import DynamicCFproblems from '../../../../components/DynamicCFproblems.jsx';
+import Loading from '../../../../components/Loading';
+import { processCFdata } from '../../../../components/ProcessCFdata';
 import {
     getCFproblemsData,
     getUserData,
 } from '../../../../components/queries/CFladderProblemsQuery';
-import Loading from '../../../../components/Loading';
-import { useEffect, useState } from 'react';
+import { useAuth } from '../../../../context/AuthProvider.jsx';
 
 const CFladderProblems = () => {
     const [modifiedProblemsData, setModifiedProblemsData] = useState(false);
@@ -30,7 +30,7 @@ const CFladderProblems = () => {
         queryFn: () => getCFproblemsData(path),
         enabled: userData.isSuccess,
         onSuccess: data => {
-            if (userData.data.userHandle.trim() !== '') {
+            if (userData.data.userHandle?.trim() !== '') {
                 try {
                     axios
                         .get(
