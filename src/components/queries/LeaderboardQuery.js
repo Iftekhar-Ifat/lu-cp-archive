@@ -12,7 +12,7 @@ const multiplier = {
     contest: 10,
 };
 
-const API = import.meta.env.VITE_BACKEND_API_LOCAL;
+const API = import.meta.env.VITE_BACKEND_API;
 
 async function getUserData(currentUserEmail) {
     const userDataAPI = `${API}/users`;

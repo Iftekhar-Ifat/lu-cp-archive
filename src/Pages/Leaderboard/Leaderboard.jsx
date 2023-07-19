@@ -23,7 +23,7 @@ import {
 import { useAuth } from '../../context/AuthProvider';
 import styles from '../../styles/Leaderboard/Leaderboard.module.css';
 
-const API = import.meta.env.VITE_BACKEND_API_LOCAL;
+const API = import.meta.env.VITE_BACKEND_API;
 
 const Leaderboard = () => {
     const currentUser = useAuth().currentUser;
