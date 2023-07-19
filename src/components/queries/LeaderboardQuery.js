@@ -129,20 +129,40 @@ async function sortAndAddRank(leaderboard) {
     leaderboard.forEach((obj, index) => {
         obj.rank = index + 1;
     });
+    return leaderboard;
 }
 
-async function addPerformance(cpOfLeaderboard) {
-    for (let i = 0; i < cpOfLeaderboard.length; i++) {
-        cpOfLeaderboard[i].performance = parseInt(
-            cpOfLeaderboard[i].performance
-        );
-        if (Number(cpOfLeaderboard[i].performance)) {
-            cpOfLeaderboard[i].point =
-                cpOfLeaderboard[i].point + cpOfLeaderboard[i].performance;
+async function addPerformance(leaderboard) {
+    for (let i = 0; i < leaderboard.length; i++) {
+        leaderboard[i].performance = parseFloat(leaderboard[i].performance);
+        leaderboard[i].point = parseFloat(leaderboard[i].point);
+
+        if (Number(leaderboard[i].performance)) {
+            const totalPoint =
+                leaderboard[i].point + leaderboard[i].performance;
+
+            leaderboard[i].point = Math.round(totalPoint * 100) / 100;
         } else {
-            cpOfLeaderboard[i].performance = 0;
+            leaderboard[i].performance = 0;
         }
     }
+    return leaderboard;
+}
+
+async function showPrevPerformance(generatedLeaderboard, fetchedLeaderboard) {
+    for (let i = 0; i < generatedLeaderboard.length; i++) {
+        for (let j = 0; j < fetchedLeaderboard.length; j++) {
+            if (
+                generatedLeaderboard[i]['codeforces'] ===
+                fetchedLeaderboard[j]['codeforces']
+            ) {
+                generatedLeaderboard[i].performance =
+                    fetchedLeaderboard[j].performance;
+                break;
+            }
+        }
+    }
+    return generatedLeaderboard;
 }
 
 async function waitBeforeNextUser() {
@@ -151,26 +171,12 @@ async function waitBeforeNextUser() {
     return new Promise(resolve => setTimeout(resolve, delay));
 }
 
-async function replaceUserData(generatedData, fetchedData) {
-    for (let i = 0; i < generatedData.length; i++) {
-        for (let j = 0; j < fetchedData.length; j++) {
-            if (
-                generatedData[i]['codeforces'] === fetchedData[j]['codeforces']
-            ) {
-                fetchedData[j] = generatedData[i];
-                console.log(fetchedData[j]);
-                break;
-            }
-        }
-    }
-}
-
 export {
     addPerformance,
     generatePoints,
     getAllUserCFhandleData,
     getLeaderboardData,
     getUserData,
-    replaceUserData,
+    showPrevPerformance,
     sortAndAddRank,
 };
