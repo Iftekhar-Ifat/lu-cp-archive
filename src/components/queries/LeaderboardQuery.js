@@ -129,6 +129,7 @@ async function sortAndAddRank(leaderboard) {
     leaderboard.forEach((obj, index) => {
         obj.rank = index + 1;
     });
+    console.log(leaderboard);
     return leaderboard;
 }
 
