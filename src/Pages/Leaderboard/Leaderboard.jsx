@@ -14,7 +14,6 @@ import {
 } from '../../components/LeaderBoardComponents/LeaderboardData';
 import Loading from '../../components/Loading';
 import {
-    addPerformance,
     generatePoints,
     getUserData,
     showPrevPerformance,
@@ -65,13 +64,8 @@ const Leaderboard = () => {
     const handleSaveLeaderboard = async () => {
         try {
             setIsSaving(true);
-            // copy of leaderboard to prevent re-render each time user changes performance value ( because all users are dumb )
-            const performanceAddedLeaderboard = await addPerformance(
-                leaderboard
-            );
-            const sortedLeaderboard = await sortAndAddRank(
-                performanceAddedLeaderboard
-            );
+
+            const sortedLeaderboard = await sortAndAddRank(leaderboard);
             await leaderboardSave(sortedLeaderboard);
 
             setIsSaving(false);
@@ -82,8 +76,15 @@ const Leaderboard = () => {
     };
 
     const handleSaveCell = (cell, value) => {
-        leaderboard[cell.row.index][cell.column.id] = value;
-        setLeaderboard([...leaderboard]); //re-render with new data
+        const prevPoint = leaderboard[cell.row.index].point;
+        const newPoint = parseFloat(value) + parseFloat(prevPoint);
+
+        leaderboard[cell.row.index][cell.column.id] = Number(value);
+        leaderboard[cell.row.index].point = Math.round(newPoint * 100) / 100;
+
+        console.log(leaderboard);
+
+        setLeaderboard([...leaderboard]);
     };
 
     const handleDeleteRow = useCallback(
