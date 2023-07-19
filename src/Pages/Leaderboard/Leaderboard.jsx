@@ -17,7 +17,7 @@ import {
     addPerformance,
     generatePoints,
     getUserData,
-    replaceUserData,
+    showPrevPerformance,
     sortAndAddRank,
 } from '../../components/queries/LeaderboardQuery';
 import { useAuth } from '../../context/AuthProvider';
@@ -46,9 +46,14 @@ const Leaderboard = () => {
             setIsLoading(true);
 
             const generatedLeaderboardData = await generatePoints();
-            await replaceUserData(generatedLeaderboardData, leaderboard);
-            await sortAndAddRank(leaderboard);
-            setLeaderboard([...leaderboard]); //re-render with new data
+            const performanceAddedLeaderboard = await showPrevPerformance(
+                generatedLeaderboardData,
+                leaderboard
+            );
+            const sortedLeaderboard = await sortAndAddRank(
+                performanceAddedLeaderboard
+            );
+            setLeaderboard([...sortedLeaderboard]); //re-render with new data
 
             setIsLoading(false);
         } catch (error) {
@@ -61,10 +66,13 @@ const Leaderboard = () => {
         try {
             setIsSaving(true);
             // copy of leaderboard to prevent re-render each time user changes performance value ( because all users are dumb )
-            let cpOfLeaderboard = leaderboard;
-            await addPerformance(cpOfLeaderboard);
-            await sortAndAddRank(cpOfLeaderboard);
-            await leaderboardSave(leaderboard);
+            const performanceAddedLeaderboard = await addPerformance(
+                leaderboard
+            );
+            const sortedLeaderboard = await sortAndAddRank(
+                performanceAddedLeaderboard
+            );
+            await leaderboardSave(sortedLeaderboard);
 
             setIsSaving(false);
         } catch (error) {
