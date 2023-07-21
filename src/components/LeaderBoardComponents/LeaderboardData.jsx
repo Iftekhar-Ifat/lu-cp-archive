@@ -1,8 +1,23 @@
+// file name is jsx because using custom jsx inside
+
+import { getRatingColor } from '../Profile/getColors';
+
 const leaderboardColumns = [
     {
         accessorKey: 'rank',
         enableEditing: false,
         header: 'Rank',
+        muiTableHeadCellProps: {
+            align: 'center',
+        },
+        muiTableBodyCellProps: {
+            align: 'center',
+        },
+    },
+    {
+        accessorKey: 'studentid',
+        enableEditing: false,
+        header: 'Student ID',
         muiTableHeadCellProps: {
             align: 'center',
         },
@@ -31,6 +46,18 @@ const leaderboardColumns = [
         muiTableBodyCellProps: {
             align: 'center',
         },
+        Cell: ({ cell }) => (
+            <a
+                href={`https://codeforces.com/profile/${cell.getValue()}`}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                    color: `${getRatingColor(cell.row.original.cf_rating)}`,
+                }}
+            >
+                {cell.getValue()}
+            </a>
+        ),
     },
     {
         accessorKey: 'point',
@@ -57,6 +84,17 @@ const leaderboardAdminColumns = [
         },
     },
     {
+        accessorKey: 'studentid',
+        enableEditing: false,
+        header: 'Student ID',
+        muiTableHeadCellProps: {
+            align: 'center',
+        },
+        muiTableBodyCellProps: {
+            align: 'center',
+        },
+    },
+    {
         accessorKey: 'name',
         enableEditing: false,
         header: 'Name',
@@ -77,6 +115,18 @@ const leaderboardAdminColumns = [
         muiTableBodyCellProps: {
             align: 'center',
         },
+        Cell: ({ cell }) => (
+            <a
+                href={`https://codeforces.com/profile/${cell.getValue()}`}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                    color: `${getRatingColor(cell.row.original.cf_rating)}`,
+                }}
+            >
+                {cell.getValue()}
+            </a>
+        ),
     },
     {
         accessorKey: 'performance',

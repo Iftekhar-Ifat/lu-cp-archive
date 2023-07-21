@@ -5,15 +5,18 @@ import styles from '../../styles/components/AddProblemModal.module.css';
 import { TextField, Button, FormLabel } from '@mui/material';
 import { Spacer } from '@geist-ui/core';
 import { cardsHandler } from '../ApiComponents/handleCards';
+import { useAuth } from '../../context/AuthProvider';
 
 const AddTagsModal = ({ show, setShow }) => {
     const [btnDisable, setBtnDisable] = useState(false);
+    const currentUserEmail = useAuth().currentUser?.email;
 
     const cardTitle = useRef();
 
     const getCardHandler = () => {
         setBtnDisable(true);
         const cardItem = {
+            email: currentUserEmail,
             itemId: 'cards',
             icon: '',
             title: cardTitle.current.value,

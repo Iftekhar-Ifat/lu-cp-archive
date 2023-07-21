@@ -1,5 +1,5 @@
-import styles from '../../styles/Profile/profile.module.css';
 import { Grid, IconButton, TextField } from '@mui/material';
+import styles from '../../styles/Profile/profile.module.css';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -7,11 +7,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useRef, useState } from 'react';
 import { platformHandleInput } from '../ApiComponents/handlePlatformHandle';
 import { useAuth } from '../../context/AuthProvider';
-import { getCFInfo } from '../queries/ProfileQuery';
-import { useQuery } from '@tanstack/react-query';
-import { getRatingColor } from './getColors';
 
-const SinglePlatform = ({ hasAccount }) => {
+const AddStudentId = ({ hasStudentId }) => {
     let currentUserEmail = useAuth().currentUser.email;
 
     const [textFieldMode, setTextFieldMode] = useState(false);
@@ -25,7 +22,7 @@ const SinglePlatform = ({ hasAccount }) => {
         } else {
             let handleInfo = {
                 userEmail: currentUserEmail,
-                platform: 'codeforces',
+                platform: 'studentid',
                 handle: value,
             };
             platformHandleInput(handleInfo);
@@ -44,40 +41,24 @@ const SinglePlatform = ({ hasAccount }) => {
             setTextFieldMode(false);
         }
     };
-
-    const userCFinfo = useQuery({
-        queryKey: ['user-cf-info'],
-        queryFn: () => getCFInfo(hasAccount),
-        cacheTime: Infinity,
-        staleTime: Infinity,
-    });
-
-    let currentRatingColor;
-    let maxRatingColor;
-    if (userCFinfo.isSuccess) {
-        currentRatingColor = getRatingColor(userCFinfo.data.rating);
-        maxRatingColor = getRatingColor(userCFinfo.data.maxRating);
-    }
-
     return (
         <Grid item xs={2} sm={4} md={4}>
             <div className={styles.card_wrapper}>
-                {/* icon and name */}
                 <div className={styles.icon_and_name}>
                     <img
-                        src="/images/icons/codeforces_icon.png"
+                        src="/images/icons/student_icon.png"
                         style={{ width: '50px', height: '45px' }}
                         alt="icon-image"
                     />
-                    <p className={styles.platform_name}> Codeforces</p>
+                    <p className={styles.platform_name}>Student ID</p>
                 </div>
                 <hr className={styles.hr} />
-                {hasAccount ? (
+                {hasStudentId ? (
                     <div>
                         <div className={styles.info}>
                             <div>
                                 <TextField
-                                    label={hasAccount}
+                                    label={hasStudentId}
                                     disabled={!textFieldMode}
                                     error={error}
                                     helperText={
@@ -114,65 +95,11 @@ const SinglePlatform = ({ hasAccount }) => {
                                 )}
                             </div>
                         </div>
-                        {userCFinfo.isSuccess ? (
-                            <div style={{ width: '100%' }}>
-                                <div className={styles.extra_info}>
-                                    <p>
-                                        Current Rating:{' '}
-                                        <span
-                                            style={{
-                                                color: `${currentRatingColor}`,
-                                                fontWeight: 600,
-                                            }}
-                                        >
-                                            {userCFinfo.data.rating}
-                                        </span>
-                                    </p>
-                                    <p style={{ marginTop: '-10px' }}>
-                                        (Max Ratting:{' '}
-                                        <span
-                                            style={{
-                                                color: `${maxRatingColor}`,
-                                                fontWeight: 600,
-                                            }}
-                                        >
-                                            {userCFinfo.data.maxRating}
-                                        </span>
-                                        ){' '}
-                                    </p>
-                                </div>
-                                <div className={styles.extra_info}>
-                                    <p>
-                                        Current Rank:{' '}
-                                        <span
-                                            style={{
-                                                color: `${currentRatingColor}`,
-                                                fontWeight: 600,
-                                            }}
-                                        >
-                                            {userCFinfo.data.rank}
-                                        </span>
-                                    </p>
-                                    <p style={{ marginTop: '-10px' }}>
-                                        (Max Ranking:{' '}
-                                        <span
-                                            style={{
-                                                color: `${maxRatingColor}`,
-                                                fontWeight: 600,
-                                            }}
-                                        >
-                                            {userCFinfo.data.maxRank}
-                                        </span>
-                                        ){' '}
-                                    </p>
-                                </div>
-                            </div>
-                        ) : null}
                     </div>
                 ) : (
                     <div style={{ marginTop: '10px' }}>
                         <TextField
-                            label="add your handle..."
+                            label="add your student Id..."
                             inputRef={handleRef}
                         />
                         <IconButton
@@ -189,4 +116,4 @@ const SinglePlatform = ({ hasAccount }) => {
     );
 };
 
-export default SinglePlatform;
+export default AddStudentId;

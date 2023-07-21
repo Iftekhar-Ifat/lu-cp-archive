@@ -3,7 +3,6 @@ import axios from 'axios';
 const API = import.meta.env.VITE_BACKEND_API;
 
 export async function platformHandleInput(handleInfo) {
-    console.log(handleInfo);
     axios
         .post(`${API}/send-handle`, {
             handleInfo,

@@ -7,7 +7,7 @@ import {
 
 const multiplier = {
     rating: 1.5,
-    aboveProblem: 5,
+    aboveProblem: 4,
     belowProblem: 2,
     contest: 10,
 };
@@ -46,14 +46,19 @@ async function getAllUserCFhandleData() {
             users.data.forEach(user => {
                 let userName = user.name;
                 let userHandle;
+                let userStudentID;
                 user.handles.forEach(handleObject => {
                     if (handleObject.platform === 'codeforces') {
                         userHandle = handleObject.handle;
+                    }
+                    if (handleObject.platform === 'studentid') {
+                        userStudentID = handleObject.handle;
                     }
                 });
                 let eachUserObject = {
                     name: userName,
                     handle: userHandle,
+                    studentid: userStudentID,
                 };
                 if (userName && userHandle) {
                     allUserCFhandle.push(eachUserObject);
@@ -101,8 +106,10 @@ async function generatePoints() {
 
             const userRankData = {
                 name: user.name,
+                studentid: user.studentid,
                 codeforces: user.handle,
                 point: totalPoint,
+                cf_rating: userCFrating,
             };
             allLeaderboardData.push(userRankData);
 
@@ -129,24 +136,6 @@ async function sortAndAddRank(leaderboard) {
     leaderboard.forEach((obj, index) => {
         obj.rank = index + 1;
     });
-    console.log(leaderboard);
-    return leaderboard;
-}
-
-async function addPerformance(leaderboard) {
-    for (let i = 0; i < leaderboard.length; i++) {
-        leaderboard[i].performance = parseFloat(leaderboard[i].performance);
-        leaderboard[i].point = parseFloat(leaderboard[i].point);
-
-        if (Number(leaderboard[i].performance)) {
-            const totalPoint =
-                leaderboard[i].point + leaderboard[i].performance;
-
-            leaderboard[i].point = Math.round(totalPoint * 100) / 100;
-        } else {
-            leaderboard[i].performance = 0;
-        }
-    }
     return leaderboard;
 }
 
@@ -166,6 +155,23 @@ async function showPrevPerformance(generatedLeaderboard, fetchedLeaderboard) {
     return generatedLeaderboard;
 }
 
+async function addPerformance(leaderboard) {
+    for (let i = 0; i < leaderboard.length; i++) {
+        leaderboard[i].performance = parseFloat(leaderboard[i].performance);
+        leaderboard[i].point = parseFloat(leaderboard[i].point);
+
+        if (Number(leaderboard[i].performance)) {
+            const totalPoint =
+                leaderboard[i].point + leaderboard[i].performance;
+
+            leaderboard[i].point = Math.round(totalPoint * 100) / 100;
+        } else {
+            leaderboard[i].performance = 0;
+        }
+    }
+    return leaderboard;
+}
+
 async function waitBeforeNextUser() {
     // Adjust the delay duration as needed
     const delay = 2000; // 2 seconds
@@ -173,11 +179,11 @@ async function waitBeforeNextUser() {
 }
 
 export {
-    addPerformance,
     generatePoints,
     getAllUserCFhandleData,
     getLeaderboardData,
     getUserData,
     showPrevPerformance,
     sortAndAddRank,
+    addPerformance,
 };
