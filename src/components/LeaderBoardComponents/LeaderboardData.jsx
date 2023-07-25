@@ -60,6 +60,26 @@ const leaderboardColumns = [
         ),
     },
     {
+        accessorKey: 'stopstalk',
+        enableEditing: false,
+        header: 'Stopstalk',
+        muiTableHeadCellProps: {
+            align: 'center',
+        },
+        muiTableBodyCellProps: {
+            align: 'center',
+        },
+        Cell: ({ cell }) => (
+            <a
+                href={`https://www.stopstalk.com/user/profile/${cell.getValue()}`}
+                target="_blank"
+                rel="noreferrer"
+            >
+                {cell.getValue()}
+            </a>
+        ),
+    },
+    {
         accessorKey: 'point',
         header: 'Points',
         muiTableHeadCellProps: {
@@ -123,6 +143,26 @@ const leaderboardAdminColumns = [
                 style={{
                     color: `${getRatingColor(cell.row.original.cf_rating)}`,
                 }}
+            >
+                {cell.getValue()}
+            </a>
+        ),
+    },
+    {
+        accessorKey: 'stopstalk',
+        enableEditing: false,
+        header: 'Stopstalk',
+        muiTableHeadCellProps: {
+            align: 'center',
+        },
+        muiTableBodyCellProps: {
+            align: 'center',
+        },
+        Cell: ({ cell }) => (
+            <a
+                href={`https://stopstalk.com/user/profile/${cell.getValue()}`}
+                target="_blank"
+                rel="noreferrer"
             >
                 {cell.getValue()}
             </a>
