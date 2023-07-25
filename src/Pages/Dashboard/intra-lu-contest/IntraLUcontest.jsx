@@ -48,43 +48,43 @@ const IntraLUcontest = () => {
 
     return (
         <div>
-            {addProblemToggle ? (
-                <AddResourcesModal show={show} setShow={setShow} />
-            ) : (
-                <div
-                    className={styles.container}
-                    style={{ paddingLeft: '20%', paddingRight: '20%' }}
-                >
-                    <div className={styles.wrapper}>
-                        <div
-                            className={styles.problem_section}
-                            style={{ width: '100%' }}
-                        >
-                            {contests.data.map(item => (
-                                <LinkCard
-                                    key={item._id}
-                                    cardURL={item.url}
-                                    cardTitle={item.title}
-                                />
-                            ))}
+            <div
+                className={styles.container}
+                style={{ paddingLeft: '20%', paddingRight: '20%' }}
+            >
+                <div className={styles.wrapper}>
+                    <div
+                        className={styles.problem_section}
+                        style={{ width: '100%' }}
+                    >
+                        {contests.data.map(item => (
+                            <LinkCard
+                                key={item._id}
+                                cardURL={item.url}
+                                cardTitle={item.title}
+                            />
+                        ))}
 
-                            {userData.data.role === 'power' ? (
-                                <div className={styles.add_btn}>
-                                    <Fab
-                                        size="medium"
-                                        color="secondary"
-                                        aria-label="add"
-                                        style={{ background: '#2E2F31' }}
-                                        onClick={addProblemHandler}
-                                    >
-                                        <AddIcon style={{ color: 'white' }} />
-                                    </Fab>
-                                </div>
-                            ) : null}
-                        </div>
+                        {userData.data.role === 'power' ? (
+                            <div className={styles.add_btn}>
+                                <Fab
+                                    size="medium"
+                                    color="secondary"
+                                    aria-label="add"
+                                    style={{ background: '#2E2F31' }}
+                                    onClick={addProblemHandler}
+                                >
+                                    <AddIcon style={{ color: 'white' }} />
+                                </Fab>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
-            )}
+            </div>
+
+            {addProblemToggle ? (
+                <AddResourcesModal show={show} setShow={setShow} />
+            ) : null}
         </div>
     );
 };

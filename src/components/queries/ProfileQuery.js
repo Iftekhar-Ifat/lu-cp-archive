@@ -2,28 +2,13 @@ import axios from 'axios';
 
 const API = import.meta.env.VITE_BACKEND_API;
 
-async function getUserCFData(currentUserEmail) {
+async function getUserData(currentUserEmail) {
     const userDataAPI = `${API}/users`;
     try {
-        let userObject;
-        await axios
-            .get(userDataAPI, {
-                params: { currentUserEmail: currentUserEmail },
-            })
-            .then(result => {
-                let cfHandle;
-                result.data.handles.forEach(item => {
-                    if (item.platform === 'codeforces') {
-                        cfHandle = item.handle;
-                    }
-                });
-                userObject = {
-                    userRole: result.data.role,
-                    userHandle: cfHandle,
-                };
-            });
-
-        return userObject;
+        const result = await axios.get(userDataAPI, {
+            params: { currentUserEmail: currentUserEmail },
+        });
+        return result.data;
     } catch (error) {
         console.error('Error:', error.message);
         throw error;
@@ -41,4 +26,4 @@ async function getCFInfo(cfHandle) {
     }
 }
 
-export { getCFInfo, getUserCFData };
+export { getCFInfo, getUserData };

@@ -2,8 +2,11 @@ import { useState, useRef } from 'react';
 import { TextField, Button } from '@mui/material';
 import { Spacer } from '@geist-ui/core';
 import { inputHandler } from '../ApiComponents/handleInput';
+import { useAuth } from '../../context/AuthProvider';
 
 const ResourceModalHandler = ({ setShow }) => {
+    const currentUserEmail = useAuth().currentUser.email;
+
     const [btnDisable, setBtnDisable] = useState(false);
     const path = window.location.pathname.split('/').pop();
     //getting input for resources
@@ -12,6 +15,7 @@ const ResourceModalHandler = ({ setShow }) => {
     const getResourcesInfo = () => {
         setBtnDisable(true);
         const resourceItem = {
+            email: currentUserEmail,
             itemId: 'resources',
             title: resourceTitle.current.value,
             url: resourceUrl.current.value,

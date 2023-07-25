@@ -11,8 +11,11 @@ import {
 import { Spacer } from '@geist-ui/core';
 import { inputHandler } from '../ApiComponents/handleInput';
 import Tags from '../TopicWiseComponents/Tags.jsx';
+import { useAuth } from '../../context/AuthProvider';
 
 const TopicWiseModalHandler = ({ setShow, allTags }) => {
+    const currentUserEmail = useAuth().currentUser.email;
+
     const path = window.location.pathname.split('/').pop();
     // getting input for problem
     const problemName = useRef();
@@ -28,6 +31,7 @@ const TopicWiseModalHandler = ({ setShow, allTags }) => {
     const getProblemInfo = () => {
         setBtnDisable(true);
         const problemItem = {
+            email: currentUserEmail,
             itemId: 'topic-wise',
             title: problemName.current.value,
             difficulty: problemDifficulty,

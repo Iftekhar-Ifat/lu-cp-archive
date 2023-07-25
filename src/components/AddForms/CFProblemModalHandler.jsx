@@ -2,8 +2,11 @@ import { useState, useRef } from 'react';
 import { TextField, Button } from '@mui/material';
 import { Spacer } from '@geist-ui/core';
 import { inputHandler } from '../ApiComponents/handleInput';
+import { useAuth } from '../../context/AuthProvider';
 
 const CFProblemModalHandler = ({ setShow }) => {
+    const currentUserEmail = useAuth().currentUser.email;
+
     const path = window.location.pathname.split('/').pop();
     // getting input for problem
     const cfProblemName = useRef();
@@ -15,6 +18,7 @@ const CFProblemModalHandler = ({ setShow }) => {
     const getCfProblemInfo = () => {
         setBtnDisable(true);
         const cfProblemData = {
+            email: currentUserEmail,
             itemId: 'cf-problems',
             title: cfProblemName.current.value,
             url: cfProblemUrl.current.value,

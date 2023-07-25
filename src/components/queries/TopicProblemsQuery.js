@@ -25,7 +25,7 @@ async function getResourcesData(problemRoute) {
 }
 
 async function getTagsData() {
-    const tagsDataAPI = `${API}/all-tags`;
+    const tagsDataAPI = `${API}/tags`;
     try {
         const result = await axios.get(tagsDataAPI);
         return result.data;

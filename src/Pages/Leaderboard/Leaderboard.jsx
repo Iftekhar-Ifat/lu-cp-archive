@@ -14,6 +14,7 @@ import {
 } from '../../components/LeaderBoardComponents/LeaderboardData';
 import Loading from '../../components/Loading';
 import {
+    addPerformance,
     generatePoints,
     getUserData,
     showPrevPerformance,
@@ -30,15 +31,15 @@ const Leaderboard = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [leaderboard, setLeaderboard] = useState([]);
 
+    const columns = useMemo(() => leaderboardColumns, []);
+    const adminColumns = useMemo(() => leaderboardAdminColumns, []);
+
     const userData = useQuery({
         queryKey: ['userData'],
         queryFn: () => getUserData(currentUser.email),
         cacheTime: Infinity,
         staleTime: Infinity,
     });
-
-    const columns = useMemo(() => leaderboardColumns, []);
-    const adminColumns = useMemo(() => leaderboardAdminColumns, []);
 
     const handleGenerateLeaderboard = async () => {
         try {
@@ -65,8 +66,16 @@ const Leaderboard = () => {
         try {
             setIsSaving(true);
 
-            const sortedLeaderboard = await sortAndAddRank(leaderboard);
-            await leaderboardSave(sortedLeaderboard);
+            const performanceAddedLeaderboard = await addPerformance(
+                leaderboard
+            );
+            const sortedLeaderboard = await sortAndAddRank(
+                performanceAddedLeaderboard
+            );
+            await leaderboardSave({
+                email: currentUser.email,
+                leaderboard: sortedLeaderboard,
+            });
 
             setIsSaving(false);
         } catch (error) {
@@ -81,8 +90,6 @@ const Leaderboard = () => {
 
         leaderboard[cell.row.index][cell.column.id] = Number(value);
         leaderboard[cell.row.index].point = Math.round(newPoint * 100) / 100;
-
-        console.log(leaderboard);
 
         setLeaderboard([...leaderboard]);
     };
@@ -135,7 +142,7 @@ const Leaderboard = () => {
             </div>
             <MaterialReactTable
                 columns={
-                    userData.data.role === 'power' ? adminColumns : columns
+                    userData.data?.role === 'power' ? adminColumns : columns
                 }
                 data={leaderboard}
                 enableColumnActions={false}
@@ -143,8 +150,10 @@ const Leaderboard = () => {
                 enablePagination={false}
                 enableSorting={false}
                 enableBottomToolbar={false}
-                enableEditing={userData.data.role === 'power' ? true : false}
-                enableRowActions={userData.data.role === 'power' ? true : false}
+                enableEditing={userData.data?.role === 'power' ? true : false}
+                enableRowActions={
+                    userData.data?.role === 'power' ? true : false
+                }
                 editingMode="cell"
                 renderRowActions={({ row }) => (
                     <Box sx={{ display: 'flex', gap: '1rem' }}>
@@ -187,16 +196,10 @@ const Leaderboard = () => {
                     size: 80, //default size is usually 180
                 }}
             />
-            {userData.data.role === 'power' ? (
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
+            {userData.data?.role === 'power' ? (
+                <div className={styles.btn_container}>
                     <Button
-                        style={{ marginLeft: '1em', marginRight: '1em' }}
+                        className={styles.btn_style}
                         type="secondary"
                         ghost
                         loading={isLoading}
@@ -208,7 +211,7 @@ const Leaderboard = () => {
                     </Button>
 
                     <Button
-                        style={{ marginLeft: '1em', marginRight: '1em' }}
+                        className={styles.btn_style}
                         type="secondary"
                         ghost
                         icon={<Save />}
@@ -222,7 +225,10 @@ const Leaderboard = () => {
                 </div>
             ) : null}
             <div className={styles.footer}>
-                <i>The algorithm to generate rating is maintained by LU ACM</i>
+                <i>
+                    The algorithm to generate rating is maintained by{' '}
+                    <b>LU ACM.</b>
+                </i>
             </div>
         </div>
     );

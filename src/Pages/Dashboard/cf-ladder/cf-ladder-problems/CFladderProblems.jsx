@@ -36,9 +36,9 @@ const CFladderProblems = () => {
                         .get(
                             `https://codeforces.com/api/user.status?handle=${userData.data.userHandle}`
                         )
-                        .then(response => {
+                        .then(async response => {
                             if (response.data.status === 'OK') {
-                                const modifiedProblemData = processCFdata(
+                                const modifiedProblemData = await processCFdata(
                                     response.data,
                                     data
                                 );
