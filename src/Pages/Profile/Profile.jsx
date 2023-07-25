@@ -9,10 +9,12 @@ import ColdStartNotification from '../../components/ColdStartNotification';
 import CodeforcesPlatform from '../../components/Profile/CodeforcesPlatform.jsx';
 import AddStudentId from '../../components/Profile/AddStudentId';
 import { useState } from 'react';
+import StopStalkPlatform from '../../components/Profile/StopStalkPlatform';
 
 const Profile = () => {
     const currentUserEmail = useAuth().currentUser.email;
     const [hasCodeforcesAccount, setHasCodeforcesAccount] = useState();
+    const [hasStopstalkAccount, setHasStopstalkAccount] = useState();
     const [hasStudentId, setHasStudentId] = useState();
 
     const userData = useQuery({
@@ -26,6 +28,9 @@ const Profile = () => {
                 }
                 if (handle.platform === 'studentid') {
                     setHasStudentId(handle.handle);
+                }
+                if (handle.platform === 'stopstalk') {
+                    setHasStopstalkAccount(handle.handle);
                 }
             });
         },
@@ -58,6 +63,11 @@ const Profile = () => {
 
                 {userData.isSuccess ? (
                     <AddStudentId hasStudentId={hasStudentId} />
+                ) : null}
+                {userData.isSuccess ? (
+                    <StopStalkPlatform
+                        hasStopstalkAccount={hasStopstalkAccount}
+                    />
                 ) : null}
             </Grid>
         </Container>

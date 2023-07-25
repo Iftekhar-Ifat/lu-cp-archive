@@ -45,22 +45,27 @@ async function getAllUserCFhandleData() {
         await axios.get(userDataAPI).then(users => {
             users.data.forEach(user => {
                 let userName = user.name;
-                let userHandle;
+                let userCFHandle;
                 let userStudentID;
+                let stopstalkHandle;
                 user.handles.forEach(handleObject => {
                     if (handleObject.platform === 'codeforces') {
-                        userHandle = handleObject.handle;
+                        userCFHandle = handleObject.handle;
                     }
                     if (handleObject.platform === 'studentid') {
                         userStudentID = handleObject.handle;
                     }
+                    if (handleObject.platform === 'stopstalk') {
+                        stopstalkHandle = handleObject.handle;
+                    }
                 });
                 let eachUserObject = {
                     name: userName,
-                    handle: userHandle,
+                    codeforces: userCFHandle,
                     studentid: userStudentID,
+                    stopstalk: stopstalkHandle,
                 };
-                if (userName && userHandle) {
+                if (userName && userCFHandle) {
                     allUserCFhandle.push(eachUserObject);
                 }
             });
@@ -78,14 +83,14 @@ async function generatePoints() {
         const users = await getAllUserCFhandleData();
 
         for (const user of users) {
-            const userCFrating = await getUserRatingCF(user.handle);
+            const userCFrating = await getUserRatingCF(user.codeforces);
             const totalProblemSolvedLastMonthCF =
                 await getTotalProblemsSolvedLastMonthCF(
-                    user.handle,
+                    user.codeforces,
                     userCFrating
                 );
             const totalContestParticipation =
-                await getTotalContestParticipationLastMonthCF(user.handle);
+                await getTotalContestParticipationLastMonthCF(user.codeforces);
 
             const ratingPoint = userCFrating * multiplier.rating;
             const aboveProblemPoint =
@@ -107,9 +112,10 @@ async function generatePoints() {
             const userRankData = {
                 name: user.name,
                 studentid: user.studentid,
-                codeforces: user.handle,
+                codeforces: user.codeforces,
                 point: totalPoint,
                 cf_rating: userCFrating,
+                stopstalk: user.stopstalk,
             };
             allLeaderboardData.push(userRankData);
 
