@@ -142,7 +142,7 @@ const Leaderboard = () => {
             </div>
             <MaterialReactTable
                 columns={
-                    userData.data.role === 'power' ? adminColumns : columns
+                    userData.data?.role === 'power' ? adminColumns : columns
                 }
                 data={leaderboard}
                 enableColumnActions={false}
@@ -150,8 +150,10 @@ const Leaderboard = () => {
                 enablePagination={false}
                 enableSorting={false}
                 enableBottomToolbar={false}
-                enableEditing={userData.data.role === 'power' ? true : false}
-                enableRowActions={userData.data.role === 'power' ? true : false}
+                enableEditing={userData.data?.role === 'power' ? true : false}
+                enableRowActions={
+                    userData.data?.role === 'power' ? true : false
+                }
                 editingMode="cell"
                 renderRowActions={({ row }) => (
                     <Box sx={{ display: 'flex', gap: '1rem' }}>
@@ -194,7 +196,7 @@ const Leaderboard = () => {
                     size: 80, //default size is usually 180
                 }}
             />
-            {userData.data.role === 'power' ? (
+            {userData.data?.role === 'power' ? (
                 <div className={styles.btn_container}>
                     <Button
                         className={styles.btn_style}

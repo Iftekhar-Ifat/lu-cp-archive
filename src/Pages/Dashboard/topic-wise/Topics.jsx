@@ -55,7 +55,7 @@ const Topics = () => {
                     ))}
                     {userData.data.role === 'power' ? (
                         <Card
-                            icon="https://i.ibb.co/tJnhkbF/add-card.png"
+                            icon="../../images/Cards/add_card.png"
                             title="Add Card"
                             setToggleAddCardModal={setToggleAddCardModal}
                             setShow={setShow}
