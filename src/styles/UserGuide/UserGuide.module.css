@@ -31,7 +31,20 @@ ol > li:before {
 
 .guide_title {
     display: flex;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    text-align: center;
     justify-content: center;
+}
+
+.sub_title {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+.section_wrapper {
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 .container {
