@@ -5,7 +5,7 @@ async function getTotalProblemsSolvedLastMonthCF(
     userHandle,
     userCurrentRating
 ) {
-    const maxRetries = 5;
+    const maxRetries = 3;
     let retries = 0;
 
     while (retries < maxRetries) {
@@ -52,7 +52,6 @@ async function getTotalProblemsSolvedLastMonthCF(
                     'An error occurred while fetching user submissions:',
                     error.message
                 );
-                return error.message;
             }
         }
     }
@@ -64,7 +63,7 @@ async function getTotalProblemsSolvedLastMonthCF(
 }
 
 async function getUserRatingCF(userHandle) {
-    const maxRetries = 5;
+    const maxRetries = 3;
     let retries = 0;
 
     while (retries < maxRetries) {
@@ -88,7 +87,6 @@ async function getUserRatingCF(userHandle) {
                     'An error occurred while fetching user rating:',
                     error.message
                 );
-                throw error;
             }
         }
     }
@@ -100,7 +98,7 @@ async function getUserRatingCF(userHandle) {
 }
 
 async function getTotalContestParticipationLastMonthCF(userHandle) {
-    const maxRetries = 5;
+    const maxRetries = 3;
     let retries = 0;
 
     while (retries < maxRetries) {
@@ -136,7 +134,6 @@ async function getTotalContestParticipationLastMonthCF(userHandle) {
                     'An error occurred while fetching user rating changes:',
                     error.message
                 );
-                return error.message;
             }
         }
     }

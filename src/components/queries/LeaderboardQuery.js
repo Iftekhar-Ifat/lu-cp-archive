@@ -84,41 +84,44 @@ async function generatePoints() {
 
         for (const user of users) {
             const userCFrating = await getUserRatingCF(user.codeforces);
-            const totalProblemSolvedLastMonthCF =
-                await getTotalProblemsSolvedLastMonthCF(
-                    user.codeforces,
-                    userCFrating
-                );
-            const totalContestParticipation =
-                await getTotalContestParticipationLastMonthCF(user.codeforces);
+            if (userCFrating) {
+                const totalProblemSolvedLastMonthCF =
+                    await getTotalProblemsSolvedLastMonthCF(
+                        user.codeforces,
+                        userCFrating
+                    );
+                const totalContestParticipation =
+                    await getTotalContestParticipationLastMonthCF(
+                        user.codeforces
+                    );
 
-            const ratingPoint = userCFrating * multiplier.rating;
-            const aboveProblemPoint =
-                totalProblemSolvedLastMonthCF.aboveRating *
-                multiplier.aboveProblem;
-            const belowProblemPoint =
-                totalProblemSolvedLastMonthCF.belowRating *
-                multiplier.belowProblem;
-            const contestParticipationPoint =
-                totalContestParticipation * multiplier.contest;
+                const ratingPoint = userCFrating * multiplier.rating;
+                const aboveProblemPoint =
+                    totalProblemSolvedLastMonthCF.aboveRating *
+                    multiplier.aboveProblem;
+                const belowProblemPoint =
+                    totalProblemSolvedLastMonthCF.belowRating *
+                    multiplier.belowProblem;
+                const contestParticipationPoint =
+                    totalContestParticipation * multiplier.contest;
 
-            const totalPoint =
-                (ratingPoint +
-                    aboveProblemPoint +
-                    belowProblemPoint +
-                    contestParticipationPoint) /
-                10;
+                const totalPoint =
+                    (ratingPoint +
+                        aboveProblemPoint +
+                        belowProblemPoint +
+                        contestParticipationPoint) /
+                    10;
 
-            const userRankData = {
-                name: user.name,
-                studentid: user.studentid,
-                codeforces: user.codeforces,
-                point: totalPoint,
-                cf_rating: userCFrating,
-                stopstalk: user.stopstalk,
-            };
-            allLeaderboardData.push(userRankData);
-
+                const userRankData = {
+                    name: user.name,
+                    studentid: user.studentid,
+                    codeforces: user.codeforces,
+                    point: totalPoint,
+                    cf_rating: userCFrating,
+                    stopstalk: user.stopstalk,
+                };
+                allLeaderboardData.push(userRankData);
+            }
             // Introduce a delay between each user's API call
             await waitBeforeNextUser();
         }
