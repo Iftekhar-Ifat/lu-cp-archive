@@ -9,7 +9,7 @@ const multiplier = {
     rating: 1.5,
     aboveProblem: 4,
     belowProblem: 2,
-    contest: 10,
+    // contest: 10, // changed
 };
 
 const API = import.meta.env.VITE_BACKEND_API;
@@ -102,8 +102,9 @@ async function generatePoints() {
                 const belowProblemPoint =
                     totalProblemSolvedLastMonthCF.belowRating *
                     multiplier.belowProblem;
-                const contestParticipationPoint =
-                    totalContestParticipation * multiplier.contest;
+                const contestParticipationPoint = Math.round(
+                    (0.6 / 1 - Math.exp(-totalContestParticipation)) * 100
+                );
 
                 const totalPoint =
                     (ratingPoint +

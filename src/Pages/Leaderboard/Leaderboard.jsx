@@ -85,12 +85,7 @@ const Leaderboard = () => {
     };
 
     const handleSaveCell = (cell, value) => {
-        const prevPoint = leaderboard[cell.row.index].point;
-        const newPoint = parseFloat(value) + parseFloat(prevPoint);
-
         leaderboard[cell.row.index][cell.column.id] = Number(value);
-        leaderboard[cell.row.index].point = Math.round(newPoint * 100) / 100;
-
         setLeaderboard([...leaderboard]);
     };
 
