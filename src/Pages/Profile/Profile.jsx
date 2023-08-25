@@ -10,6 +10,7 @@ import CodeforcesPlatform from '../../components/Profile/CodeforcesPlatform.jsx'
 import AddStudentId from '../../components/Profile/AddStudentId';
 import { useState } from 'react';
 import StopStalkPlatform from '../../components/Profile/StopStalkPlatform';
+import AddAdmin from '../../components/Profile/AddAdmin';
 
 const Profile = () => {
     const currentUserEmail = useAuth().currentUser.email;
@@ -68,6 +69,9 @@ const Profile = () => {
                     <StopStalkPlatform
                         hasStopstalkAccount={hasStopstalkAccount}
                     />
+                ) : null}
+                {userData.data.role === 'power' ? (
+                    <AddAdmin currentUserEmail={currentUserEmail} />
                 ) : null}
             </Grid>
         </Container>

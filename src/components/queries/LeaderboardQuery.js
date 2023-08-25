@@ -42,32 +42,36 @@ async function getAllUserCFhandleData() {
     const userDataAPI = `${API}/users`;
     try {
         let allUserCFhandle = [];
+        let i = 0;
         await axios.get(userDataAPI).then(users => {
             users.data.forEach(user => {
-                let userName = user.name;
-                let userCFHandle;
-                let userStudentID;
-                let stopstalkHandle;
-                user.handles.forEach(handleObject => {
-                    if (handleObject.platform === 'codeforces') {
-                        userCFHandle = handleObject.handle;
+                if (i < 4) {
+                    let userName = user.name;
+                    let userCFHandle;
+                    let userStudentID;
+                    let stopstalkHandle;
+                    user.handles.forEach(handleObject => {
+                        if (handleObject.platform === 'codeforces') {
+                            userCFHandle = handleObject.handle;
+                        }
+                        if (handleObject.platform === 'studentid') {
+                            userStudentID = handleObject.handle;
+                        }
+                        if (handleObject.platform === 'stopstalk') {
+                            stopstalkHandle = handleObject.handle;
+                        }
+                    });
+                    let eachUserObject = {
+                        name: userName,
+                        codeforces: userCFHandle,
+                        studentid: userStudentID,
+                        stopstalk: stopstalkHandle,
+                    };
+                    if (userName && userCFHandle) {
+                        allUserCFhandle.push(eachUserObject);
                     }
-                    if (handleObject.platform === 'studentid') {
-                        userStudentID = handleObject.handle;
-                    }
-                    if (handleObject.platform === 'stopstalk') {
-                        stopstalkHandle = handleObject.handle;
-                    }
-                });
-                let eachUserObject = {
-                    name: userName,
-                    codeforces: userCFHandle,
-                    studentid: userStudentID,
-                    stopstalk: stopstalkHandle,
-                };
-                if (userName && userCFHandle) {
-                    allUserCFhandle.push(eachUserObject);
                 }
+                i++;
             });
         });
         return allUserCFhandle;
@@ -165,7 +169,36 @@ async function showPrevPerformance(generatedLeaderboard, fetchedLeaderboard) {
     return generatedLeaderboard;
 }
 
-async function addPerformance(leaderboard) {
+async function addPerformance(prevLeaderboard, leaderboard) {
+    let isLeaderboardChanges = false;
+
+    for (let i = 0; i < leaderboard.length; i++) {
+        if (
+            prevLeaderboard[i].performance !== leaderboard[i].performance ||
+            prevLeaderboard[i].point !== leaderboard[i].point
+        ) {
+            leaderboard[i].performance = parseFloat(leaderboard[i].performance);
+            leaderboard[i].point = parseFloat(leaderboard[i].point);
+
+            if (Number(leaderboard[i].performance)) {
+                const totalPoint =
+                    leaderboard[i].point + leaderboard[i].performance;
+
+                leaderboard[i].point = Math.round(totalPoint * 100) / 100;
+            } else {
+                leaderboard[i].performance = 0;
+            }
+            isLeaderboardChanges = true;
+        }
+    }
+    if (isLeaderboardChanges) {
+        return leaderboard;
+    } else {
+        return 'No changes were made';
+    }
+}
+
+async function addPerformanceRG(leaderboard) {
     for (let i = 0; i < leaderboard.length; i++) {
         leaderboard[i].performance = parseFloat(leaderboard[i].performance);
         leaderboard[i].point = parseFloat(leaderboard[i].point);
@@ -196,4 +229,5 @@ export {
     showPrevPerformance,
     sortAndAddRank,
     addPerformance,
+    addPerformanceRG,
 };
