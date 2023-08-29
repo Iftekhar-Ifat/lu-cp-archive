@@ -6,13 +6,15 @@
 
 LU-CP-Archive is an application aimed to aid students who are competing in programming competitions. The volume of problems provided by all the competitive programming sites overwhelms the students. This platform tries to make their life a bit easier.
 
+_**This is also the official website of Leading University ACM Community**_
+
 ## Features
 
 ### Leaderboard
 
 !["leaderbaord"](./public/images/readme/leaderboard.png)
 
-The leaderboard is generated based on the programmer’s codeforces rating, problem solved above his/her rating (in the last month), problem solved equal to or below his/her rating (in the last month), and total contest participation (in the last month)
+The leaderboard is generated based on the programmer’s codeforces rating, problem solved above his/her rating (in the previous month), problem solved equal to or below his/her rating (in the previous month), and total contest participation (in the previous month)
 
 ### Topic Wise Problem Solving
 
@@ -22,7 +24,7 @@ The leaderboard is generated based on the programmer’s codeforces rating, prob
 
 Students can solve topic-wise problems which are hand-picked by the LU-ACM community
 
-## Codeforces Ladder
+### Codeforces Ladder
 
 !["cf-ladder"](./public/images/readme/cf-ladder.png)
 
@@ -34,7 +36,7 @@ Each codeforces ladder contains 50 problems which are solved by the 5 all-time t
 
 !["upcoming-contest"](./public/images/readme/upcoming-contest.png)
 
-Programmers can also track the upcoming contest from Codeforces, Codechef, and Atcoder
+Programmers can also track the upcoming contests from Codeforces, Codechef, and Atcoder.
 
 ### Other Contests
 
@@ -44,7 +46,7 @@ Programmers can also track the upcoming contest from Codeforces, Codechef, and A
 
 ### Regular Users / Programmers:
 
--   Programmers can add their codeforces user handle, student id, and stopstalk id in their profile section after creating their account
+-   Programmers can add their codeforces user handle, student ID, and stopstalk ID in their profile section after creating their account
     !["profile"](./public/images/readme/profile.png)
     _NB: programmer must add their codeforces handle in order to be featured in the Leaderboard_
 

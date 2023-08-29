@@ -42,36 +42,32 @@ async function getAllUserCFhandleData() {
     const userDataAPI = `${API}/users`;
     try {
         let allUserCFhandle = [];
-        let i = 0;
         await axios.get(userDataAPI).then(users => {
             users.data.forEach(user => {
-                if (i < 4) {
-                    let userName = user.name;
-                    let userCFHandle;
-                    let userStudentID;
-                    let stopstalkHandle;
-                    user.handles.forEach(handleObject => {
-                        if (handleObject.platform === 'codeforces') {
-                            userCFHandle = handleObject.handle;
-                        }
-                        if (handleObject.platform === 'studentid') {
-                            userStudentID = handleObject.handle;
-                        }
-                        if (handleObject.platform === 'stopstalk') {
-                            stopstalkHandle = handleObject.handle;
-                        }
-                    });
-                    let eachUserObject = {
-                        name: userName,
-                        codeforces: userCFHandle,
-                        studentid: userStudentID,
-                        stopstalk: stopstalkHandle,
-                    };
-                    if (userName && userCFHandle) {
-                        allUserCFhandle.push(eachUserObject);
+                let userName = user.name;
+                let userCFHandle;
+                let userStudentID;
+                let stopstalkHandle;
+                user.handles.forEach(handleObject => {
+                    if (handleObject.platform === 'codeforces') {
+                        userCFHandle = handleObject.handle;
                     }
+                    if (handleObject.platform === 'studentid') {
+                        userStudentID = handleObject.handle;
+                    }
+                    if (handleObject.platform === 'stopstalk') {
+                        stopstalkHandle = handleObject.handle;
+                    }
+                });
+                let eachUserObject = {
+                    name: userName,
+                    codeforces: userCFHandle,
+                    studentid: userStudentID,
+                    stopstalk: stopstalkHandle,
+                };
+                if (userName && userCFHandle) {
+                    allUserCFhandle.push(eachUserObject);
                 }
-                i++;
             });
         });
         return allUserCFhandle;
