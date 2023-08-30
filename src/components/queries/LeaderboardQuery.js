@@ -165,14 +165,11 @@ async function showPrevPerformance(generatedLeaderboard, fetchedLeaderboard) {
     return generatedLeaderboard;
 }
 
-async function addPerformance(prevLeaderboard, leaderboard) {
+async function addPerformance(prevLeaderboard, leaderboard, recentGeneration) {
     let isLeaderboardChanges = false;
 
     for (let i = 0; i < leaderboard.length; i++) {
-        if (
-            prevLeaderboard[i].performance !== leaderboard[i].performance ||
-            prevLeaderboard[i].point !== leaderboard[i].point
-        ) {
+        if (recentGeneration) {
             leaderboard[i].performance = parseFloat(leaderboard[i].performance);
             leaderboard[i].point = parseFloat(leaderboard[i].point);
 
@@ -185,8 +182,33 @@ async function addPerformance(prevLeaderboard, leaderboard) {
                 leaderboard[i].performance = 0;
             }
             isLeaderboardChanges = true;
+        } else {
+            if (
+                prevLeaderboard[i].performance !== leaderboard[i].performance ||
+                prevLeaderboard[i].point !== leaderboard[i].point
+            ) {
+                leaderboard[i].performance = parseFloat(
+                    leaderboard[i].performance
+                );
+                leaderboard[i].point = parseFloat(leaderboard[i].point);
+
+                if (Number(leaderboard[i].performance)) {
+                    const totalPoint =
+                        leaderboard[i].point + leaderboard[i].performance;
+
+                    leaderboard[i].point = Math.round(totalPoint * 100) / 100;
+                } else {
+                    leaderboard[i].performance = 0;
+                }
+                isLeaderboardChanges = true;
+            }
+            if (prevLeaderboard.length !== leaderboard.length) {
+                // if only row is deleted
+                isLeaderboardChanges = true;
+            }
         }
     }
+
     if (isLeaderboardChanges) {
         return leaderboard;
     } else {

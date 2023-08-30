@@ -31,6 +31,7 @@ const Leaderboard = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [leaderboard, setLeaderboard] = useState([]);
     const [prevLeaderboard, setPrevLeaderboard] = useState([]); // storing a deep copy of the current leaderboard
+    const [recentGeneration, setRecentGeneration] = useState(false);
 
     const columns = useMemo(() => leaderboardColumns, []);
     const adminColumns = useMemo(() => leaderboardAdminColumns, []);
@@ -55,6 +56,7 @@ const Leaderboard = () => {
                 performanceAddedLeaderboard
             );
             setLeaderboard([...sortedLeaderboard]); //re-render with new data
+            setRecentGeneration(true);
 
             setIsLoading(false);
         } catch (error) {
@@ -68,7 +70,8 @@ const Leaderboard = () => {
             setIsSaving(true);
             const performanceAddedLeaderboard = await addPerformance(
                 prevLeaderboard,
-                leaderboard
+                leaderboard,
+                recentGeneration
             );
             if (typeof performanceAddedLeaderboard === 'object') {
                 const sortedLeaderboard = await sortAndAddRank(
