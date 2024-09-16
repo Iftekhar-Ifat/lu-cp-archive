@@ -30,6 +30,8 @@ const Leaderboard = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [leaderboard, setLeaderboard] = useState([]);
+    const [prevLeaderboard, setPrevLeaderboard] = useState([]); // storing a deep copy of the current leaderboard
+    const [recentGeneration, setRecentGeneration] = useState(false);
 
     const columns = useMemo(() => leaderboardColumns, []);
     const adminColumns = useMemo(() => leaderboardAdminColumns, []);
@@ -54,6 +56,7 @@ const Leaderboard = () => {
                 performanceAddedLeaderboard
             );
             setLeaderboard([...sortedLeaderboard]); //re-render with new data
+            setRecentGeneration(true);
 
             setIsLoading(false);
         } catch (error) {
@@ -65,18 +68,23 @@ const Leaderboard = () => {
     const handleSaveLeaderboard = async () => {
         try {
             setIsSaving(true);
-
             const performanceAddedLeaderboard = await addPerformance(
-                leaderboard
+                prevLeaderboard,
+                leaderboard,
+                recentGeneration
             );
-            const sortedLeaderboard = await sortAndAddRank(
-                performanceAddedLeaderboard
-            );
-            await leaderboardSave({
-                email: currentUser.email,
-                leaderboard: sortedLeaderboard,
-            });
-
+            if (typeof performanceAddedLeaderboard === 'object') {
+                const sortedLeaderboard = await sortAndAddRank(
+                    performanceAddedLeaderboard
+                );
+                await leaderboardSave({
+                    email: currentUser.email,
+                    leaderboard: sortedLeaderboard,
+                });
+                setPrevLeaderboard(JSON.parse(JSON.stringify(leaderboard)));
+            } else {
+                alert(performanceAddedLeaderboard);
+            }
             setIsSaving(false);
         } catch (error) {
             alert('Something went wrong!');
@@ -85,12 +93,7 @@ const Leaderboard = () => {
     };
 
     const handleSaveCell = (cell, value) => {
-        const prevPoint = leaderboard[cell.row.index].point;
-        const newPoint = parseFloat(value) + parseFloat(prevPoint);
-
         leaderboard[cell.row.index][cell.column.id] = Number(value);
-        leaderboard[cell.row.index].point = Math.round(newPoint * 100) / 100;
-
         setLeaderboard([...leaderboard]);
     };
 
@@ -115,6 +118,9 @@ const Leaderboard = () => {
             const leaderboardAPI = `${API}/leaderboard`;
             try {
                 const result = await axios.get(leaderboardAPI);
+                setPrevLeaderboard(
+                    JSON.parse(JSON.stringify(result.data[0].leaderboard))
+                );
                 setLeaderboard(result.data[0].leaderboard);
             } catch (error) {
                 console.error('Error:', error.message);

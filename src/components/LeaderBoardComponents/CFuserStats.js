@@ -45,7 +45,6 @@ async function getTotalProblemsSolvedLastMonthCF(
                 console.log(
                     'Codeforces API is temporarily unavailable. Retrying in a moment...'
                 );
-                retries++;
                 await waitBeforeRetry(retries);
             } else {
                 console.log(
@@ -53,6 +52,7 @@ async function getTotalProblemsSolvedLastMonthCF(
                     error.message
                 );
             }
+            retries++;
         }
     }
 
@@ -80,7 +80,6 @@ async function getUserRatingCF(userHandle) {
                 console.log(
                     'Codeforces API is temporarily unavailable. Retrying in a moment...'
                 );
-                retries++;
                 await waitBeforeRetry(retries);
             } else {
                 console.log(
@@ -88,6 +87,7 @@ async function getUserRatingCF(userHandle) {
                     error.message
                 );
             }
+            retries++;
         }
     }
 
@@ -127,7 +127,6 @@ async function getTotalContestParticipationLastMonthCF(userHandle) {
                 console.log(
                     'Codeforces API is temporarily unavailable. Retrying in a moment...'
                 );
-                retries++;
                 await waitBeforeRetry(retries);
             } else {
                 console.log(
@@ -135,6 +134,7 @@ async function getTotalContestParticipationLastMonthCF(userHandle) {
                     error.message
                 );
             }
+            retries++;
         }
     }
 

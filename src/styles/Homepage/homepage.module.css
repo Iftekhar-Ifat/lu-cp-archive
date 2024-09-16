@@ -22,7 +22,7 @@
     width: 100%;
     height: 90%;
     position: absolute;
-    background-image: url('/background.png');
+    background-image: url('/background.webp');
 }
 .logo_container {
     width: 50%;

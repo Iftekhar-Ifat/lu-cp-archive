@@ -9,7 +9,7 @@ const multiplier = {
     rating: 1.5,
     aboveProblem: 4,
     belowProblem: 2,
-    contest: 10,
+    // contest: 10, // changed
 };
 
 const API = import.meta.env.VITE_BACKEND_API;
@@ -102,8 +102,9 @@ async function generatePoints() {
                 const belowProblemPoint =
                     totalProblemSolvedLastMonthCF.belowRating *
                     multiplier.belowProblem;
-                const contestParticipationPoint =
-                    totalContestParticipation * multiplier.contest;
+                const contestParticipationPoint = Math.round(
+                    (0.6 / 1 - Math.exp(-totalContestParticipation)) * 100
+                );
 
                 const totalPoint =
                     (ratingPoint +
@@ -164,7 +165,58 @@ async function showPrevPerformance(generatedLeaderboard, fetchedLeaderboard) {
     return generatedLeaderboard;
 }
 
-async function addPerformance(leaderboard) {
+async function addPerformance(prevLeaderboard, leaderboard, recentGeneration) {
+    let isLeaderboardChanges = false;
+
+    for (let i = 0; i < leaderboard.length; i++) {
+        if (recentGeneration) {
+            leaderboard[i].performance = parseFloat(leaderboard[i].performance);
+            leaderboard[i].point = parseFloat(leaderboard[i].point);
+
+            if (Number(leaderboard[i].performance)) {
+                const totalPoint =
+                    leaderboard[i].point + leaderboard[i].performance;
+
+                leaderboard[i].point = Math.round(totalPoint * 100) / 100;
+            } else {
+                leaderboard[i].performance = 0;
+            }
+            isLeaderboardChanges = true;
+        } else {
+            if (
+                prevLeaderboard[i].performance !== leaderboard[i].performance ||
+                prevLeaderboard[i].point !== leaderboard[i].point
+            ) {
+                leaderboard[i].performance = parseFloat(
+                    leaderboard[i].performance
+                );
+                leaderboard[i].point = parseFloat(leaderboard[i].point);
+
+                if (Number(leaderboard[i].performance)) {
+                    const totalPoint =
+                        leaderboard[i].point + leaderboard[i].performance;
+
+                    leaderboard[i].point = Math.round(totalPoint * 100) / 100;
+                } else {
+                    leaderboard[i].performance = 0;
+                }
+                isLeaderboardChanges = true;
+            }
+            if (prevLeaderboard.length !== leaderboard.length) {
+                // if only row is deleted
+                isLeaderboardChanges = true;
+            }
+        }
+    }
+
+    if (isLeaderboardChanges) {
+        return leaderboard;
+    } else {
+        return 'No changes were made';
+    }
+}
+
+async function addPerformanceRG(leaderboard) {
     for (let i = 0; i < leaderboard.length; i++) {
         leaderboard[i].performance = parseFloat(leaderboard[i].performance);
         leaderboard[i].point = parseFloat(leaderboard[i].point);
@@ -195,4 +247,5 @@ export {
     showPrevPerformance,
     sortAndAddRank,
     addPerformance,
+    addPerformanceRG,
 };
