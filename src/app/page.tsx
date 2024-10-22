@@ -1,15 +1,11 @@
 "use client";
 
-import Globe from "./components/Homepage/Globe";
-import ThemeToggle from "./components/ThemeToggle";
+// import Globe from "../components/Homepage/Globe";
 
 export default function Home() {
   return (
     <div>
-      <ThemeToggle />
-      <div className="full flex justify-center">
-        <Globe />
-      </div>
+      <div className="full flex justify-center">{/* <Globe /> */}</div>
     </div>
   );
 }
