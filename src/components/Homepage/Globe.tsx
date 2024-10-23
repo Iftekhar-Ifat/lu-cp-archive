@@ -3,6 +3,7 @@
 import createGlobe from "cobe";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 interface Marker {
   location: [number, number];
@@ -15,20 +16,19 @@ export default function Globe() {
   const { theme } = useTheme();
   const DARK = theme === "dark" ? 1 : 0;
   const [width, setWidth] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Handle resize
   useEffect(() => {
     const updateSize = () => {
       if (containerRef.current) {
         const containerWidth = containerRef.current.clientWidth;
-        // Calculate the size (max 600px, min 200px)
         const size = Math.min(Math.max(containerWidth, 200), 600);
         setWidth(size);
       }
     };
 
     updateSize();
-
     window.addEventListener("resize", updateSize);
 
     return () => window.removeEventListener("resize", updateSize);
@@ -43,7 +43,7 @@ export default function Globe() {
     const globe = createGlobe(canvasRef.current as HTMLCanvasElement, {
       devicePixelRatio: pixelRatio,
       width: width * pixelRatio,
-      height: width * pixelRatio, // Keep aspect ratio 1:1
+      height: width * pixelRatio,
       phi: 0,
       theta: 0,
       dark: DARK,
@@ -59,16 +59,25 @@ export default function Globe() {
       onRender: (state) => {
         state.phi = phi;
         phi += 0.01;
+
+        if (isLoading) {
+          setIsLoading(false);
+        }
       },
     });
 
     return () => {
       globe.destroy();
     };
-  }, [DARK, width]);
+  }, [DARK, width, isLoading]);
 
   return (
-    <div ref={containerRef} className="w-full max-w-[600px]">
+    <div ref={containerRef} className="w-full max-w-[600px] relative">
+      {isLoading ? (
+        <div className="w-full flex justify-center items-center h-[55vh] md:h-[65vh] bg-transparent">
+          <Skeleton className="rounded-full w-4/5 h-4/5" />
+        </div>
+      ) : null}
       <canvas
         ref={canvasRef}
         style={{
@@ -76,6 +85,8 @@ export default function Globe() {
           height: width,
           maxWidth: "100%",
           aspectRatio: "1",
+          opacity: isLoading ? 0 : 1, // Hide canvas while loading
+          transition: "opacity 1.5s ease-in-out",
         }}
       />
     </div>

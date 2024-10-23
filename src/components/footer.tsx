@@ -10,7 +10,7 @@ export default function Footer() {
         className="font-mono"
       >
         <div className="flex items-center justify-center">
-          <Copyright size="20px" className="m-1" /> <span>Iftekhar</span>
+          <Copyright size="20px" className="m-1" /> <span>LU-ACM</span>
         </div>
       </Link>
     </div>
