@@ -13,18 +13,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import clsx from "clsx";
-import { usePathname } from "next/navigation";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 
-export default function Navbar({ user }: { user: boolean | null }) {
-  const pathname = usePathname();
-  const href = "asdf";
+export default function Navbar() {
+  const { user } = useUser();
   return (
     <header className="sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60">
       <MaxWidthWrapper>
         <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <Link
-            href="#"
+            href="/"
             className="flex items-center gap-2 text-lg font-semibold"
             prefetch={false}
           >
@@ -32,19 +30,27 @@ export default function Navbar({ user }: { user: boolean | null }) {
             <span className="sr-only">Acme Inc</span>
           </Link>
           <div className="flex items-center gap-4">
-            {user ? (
+            {!user ? (
               <>
                 <ThemeToggle />
-                <Button variant="outline">
-                  <LogIn /> Login
-                </Button>
+                <SignInButton
+                  mode="modal"
+                  fallbackRedirectUrl="/dashboard"
+                  signUpFallbackRedirectUrl="/dashboard"
+                >
+                  <Button variant="outline">
+                    <LogIn /> Login
+                  </Button>
+                </SignInButton>
               </>
             ) : (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild className="cursor-pointer">
                   <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarImage src={user.imageUrl} />
+                    <AvatarFallback>
+                      <User />
+                    </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -52,14 +58,7 @@ export default function Navbar({ user }: { user: boolean | null }) {
                   className="mt-[0.33rem] w-56 rounded-md bg-white/50 backdrop-blur-sm dark:bg-neutral-950/50"
                 >
                   <Link className="block" href="/profile">
-                    <DropdownMenuItem
-                      className={clsx(
-                        "focus:bg-accent rounded-md cursor-pointer p-2 duration-300 focus:outline-none hover:text-foreground text-foreground/80 transition-colors",
-                        {
-                          "!text-foreground": pathname === href,
-                        }
-                      )}
-                    >
+                    <DropdownMenuItem className="focus:bg-accent rounded-md cursor-pointer p-2 duration-300 focus:outline-none hover:text-foreground text-foreground/80 transition-colors">
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile</span>
                     </DropdownMenuItem>
@@ -73,19 +72,12 @@ export default function Navbar({ user }: { user: boolean | null }) {
                     <ThemeToggle />
                   </div>
                   <DropdownMenuSeparator />
-                  <Link className="block" href="/logout">
-                    <DropdownMenuItem
-                      className={clsx(
-                        "focus:bg-accent rounded-md p-2 cursor-pointer duration-300 focus:outline-none hover:text-foreground text-foreground/80 transition-colors",
-                        {
-                          "!text-foreground": pathname === href,
-                        }
-                      )}
-                    >
+                  <SignOutButton>
+                    <DropdownMenuItem className="focus:bg-accent rounded-md p-2 cursor-pointer duration-300 focus:outline-none hover:text-foreground text-foreground/80 transition-colors">
                       <LogOut className="mr-2 h-4 w-4" color="red" />
                       <span className="text-red-600">Logout</span>
                     </DropdownMenuItem>
-                  </Link>
+                  </SignOutButton>
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
