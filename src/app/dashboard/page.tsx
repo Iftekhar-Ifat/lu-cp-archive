@@ -1,5 +1,9 @@
-import React from "react";
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 
 export default function Dashboard() {
-  return <div>Dashboard</div>;
+  return (
+    <MaxWidthWrapper>
+      <div>Dashboard</div>
+    </MaxWidthWrapper>
+  );
 }

@@ -6,7 +6,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "sonner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,11 +41,11 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Navbar />
-            <div className="relative flex min-h-screen flex-col bg-background">
-              {children}
-            </div>
-            <Footer />
+            <main className="relative flex flex-col min-h-screen">
+              <Navbar />
+              <div className="flex-grow flex-1">{children}</div>
+              <Footer />
+            </main>
             <Toaster />
           </ThemeProvider>
         </body>

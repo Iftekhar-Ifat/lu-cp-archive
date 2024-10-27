@@ -4,8 +4,8 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Globe from "../components/Homepage/Globe";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
-import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Home() {
   const { user, isLoaded } = useUser();
@@ -15,9 +15,10 @@ export default function Home() {
     if (user) {
       router.push("/dashboard");
     } else {
-      toast({
-        variant: "destructive",
-        description: "Please sign in to continue.",
+      toast.error("Please log in to continue", {
+        duration: 2000,
+        position: "top-center",
+        className: "border-red-500 text-red-500 bg-background",
       });
     }
   };

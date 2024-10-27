@@ -18,7 +18,7 @@ import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 export default function Navbar() {
   const { user } = useUser();
   return (
-    <header className="sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-black/[0.1] dark:border-white/[0.1] bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60">
       <MaxWidthWrapper>
         <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <Link
