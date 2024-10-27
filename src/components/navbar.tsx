@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { LogIn, LogOut, Mountain, Palette, User } from "lucide-react";
+import { Binary, LogIn, LogOut, Palette, User } from "lucide-react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import ThemeToggle from "./ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -26,7 +26,7 @@ export default function Navbar() {
             className="flex items-center gap-2 text-lg font-semibold"
             prefetch={false}
           >
-            <Mountain className="h-6 w-6" />
+            <Binary className="h-8 w-8" />
             <span className="sr-only">Acme Inc</span>
           </Link>
           <div className="flex items-center gap-4">
