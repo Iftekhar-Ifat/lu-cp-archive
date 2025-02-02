@@ -27,7 +27,7 @@ export default function Navbar() {
             prefetch={false}
           >
             <Binary className="h-8 w-8" />
-            <span className="sr-only">Acme Inc</span>
+            <span className="sr-only">LU-CP-Archive</span>
           </Link>
           <div className="flex items-center gap-4">
             {!user ? (
