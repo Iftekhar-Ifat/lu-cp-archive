@@ -41,19 +41,19 @@ const dashboardCardData = [
     title: "Intra LU Contest",
     description: "Problems from previous onsite LU contests",
     icon: Users,
-    href: "dashboard/intra-lu-contest",
+    href: "dashboard/intra-lu-contests",
   },
   {
-    title: "LU Problemsolver Short Contest",
+    title: "LU Problem Solver Short Contest",
     description: "Short Contests organized by LU Problem Solvers",
     icon: Timer,
-    href: "dashboard/short-contest",
+    href: "dashboard/short-contests",
   },
   {
-    title: "LU Problemsolver Marathon Contest",
+    title: "LU Problem Solver Marathon Contest",
     description: "Long Contests organized by LU Problem Solvers",
     icon: Hourglass,
-    href: "dashboard/marathon-contest",
+    href: "dashboard/marathon-contests",
   },
   {
     title: "User Guide",
@@ -76,18 +76,18 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {dashboardCardData.map((item, index) => (
-          <Link key={index} href={item.href} className="grid">
-            <Card className="transition-all duration-300 cursor-pointer group hover:scale-[1.02] hover:border-zinc-400">
+          <Link key={index} href={item.href} className="group">
+            <Card className="h-full flex flex-col justify-between transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:border-zinc-400">
               <CardHeader>
                 <div className="flex items-start justify-between space-y-0">
                   <div className="space-y-2">
                     <div className="h-12 w-12 rounded-lg p-2 transition-colors">
                       <item.icon className="w-full h-full text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-xl leading-tight">
+                    <CardTitle className="text-xl leading-tight line-clamp-2">
                       {item.title}
                     </CardTitle>
-                    <CardDescription className="text-muted-foreground">
+                    <CardDescription className="text-muted-foreground line-clamp-3">
                       {item.description}
                     </CardDescription>
                   </div>
