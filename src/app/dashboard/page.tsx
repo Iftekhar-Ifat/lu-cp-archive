@@ -66,40 +66,42 @@ const dashboardCardData = [
 export default function Dashboard() {
   return (
     <MaxWidthWrapper>
-      <div className="flex items-center justify-between h-20">
-        <div className="flex items-center">
-          <span className="text-2xl font-bold tracking-wide font-mono">
-            Dashboard
-          </span>
+      <div className="py-8">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center">
+            <span className="text-2xl font-bold tracking-wide font-mono">
+              Dashboard
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {dashboardCardData.map((item, index) => (
-          <Link key={index} href={item.href} className="group">
-            <Card className="h-full flex flex-col justify-between transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:border-zinc-400">
-              <CardHeader>
-                <div className="flex items-start justify-between space-y-0">
-                  <div className="space-y-2">
-                    <div className="h-12 w-12 rounded-lg p-2 transition-colors">
-                      <item.icon className="w-full h-full text-muted-foreground" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {dashboardCardData.map((item, index) => (
+            <Link key={index} href={item.href} className="group">
+              <Card className="h-full flex flex-col justify-between transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:border-zinc-400">
+                <CardHeader>
+                  <div className="flex items-start justify-between space-y-0">
+                    <div className="space-y-2">
+                      <div className="h-12 w-12 rounded-lg p-2 transition-colors">
+                        <item.icon className="w-full h-full text-muted-foreground" />
+                      </div>
+                      <CardTitle className="text-xl leading-tight line-clamp-2">
+                        {item.title}
+                      </CardTitle>
+                      <CardDescription className="text-muted-foreground line-clamp-3">
+                        {item.description}
+                      </CardDescription>
                     </div>
-                    <CardTitle className="text-xl leading-tight line-clamp-2">
-                      {item.title}
-                    </CardTitle>
-                    <CardDescription className="text-muted-foreground line-clamp-3">
-                      {item.description}
-                    </CardDescription>
+                    <ArrowUpRight
+                      className="text-muted-foreground group-hover:text-primary"
+                      size="25"
+                    />
                   </div>
-                  <ArrowUpRight
-                    className="text-muted-foreground group-hover:text-primary"
-                    size="25"
-                  />
-                </div>
-              </CardHeader>
-            </Card>
-          </Link>
-        ))}
+                </CardHeader>
+              </Card>
+            </Link>
+          ))}
+        </div>
       </div>
     </MaxWidthWrapper>
   );
