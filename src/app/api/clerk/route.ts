@@ -67,7 +67,7 @@ export async function POST(request: Request) {
     const eventType = payload.type;
 
     if (eventType === "user.created" || eventType === "user.updated") {
-      const { email_addresses, first_name, last_name } = payload.data;
+      const { email_addresses, first_name, last_name, username } = payload.data;
 
       const primaryEmail = email_addresses[0]?.email_address;
       const fullName = `${first_name || ""} ${last_name || ""}`.trim();
@@ -86,9 +86,11 @@ export async function POST(request: Request) {
         },
         update: {
           name: fullName,
+          user_name: username || primaryEmail,
           updated_at: new Date(),
         },
         create: {
+          user_name: username || primaryEmail,
           email: primaryEmail,
           name: fullName,
           user_type: "STANDARD",

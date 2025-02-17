@@ -20,12 +20,11 @@ enum user_type {
 }
 
 model User {
-  user_id    String    @id @default(cuid())
-  email      String    @unique
-  name       String
-  user_type  user_type @default(STANDARD)
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-
-  @@map("users")
+  userId    String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  userName  String    @unique
+  userType  user_type @default(STANDARD)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }

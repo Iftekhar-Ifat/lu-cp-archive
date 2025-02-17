@@ -91,7 +91,10 @@ export default function Dashboard() {
                       {item.description}
                     </CardDescription>
                   </div>
-                  <ArrowUpRight className="text-muted-foreground" size="25" />
+                  <ArrowUpRight
+                    className="text-muted-foreground group-hover:text-primary"
+                    size="25"
+                  />
                 </div>
               </CardHeader>
             </Card>
