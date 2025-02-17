@@ -86,14 +86,14 @@ export async function POST(request: Request) {
         },
         update: {
           name: fullName,
-          user_name: username || primaryEmail,
-          updated_at: new Date(),
+          userName: username || primaryEmail,
+          updatedAt: new Date(),
         },
         create: {
-          user_name: username || primaryEmail,
+          userName: username || primaryEmail,
           email: primaryEmail,
           name: fullName,
-          user_type: "STANDARD",
+          userType: "STANDARD",
         },
       });
 
