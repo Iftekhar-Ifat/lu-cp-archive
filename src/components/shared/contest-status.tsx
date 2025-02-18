@@ -90,7 +90,7 @@ export function ContestStatus() {
             ) : (
               <div className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded-full bg-muted-foreground" />
-                Set status
+                Set Status
               </div>
             )}
             <ChevronsUpDown className="ml-auto opacity-50" />
@@ -118,7 +118,7 @@ export function ContestStatus() {
           ) : (
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-primary" />
-              Set status
+              Set Status
             </div>
           )}
         </Button>
