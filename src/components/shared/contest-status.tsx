@@ -34,7 +34,7 @@ const statuses: Status[] = [
   {
     value: "in progress",
     label: "In Progress",
-    color: "bg-cyan-500",
+    color: "bg-orange-500",
   },
   {
     value: "done",

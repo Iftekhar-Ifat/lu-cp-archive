@@ -1,16 +1,16 @@
 import ContestCard from "@/components/contest-page-components/contest-card";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import { ShortContest } from "@/utils/types";
 import Link from "next/link";
-import React from "react";
 
 export default function ShortContestPage() {
-  const shortContestData = [
+  const shortContestData: ShortContest[] = [
     {
       title: "Topic Wise",
       description: "Practice Topic wise problems",
       href: "dashboard/topic-wise",
       added_by: "Dewan Abdul Mohaimin Chowdhury",
-      difficulty: "Easy",
+      difficulty: "EASY",
       tags: ["Array", "String", "Math", "DP"],
     },
     {
@@ -18,7 +18,7 @@ export default function ShortContestPage() {
       description: "Practice Codeforces problem by difficulty level",
       href: "dashboard/codeforces-ladder",
       added_by: "Dewan Abdul Mohaimin Chowdhury",
-      difficulty: "Easy",
+      difficulty: "EASY",
       tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     },
     {
@@ -26,7 +26,7 @@ export default function ShortContestPage() {
       description: "Leaderboard of LU's competitive programers",
       href: "dashboard/leaderboard",
       added_by: "Iftekhar-Ifat",
-      difficulty: "Easy",
+      difficulty: "EASY",
       tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     },
     {
@@ -34,7 +34,7 @@ export default function ShortContestPage() {
       description: "Problems from previous onsite LU contests",
       href: "dashboard/intra-lu-contests",
       added_by: "Iftekhar-Ifat",
-      difficulty: "Easy",
+      difficulty: "EASY",
       tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     },
     {
@@ -42,7 +42,7 @@ export default function ShortContestPage() {
       description: "Short Contests organized by LU Problem Solvers",
       href: "dashboard/short-contests",
       added_by: "Dewan Abdul Mohaimin Chowdhury",
-      difficulty: "Easy",
+      difficulty: "EASY",
       tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     },
     {
@@ -53,7 +53,7 @@ export default function ShortContestPage() {
       href: "dashboard/marathon-contests",
       added_by:
         "Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury",
-      difficulty: "Easy",
+      difficulty: "EASY",
       tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     },
   ];

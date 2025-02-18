@@ -11,8 +11,9 @@ import DifficultyBadge from "../shared/difficulty-badge";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import ContestCardFooter from "./contest-card-footer";
+import { ShortContest } from "@/utils/types";
 
-export default function ContestCard({ item }: { item: any }) {
+export default function ContestCard({ item }: { item: ShortContest }) {
   return (
     <Card className="h-full flex flex-col justify-between transition-all duration-300 cursor-pointer hover:border-zinc-400">
       <CardHeader>
