@@ -26,17 +26,17 @@ export default function Home() {
   return (
     <MaxWidthWrapper>
       <div className="mt-5">
-        <h1 className="relative z-10 text-3xl md:text-7xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-700 to-neutral-300 dark:from-neutral-300 dark:to-neutral-700 text-center font-sans font-bold">
+        <h1 className="relative z-10 bg-gradient-to-b from-neutral-700 to-neutral-300 bg-clip-text text-center font-sans text-3xl font-bold text-transparent dark:from-neutral-300 dark:to-neutral-700 md:text-7xl">
           Leading University Competitive Programming Archive
         </h1>
         <div className="full flex justify-center">
           <Globe />
         </div>
-        <div className="z-10 flex my-5 md:mt-0 md:mb-5 items-center justify-center">
+        <div className="z-10 my-5 flex items-center justify-center md:mb-5 md:mt-0">
           <Button
             variant="outline"
             size="lg"
-            className="text-xl py-8 font-mono font-bold"
+            className="py-8 font-mono text-xl font-bold"
             onClick={handleClick}
             disabled={!isLoaded}
           >

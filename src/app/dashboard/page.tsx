@@ -67,28 +67,28 @@ export default function Dashboard() {
   return (
     <MaxWidthWrapper>
       <div className="py-8">
-        <div className="flex items-center justify-between mb-8">
+        <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">
-            <span className="text-2xl font-bold tracking-wide font-mono">
+            <span className="font-mono text-2xl font-bold tracking-wide">
               Dashboard
             </span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {dashboardCardData.map((item, index) => (
             <Link key={index} href={item.href} className="group">
-              <Card className="h-full flex flex-col justify-between transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:border-zinc-400">
+              <Card className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:border-zinc-400">
                 <CardHeader>
                   <div className="flex items-start justify-between space-y-0">
                     <div className="space-y-2">
                       <div className="h-12 w-12 rounded-lg p-2 transition-colors">
-                        <item.icon className="w-full h-full text-muted-foreground" />
+                        <item.icon className="h-full w-full text-muted-foreground" />
                       </div>
-                      <CardTitle className="text-xl leading-tight line-clamp-2">
+                      <CardTitle className="line-clamp-2 text-xl leading-tight">
                         {item.title}
                       </CardTitle>
-                      <CardDescription className="text-muted-foreground line-clamp-3">
+                      <CardDescription className="line-clamp-3 text-muted-foreground">
                         {item.description}
                       </CardDescription>
                     </div>

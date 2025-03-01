@@ -17,7 +17,7 @@ export default function ContestCardFooter() {
         e.preventDefault(), e.stopPropagation();
       }}
     >
-      <div className="flex items-center justify-between w-full">
+      <div className="flex w-full items-center justify-between">
         {userType === "ADMIN" ? (
           <div>
             <Button

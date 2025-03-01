@@ -20,7 +20,7 @@ export function ContestEditModal({
 }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-[95%] sm:max-w-[425px] font-sans">
+      <DialogContent className="max-w-[95%] font-sans sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Contest</DialogTitle>
           <DialogDescription>

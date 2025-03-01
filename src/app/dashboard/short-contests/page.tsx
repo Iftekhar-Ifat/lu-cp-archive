@@ -62,16 +62,16 @@ export default function ShortContestPage() {
   return (
     <MaxWidthWrapper>
       <div className="py-8">
-        <div className="flex flex-col md:flex-row items-center justify-between mb-8 space-y-4 md:space-y-0">
+        <div className="mb-8 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
           <div className="flex items-center">
-            <span className="text-2xl font-bold tracking-wide font-mono text-center md:text-left">
+            <span className="text-center font-mono text-2xl font-bold tracking-wide md:text-left">
               LUPS Short Contests
             </span>
           </div>
           <ContestAddApproveSection />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {shortContestData.map((item, index) => (
             <Link key={index} href={item.href} className="group">
               <ContestCard item={item} />

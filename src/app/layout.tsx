@@ -41,9 +41,9 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <main className="relative flex flex-col min-h-screen font-sans">
+            <main className="relative flex min-h-screen flex-col font-sans">
               <Navbar />
-              <div className="flex-grow flex-1">{children}</div>
+              <div className="flex-1 flex-grow">{children}</div>
               <Footer />
             </main>
             <Toaster />

@@ -42,7 +42,7 @@ export function ContestDeleteModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-[95%] sm:max-w-[425px] font-sans">
+      <DialogContent className="max-w-[95%] font-sans sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-red-500">Delete Contest</DialogTitle>
           <DialogDescription>

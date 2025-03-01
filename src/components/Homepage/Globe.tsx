@@ -72,16 +72,16 @@ export default function Globe() {
   }, [DARK, width, isLoading]);
 
   return (
-    <div ref={containerRef} className="w-full max-w-[600px] relative">
+    <div ref={containerRef} className="relative w-full max-w-[600px]">
       {isLoading ? (
-        <div className="w-full flex justify-center items-center h-[55vh] md:h-[65vh] bg-transparent">
-          <Skeleton className="rounded-full w-4/5 h-4/5" />
+        <div className="flex h-[55vh] w-full items-center justify-center bg-transparent md:h-[65vh]">
+          <Skeleton className="h-4/5 w-4/5 rounded-full" />
         </div>
       ) : null}
       <canvas
         ref={canvasRef}
         style={{
-          width: width,
+          width,
           height: width,
           maxWidth: "100%",
           aspectRatio: "1",

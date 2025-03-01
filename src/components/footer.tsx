@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <div className="bottom-0 w-full border-t bg-transparent border-neutral-200 dark:border-white/[0.1]">
+    <div className="bottom-0 w-full border-t border-neutral-200 bg-transparent dark:border-white/[0.1]">
       <Link
         href="https://github.com/Iftekhar-Ifat/lu-cp-archive"
         className="font-mono"

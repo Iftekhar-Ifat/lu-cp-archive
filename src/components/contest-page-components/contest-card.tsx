@@ -15,10 +15,10 @@ import { ShortContest } from "@/utils/types";
 
 export default function ContestCard({ item }: { item: ShortContest }) {
   return (
-    <Card className="h-full flex flex-col justify-between transition-all duration-300 cursor-pointer hover:border-zinc-400">
+    <Card className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:border-zinc-400">
       <CardHeader>
         <div className="flex items-start justify-between space-y-0">
-          <CardTitle className="max-w-[90%] text-xl leading-tight line-clamp-1">
+          <CardTitle className="line-clamp-1 max-w-[90%] text-xl leading-tight">
             {item.title}
           </CardTitle>
           <ArrowUpRight
@@ -26,7 +26,7 @@ export default function ContestCard({ item }: { item: ShortContest }) {
             size={20}
           />
         </div>
-        <CardDescription className="text-muted-foreground line-clamp-2">
+        <CardDescription className="line-clamp-2 text-muted-foreground">
           {item.description}
         </CardDescription>
         <div className="pointer-events-none">
@@ -35,21 +35,21 @@ export default function ContestCard({ item }: { item: ShortContest }) {
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="space-y-1">
-          <span className="text-xs text-muted-foreground mr-1">Added by:</span>
+          <span className="mr-1 text-xs text-muted-foreground">Added by:</span>
           <Badge
             variant="secondary"
-            className="text-xs w-fit px-2 truncate max-w-full hover:scale-[1.02]"
+            className="w-fit max-w-full truncate px-2 text-xs hover:scale-[1.02]"
           >
             @{item.added_by}
           </Badge>
         </div>
         <div className="space-y-1">
-          <span className="text-xs text-muted-foreground mr-1">Tags:</span>
+          <span className="mr-1 text-xs text-muted-foreground">Tags:</span>
           {item.tags.map((tag, tagIndex) => (
             <Badge
               key={tagIndex}
               variant="outline"
-              className="text-xs px-2 py-0 mr-1"
+              className="mr-1 px-2 py-0 text-xs"
             >
               {tag}
             </Badge>
