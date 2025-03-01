@@ -138,7 +138,9 @@ function StatusList({
   onStatusChange,
   selectedStatus,
 }: {
+  // eslint-disable-next-line no-unused-vars
   setOpen: (open: boolean) => void;
+  // eslint-disable-next-line no-unused-vars
   onStatusChange: (status: Status | null) => void;
   selectedStatus: Status | null;
 }) {
