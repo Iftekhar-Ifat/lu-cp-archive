@@ -1,6 +1,6 @@
 "use client";
 
-import { Edit2, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { ContestStatus } from "../shared/contest-status";
 import { Button } from "../ui/button";
 import { useState } from "react";
@@ -33,7 +33,7 @@ export default function ContestCardFooter() {
               size="icon"
               onClick={() => setIsEditModalOpen(true)}
             >
-              <Edit2 className="text-muted-foreground" size={20} />
+              <Edit className="text-muted-foreground" size={20} />
             </Button>
           </div>
         ) : (

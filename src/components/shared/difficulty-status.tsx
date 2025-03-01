@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
+
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,43 +18,41 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import DifficultyBadge from "./difficulty-badge";
+import { ContestDifficultyEnum } from "@/utils/types";
 
 type Status = {
-  value: string;
+  value: ContestDifficultyEnum;
   label: string;
-  color: string;
 };
 
 const statuses: Status[] = [
   {
-    value: "skipped",
-    label: "Skipped",
-    color: "bg-rose-500",
+    value: "EASY",
+    label: "Easy",
   },
   {
-    value: "in progress",
-    label: "In Progress",
-    color: "bg-orange-500",
+    value: "MEDIUM",
+    label: "Medium",
   },
   {
-    value: "done",
-    label: "Done",
-    color: "bg-emerald-500",
+    value: "HARD",
+    label: "Hard",
   },
 ];
 
-export function ContestStatus() {
+export function DifficultyStatus() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<Status>(statuses[0]);
 
-  const handleStatusChange = async (newStatus: Status | null) => {
-    if (selectedStatus?.value === newStatus?.value) {
+  const handleStatusChange = async (newStatus: Status) => {
+    if (selectedStatus.value === newStatus.value) {
       setLoading(true);
       // Simulate API call (set new status)
       await new Promise((resolve) => setTimeout(resolve, 500));
-      setSelectedStatus(null);
+      setSelectedStatus(statuses[0]);
       setLoading(false);
       return;
     }
@@ -65,30 +64,24 @@ export function ContestStatus() {
     setLoading(false);
   };
 
-  const StatusIndicator = ({ status }: { status: Status | null }) => {
+  const StatusIndicator = ({ status }: { status: Status }) => {
     if (!status) return null;
     return (
-      <div className="flex items-center gap-2">
-        <div className={`h-3 w-3 rounded-full ${status.color}`} />
-        {status.label}
+      <div className="pointer-events-none">
+        <DifficultyBadge difficulty={status.value} />
       </div>
     );
   };
 
   if (isDesktop) {
     return (
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={setOpen} modal={false}>
         <PopoverTrigger asChild>
           <Button variant="outline" className="w-[150px] justify-start">
             {loading ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : selectedStatus ? (
-              <StatusIndicator status={selectedStatus} />
             ) : (
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-muted-foreground" />
-                Set Status
-              </div>
+              <StatusIndicator status={selectedStatus} />
             )}
             <ChevronsUpDown className="ml-auto opacity-50" />
           </Button>
@@ -110,13 +103,8 @@ export function ContestStatus() {
         <Button variant="outline" className="w-[150px] justify-start">
           {loading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : selectedStatus ? (
-            <StatusIndicator status={selectedStatus} />
           ) : (
-            <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-primary" />
-              Set Status
-            </div>
+            <StatusIndicator status={selectedStatus} />
           )}
         </Button>
       </DrawerTrigger>
@@ -139,8 +127,8 @@ function StatusList({
   selectedStatus,
 }: {
   setOpen: (open: boolean) => void;
-  onStatusChange: (status: Status | null) => void;
-  selectedStatus: Status | null;
+  onStatusChange: (status: Status) => void;
+  selectedStatus: Status;
 }) {
   return (
     <Command>
@@ -153,15 +141,16 @@ function StatusList({
               value={status.value}
               onSelect={(value) => {
                 const newStatus =
-                  statuses.find((s) => s.value === value) || null;
+                  statuses.find((s) => s.value === value) || statuses[0];
                 onStatusChange(newStatus);
                 setOpen(false);
               }}
             >
               <div className="flex items-center gap-2">
-                <div className={`h-3 w-3 rounded-full ${status.color}`} />
-                {status.label}
-                {selectedStatus?.value === status.value && (
+                <div className="pointer-events-none">
+                  <DifficultyBadge difficulty={status.value} />
+                </div>
+                {selectedStatus.value === status.value && (
                   <Check className="ml-auto h-4 w-4" />
                 )}
               </div>
