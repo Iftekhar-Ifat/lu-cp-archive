@@ -13,8 +13,8 @@
   "rules": {
     // JavaScript rules
     "prefer-const": "warn",
-    "no-var": "warn",
-    "no-unused-vars": "warn",
+    "no-var": "error",
+    "no-unused-vars": "error",
     "object-shorthand": "warn",
     "quote-props": [
       "warn",

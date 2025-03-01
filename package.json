@@ -11,6 +11,11 @@
     "prettier": "prettier --write */**/*.{js,jsx,json,ts,tsx,scss,css,md}",
     "prepare": "husky"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix"
+    ]
+  },
   "dependencies": {
     "@clerk/nextjs": "^6.0.2",
     "@clerk/themes": "^2.1.39",

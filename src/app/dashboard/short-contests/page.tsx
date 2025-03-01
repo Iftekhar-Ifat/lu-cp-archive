@@ -1,7 +1,6 @@
 import ContestAddApproveSection from "@/components/contest-page-components/contest-add-approve-section";
 import ContestCard from "@/components/contest-page-components/contest-card";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import AddContestModal from "@/components/shared/add-contest-modal";
 import { ShortContest } from "@/utils/types";
 import Link from "next/link";
 
