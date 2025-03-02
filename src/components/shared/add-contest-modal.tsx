@@ -33,7 +33,6 @@ import { toast } from "sonner";
 import { contestFormSchema } from "@/utils/schema/contest-form";
 import { createContestAction } from "@/app/dashboard/short-contests/actions";
 
-// Type for form values
 type ContestFormValues = z.infer<typeof contestFormSchema>;
 
 export default function AddContestModal({
@@ -48,7 +47,6 @@ export default function AddContestModal({
     useState<ContestDifficultyEnum>("EASY");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Default values for the form
   const defaultValues: Partial<ContestFormValues> = {
     name: "",
     description: "",
@@ -72,7 +70,6 @@ export default function AddContestModal({
       text: tag.text.toLowerCase().replace(/\s+/g, "-"),
     }));
 
-    // Update form value for validation
     setValue("tags", formattedTags, {
       shouldValidate: true,
       shouldDirty: true,
@@ -83,7 +80,6 @@ export default function AddContestModal({
     setSelectedDifficulty(difficulty);
   };
 
-  // Form submission handler
   const onSubmit = async (data: ContestFormValues) => {
     setIsSubmitting(true);
     try {

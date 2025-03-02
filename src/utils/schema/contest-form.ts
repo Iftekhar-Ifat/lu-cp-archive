@@ -19,7 +19,6 @@ const contestFormSchema = z.object({
   link: z.string().url({
     message: "Please enter a valid URL.",
   }),
-  // Add tags validation
   tags: z
     .array(
       z.object({
