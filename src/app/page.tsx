@@ -16,9 +16,7 @@ export default function Home() {
       router.push("/dashboard");
     } else {
       toast.error("Please log in to continue", {
-        duration: 2000,
         position: "top-center",
-        className: "border-red-500 text-red-500 bg-background",
       });
     }
   };

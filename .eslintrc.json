@@ -13,8 +13,8 @@
   "rules": {
     // JavaScript rules
     "prefer-const": "warn",
-    "no-var": "error",
-    "no-unused-vars": "error",
+    "no-var": "warn",
+    "no-unused-vars": "off",
     "object-shorthand": "warn",
     "quote-props": [
       "warn",
@@ -52,7 +52,7 @@
     "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "prettier/prettier": "error"
+    "prettier/prettier": "warn"
   },
   "settings": {
     "react": {

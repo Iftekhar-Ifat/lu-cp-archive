@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button } from "@/components/ui/button";
@@ -41,27 +41,28 @@ const statuses: Status[] = [
   },
 ];
 
-export function DifficultyStatus() {
+export function DifficultyStatus({
+  onDifficultyChange,
+  initialDifficulty = "EASY",
+}: {
+  onDifficultyChange?: (difficulty: ContestDifficultyEnum) => void;
+  initialDifficulty?: ContestDifficultyEnum;
+}) {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [selectedStatus, setSelectedStatus] = useState<Status>(statuses[0]);
+  const [selectedStatus, setSelectedStatus] = useState<Status>(
+    statuses.find((status) => status.value === initialDifficulty) || statuses[0]
+  );
 
   const handleStatusChange = async (newStatus: Status) => {
     if (selectedStatus.value === newStatus.value) {
-      setLoading(true);
-      // Simulate API call (set new status)
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setSelectedStatus(statuses[0]);
-      setLoading(false);
       return;
     }
-
-    setLoading(true);
-    // Simulate API call (set the status to null)
-    await new Promise((resolve) => setTimeout(resolve, 500));
     setSelectedStatus(newStatus);
-    setLoading(false);
+    // Call the callback if provided
+    if (onDifficultyChange) {
+      onDifficultyChange(newStatus.value);
+    }
   };
 
   const StatusIndicator = ({ status }: { status: Status }) => {
@@ -78,11 +79,7 @@ export function DifficultyStatus() {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" className="w-[150px] justify-start px-2">
-            {loading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <StatusIndicator status={selectedStatus} />
-            )}
+            <StatusIndicator status={selectedStatus} />
             <ChevronsUpDown className="ml-auto opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -101,11 +98,8 @@ export function DifficultyStatus() {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant="outline" className="w-[150px] justify-start">
-          {loading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <StatusIndicator status={selectedStatus} />
-          )}
+          <StatusIndicator status={selectedStatus} />
+          <ChevronsUpDown className="ml-auto opacity-50" />
         </Button>
       </DrawerTrigger>
       <DrawerContent>
