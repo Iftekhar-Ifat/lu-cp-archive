@@ -73,7 +73,7 @@ export default function ShortContestPage() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {shortContestData.map((item, index) => (
             <Link key={index} href={item.href} className="group">
-              <ContestCard item={item} />
+              <ContestCard item={item} approveContestCard={false} />
             </Link>
           ))}
         </div>

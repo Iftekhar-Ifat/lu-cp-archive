@@ -13,7 +13,16 @@ import { Separator } from "../ui/separator";
 import ContestCardFooter from "./contest-card-footer";
 import { ShortContest } from "@/utils/types";
 
-export default function ContestCard({ item }: { item: ShortContest }) {
+type USER = "ADMIN" | "POWER" | "STANDARD";
+
+export default function ContestCard({
+  item,
+  approveContestCard,
+}: {
+  item: ShortContest;
+  approveContestCard?: boolean;
+}) {
+  const user: USER = "STANDARD";
   return (
     <Card className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:border-zinc-400">
       <CardHeader>
@@ -56,7 +65,12 @@ export default function ContestCard({ item }: { item: ShortContest }) {
           ))}
         </div>
         <Separator />
-        <ContestCardFooter />
+        <ContestCardFooter
+          showDeleteButton={user !== "STANDARD"}
+          showEditButton={user !== "STANDARD"}
+          showContestStatus={!approveContestCard}
+          showApproveButton={approveContestCard ? approveContestCard : false}
+        />
       </CardContent>
     </Card>
   );

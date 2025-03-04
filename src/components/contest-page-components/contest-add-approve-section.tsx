@@ -4,6 +4,7 @@ import { Plus, Check } from "lucide-react";
 import { Button } from "../ui/button";
 import AddContestModal from "../shared/add-contest-modal";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function ContestAddApproveSection() {
   const userType = "ADMIN";
@@ -15,9 +16,11 @@ export default function ContestAddApproveSection() {
         Add Contest
       </Button>
       {userType === "ADMIN" && (
-        <Button variant="outline">
-          <Check />
-          Approve Contest
+        <Button variant="outline" asChild>
+          <Link href="/dashboard/short-contests/approve-short-contest">
+            <Check />
+            Approve Contest
+          </Link>
         </Button>
       )}
       <AddContestModal
