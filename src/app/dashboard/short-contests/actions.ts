@@ -18,4 +18,20 @@ const createContestAction = async (data: {
   return { success: true, message: "Contest created successfully" };
 };
 
-export { createContestAction };
+const updateContestAction = async (data: {
+  id: string;
+  name: string;
+  description: string;
+  link: string;
+  tags: Tag[];
+  difficulty: ContestDifficultyEnum;
+}) => {
+  console.log(data);
+  // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+
+  // Mock success response
+  return { success: true, message: "Contest created successfully" };
+};
+
+export { createContestAction, updateContestAction };

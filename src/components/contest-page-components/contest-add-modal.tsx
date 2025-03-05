@@ -12,7 +12,6 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Dispatch } from "react";
-import { DifficultyStatus } from "./difficulty-status";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,10 +31,11 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { contestFormSchema } from "@/utils/schema/contest-form";
 import { createContestAction } from "@/app/dashboard/short-contests/actions";
+import { DifficultyStatus } from "../shared/difficulty-status";
 
 type ContestFormValues = z.infer<typeof contestFormSchema>;
 
-export default function AddContestModal({
+export default function ContestAddModal({
   isOpen,
   setIsOpen,
 }: {

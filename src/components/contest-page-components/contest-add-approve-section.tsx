@@ -2,12 +2,13 @@
 
 import { Plus, Check } from "lucide-react";
 import { Button } from "../ui/button";
-import AddContestModal from "../shared/add-contest-modal";
 import { useState } from "react";
 import Link from "next/link";
+import ContestAddModal from "./contest-add-modal";
+import { useUser } from "../user-provider";
 
 export default function ContestAddApproveSection() {
-  const userType = "ADMIN";
+  const { user } = useUser();
   const [isAddContestModalOpen, setIsAddContestModalOpen] = useState(false);
   return (
     <div className="flex space-x-2">
@@ -15,7 +16,7 @@ export default function ContestAddApproveSection() {
         <Plus />
         Add Contest
       </Button>
-      {userType === "ADMIN" && (
+      {user?.userType === "ADMIN" && (
         <Button variant="outline" asChild>
           <Link href="/dashboard/short-contests/approve-short-contest">
             <Check />
@@ -23,7 +24,7 @@ export default function ContestAddApproveSection() {
           </Link>
         </Button>
       )}
-      <AddContestModal
+      <ContestAddModal
         isOpen={isAddContestModalOpen}
         setIsOpen={setIsAddContestModalOpen}
       />

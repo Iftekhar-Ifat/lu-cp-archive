@@ -1,20 +1,21 @@
 "use client";
 
 import { Check, Edit, Trash2 } from "lucide-react";
-import { ContestStatus } from "../shared/contest-status";
+import { ContestStatus } from "./contest-status";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { ContestEditModal } from "./contest-edit-modal";
 import { ContestDeleteModal } from "./contest-delete-modal";
+import { ShortContest } from "@/utils/types";
+import ContestEditModal from "./contest-edit-modal";
 
 export default function ContestCardFooter({
-  showEditButton,
-  showDeleteButton,
+  contest,
+  contestMutationPrivilege,
   showContestStatus,
   showApproveButton,
 }: {
-  showEditButton: boolean;
-  showDeleteButton: boolean;
+  contest: ShortContest;
+  contestMutationPrivilege: boolean;
   showContestStatus: boolean;
   showApproveButton: boolean;
 }) {
@@ -27,8 +28,8 @@ export default function ContestCardFooter({
       }}
     >
       <div className="flex w-full items-center justify-between">
-        <div>
-          {showEditButton && (
+        {contestMutationPrivilege && (
+          <div>
             <Button
               variant="outline"
               size="icon"
@@ -37,8 +38,6 @@ export default function ContestCardFooter({
             >
               <Trash2 className="text-red-500" size={20} />
             </Button>
-          )}
-          {showDeleteButton && (
             <Button
               variant="outline"
               size="icon"
@@ -46,8 +45,8 @@ export default function ContestCardFooter({
             >
               <Edit className="text-muted-foreground" size={20} />
             </Button>
-          )}
-        </div>
+          </div>
+        )}
         {showContestStatus && <ContestStatus />}
         {showApproveButton && (
           <Button variant="outline">
@@ -57,6 +56,7 @@ export default function ContestCardFooter({
         )}
       </div>
       <ContestEditModal
+        contest={contest}
         isOpen={isEditModalOpen}
         setIsOpen={setIsEditModalOpen}
       />

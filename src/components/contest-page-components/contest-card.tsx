@@ -16,19 +16,19 @@ import { ShortContest } from "@/utils/types";
 type USER = "ADMIN" | "POWER" | "STANDARD";
 
 export default function ContestCard({
-  item,
+  contest,
   approveContestCard,
 }: {
-  item: ShortContest;
+  contest: ShortContest;
   approveContestCard?: boolean;
 }) {
-  const user: USER = "STANDARD";
+  const user: USER = "POWER";
   return (
     <Card className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:border-zinc-400">
       <CardHeader>
         <div className="flex items-start justify-between space-y-0">
           <CardTitle className="line-clamp-1 max-w-[90%] text-xl leading-tight">
-            {item.title}
+            {contest.name}
           </CardTitle>
           <ArrowUpRight
             className="text-muted-foreground group-hover:text-primary"
@@ -36,10 +36,10 @@ export default function ContestCard({
           />
         </div>
         <CardDescription className="line-clamp-2 text-muted-foreground">
-          {item.description}
+          {contest.description}
         </CardDescription>
         <div className="pointer-events-none">
-          <DifficultyBadge difficulty={item.difficulty} />
+          <DifficultyBadge difficulty={contest.difficulty} />
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
@@ -49,12 +49,12 @@ export default function ContestCard({
             variant="secondary"
             className="w-fit max-w-full truncate px-2 text-xs hover:scale-[1.02]"
           >
-            @{item.added_by}
+            @{contest.added_by}
           </Badge>
         </div>
         <div className="space-y-1">
           <span className="mr-1 text-xs text-muted-foreground">Tags:</span>
-          {item.tags.map((tag, tagIndex) => (
+          {contest.tags.map((tag, tagIndex) => (
             <Badge
               key={tagIndex}
               variant="outline"
@@ -66,8 +66,10 @@ export default function ContestCard({
         </div>
         <Separator />
         <ContestCardFooter
-          showDeleteButton={user !== "STANDARD"}
-          showEditButton={user !== "STANDARD"}
+          contest={contest}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          contestMutationPrivilege={user !== "STANDARD"}
           showContestStatus={!approveContestCard}
           showApproveButton={approveContestCard ? approveContestCard : false}
         />

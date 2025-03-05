@@ -6,8 +6,7 @@ import { toast } from "sonner";
 export default function Loading() {
   useEffect(() => {
     const loadingToast = toast.loading("Loading ...", {
-      position: "top-right",
-      duration: 50000,
+      position: "bottom-right",
     });
 
     // Clean up by dismissing the toast when the component unmounts
@@ -18,4 +17,3 @@ export default function Loading() {
 
   return null;
 }
-// Add skeleton loading : Later
