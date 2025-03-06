@@ -1,9 +1,9 @@
 "use client";
-import { type USER } from "@/utils/types";
+import { type User } from "@/utils/types";
 import { createContext, useContext } from "react";
 
 type UserContextProps = {
-  user: USER | null;
+  user: User | null;
 };
 
 const UserContext = createContext<UserContextProps>({ user: null });
@@ -14,7 +14,7 @@ const UserProvider = ({
   user,
   children,
 }: {
-  user: USER | null;
+  user: User | null;
   children: React.ReactNode;
 }) => {
   return (

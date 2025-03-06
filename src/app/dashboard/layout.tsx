@@ -1,6 +1,6 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import UserProvider from "@/components/user-provider";
-import { type USER } from "@/utils/types";
+import { type User } from "@/utils/types";
 
 export default async function DashboardLayout({
   children,
@@ -20,7 +20,7 @@ export default async function DashboardLayout({
   } */
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  const userData: USER = {
+  const userData: User = {
     userId: "1",
     email: "iftekhar@gmail.com",
     name: "Iftekhar",

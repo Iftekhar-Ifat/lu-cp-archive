@@ -3,7 +3,7 @@ export type ContestDifficultyEnum = "EASY" | "MEDIUM" | "HARD";
 export type USER_TYPE = "ADMIN" | "STANDARD" | "POWER";
 
 // TEMP
-export type USER = {
+export type User = {
   userId: string;
   email: string;
   name: string;
