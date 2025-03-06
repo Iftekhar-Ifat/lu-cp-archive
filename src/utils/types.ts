@@ -13,7 +13,7 @@ export type USER = {
   updatedAt: Date;
 };
 
-export type ShortContest = {
+export type Contest = {
   id: string;
   name: string;
   description: string;

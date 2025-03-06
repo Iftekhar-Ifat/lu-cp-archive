@@ -5,8 +5,8 @@ import { ContestStatus } from "./contest-status";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { ContestDeleteModal } from "./contest-delete-modal";
-import { ShortContest } from "@/utils/types";
 import ContestEditModal from "./contest-edit-modal";
+import { Contest } from "@/utils/types";
 
 export default function ContestCardFooter({
   contest,
@@ -14,7 +14,7 @@ export default function ContestCardFooter({
   showContestStatus,
   showApproveButton,
 }: {
-  contest: ShortContest;
+  contest: Contest;
   contestMutationPrivilege: boolean;
   showContestStatus: boolean;
   showApproveButton: boolean;

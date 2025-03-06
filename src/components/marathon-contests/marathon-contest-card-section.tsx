@@ -1,10 +1,10 @@
-import { ShortContest } from "@/utils/types";
 import Link from "next/link";
 import ContestCard from "../contest-page-components/contest-card";
+import { Contest } from "@/utils/types";
 
-export default async function ApproveContestCardSection() {
+export default async function MarathonContestCardSection() {
   await new Promise((resolve) => setTimeout(resolve, 4000));
-  const shortContestData: ShortContest[] = [
+  const marathonContestData: Contest[] = [
     {
       id: "1",
       name: "Topic Wise",
@@ -65,9 +65,9 @@ export default async function ApproveContestCardSection() {
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {shortContestData.map((contest) => (
+      {marathonContestData.map((contest) => (
         <Link key={contest.id} href={contest.link} className="group">
-          <ContestCard contest={contest} approveContestCard={true} />
+          <ContestCard contest={contest} approveContestCard={false} />
         </Link>
       ))}
     </div>

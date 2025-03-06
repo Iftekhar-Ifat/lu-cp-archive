@@ -6,9 +6,11 @@ import { useState } from "react";
 import Link from "next/link";
 import ContestAddModal from "./contest-add-modal";
 import { useUser } from "../user-provider";
+import { usePathname } from "next/navigation";
 
 export default function ContestAddApproveSection() {
   const { user } = useUser();
+  const pathname = usePathname().split("/").pop();
   const [isAddContestModalOpen, setIsAddContestModalOpen] = useState(false);
   return (
     <div className="flex space-x-2">
@@ -18,7 +20,7 @@ export default function ContestAddApproveSection() {
       </Button>
       {user?.userType === "ADMIN" && (
         <Button variant="outline" asChild>
-          <Link href="/dashboard/short-contests/approve-short-contest">
+          <Link href={`/dashboard/${pathname}/approve-${pathname}`}>
             <Check />
             Approve Contest
           </Link>
