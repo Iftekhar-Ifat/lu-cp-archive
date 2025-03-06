@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { ContestDeleteModal } from "./contest-delete-modal";
 import ContestEditModal from "./contest-edit-modal";
-import { Contest } from "@/utils/types";
+import { type Contest } from "@/utils/types";
 
 export default function ContestCardFooter({
   contest,

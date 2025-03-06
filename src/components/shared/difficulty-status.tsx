@@ -19,7 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import DifficultyBadge from "./difficulty-badge";
-import { ContestDifficultyEnum } from "@/utils/types";
+import { type ContestDifficultyEnum } from "@/utils/types";
 
 type Status = {
   value: ContestDifficultyEnum;

@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { Dispatch } from "react";
+import { type Dispatch } from "react";
 
 // Mock database delete function
 const mockDeleteContest = async () => {

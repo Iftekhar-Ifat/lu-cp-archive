@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Tag, TagInput } from "emblor";
+import { type Tag, TagInput } from "emblor";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,8 +11,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Dispatch } from "react";
-import { z } from "zod";
+import { type Dispatch } from "react";
+import { type z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ContestDifficultyEnum, ShortContest } from "@/utils/types";
+import { type ContestDifficultyEnum, type Contest } from "@/utils/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { contestFormSchema } from "@/utils/schema/contest-form";
@@ -43,7 +43,7 @@ export default function ContestEditModal({
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<React.SetStateAction<boolean>>;
-  contest: ShortContest;
+  contest: Contest;
 }) {
   const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] =

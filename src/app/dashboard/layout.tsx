@@ -1,6 +1,6 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import UserProvider from "@/components/user-provider";
-import { USER } from "@/utils/types";
+import { type USER } from "@/utils/types";
 
 export default async function DashboardLayout({
   children,

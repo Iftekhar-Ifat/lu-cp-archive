@@ -8,13 +8,13 @@
     "prettier",
     "@typescript-eslint",
     "react",
-    "react-hooks"
+    "react-hooks",
+    "import"
   ],
   "rules": {
     // JavaScript rules
     "prefer-const": "warn",
     "no-var": "warn",
-    "no-unused-vars": "off",
     "object-shorthand": "warn",
     "quote-props": [
       "warn",
@@ -27,11 +27,17 @@
         "default": "array"
       }
     ],
-    "@typescript-eslint/consistent-type-assertions": [
+    "@typescript-eslint/consistent-type-imports": [
       "warn",
       {
-        "assertionStyle": "as",
-        "objectLiteralTypeAssertions": "never"
+        "prefer": "type-imports",
+        "fixStyle": "inline-type-imports"
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_"
       }
     ],
     // React rules

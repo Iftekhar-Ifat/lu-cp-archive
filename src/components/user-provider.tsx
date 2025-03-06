@@ -1,5 +1,5 @@
 "use client";
-import { USER } from "@/utils/types";
+import { type USER } from "@/utils/types";
 import { createContext, useContext } from "react";
 
 type UserContextProps = {

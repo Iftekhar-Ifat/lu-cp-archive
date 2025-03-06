@@ -1,7 +1,7 @@
 "use server";
 
-import { ContestDifficultyEnum } from "@/utils/types";
-import { Tag } from "emblor";
+import { type ContestDifficultyEnum } from "@/utils/types";
+import { type Tag } from "emblor";
 
 const createContestAction = async (data: {
   name: string;

@@ -12,7 +12,7 @@ import DifficultyBadge from "../shared/difficulty-badge";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import ContestCardFooter from "./contest-card-footer";
-import { Contest } from "@/utils/types";
+import { type Contest } from "@/utils/types";
 import { useUser } from "../user-provider";
 
 export default function ContestCard({
