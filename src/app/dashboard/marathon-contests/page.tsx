@@ -1,6 +1,6 @@
 import ContestAddApproveSection from "@/components/contest-page-components/contest-add-approve-section";
-import MarathonContestCardSection from "@/components/marathon-contests/marathon-contest-card-section";
 import { Suspense } from "react";
+import MarathonContestCardSection from "./_components/marathon-contest-card-section";
 
 export default async function MarathonContestPage() {
   return (

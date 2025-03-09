@@ -1,6 +1,6 @@
 import ContestAddApproveSection from "@/components/contest-page-components/contest-add-approve-section";
-import MarathonContestCardSection from "@/components/marathon-contests/marathon-contest-card-section";
 import { Suspense } from "react";
+import IntraLUContestCardSection from "./_components/intra-lu-card-section";
 
 export default async function IntraLUContestPage() {
   return (
@@ -15,7 +15,7 @@ export default async function IntraLUContestPage() {
       </div>
 
       <Suspense fallback={"Loading..."}>
-        <MarathonContestCardSection />
+        <IntraLUContestCardSection />
       </Suspense>
     </div>
   );

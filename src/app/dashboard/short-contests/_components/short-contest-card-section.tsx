@@ -1,6 +1,6 @@
 import Link from "next/link";
-import ContestCard from "../contest-page-components/contest-card";
 import { type Contest } from "@/utils/types";
+import ContestCard from "@/components/contest-page-components/contest-card";
 
 export default async function ShortContestCardSection() {
   await new Promise((resolve) => setTimeout(resolve, 4000));

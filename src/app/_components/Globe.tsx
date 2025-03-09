@@ -1,9 +1,9 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import createGlobe from "cobe";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
-import { Skeleton } from "../ui/skeleton";
 
 interface Marker {
   location: [number, number];

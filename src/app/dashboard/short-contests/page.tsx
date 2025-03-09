@@ -1,6 +1,6 @@
 import ContestAddApproveSection from "@/components/contest-page-components/contest-add-approve-section";
-import ShortContestCardSection from "@/components/short-contests/short-contest-card-section";
 import { Suspense } from "react";
+import ShortContestCardSection from "./_components/short-contest-card-section";
 
 export default async function ShortContestPage() {
   return (

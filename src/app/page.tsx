@@ -1,11 +1,11 @@
 "use client";
 
 import MaxWidthWrapper from "@/components/max-width-wrapper";
-import Globe from "../components/Homepage/Globe";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Globe from "./_components/Globe";
 
 export default function Home() {
   const { user, isLoaded } = useUser();
