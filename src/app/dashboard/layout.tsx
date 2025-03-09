@@ -1,4 +1,4 @@
-import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import MaxWidthWrapper from "@/components/max-width-wrapper";
 import UserProvider from "@/components/user-provider";
 import { type User } from "@/utils/types";
 

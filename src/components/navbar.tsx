@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Binary, LogIn, LogOut, Palette, User } from "lucide-react";
-import MaxWidthWrapper from "./MaxWidthWrapper";
+import MaxWidthWrapper from "./max-width-wrapper";
 import ThemeToggle from "./ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
@@ -75,8 +75,8 @@ export default function Navbar() {
                     <DropdownMenuSeparator />
                     <SignOutButton>
                       <DropdownMenuItem className="cursor-pointer rounded-md p-2 text-foreground/80 transition-colors duration-300 hover:text-foreground focus:bg-accent focus:outline-none">
-                        <LogOut className="mr-2 h-4 w-4" color="red" />
-                        <span className="text-red-600">Logout</span>
+                        <LogOut className="mr-2 h-4 w-4 text-red-500" />
+                        <span className="text-red-500">Logout</span>
                       </DropdownMenuItem>
                     </SignOutButton>
                   </DropdownMenuContent>
