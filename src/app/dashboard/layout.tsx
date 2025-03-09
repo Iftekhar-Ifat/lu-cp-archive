@@ -18,7 +18,7 @@ export default async function DashboardLayout({
       },
     });
   } */
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  // await new Promise((resolve) => setTimeout(resolve, 5000));
 
   const userData: User = {
     userId: "1",

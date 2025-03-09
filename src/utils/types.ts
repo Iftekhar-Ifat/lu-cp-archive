@@ -22,3 +22,10 @@ export type Contest = {
   difficulty: ContestDifficultyEnum;
   tags: string[];
 };
+
+export type TopicWiseCard = {
+  id: string;
+  name: string;
+  description: string;
+  link: string;
+};
