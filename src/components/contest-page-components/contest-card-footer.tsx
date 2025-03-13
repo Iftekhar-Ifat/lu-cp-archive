@@ -4,9 +4,10 @@ import { Check, Edit, Trash2 } from "lucide-react";
 import { ContestStatus } from "./contest-status";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { ContestDeleteModal } from "./contest-delete-modal";
 import ContestEditModal from "./contest-edit-modal";
 import { type Contest } from "@/utils/types";
+import { deleteContestMock } from "@/utils/helper";
+import { DeleteModal } from "../shared/delete-modal";
 
 export default function ContestCardFooter({
   contest,
@@ -60,9 +61,11 @@ export default function ContestCardFooter({
         isOpen={isEditModalOpen}
         setIsOpen={setIsEditModalOpen}
       />
-      <ContestDeleteModal
+      <DeleteModal
         isOpen={isDeleteModalOpen}
         setIsOpen={setIsDeleteModalOpen}
+        itemType="contest"
+        actionFunction={() => deleteContestMock(contest.id)}
       />
     </div>
   );

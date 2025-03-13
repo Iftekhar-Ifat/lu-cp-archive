@@ -10,28 +10,23 @@ import {
 import { useState } from "react";
 import { type Dispatch } from "react";
 
-// Mock database delete function
-const mockDeleteContest = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 2000); // Simulate 2 second delay
-  });
-};
-
-export function ContestDeleteModal({
+export function DeleteModal({
   isOpen,
   setIsOpen,
+  itemType,
+  actionFunction,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<React.SetStateAction<boolean>>;
+  itemType: string;
+  actionFunction: () => Promise<unknown>;
 }) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await mockDeleteContest();
+      await actionFunction();
       setIsOpen(false);
     } catch (error) {
       console.error("Failed to delete contest:", error);
@@ -44,10 +39,11 @@ export function ContestDeleteModal({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="max-w-[95%] font-sans sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-red-500">Delete Contest</DialogTitle>
+          <DialogTitle className="text-red-500">
+            Delete <span className="capitalize">{itemType}</span>
+          </DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this contest? This action cannot be
-            undone.
+            Are you sure you want to delete? This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2">

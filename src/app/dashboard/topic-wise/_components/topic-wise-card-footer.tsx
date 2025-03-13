@@ -1,9 +1,12 @@
 "use client";
 
+import { DeleteModal } from "@/components/shared/delete-modal";
 import { Button } from "@/components/ui/button";
+import { deleteTopicWiseCardMock } from "@/utils/helper";
 import type { TopicWiseCard } from "@/utils/types";
 import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
+import TopicEditModal from "./topic-edit-modal";
 
 export default function TopicWiseCardFooter({
   topic,
@@ -41,6 +44,17 @@ export default function TopicWiseCardFooter({
           </div>
         )}
       </div>
+      <TopicEditModal
+        topic={topic}
+        isOpen={isEditModalOpen}
+        setIsOpen={setIsEditModalOpen}
+      />
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        setIsOpen={setIsDeleteModalOpen}
+        itemType={topic.name}
+        actionFunction={() => deleteTopicWiseCardMock(topic.id)}
+      />
     </div>
   );
 }

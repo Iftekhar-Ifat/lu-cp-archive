@@ -11,4 +11,28 @@ function transformTagStringsToObjects(
   return strings.map((text, index) => ({ id: String(index), text }));
 }
 
-export { capitalize, transformTagStringsToObjects };
+// Mock database delete function
+async function deleteContestMock(data: string) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(data);
+      resolve(true);
+    }, 2000); // Simulate 2 second delay
+  });
+}
+
+async function deleteTopicWiseCardMock(data: string) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(data);
+      resolve(true);
+    }, 2000); // Simulate 2 second delay
+  });
+}
+
+export {
+  capitalize,
+  transformTagStringsToObjects,
+  deleteContestMock,
+  deleteTopicWiseCardMock,
+};

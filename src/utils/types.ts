@@ -23,6 +23,12 @@ export type Contest = {
   tags: string[];
 };
 
+export type Topic = {
+  id: string;
+  name: string;
+  description: string;
+};
+
 export type TopicWiseCard = {
   id: string;
   name: string;
