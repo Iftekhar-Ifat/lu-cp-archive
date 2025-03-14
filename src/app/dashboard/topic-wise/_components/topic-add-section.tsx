@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useUser } from "@/components/user-provider";
 import { Button } from "@/components/ui/button";
-import ContestAddModal from "@/components/contest-page-components/contest-add-modal";
+import TopicAddModal from "./topic-add-modal";
 
 export default function AddTopicSection() {
   const { user } = useUser();
@@ -20,8 +20,7 @@ export default function AddTopicSection() {
           Add Topic Card
         </Button>
       )}
-      {/* TEST */}
-      <ContestAddModal
+      <TopicAddModal
         isOpen={isAddContestModalOpen}
         setIsOpen={setIsAddContestModalOpen}
       />

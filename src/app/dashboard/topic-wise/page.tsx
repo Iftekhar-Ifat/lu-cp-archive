@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import AddTopicSection from "./_components/add-topic-section";
+import AddTopicSection from "./_components/topic-add-section";
 import TopicWiseCardSection from "./_components/topic-wise-card-section";
 
 export default async function TopicWise() {
