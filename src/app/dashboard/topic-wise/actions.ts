@@ -6,6 +6,7 @@ const createTopicWiseItemAction = async (data: {
 }) => {
   console.log(data);
   // Simulate network delay
+  // Also add link from the given name (eg., Linked List -> linked-list)
   await new Promise((resolve) => setTimeout(resolve, 1500));
 
   // Mock success response

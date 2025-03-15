@@ -8,93 +8,84 @@ export default async function TopicWiseCardSection() {
       name: "Arrays",
       description:
         "Operations, traversal, searching, sorting, and common array algorithms.",
-      link: "dashboard/topic-wise/arrays",
+      link: "arrays",
     },
     {
       id: "2",
       name: "Linked Lists",
       description:
         "Singly linked, doubly linked, insertion, deletion, and traversal techniques.",
-
-      link: "dashboard/topic-wise/linked-lists",
+      link: "linked-lists",
     },
     {
       id: "3",
       name: "Strings",
       description:
         "String manipulation, pattern matching, and common string algorithms.",
-      link: "dashboard/topic-wise/strings",
+      link: "strings",
     },
     {
       id: "4",
       name: "Stacks",
       description:
         "LIFO data structure, implementation, and common stack problems.",
-
-      link: "dashboard/topic-wise/stacks",
+      link: "stacks",
     },
     {
       id: "5",
       name: "Queues",
       description: "FIFO data structure, implementation, and applications.",
-
-      link: "dashboard/topic-wise/queues",
+      link: "queues",
     },
     {
       id: "6",
       name: "Trees",
       description: "Binary trees, BST, traversals, and tree-based algorithms.",
-
-      link: "dashboard/topic-wise/trees",
+      link: "trees",
     },
     {
       id: "7",
       name: "Graphs",
       description:
         "Representation, traversal, shortest path, and common graph algorithms.",
-
-      link: "dashboard/topic-wise/graphs",
+      link: "graphs",
     },
     {
       id: "8",
       name: "Hash Tables",
       description: "Hashing, collision resolution, and hash-based algorithms.",
-
-      link: "dashboard/topic-wise/hash-tables",
+      link: "hash-tables",
     },
     {
       id: "9",
       name: "Heaps",
       description: "Min/max heaps, priority queues, and heap operations.",
-
-      link: "dashboard/topic-wise/heaps",
+      link: "heaps",
     },
     {
       id: "10",
       name: "Dynamic Programming",
       description: "Memoization, tabulation, and common DP problems.",
-
-      link: "dashboard/topic-wise/dynamic-programming",
+      link: "dynamic-programming",
     },
     {
       id: "11",
       name: "Greedy Algorithms",
       description: "Optimization problems and greedy approach techniques.",
-
-      link: "dashboard/topic-wise/greedy-algorithms",
+      link: "greedy-algorithms",
     },
     {
       id: "12",
       name: "Recursion",
       description: "Recursive problem-solving and backtracking techniques.",
-      link: "dashboard/topic-wise/recursion",
+      link: "recursion",
     },
   ];
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {topics.map((topic, index) => (
-        <Link key={index} href={topic.link} className="group">
+        <Link key={index} href={`topic-wise/${topic.link}`} className="group">
           <TopicWiseCard topic={topic} />
         </Link>
       ))}
