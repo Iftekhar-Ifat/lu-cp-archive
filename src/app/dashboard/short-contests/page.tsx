@@ -1,8 +1,7 @@
 import ContestAddApproveSection from "@/components/contest-page-components/contest-add-approve-section";
-import { Suspense } from "react";
 import ShortContestCardSection from "./_components/short-contest-card-section";
 
-export default async function ShortContestPage() {
+export default function ShortContestPage() {
   return (
     <div className="py-8">
       <div className="mb-8 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
@@ -13,10 +12,7 @@ export default async function ShortContestPage() {
         </div>
         <ContestAddApproveSection />
       </div>
-
-      <Suspense fallback={"Loading..."}>
-        <ShortContestCardSection />
-      </Suspense>
+      <ShortContestCardSection />
     </div>
   );
 }

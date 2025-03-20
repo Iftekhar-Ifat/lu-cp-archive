@@ -4,8 +4,8 @@ import Link from "next/link";
 import ContestCard from "@/components/contest-page-components/contest-card";
 import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "@/lib/fetch";
-import { type Contest } from "@/utils/types";
-import { Button } from "@/components/ui/button";
+import Error from "@/components/shared/error";
+import Loading from "@/components/shared/loading";
 
 export default function IntraLUContestCardSection() {
   const {
@@ -19,23 +19,16 @@ export default function IntraLUContestCardSection() {
   });
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (isError) {
-    return (
-      <div className="flex items-center">
-        <div className="mr-2">Error fetching data</div>
-        <Button variant="secondary" onClick={() => refetch()}>
-          Try Again
-        </Button>
-      </div>
-    );
+    return <Error refetch={refetch} />;
   }
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {intraLUContestData.map((contest: Contest) => (
+      {intraLUContestData.map((contest) => (
         <Link key={contest.id} href={contest.link} className="group">
           <ContestCard contest={contest} approveContestCard={false} />
         </Link>
