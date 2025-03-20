@@ -1,8 +1,7 @@
 import ContestAddApproveSection from "@/components/contest-page-components/contest-add-approve-section";
-import { Suspense } from "react";
 import IntraLUContestCardSection from "./_components/intra-lu-card-section";
 
-export default async function IntraLUContestPage() {
+export default function IntraLUContestPage() {
   return (
     <div className="py-8">
       <div className="mb-8 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
@@ -13,10 +12,7 @@ export default async function IntraLUContestPage() {
         </div>
         <ContestAddApproveSection />
       </div>
-
-      <Suspense fallback={"Loading..."}>
-        <IntraLUContestCardSection />
-      </Suspense>
+      <IntraLUContestCardSection />
     </div>
   );
 }
