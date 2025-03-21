@@ -30,9 +30,9 @@ import { type ContestDifficultyEnum, type Contest } from "@/utils/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { contestFormSchema } from "@/utils/schema/contest-form";
-import { updateContestAction } from "@/app/dashboard/short-contests/actions";
 import { DifficultyStatus } from "../shared/difficulty-status";
 import { transformTagStringsToObjects } from "@/utils/helper";
+import { updateContestAction } from "@/app/dashboard/(contests)/intra-lu-contests/actions";
 
 type ContestFormValues = z.infer<typeof contestFormSchema>;
 

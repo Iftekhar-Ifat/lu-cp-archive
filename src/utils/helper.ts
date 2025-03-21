@@ -30,9 +30,25 @@ async function deleteTopicWiseCardMock(data: string) {
   });
 }
 
+function formatLastPathSegment(pathname: string): string {
+  const segments = pathname.split("/").filter((segment) => segment);
+
+  if (segments.length === 0) {
+    return "";
+  }
+
+  const lastSegment = segments[segments.length - 1];
+
+  return lastSegment
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export {
   capitalize,
   transformTagStringsToObjects,
   deleteContestMock,
   deleteTopicWiseCardMock,
+  formatLastPathSegment,
 };

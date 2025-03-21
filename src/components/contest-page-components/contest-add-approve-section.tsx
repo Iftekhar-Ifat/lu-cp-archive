@@ -20,7 +20,7 @@ export default function ContestAddApproveSection() {
       </Button>
       {user?.userType === "ADMIN" && (
         <Button variant="outline" asChild>
-          <Link href={`/dashboard/${pathname}/approve-${pathname}`}>
+          <Link href={`/dashboard/approve-contests/${pathname}`}>
             <Check />
             Approve Contest
           </Link>

@@ -13,6 +13,11 @@ export type User = {
   updatedAt: Date;
 };
 
+export type ContestType =
+  | "intra-lu-contests"
+  | "marathon-contests"
+  | "short-contests";
+
 export type Contest = {
   id: string;
   name: string;

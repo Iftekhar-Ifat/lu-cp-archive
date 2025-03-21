@@ -6,7 +6,7 @@ import { useUser } from "@/components/user-provider";
 import { Button } from "@/components/ui/button";
 import TopicAddModal from "./topic-add-modal";
 
-export default function AddTopicSection() {
+export default function TopicAddSection() {
   const { user } = useUser();
   const [isAddContestModalOpen, setIsAddContestModalOpen] = useState(false);
   return (
