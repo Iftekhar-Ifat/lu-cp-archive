@@ -1,5 +1,5 @@
-export type ContestDifficultyEnum = "EASY" | "MEDIUM" | "HARD";
-
+// User Types
+//
 export type USER_TYPE = "ADMIN" | "STANDARD" | "POWER";
 
 // TEMP
@@ -13,6 +13,10 @@ export type User = {
   updatedAt: Date;
 };
 
+// Contest Types
+
+export type ContestDifficultyType = "EASY" | "MEDIUM" | "HARD";
+
 export type ContestType =
   | "intra-lu-contests"
   | "marathon-contests"
@@ -24,9 +28,11 @@ export type Contest = {
   description: string;
   link: string;
   added_by: string;
-  difficulty: ContestDifficultyEnum;
+  difficulty: ContestDifficultyType;
   tags: string[];
 };
+
+// Topic Types
 
 export type Topic = {
   id: string;
@@ -40,3 +46,6 @@ export type TopicWiseCard = {
   description: string;
   link: string;
 };
+
+// Problem Types
+export type ProblemDifficultyType = "EASY" | "MEDIUM" | "HARD";

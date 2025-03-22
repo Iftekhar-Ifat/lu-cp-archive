@@ -71,62 +71,62 @@ export async function fetchData() {
 const fetchedTopics = [
   {
     id: "1",
-    name: "Arrays",
+    name: "Array",
     description:
       "Operations, traversal, searching, sorting, and common array algorithms.",
-    link: "arrays",
+    link: "array",
   },
   {
     id: "2",
-    name: "Linked Lists",
+    name: "Linked List",
     description:
       "Singly linked, doubly linked, insertion, deletion, and traversal techniques.",
-    link: "linked-lists",
+    link: "linked-list",
   },
   {
     id: "3",
-    name: "Strings",
+    name: "String",
     description:
       "String manipulation, pattern matching, and common string algorithms.",
-    link: "strings",
+    link: "string",
   },
   {
     id: "4",
-    name: "Stacks",
+    name: "Stack",
     description:
       "LIFO data structure, implementation, and common stack problems.",
-    link: "stacks",
+    link: "stack",
   },
   {
     id: "5",
-    name: "Queues",
+    name: "Queue",
     description: "FIFO data structure, implementation, and applications.",
-    link: "queues",
+    link: "queue",
   },
   {
     id: "6",
-    name: "Trees",
+    name: "Tree",
     description: "Binary trees, BST, traversals, and tree-based algorithms.",
-    link: "trees",
+    link: "tree",
   },
   {
     id: "7",
-    name: "Graphs",
+    name: "Graph",
     description:
       "Representation, traversal, shortest path, and common graph algorithms.",
-    link: "graphs",
+    link: "graph",
   },
   {
     id: "8",
-    name: "Hash Tables",
+    name: "Hash Table",
     description: "Hashing, collision resolution, and hash-based algorithms.",
-    link: "hash-tables",
+    link: "hash-table",
   },
   {
     id: "9",
-    name: "Heaps",
+    name: "Heap",
     description: "Min/max heaps, priority queues, and heap operations.",
-    link: "heaps",
+    link: "heap",
   },
   {
     id: "10",
@@ -136,9 +136,9 @@ const fetchedTopics = [
   },
   {
     id: "11",
-    name: "Greedy Algorithms",
+    name: "Greedy Algorithm",
     description: "Optimization problems and greedy approach techniques.",
-    link: "greedy-algorithms",
+    link: "greedy-algorithm",
   },
   {
     id: "12",

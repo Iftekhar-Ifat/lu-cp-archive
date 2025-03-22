@@ -1,10 +1,10 @@
 import { Badge } from "../ui/badge";
-import { type ContestDifficultyEnum } from "@/utils/types";
+import { type ContestDifficultyType } from "@/utils/types";
 
 export default function DifficultyBadge({
   difficulty,
 }: {
-  difficulty: ContestDifficultyEnum;
+  difficulty: ContestDifficultyType;
 }) {
   if (difficulty === "EASY") {
     return (

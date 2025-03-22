@@ -1,6 +1,6 @@
 "use server";
 
-import { type ContestDifficultyEnum } from "@/utils/types";
+import { type ContestDifficultyType } from "@/utils/types";
 import { type Tag } from "emblor";
 
 const createContestAction = async (data: {
@@ -8,7 +8,7 @@ const createContestAction = async (data: {
   description: string;
   link: string;
   tags: Tag[];
-  difficulty: ContestDifficultyEnum;
+  difficulty: ContestDifficultyType;
 }) => {
   console.log(data);
   // Simulate network delay
@@ -24,7 +24,7 @@ const updateContestAction = async (data: {
   description: string;
   link: string;
   tags: Tag[];
-  difficulty: ContestDifficultyEnum;
+  difficulty: ContestDifficultyType;
 }) => {
   console.log(data);
   // Simulate network delay

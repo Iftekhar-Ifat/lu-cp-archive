@@ -19,10 +19,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import DifficultyBadge from "./difficulty-badge";
-import { type ContestDifficultyEnum } from "@/utils/types";
+import { type ContestDifficultyType } from "@/utils/types";
 
 type Status = {
-  value: ContestDifficultyEnum;
+  value: ContestDifficultyType;
   label: string;
 };
 
@@ -45,8 +45,8 @@ export function DifficultyStatus({
   onDifficultyChange,
   initialDifficulty = "EASY",
 }: {
-  onDifficultyChange?: (difficulty: ContestDifficultyEnum) => void;
-  initialDifficulty?: ContestDifficultyEnum;
+  onDifficultyChange?: (difficulty: ContestDifficultyType) => void;
+  initialDifficulty?: ContestDifficultyType;
 }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");

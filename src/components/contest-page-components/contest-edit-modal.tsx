@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type ContestDifficultyEnum, type Contest } from "@/utils/types";
+import { type ContestDifficultyType, type Contest } from "@/utils/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { contestFormSchema } from "@/utils/schema/contest-form";
@@ -47,7 +47,7 @@ export default function ContestEditModal({
 }) {
   const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] =
-    useState<ContestDifficultyEnum>(contest.difficulty);
+    useState<ContestDifficultyType>(contest.difficulty);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues: Partial<ContestFormValues> = {
@@ -79,7 +79,7 @@ export default function ContestEditModal({
     });
   };
 
-  const handleDifficultyChange = (difficulty: ContestDifficultyEnum) => {
+  const handleDifficultyChange = (difficulty: ContestDifficultyType) => {
     setSelectedDifficulty(difficulty);
   };
 
