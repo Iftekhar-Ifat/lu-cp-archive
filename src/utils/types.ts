@@ -44,8 +44,18 @@ export type TopicWiseCard = {
   id: string;
   name: string;
   description: string;
-  link: string;
+  slug: string;
 };
 
 // Problem Types
 export type ProblemDifficultyType = "EASY" | "MEDIUM" | "HARD";
+
+export type Problem = {
+  id: string;
+  name: string;
+  description: string;
+  link: string;
+  added_by: string;
+  difficulty: ProblemDifficultyType;
+  tags: string[];
+};

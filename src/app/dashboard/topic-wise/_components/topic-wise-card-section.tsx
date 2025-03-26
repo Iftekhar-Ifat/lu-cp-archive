@@ -29,7 +29,7 @@ export default function TopicWiseCardSection() {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {topics.map((topic, index) => (
-        <Link key={index} href={`topic-wise/${topic.link}`} className="group">
+        <Link key={index} href={`topic-wise/${topic.slug}`} className="group">
           <TopicWiseCard topic={topic} />
         </Link>
       ))}

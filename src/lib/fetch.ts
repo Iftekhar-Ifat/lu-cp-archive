@@ -1,4 +1,4 @@
-import { type ContestType, type Contest } from "@/utils/types";
+import { type ContestType, type Contest, type Problem } from "@/utils/types";
 
 const fetchedData: Contest[] = [
   {
@@ -71,80 +71,80 @@ export async function fetchData() {
 const fetchedTopics = [
   {
     id: "1",
-    name: "Array",
+    name: "Arrays",
     description:
       "Operations, traversal, searching, sorting, and common array algorithms.",
-    link: "array",
+    slug: "arrays",
   },
   {
     id: "2",
-    name: "Linked List",
+    name: "Linked Lists",
     description:
       "Singly linked, doubly linked, insertion, deletion, and traversal techniques.",
-    link: "linked-list",
+    slug: "linked-lists",
   },
   {
     id: "3",
-    name: "String",
+    name: "Strings",
     description:
       "String manipulation, pattern matching, and common string algorithms.",
-    link: "string",
+    slug: "strings",
   },
   {
     id: "4",
-    name: "Stack",
+    name: "Stacks",
     description:
       "LIFO data structure, implementation, and common stack problems.",
-    link: "stack",
+    slug: "stacks",
   },
   {
     id: "5",
-    name: "Queue",
+    name: "Queues",
     description: "FIFO data structure, implementation, and applications.",
-    link: "queue",
+    slug: "queues",
   },
   {
     id: "6",
-    name: "Tree",
+    name: "Trees",
     description: "Binary trees, BST, traversals, and tree-based algorithms.",
-    link: "tree",
+    slug: "trees",
   },
   {
     id: "7",
-    name: "Graph",
+    name: "Graphs",
     description:
       "Representation, traversal, shortest path, and common graph algorithms.",
-    link: "graph",
+    slug: "graphs",
   },
   {
     id: "8",
-    name: "Hash Table",
+    name: "Hash Tables",
     description: "Hashing, collision resolution, and hash-based algorithms.",
-    link: "hash-table",
+    slug: "hash-tables",
   },
   {
     id: "9",
-    name: "Heap",
+    name: "Heaps",
     description: "Min/max heaps, priority queues, and heap operations.",
-    link: "heap",
+    slug: "heaps",
   },
   {
     id: "10",
     name: "Dynamic Programming",
     description: "Memoization, tabulation, and common DP problems.",
-    link: "dynamic-programming",
+    slug: "dynamic-programming",
   },
   {
     id: "11",
-    name: "Greedy Algorithm",
+    name: "Greedy Algorithms",
     description: "Optimization problems and greedy approach techniques.",
-    link: "greedy-algorithm",
+    slug: "greedy-algorithms",
   },
   {
     id: "12",
     name: "Recursion",
     description: "Recursive problem-solving and backtracking techniques.",
-    link: "recursion",
+    slug: "recursion",
   },
 ];
 
@@ -218,4 +218,69 @@ export async function fetchContestData(contestType: ContestType) {
 
   fetchedContestData[0].name = contestType;
   return fetchedContestData;
+}
+
+const topicWiseProblem: Problem[] = [
+  {
+    id: "1",
+    name: "Topic Wise",
+    description: "Practice Topic wise problems",
+    link: "dashboard/topic-wise",
+    added_by: "Dewan Abdul Mohaimin Chowdhury",
+    difficulty: "EASY",
+    tags: ["array", "string", "math", "dp"],
+  },
+  {
+    id: "2",
+    name: "Codeforces Ladder",
+    description: "Practice Codeforces problem by difficulty level",
+    link: "dashboard/codeforces-ladder",
+    added_by: "Dewan Abdul Mohaimin Chowdhury",
+    difficulty: "EASY",
+    tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+  },
+  {
+    id: "3",
+    name: "Leaderboard",
+    description: "Leaderboard of LU's competitive programers",
+    link: "dashboard/leaderboard",
+    added_by: "Iftekhar-Ifat",
+    difficulty: "EASY",
+    tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+  },
+  {
+    id: "4",
+    name: "Intra LU Contest",
+    description: "Problems from previous onsite LU contests",
+    link: "dashboard/intra-lu-contests",
+    added_by: "Iftekhar-Ifat",
+    difficulty: "HARD",
+    tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+  },
+  {
+    id: "5",
+    name: "LU Problem Solver Short Contest",
+    description: "Short Contests organized by LU Problem Solvers",
+    link: "dashboard/short-contests",
+    added_by: "Dewan Abdul Mohaimin Chowdhury",
+    difficulty: "MEDIUM",
+    tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+  },
+  {
+    id: "6",
+    name: "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet",
+    description:
+      "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet Long Contests organized by LU Problem Solvers",
+    link: "dashboard/marathon-contests",
+    added_by:
+      "Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury",
+    difficulty: "EASY",
+    tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+  },
+];
+
+export async function fetchTopicProblem(topic: string) {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  console.log(topic);
+  return topicWiseProblem;
 }

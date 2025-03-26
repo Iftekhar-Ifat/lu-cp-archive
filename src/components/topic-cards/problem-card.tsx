@@ -11,16 +11,16 @@ import { ArrowUpRight } from "lucide-react";
 import DifficultyBadge from "../shared/difficulty-badge";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
-import ContestCardFooter from "./contest-card-footer";
-import { type Contest } from "@/utils/types";
+import { type Problem } from "@/utils/types";
 import { useUser } from "../user-provider";
+import ProblemCardFooter from "./problem-card-footer";
 import { cn } from "@/lib/utils";
 
-export default function ContestCard({
-  contest,
+export default function ProblemCard({
+  problem,
   approveContestCard,
 }: {
-  contest: Contest;
+  problem: Problem;
   approveContestCard?: boolean;
 }) {
   const { user } = useUser();
@@ -37,7 +37,7 @@ export default function ContestCard({
       <CardHeader>
         <div className="flex items-start justify-between space-y-0">
           <CardTitle className="line-clamp-1 max-w-[90%] text-xl leading-tight">
-            {contest.name}
+            {problem.name}
           </CardTitle>
           <ArrowUpRight
             className="text-muted-foreground group-hover:text-primary"
@@ -45,10 +45,10 @@ export default function ContestCard({
           />
         </div>
         <CardDescription className="line-clamp-2 text-muted-foreground">
-          {contest.description}
+          {problem.description}
         </CardDescription>
         <div className="pointer-events-none">
-          <DifficultyBadge difficulty={contest.difficulty} />
+          <DifficultyBadge difficulty={problem.difficulty} />
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
@@ -58,12 +58,12 @@ export default function ContestCard({
             variant="secondary"
             className="w-fit max-w-full truncate px-2 text-xs hover:scale-[1.02]"
           >
-            @{contest.added_by}
+            @{problem.added_by}
           </Badge>
         </div>
         <div className="space-y-1">
           <span className="mr-1 text-xs text-muted-foreground">Tags:</span>
-          {contest.tags.map((tag, tagIndex) => (
+          {problem.tags.map((tag, tagIndex) => (
             <Badge
               key={tagIndex}
               variant="outline"
@@ -74,10 +74,10 @@ export default function ContestCard({
           ))}
         </div>
         <Separator />
-        <ContestCardFooter
-          contest={contest}
-          contestMutationPrivilege={user?.userType !== "STANDARD"}
-          showContestStatus={!approveContestCard}
+        <ProblemCardFooter
+          problem={problem}
+          problemMutationPrivilege={user?.userType !== "STANDARD"}
+          showProblemStatus={!approveContestCard}
           showApproveButton={approveContestCard ? approveContestCard : false}
         />
       </CardContent>

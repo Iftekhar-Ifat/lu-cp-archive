@@ -43,7 +43,7 @@ const statuses: Status[] = [
   },
 ];
 
-export function ContestStatus() {
+export function ProblemStatus() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
