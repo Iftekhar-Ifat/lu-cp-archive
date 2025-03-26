@@ -17,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 type Status = {
   value: string;
@@ -69,7 +70,7 @@ export function ContestStatus() {
     if (!status) return null;
     return (
       <div className="flex items-center gap-2">
-        <div className={`h-3 w-3 rounded-full ${status.color}`} />
+        <div className={cn(`h-3 w-3 rounded-full`, status.color)} />
         {status.label}
       </div>
     );
@@ -138,9 +139,7 @@ function StatusList({
   onStatusChange,
   selectedStatus,
 }: {
-  // eslint-disable-next-line no-unused-vars
   setOpen: (open: boolean) => void;
-  // eslint-disable-next-line no-unused-vars
   onStatusChange: (status: Status | null) => void;
   selectedStatus: Status | null;
 }) {
@@ -161,7 +160,7 @@ function StatusList({
               }}
             >
               <div className="flex items-center gap-2">
-                <div className={`h-3 w-3 rounded-full ${status.color}`} />
+                <div className={cn(`h-3 w-3 rounded-full`, status.color)} />
                 {status.label}
                 {selectedStatus?.value === status.value && (
                   <Check className="ml-auto h-4 w-4" />
