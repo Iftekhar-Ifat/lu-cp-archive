@@ -29,7 +29,7 @@ export function DeleteModal({
       await actionFunction();
       setIsOpen(false);
     } catch (error) {
-      console.error("Failed to delete contest:", error);
+      console.error(`Failed to delete ${itemType}:`, error);
     } finally {
       setIsDeleting(false);
     }

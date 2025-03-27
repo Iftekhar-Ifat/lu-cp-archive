@@ -1,4 +1,9 @@
-import { type ContestType, type Contest, type Problem } from "@/utils/types";
+import {
+  type ContestType,
+  type Contest,
+  type Problem,
+  type ProblemProgressStats,
+} from "@/utils/types";
 
 const fetchedData: Contest[] = [
   {
@@ -283,4 +288,33 @@ export async function fetchTopicProblem(topic: string) {
   await new Promise((resolve) => setTimeout(resolve, 500));
   console.log(topic);
   return topicWiseProblem;
+}
+
+const progressData: ProblemProgressStats[] = [
+  {
+    difficulty: "EASY",
+    skipped: 2,
+    inProgress: 3,
+    done: 5,
+    total: 15,
+  },
+  {
+    difficulty: "MEDIUM",
+    skipped: 1,
+    inProgress: 2,
+    done: 3,
+    total: 10,
+  },
+  {
+    difficulty: "HARD",
+    skipped: 0,
+    inProgress: 1,
+    done: 1,
+    total: 5,
+  },
+];
+
+export async function fetchProblemStats() {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  return progressData;
 }

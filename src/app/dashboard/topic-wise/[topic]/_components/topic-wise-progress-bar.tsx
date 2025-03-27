@@ -8,17 +8,16 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { type ProblemDifficultyType } from "@/utils/types";
+import {
+  type ProblemProgressStats,
+  type ProblemDifficultyType,
+} from "@/utils/types";
 
-type ProblemStats = {
-  difficulty: ProblemDifficultyType;
-  skipped: number;
-  inProgress: number;
-  done: number;
-  total: number;
-};
-
-export default function ProblemProgress({ stats }: { stats: ProblemStats[] }) {
+export default function ProblemProgress({
+  stats,
+}: {
+  stats: ProblemProgressStats[];
+}) {
   const [progressValues, setProgressValues] = useState(
     stats.map(() => ({ done: 0, inProgress: 0, skipped: 0 }))
   );

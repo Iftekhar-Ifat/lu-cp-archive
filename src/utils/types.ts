@@ -59,3 +59,11 @@ export type Problem = {
   difficulty: ProblemDifficultyType;
   tags: string[];
 };
+
+export type ProblemProgressStats = {
+  difficulty: ProblemDifficultyType;
+  skipped: number;
+  inProgress: number;
+  done: number;
+  total: number;
+};
