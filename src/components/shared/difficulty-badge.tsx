@@ -8,16 +8,24 @@ export default function DifficultyBadge({
 }) {
   if (difficulty === "EASY") {
     return (
-      <Badge className="bg-green-500/20 text-sm text-emerald-500">Easy</Badge>
+      <Badge className="pointer-events-none bg-green-500/20 text-sm text-emerald-500">
+        Easy
+      </Badge>
     );
   }
   if (difficulty === "MEDIUM") {
     return (
-      <Badge className="bg-cyan-500/20 text-sm text-sky-500">Medium</Badge>
+      <Badge className="pointer-events-none bg-cyan-500/20 text-sm text-sky-500">
+        Medium
+      </Badge>
     );
   }
   if (difficulty === "HARD") {
-    return <Badge className="bg-red-500/20 text-sm text-rose-500">Hard</Badge>;
+    return (
+      <Badge className="pointer-events-none bg-red-500/20 text-sm text-rose-500">
+        Hard
+      </Badge>
+    );
   }
   return null;
 }
