@@ -6,6 +6,9 @@ import Loading from "@/components/shared/loading";
 import Error from "@/components/shared/error";
 import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "@/lib/fetch";
+import { useEffect, useState } from "react";
+import { type Contest } from "@/utils/types";
+import FilterByDifficulty from "@/components/shared/filtering/filter-by-difficulty";
 
 export default function ShortContestCardSection() {
   const {
@@ -18,6 +21,14 @@ export default function ShortContestCardSection() {
     queryFn: async () => await fetchData(),
   });
 
+  const [filteredContests, setFilteredContests] = useState<Contest[]>([]);
+
+  useEffect(() => {
+    if (shortContestData) {
+      setFilteredContests(shortContestData);
+    }
+  }, [shortContestData]);
+
   if (isPending) {
     return <Loading />;
   }
@@ -26,12 +37,20 @@ export default function ShortContestCardSection() {
     return <Error refetch={refetch} />;
   }
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {shortContestData.map((contest) => (
-        <Link key={contest.id} href={contest.link} className="group">
-          <ContestCard contest={contest} approveContestCard={false} />
-        </Link>
-      ))}
+    <div>
+      <div className="mb-4 flex justify-end">
+        <FilterByDifficulty
+          items={shortContestData || []}
+          onFilterChange={setFilteredContests}
+        />
+      </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {filteredContests.map((contest) => (
+          <Link key={contest.id} href={contest.link} className="group">
+            <ContestCard contest={contest} approveContestCard={false} />
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

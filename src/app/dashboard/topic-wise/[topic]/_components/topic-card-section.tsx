@@ -8,7 +8,7 @@ import Loading from "@/components/shared/loading";
 import ProblemCard from "@/components/topic-cards/problem-card";
 import { useEffect, useState } from "react";
 import { type Problem } from "@/utils/types";
-import { ProblemFilter } from "@/components/ProblemFilter";
+import FilterByDifficulty from "@/components/shared/filtering/filter-by-difficulty";
 
 export default function ProblemCardSection({ topic }: { topic: string }) {
   const {
@@ -40,8 +40,8 @@ export default function ProblemCardSection({ topic }: { topic: string }) {
   return (
     <div>
       <div className="mb-4 flex justify-end">
-        <ProblemFilter
-          problems={topicWiseProblemData || []}
+        <FilterByDifficulty
+          items={topicWiseProblemData || []}
           onFilterChange={setFilteredProblems}
         />
       </div>
