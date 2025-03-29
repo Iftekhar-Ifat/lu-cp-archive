@@ -318,3 +318,10 @@ export async function fetchProblemStats() {
   await new Promise((resolve) => setTimeout(resolve, 2000));
   return progressData;
 }
+
+export async function fetchProblemData(problemType: string) {
+  await new Promise((resolve) => setTimeout(resolve, 4000));
+
+  fetchedContestData[0].name = problemType;
+  return fetchedContestData;
+}

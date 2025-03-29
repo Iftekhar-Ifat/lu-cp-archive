@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ContestCard from "../contest-page-components/contest-card";
+import ContestCard from "../../../../../../components/contest-page-components/contest-card";
 import { type ContestType } from "@/utils/types";
 import { fetchContestData } from "@/lib/fetch";
 

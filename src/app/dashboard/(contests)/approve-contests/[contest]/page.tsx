@@ -1,4 +1,4 @@
-import ApproveContestCardSection from "@/components/contest-page-components/approve-contest-card-section";
+import ApproveContestCardSection from "@/app/dashboard/(contests)/approve-contests/[contest]/_components/approve-contest-card-section";
 import { formatLastPathSegment } from "@/utils/helper";
 import { type ContestType } from "@/utils/types";
 import { notFound } from "next/navigation";
