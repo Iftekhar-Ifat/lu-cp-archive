@@ -1,19 +1,20 @@
 "use client";
 
+import ProblemAddModal from "@/components/topic-cards/problem-add-modal";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/components/user-provider";
 import { Check, Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function TopicProblemAddApproveSection() {
   const { user } = useUser();
   const pathname = usePathname();
-  const [isAddContestModalOpen, setIsAddContestModalOpen] = useState(false);
+  const [isAddProblemModalOpen, setIsAddProblemModalOpen] = useState(false);
   return (
     <div className="flex space-x-2">
-      <Button variant="outline" onClick={() => setIsAddContestModalOpen(true)}>
+      <Button variant="outline" onClick={() => setIsAddProblemModalOpen(true)}>
         <Plus />
         Add Problem
       </Button>
@@ -25,24 +26,10 @@ export default function TopicProblemAddApproveSection() {
           </Link>
         </Button>
       )}
-      {/* <ContestAddModal
-        isOpen={isAddContestModalOpen}
-        setIsOpen={setIsAddContestModalOpen}
-      /> */}
+      <ProblemAddModal
+        isOpen={isAddProblemModalOpen}
+        setIsOpen={setIsAddProblemModalOpen}
+      />
     </div>
   );
 }
-
-/* import { Plus, Check } from "lucide-react";
-import { Button } from "../ui/button";
-import { useState } from "react";
-import Link from "next/link";
-import ContestAddModal from "./contest-add-modal";
-import { useUser } from "../user-provider";
-import { usePathname } from "next/navigation";
-
-export default function ContestAddApproveSection() {
-
-}
-
- */
