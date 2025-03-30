@@ -2,6 +2,8 @@ import { getTopicBySlug } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import ApproveProblemCardSection from "./_components/approve-problems-card-section";
+import { getUser } from "@/app/dashboard/shared-actions";
+import { hasPermission } from "@/utils/permissions";
 
 type ApproveProblemPageProps = {
   params: { topic: string };
@@ -15,6 +17,13 @@ export default async function ApproveProblem({
   if (!topic) {
     notFound();
   }
+
+  const user = await getUser();
+
+  if (!user || !hasPermission(user.userType, "approve-problem")) {
+    notFound();
+  }
+
   return (
     <div className="py-8">
       <div className="mb-8 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">

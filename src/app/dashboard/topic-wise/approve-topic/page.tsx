@@ -1,4 +1,14 @@
+import { hasPermission } from "@/utils/permissions";
+import { getUser } from "../../shared-actions";
+import { notFound } from "next/navigation";
+
 export default async function ApproveTopic() {
+  const user = await getUser();
+
+  if (!user || !hasPermission(user.userType, "approve-topic")) {
+    notFound();
+  }
+
   return (
     <div className="py-8">
       <div className="mb-8 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
