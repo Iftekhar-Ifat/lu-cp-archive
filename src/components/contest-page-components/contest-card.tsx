@@ -15,6 +15,8 @@ import ContestCardFooter from "./contest-card-footer";
 import { type Contest } from "@/utils/types";
 import { useUser } from "../user-provider";
 import { cn } from "@/lib/utils";
+import { hasPermission } from "@/utils/permissions";
+import { redirect } from "next/navigation";
 
 export default function ContestCard({
   contest,
@@ -24,6 +26,13 @@ export default function ContestCard({
   approveContestCard?: boolean;
 }) {
   const { user } = useUser();
+
+  if (!user) {
+    redirect("/");
+  }
+
+  const hasMutationPermission = hasPermission(user.userType, "mutate-contest");
+
   return (
     <Card
       className={cn(
@@ -76,7 +85,7 @@ export default function ContestCard({
         <Separator />
         <ContestCardFooter
           contest={contest}
-          contestMutationPrivilege={user?.userType !== "STANDARD"}
+          contestMutationPermission={hasMutationPermission}
           showContestStatus={!approveContestCard}
           showApproveButton={approveContestCard ? approveContestCard : false}
         />

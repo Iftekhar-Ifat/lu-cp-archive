@@ -1,5 +1,7 @@
 import ApproveContestCardSection from "@/app/dashboard/(contests)/approve-contests/[contest]/_components/approve-contest-card-section";
+import { getUser } from "@/app/dashboard/shared-actions";
 import { formatLastPathSegment } from "@/utils/helper";
+import { hasPermission } from "@/utils/permissions";
 import { type ContestType } from "@/utils/types";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -21,6 +23,12 @@ export default async function ApproveContest({ params }: ApproveContestProps) {
   }
 
   const contest_type = formatLastPathSegment(params.contest);
+
+  const user = await getUser();
+
+  if (!user || !hasPermission(user.userType, "approve-contest")) {
+    notFound();
+  }
 
   return (
     <div className="py-8">

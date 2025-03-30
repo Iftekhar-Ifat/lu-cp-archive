@@ -1,18 +1,17 @@
-import TopicAddApproveSection from "./_components/topic-add-approve-section";
-import TopicWiseCardSection from "./_components/topic-wise-card-section";
-
-export default function TopicWise() {
+export default async function ApproveTopic() {
   return (
     <div className="py-8">
       <div className="mb-8 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
         <div className="flex items-center">
           <span className="text-center font-mono text-2xl font-bold tracking-wide md:text-left">
-            Topic Wise Problems
+            Approve Topic
           </span>
         </div>
-        <TopicAddApproveSection />
       </div>
-      <TopicWiseCardSection />
+
+      {/* <Suspense fallback={"Loading ..."}>
+        <ApproveProblemCardSection problemType={params.topic} />
+      </Suspense> */}
     </div>
   );
 }

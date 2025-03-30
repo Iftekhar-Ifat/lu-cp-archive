@@ -15,6 +15,8 @@ import { type Problem } from "@/utils/types";
 import { useUser } from "../user-provider";
 import ProblemCardFooter from "./problem-card-footer";
 import { cn } from "@/lib/utils";
+import { redirect } from "next/navigation";
+import { hasPermission } from "@/utils/permissions";
 
 export default function ProblemCard({
   problem,
@@ -24,6 +26,13 @@ export default function ProblemCard({
   approveContestCard?: boolean;
 }) {
   const { user } = useUser();
+
+  if (!user) {
+    redirect("/");
+  }
+
+  const hasMutationPermission = hasPermission(user.userType, "mutate-problem");
+
   return (
     <Card
       className={cn(
@@ -76,7 +85,7 @@ export default function ProblemCard({
         <Separator />
         <ProblemCardFooter
           problem={problem}
-          problemMutationPrivilege={user?.userType !== "STANDARD"}
+          problemMutationPermission={hasMutationPermission}
           showProblemStatus={!approveContestCard}
           showApproveButton={approveContestCard ? approveContestCard : false}
         />

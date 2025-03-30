@@ -8,15 +8,16 @@ import { deleteContestMock } from "@/utils/helper";
 import { DeleteModal } from "../shared/delete-modal";
 import { ProblemStatus } from "./problem-status";
 import ProblemEditModal from "./problem-edit-modal";
+import { cn } from "@/lib/utils";
 
 export default function ProblemCardFooter({
   problem,
-  problemMutationPrivilege,
+  problemMutationPermission,
   showProblemStatus,
   showApproveButton,
 }: {
   problem: Problem;
-  problemMutationPrivilege: boolean;
+  problemMutationPermission: boolean;
   showProblemStatus: boolean;
   showApproveButton: boolean;
 }) {
@@ -28,8 +29,13 @@ export default function ProblemCardFooter({
         e.preventDefault(), e.stopPropagation();
       }}
     >
-      <div className="flex w-full items-center justify-between">
-        {problemMutationPrivilege && (
+      <div
+        className={cn(
+          "flex w-full items-center",
+          problemMutationPermission ? "justify-between" : "justify-end"
+        )}
+      >
+        {problemMutationPermission && (
           <div>
             <Button
               variant="outline"

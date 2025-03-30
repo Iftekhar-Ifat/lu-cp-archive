@@ -10,10 +10,10 @@ import TopicEditModal from "./topic-edit-modal";
 
 export default function TopicWiseCardFooter({
   topic,
-  topicCardMutationPrivilege,
+  topicCardMutationPermission,
 }: {
   topic: TopicWiseCard;
-  topicCardMutationPrivilege: boolean;
+  topicCardMutationPermission: boolean;
 }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function TopicWiseCardFooter({
       }}
     >
       <div className="flex w-full items-center justify-between">
-        {topicCardMutationPrivilege && (
+        {topicCardMutationPermission && (
           <div>
             <Button
               variant="outline"

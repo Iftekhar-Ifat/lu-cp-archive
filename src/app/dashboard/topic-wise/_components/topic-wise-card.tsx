@@ -11,9 +11,18 @@ import { useUser } from "@/components/user-provider";
 import { type TopicWiseCard } from "@/utils/types";
 import React from "react";
 import TopicWiseCardFooter from "./topic-wise-card-footer";
+import { redirect } from "next/navigation";
+import { hasPermission } from "@/utils/permissions";
 
 export default function TopicWiseCard({ topic }: { topic: TopicWiseCard }) {
   const { user } = useUser();
+
+  if (!user) {
+    redirect("/");
+  }
+
+  const hasMutationPermission = hasPermission(user.userType, "mutate-topic");
+
   return (
     <Card className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:border-zinc-400">
       <CardHeader>
@@ -31,7 +40,7 @@ export default function TopicWiseCard({ topic }: { topic: TopicWiseCard }) {
       <CardFooter className="self-end">
         <TopicWiseCardFooter
           topic={topic}
-          topicCardMutationPrivilege={user?.userType !== "STANDARD"}
+          topicCardMutationPermission={hasMutationPermission}
         />
       </CardFooter>
     </Card>

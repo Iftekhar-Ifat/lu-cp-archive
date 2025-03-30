@@ -8,15 +8,16 @@ import ContestEditModal from "./contest-edit-modal";
 import { type Contest } from "@/utils/types";
 import { deleteContestMock } from "@/utils/helper";
 import { DeleteModal } from "../shared/delete-modal";
+import { cn } from "@/lib/utils";
 
 export default function ContestCardFooter({
   contest,
-  contestMutationPrivilege,
+  contestMutationPermission,
   showContestStatus,
   showApproveButton,
 }: {
   contest: Contest;
-  contestMutationPrivilege: boolean;
+  contestMutationPermission: boolean;
   showContestStatus: boolean;
   showApproveButton: boolean;
 }) {
@@ -28,8 +29,13 @@ export default function ContestCardFooter({
         e.preventDefault(), e.stopPropagation();
       }}
     >
-      <div className="flex w-full items-center justify-between">
-        {contestMutationPrivilege && (
+      <div
+        className={cn(
+          "flex w-full items-center",
+          contestMutationPermission ? "justify-between" : "justify-end"
+        )}
+      >
+        {contestMutationPermission && (
           <div>
             <Button
               variant="outline"
