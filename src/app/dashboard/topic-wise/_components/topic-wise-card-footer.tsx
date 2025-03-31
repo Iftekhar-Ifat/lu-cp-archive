@@ -4,16 +4,18 @@ import { DeleteModal } from "@/components/shared/delete-modal";
 import { Button } from "@/components/ui/button";
 import { deleteTopicWiseCardMock } from "@/utils/helper";
 import type { TopicWiseCard } from "@/utils/types";
-import { Edit, Trash2 } from "lucide-react";
+import { Check, Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import TopicEditModal from "./topic-edit-modal";
 
 export default function TopicWiseCardFooter({
   topic,
   topicCardMutationPermission,
+  showApproveButton,
 }: {
   topic: TopicWiseCard;
   topicCardMutationPermission: boolean;
+  showApproveButton: boolean;
 }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -42,6 +44,12 @@ export default function TopicWiseCardFooter({
               <Edit className="text-muted-foreground" size={20} />
             </Button>
           </div>
+        )}
+        {showApproveButton && (
+          <Button variant="outline">
+            Approve
+            <Check className="text-green-500" size={20} />
+          </Button>
         )}
       </div>
       <TopicEditModal

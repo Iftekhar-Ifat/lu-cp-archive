@@ -325,3 +325,9 @@ export async function fetchProblemData(problemType: string) {
   fetchedContestData[0].name = problemType;
   return fetchedContestData;
 }
+
+export async function fetchTopicData() {
+  await new Promise((resolve) => setTimeout(resolve, 4000));
+
+  return fetchedTopics.slice(0, 5);
+}

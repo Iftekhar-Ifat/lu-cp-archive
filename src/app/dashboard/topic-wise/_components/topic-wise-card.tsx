@@ -14,7 +14,13 @@ import TopicWiseCardFooter from "./topic-wise-card-footer";
 import { redirect } from "next/navigation";
 import { hasPermission } from "@/utils/permissions";
 
-export default function TopicWiseCard({ topic }: { topic: TopicWiseCard }) {
+export default function TopicWiseCard({
+  topic,
+  approveTopicCard,
+}: {
+  topic: TopicWiseCard;
+  approveTopicCard?: boolean;
+}) {
   const { user } = useUser();
 
   if (!user) {
@@ -41,6 +47,7 @@ export default function TopicWiseCard({ topic }: { topic: TopicWiseCard }) {
         <TopicWiseCardFooter
           topic={topic}
           topicCardMutationPermission={hasMutationPermission}
+          showApproveButton={approveTopicCard ?? false}
         />
       </CardFooter>
     </Card>

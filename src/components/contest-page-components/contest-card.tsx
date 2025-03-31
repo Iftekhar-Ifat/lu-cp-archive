@@ -87,7 +87,7 @@ export default function ContestCard({
           contest={contest}
           contestMutationPermission={hasMutationPermission}
           showContestStatus={!approveContestCard}
-          showApproveButton={approveContestCard ? approveContestCard : false}
+          showApproveButton={approveContestCard ?? false}
         />
       </CardContent>
     </Card>

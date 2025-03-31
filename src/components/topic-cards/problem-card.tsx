@@ -87,7 +87,7 @@ export default function ProblemCard({
           problem={problem}
           problemMutationPermission={hasMutationPermission}
           showProblemStatus={!approveContestCard}
-          showApproveButton={approveContestCard ? approveContestCard : false}
+          showApproveButton={approveContestCard ?? false}
         />
       </CardContent>
     </Card>
