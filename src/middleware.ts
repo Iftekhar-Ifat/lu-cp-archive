@@ -1,9 +1,18 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const publicRoute = createRouteMatcher(["/", "/api/clerk"]);
+const publicRoute = createRouteMatcher(["/", "/api/webhooks/clerk"]);
 
 export default clerkMiddleware(async (auth, request) => {
+  // will turn on later
+  //
+  /* const { userId } = await auth();
+  const url = new URL(request.url);
+
+  if (userId && url.pathname === "/") {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  } */
+
   if (!publicRoute(request)) {
     const session = await auth.protect().catch(() => null);
 
