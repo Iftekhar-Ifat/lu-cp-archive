@@ -80,20 +80,20 @@ export async function POST(request: Request) {
       }
 
       // Upsert user in database
-      const user = await prisma.user.upsert({
+      const user = await prisma.users.upsert({
         where: {
           email: primaryEmail,
         },
         update: {
           name: fullName,
-          userName: username || primaryEmail,
-          updatedAt: new Date(),
+          user_name: username || primaryEmail,
+          updated_at: new Date(),
         },
         create: {
-          userName: username || primaryEmail,
+          user_name: username || primaryEmail,
           email: primaryEmail,
           name: fullName,
-          userType: "STANDARD",
+          user_type: "STANDARD",
         },
       });
 

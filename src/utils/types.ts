@@ -4,7 +4,7 @@ export type USER_TYPE = "ADMIN" | "STANDARD" | "POWER";
 
 // TEMP
 export type User = {
-  userId: string;
+  id: string;
   email: string;
   name: string;
   userName: string;

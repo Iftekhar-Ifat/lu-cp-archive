@@ -6,7 +6,7 @@ import { type User } from "@/utils/types";
 const getUser = async () => {
   try {
     const userData: User = {
-      userId: "1",
+      id: "1",
       email: "iftekhar@gmail.com",
       name: "Iftekhar",
       userName: "iftekhar",

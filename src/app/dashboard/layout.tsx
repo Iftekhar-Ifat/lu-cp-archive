@@ -21,7 +21,7 @@ export default async function DashboardLayout({
   // await new Promise((resolve) => setTimeout(resolve, 5000));
 
   const userData: User = {
-    userId: "1",
+    id: "1",
     email: "iftekhar@gmail.com",
     name: "Iftekhar",
     userName: "iftekhar",
