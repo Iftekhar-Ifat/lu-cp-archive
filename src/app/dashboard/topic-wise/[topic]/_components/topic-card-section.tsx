@@ -7,7 +7,7 @@ import Error from "@/components/shared/error";
 import Loading from "@/components/shared/loading";
 import ProblemCard from "@/components/topic-cards/problem-card";
 import { useEffect, useState } from "react";
-import { type Problem } from "@/utils/types";
+import { type Problem } from "@/types/types";
 import FilterByDifficulty from "@/components/shared/filtering/filter-by-difficulty";
 
 export default function ProblemCardSection({ topic }: { topic: string }) {

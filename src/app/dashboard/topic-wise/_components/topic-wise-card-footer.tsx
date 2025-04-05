@@ -3,7 +3,7 @@
 import { DeleteModal } from "@/components/shared/delete-modal";
 import { Button } from "@/components/ui/button";
 import { deleteTopicWiseCardMock } from "@/utils/helper";
-import type { TopicWiseCard } from "@/utils/types";
+import type { TopicWiseCard } from "@/types/types";
 import { Check, Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import TopicEditModal from "./topic-edit-modal";

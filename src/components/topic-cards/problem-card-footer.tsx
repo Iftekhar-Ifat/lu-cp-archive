@@ -3,7 +3,7 @@
 import { Check, Edit, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { type Problem } from "@/utils/types";
+import { type Problem } from "@/types/types";
 import { deleteContestMock } from "@/utils/helper";
 import { DeleteModal } from "../shared/delete-modal";
 import { ProblemStatus } from "./problem-status";

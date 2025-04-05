@@ -12,7 +12,7 @@ import DifficultyBadge from "../shared/difficulty-badge";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import ContestCardFooter from "./contest-card-footer";
-import { type Contest } from "@/utils/types";
+import { type Contest } from "@/types/types";
 import { useUser } from "../user-provider";
 import { cn } from "@/lib/utils";
 import { hasPermission } from "@/utils/permissions";
@@ -31,7 +31,7 @@ export default function ContestCard({
     redirect("/");
   }
 
-  const hasMutationPermission = hasPermission(user.userType, "mutate-contest");
+  const hasMutationPermission = hasPermission(user.user_type, "mutate-contest");
 
   return (
     <Card

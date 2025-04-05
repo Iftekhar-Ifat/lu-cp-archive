@@ -18,9 +18,9 @@ export default function TopicAddApproveSection() {
     return redirect("/");
   }
 
-  const hasAddTopicPermission = hasPermission(user.userType, "add-topic");
+  const hasAddTopicPermission = hasPermission(user.user_type, "add-topic");
   const hasApproveTopicPermission = hasPermission(
-    user.userType,
+    user.user_type,
     "approve-topic"
   );
 

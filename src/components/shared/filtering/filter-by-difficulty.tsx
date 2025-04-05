@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Filter } from "lucide-react";
-import { type Contest, type Problem } from "@/utils/types";
+import { type Contest, type Problem } from "@/types/types";
 import {
   DropdownMenu,
   DropdownMenuContent,

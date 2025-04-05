@@ -1,4 +1,4 @@
-import { type USER_TYPE } from "./types";
+import { type USER_TYPE } from "../types/types";
 
 export type actions =
   | "approve-contest"
@@ -35,7 +35,7 @@ const permissions: Record<USER_TYPE, actions[]> = {
   STANDARD: ["add-contest", "add-problem"],
 } as const;
 
-export function hasPermission(userType: USER_TYPE, action: actions) {
-  if (!permissions[userType]) return false;
-  return permissions[userType].includes(action);
+export function hasPermission(user_type: USER_TYPE, action: actions) {
+  if (!permissions[user_type]) return false;
+  return permissions[user_type].includes(action);
 }

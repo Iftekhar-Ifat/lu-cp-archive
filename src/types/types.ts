@@ -7,10 +7,10 @@ export type User = {
   id: string;
   email: string;
   name: string;
-  userName: string;
-  userType: USER_TYPE;
-  createdAt: Date;
-  updatedAt: Date;
+  user_name: string;
+  user_type: USER_TYPE;
+  created_at: Date;
+  updated_at: Date;
 };
 
 // Contest Types

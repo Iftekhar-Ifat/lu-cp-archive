@@ -1,6 +1,6 @@
 "use server";
 
-import { type ContestDifficultyType } from "@/utils/types";
+import { type ContestDifficultyType } from "@/types/types";
 import { type Tag } from "emblor";
 
 const createContestAction = async (data: {

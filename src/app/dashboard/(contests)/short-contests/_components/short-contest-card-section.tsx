@@ -7,7 +7,7 @@ import Error from "@/components/shared/error";
 import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "@/lib/fetch";
 import { useEffect, useState } from "react";
-import { type Contest } from "@/utils/types";
+import { type Contest } from "@/types/types";
 import FilterByDifficulty from "@/components/shared/filtering/filter-by-difficulty";
 
 export default function ShortContestCardSection() {

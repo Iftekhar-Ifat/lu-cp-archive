@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ContestCard from "../../../../../../components/contest-page-components/contest-card";
-import { type ContestType } from "@/utils/types";
+import { type ContestType } from "@/types/types";
 import { fetchContestData } from "@/lib/fetch";
 
 export default async function ApproveContestCardSection({

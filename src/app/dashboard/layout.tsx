@@ -1,33 +1,26 @@
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import UserProvider from "@/components/user-provider";
-import { type User } from "@/utils/types";
+import { type User } from "@/types/types";
 
 export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // TODO: Fetch user data from the database
-  /* let userData = null;
-  const user = await currentUser();
+  /* const userData = await getUserData();
 
-  if (user) {
-    userData = await prisma.user.findUnique({
-      where: {
-        email: user?.primaryEmailAddress?.emailAddress,
-      },
-    });
+  if (isActionError(userData)) {
+    throw new Error(userData.error);
   } */
-  // await new Promise((resolve) => setTimeout(resolve, 5000));
 
   const userData: User = {
     id: "1",
-    email: "iftekhar@gmail.com",
     name: "Iftekhar",
-    userName: "iftekhar",
-    userType: "STANDARD",
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    email: "abcd@gmail.com",
+    user_name: "iftekhar",
+    user_type: "STANDARD",
+    created_at: new Date(),
+    updated_at: new Date(),
   };
 
   return (

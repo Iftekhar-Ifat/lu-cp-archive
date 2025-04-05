@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useUser } from "@/components/user-provider";
-import { type TopicWiseCard } from "@/utils/types";
+import { type TopicWiseCard } from "@/types/types";
 import React from "react";
 import TopicWiseCardFooter from "./topic-wise-card-footer";
 import { redirect } from "next/navigation";
@@ -27,7 +27,7 @@ export default function TopicWiseCard({
     redirect("/");
   }
 
-  const hasMutationPermission = hasPermission(user.userType, "mutate-topic");
+  const hasMutationPermission = hasPermission(user.user_type, "mutate-topic");
 
   return (
     <Card className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:border-zinc-400">

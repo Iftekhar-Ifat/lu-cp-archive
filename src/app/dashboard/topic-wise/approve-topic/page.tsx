@@ -7,7 +7,7 @@ import ApproveTopicCardSection from "./_components/approve-topic-card-section";
 export default async function ApproveTopic() {
   const user = await getUser();
 
-  if (!user || !hasPermission(user.userType, "approve-topic")) {
+  if (!user || !hasPermission(user.user_type, "approve-topic")) {
     notFound();
   }
 

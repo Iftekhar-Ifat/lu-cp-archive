@@ -3,7 +3,7 @@ import {
   type Contest,
   type Problem,
   type ProblemProgressStats,
-} from "@/utils/types";
+} from "@/types/types";
 
 const fetchedData: Contest[] = [
   {

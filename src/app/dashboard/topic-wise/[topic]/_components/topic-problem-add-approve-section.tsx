@@ -18,7 +18,7 @@ export default function TopicProblemAddApproveSection() {
     redirect("/");
   }
 
-  const hasApprovePermission = hasPermission(user.userType, "approve-problem");
+  const hasApprovePermission = hasPermission(user.user_type, "approve-problem");
 
   return (
     <div className="flex space-x-2">

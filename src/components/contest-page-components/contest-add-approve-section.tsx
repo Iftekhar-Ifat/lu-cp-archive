@@ -18,7 +18,7 @@ export default function ContestAddApproveSection() {
     return redirect("/");
   }
 
-  const hasApprovePermission = hasPermission(user.userType, "approve-contest");
+  const hasApprovePermission = hasPermission(user.user_type, "approve-contest");
 
   return (
     <div className="flex space-x-2">

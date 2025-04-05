@@ -20,7 +20,7 @@ export default async function ApproveProblem({
 
   const user = await getUser();
 
-  if (!user || !hasPermission(user.userType, "approve-problem")) {
+  if (!user || !hasPermission(user.user_type, "approve-problem")) {
     notFound();
   }
 

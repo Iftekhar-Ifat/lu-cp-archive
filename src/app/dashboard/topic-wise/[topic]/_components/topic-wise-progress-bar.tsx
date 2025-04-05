@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import {
   type ProblemProgressStats,
   type ProblemDifficultyType,
-} from "@/utils/types";
+} from "@/types/types";
 
 export default function ProblemProgress({
   stats,

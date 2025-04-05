@@ -1,6 +1,6 @@
 "use server";
 
-import { type User } from "@/utils/types";
+import { type User } from "@/types/types";
 
 // Mock function to get user
 const getUser = async () => {
@@ -9,10 +9,10 @@ const getUser = async () => {
       id: "1",
       email: "iftekhar@gmail.com",
       name: "Iftekhar",
-      userName: "iftekhar",
-      userType: "STANDARD",
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      user_name: "iftekhar",
+      user_type: "STANDARD",
+      created_at: new Date(),
+      updated_at: new Date(),
     };
 
     new Promise((resolve) => setTimeout(resolve, 2000));

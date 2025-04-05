@@ -8,7 +8,7 @@ import Error from "@/components/shared/error";
 import Loading from "@/components/shared/loading";
 import { useEffect, useState } from "react";
 import FilterByDifficulty from "@/components/shared/filtering/filter-by-difficulty";
-import { type Contest } from "@/utils/types";
+import { type Contest } from "@/types/types";
 
 export default function MarathonContestCardSection() {
   const {

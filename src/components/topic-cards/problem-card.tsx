@@ -11,7 +11,7 @@ import { ArrowUpRight } from "lucide-react";
 import DifficultyBadge from "../shared/difficulty-badge";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
-import { type Problem } from "@/utils/types";
+import { type Problem } from "@/types/types";
 import { useUser } from "../user-provider";
 import ProblemCardFooter from "./problem-card-footer";
 import { cn } from "@/lib/utils";
@@ -31,7 +31,7 @@ export default function ProblemCard({
     redirect("/");
   }
 
-  const hasMutationPermission = hasPermission(user.userType, "mutate-problem");
+  const hasMutationPermission = hasPermission(user.user_type, "mutate-problem");
 
   return (
     <Card
