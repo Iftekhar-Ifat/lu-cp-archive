@@ -3,7 +3,7 @@ import { type WebhookEvent } from "@clerk/nextjs/server";
 import { Webhook } from "svix";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { env } from "@/env";
+import { env } from "@/env.mjs";
 
 // Webhook secret key from Clerk Dashboard
 const webhookSecret = env.CLERK_WEBHOOK_SECRET;
