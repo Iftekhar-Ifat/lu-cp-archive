@@ -32,7 +32,6 @@ import { toast } from "sonner";
 import { contestFormSchema } from "@/utils/schema/contest-form";
 import { DifficultyStatus } from "../shared/difficulty-status";
 import { transformTagStringsToObjects } from "@/utils/helper";
-import { updateContestAction } from "@/app/dashboard/(contests)/intra-lu-contests/actions";
 
 type ContestFormValues = z.infer<typeof contestFormSchema>;
 
@@ -86,7 +85,7 @@ export default function ContestEditModal({
   const onSubmit = async (data: ContestFormValues) => {
     setIsSubmitting(true);
     try {
-      const result = await updateContestAction({
+      /* const result = await updateContestAction({
         id: contest.id,
         ...data,
         difficulty: selectedDifficulty,
@@ -99,7 +98,7 @@ export default function ContestEditModal({
 
         form.reset();
         setIsOpen(false);
-      }
+      } */
     } catch (error) {
       toast.error("Something went wrong", {
         position: "top-center",

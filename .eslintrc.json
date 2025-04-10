@@ -20,6 +20,10 @@
       "warn",
       "as-needed"
     ],
+    "import/no-unresolved": "error",
+    "import/named": "error",
+    "import/default": "error",
+    "import/no-named-as-default-member": "error",
     // TypeScript rules
     "@typescript-eslint/array-type": [
       "warn",
