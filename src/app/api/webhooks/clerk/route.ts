@@ -3,9 +3,10 @@ import { type WebhookEvent } from "@clerk/nextjs/server";
 import { Webhook } from "svix";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { env } from "@/env";
 
 // Webhook secret key from Clerk Dashboard
-const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
+const webhookSecret = env.CLERK_WEBHOOK_SECRET;
 
 async function validateRequest(request: Request, headersList: Headers) {
   const payloadString = await request.text();
