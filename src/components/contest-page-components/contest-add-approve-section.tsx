@@ -37,6 +37,7 @@ export default function ContestAddApproveSection() {
       <ContestAddModal
         isOpen={isAddContestModalOpen}
         setIsOpen={setIsAddContestModalOpen}
+        contestType="intra_lu_contests"
       />
     </div>
   );

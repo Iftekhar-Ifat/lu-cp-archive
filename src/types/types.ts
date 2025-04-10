@@ -1,6 +1,7 @@
+import { type Difficulty, type UserType } from "@prisma/client";
 // User Types
 //
-export type USER_TYPE = "ADMIN" | "STANDARD" | "POWER";
+export type USER_TYPE = UserType;
 
 // TEMP
 export type User = {
@@ -15,12 +16,7 @@ export type User = {
 
 // Contest Types
 
-export type ContestDifficultyType = "EASY" | "MEDIUM" | "HARD";
-
-export type ContestType =
-  | "intra-lu-contests"
-  | "marathon-contests"
-  | "short-contests";
+export type ContestDifficultyType = Difficulty;
 
 export type Contest = {
   id: string;
@@ -48,7 +44,7 @@ export type TopicWiseCard = {
 };
 
 // Problem Types
-export type ProblemDifficultyType = "EASY" | "MEDIUM" | "HARD";
+export type ProblemDifficultyType = Difficulty;
 
 export type Problem = {
   id: string;

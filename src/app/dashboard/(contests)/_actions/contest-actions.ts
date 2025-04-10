@@ -1,11 +1,11 @@
-/* "use server";
+"use server";
 
 import { getUserData } from "@/components/shared-actions/getUserData";
 import { prisma } from "@/lib/prisma";
 import { type ContestDifficultyType } from "@/types/types";
 import { isActionError } from "@/utils/error-helper";
 import { hasPermission } from "@/utils/permissions";
-import { type ContestType } from "@prisma/client";
+import { type Difficulty, type ContestType } from "@prisma/client";
 import { type Tag } from "emblor";
 
 const createContestAction = async (
@@ -13,8 +13,8 @@ const createContestAction = async (
     name: string;
     description: string;
     link: string;
-    tags: Tag[];
-    difficulty: ContestDifficultyType;
+    tags: { text: string }[];
+    difficulty: Difficulty;
   },
   contestType: ContestType
 ) => {
@@ -31,38 +31,40 @@ const createContestAction = async (
   }
 
   try {
-    // First, ensure tags exist or create them
-    const tagRecords = await Promise.all(
-      data.tags.map(async (tag) => {
-        return await prisma.tags.upsert({
-          where: { name: tag.text },
-          update: {},
-          create: { name: tag.text },
-        });
-      })
-    );
-
-    // Create the contest
     await prisma.contests.create({
       data: {
         title: data.name,
-        url: data.link,
         description: data.description,
-        difficulty_tags: data.difficulty,
-        contest_type: "INTRA_LU",
+        url: data.link,
+        difficulty: data.difficulty,
+        contest_type: contestType,
         added_by: user.id,
         contest_tags: {
-          create: tagRecords.map((tag) => ({
+          create: data.tags.map((tag) => ({
             tag: {
-              connect: { id: tag.id },
+              connectOrCreate: {
+                where: { name: tag.text },
+                create: {
+                  name: tag.text,
+                  created_at: new Date(),
+                  updated_at: new Date(),
+                },
+              },
             },
           })),
         },
       },
+      include: {
+        contest_tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
     });
-  } catch (err) {
-    console.error("Failed to create contest:", err);
-    return { error: "Failed to create contest" };
+  } catch (error) {
+    console.error("Error creating contest:", error);
+    return { error: `Failed to create contest` };
   }
 };
 
@@ -83,4 +85,3 @@ const updateContestAction = async (data: {
 };
 
 export { createContestAction, updateContestAction };
- */

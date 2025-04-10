@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ContestCard from "../../../../../../components/contest-page-components/contest-card";
-import { type ContestType } from "@/types/types";
 import { fetchContestData } from "@/lib/fetch";
+import { type ContestType } from "@prisma/client";
 
 export default async function ApproveContestCardSection({
   contestType,

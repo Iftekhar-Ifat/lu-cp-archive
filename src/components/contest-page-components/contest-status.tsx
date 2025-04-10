@@ -18,9 +18,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { type StatusType } from "@prisma/client";
 
 type Status = {
-  value: string;
+  value: StatusType;
   label: string;
   color: string;
 };
@@ -32,7 +33,7 @@ const statuses: Status[] = [
     color: "bg-rose-500",
   },
   {
-    value: "in-progress",
+    value: "in_progress",
     label: "In Progress",
     color: "bg-amber-500",
   },

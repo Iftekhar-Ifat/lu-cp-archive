@@ -31,16 +31,20 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { contestFormSchema } from "@/utils/schema/contest-form";
 import { DifficultyStatus } from "../shared/difficulty-status";
-import { createContestAction } from "@/app/dashboard/(contests)/intra-lu-contests/actions";
+import { type ContestType } from "@prisma/client";
+import { createContestAction } from "@/app/dashboard/(contests)/_actions/contest-actions";
+import { isActionError } from "@/utils/error-helper";
 
 type ContestFormValues = z.infer<typeof contestFormSchema>;
 
 export default function ContestAddModal({
   isOpen,
   setIsOpen,
+  contestType,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<React.SetStateAction<boolean>>;
+  contestType: ContestType;
 }) {
   const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] =
@@ -82,27 +86,29 @@ export default function ContestAddModal({
 
   const onSubmit = async (data: ContestFormValues) => {
     setIsSubmitting(true);
-    try {
-      const result = await createContestAction({
+
+    const result = await createContestAction(
+      {
         ...data,
         difficulty: selectedDifficulty,
-      });
+      },
+      contestType
+    );
 
-      if (result.success) {
-        toast.success("Contest successfully added", {
-          position: "top-center",
-        });
-
-        form.reset();
-        setIsOpen(false);
-      }
-    } catch (error) {
-      toast.error("Something went wrong", {
+    if (isActionError(result)) {
+      toast.error(result.error, {
         position: "top-center",
       });
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      toast.success("Contest successfully added", {
+        position: "top-center",
+      });
+
+      form.reset();
+      setIsOpen(false);
     }
+
+    setIsSubmitting(false);
   };
 
   return (

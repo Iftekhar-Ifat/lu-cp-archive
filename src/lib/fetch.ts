@@ -1,9 +1,9 @@
 import {
-  type ContestType,
   type Contest,
   type Problem,
   type ProblemProgressStats,
 } from "@/types/types";
+import { type ContestType } from "@prisma/client";
 
 const fetchedData: Contest[] = [
   {
