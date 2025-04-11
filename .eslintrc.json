@@ -13,6 +13,7 @@
   ],
   "rules": {
     // JavaScript rules
+    "no-undef": "error",
     "prefer-const": "warn",
     "no-var": "warn",
     "object-shorthand": "warn",
