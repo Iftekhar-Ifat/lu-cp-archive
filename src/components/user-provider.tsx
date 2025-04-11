@@ -1,7 +1,7 @@
 "use client";
 
 import { type User } from "@/types/types";
-import { createContext, useContext } from "react";
+import { createContext, type ReactNode, useContext } from "react";
 
 type UserContextProps = {
   user: User | null;
@@ -16,7 +16,7 @@ const UserProvider = ({
   children,
 }: {
   user: User | null;
-  children: React.ReactNode;
+  children: ReactNode;
 }) => {
   return (
     <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>

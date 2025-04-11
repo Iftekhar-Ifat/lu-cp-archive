@@ -1,11 +1,12 @@
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import UserProvider from "@/components/user-provider";
 import { type User } from "@/types/types";
+import { type ReactNode } from "react";
 
 export default async function DashboardLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   /* const userData = await getUserData();
 

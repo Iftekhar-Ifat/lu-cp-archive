@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -37,7 +37,7 @@ export default function TopicAddModal({
   setIsOpen,
 }: {
   isOpen: boolean;
-  setIsOpen: Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 

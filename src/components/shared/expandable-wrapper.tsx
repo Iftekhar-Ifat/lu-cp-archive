@@ -3,10 +3,16 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 type ExpandableSectionProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   maxHeight?: number;
   className?: string;
   contentClassName?: string;

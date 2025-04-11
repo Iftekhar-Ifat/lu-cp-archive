@@ -43,7 +43,7 @@ export default function ContestAddModal({
   contestType,
 }: {
   isOpen: boolean;
-  setIsOpen: Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   contestType: ContestType;
 }) {
   const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);

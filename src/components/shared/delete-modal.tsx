@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { type SetStateAction, useState } from "react";
 import { type Dispatch } from "react";
 
 export function DeleteModal({
@@ -17,7 +17,7 @@ export function DeleteModal({
   actionFunction,
 }: {
   isOpen: boolean;
-  setIsOpen: Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   itemType: string;
   actionFunction: () => Promise<unknown>;
 }) {
