@@ -40,4 +40,5 @@ next-env.d.ts
 TODO.txt
 
 # Prisma
-/prisma/migrations
+prisma/*
+!prisma/schema.prisma

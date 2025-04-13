@@ -14,66 +14,39 @@ datasource db {
 }
 
 model users {
-  id             String           @id @default(cuid())
-  name           String
-  email          String           @unique
-  user_name      String           @unique
-  user_type      UserType         @default(STANDARD)
-  created_at     DateTime         @default(now())
-  updated_at     DateTime         @updatedAt
-  contest_status contest_status[]
-  added_contests contests[]
-}
+  id         String   @id @default(cuid())
+  name       String
+  email      String   @unique
+  user_name  String   @unique
+  user_type  UserType @default(STANDARD)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-model contests {
-  id             String           @id @default(cuid())
-  title          String
-  url            String
-  description    String
-  difficulty     Difficulty
-  contest_tags   contests_tags[]
-  contest_type   ContestType
-  added_by       String
-  created_at     DateTime         @default(now())
-  updated_at     DateTime         @updatedAt
-  creator        users            @relation(fields: [added_by], references: [id])
-  contest_status contest_status[]
-}
-
-model tags {
-  id            Int             @id @default(autoincrement())
-  name          String          @unique
-  created_at    DateTime        @default(now())
-  updated_at    DateTime        @updatedAt
-  contests_tags contests_tags[]
-}
-
-model contests_tags {
-  contest_id String
-  tag_id     Int
-  contest    contests @relation(fields: [contest_id], references: [id])
-  tag        tags     @relation(fields: [tag_id], references: [id])
-
-  @@id([contest_id, tag_id])
-}
-
-model contest_status {
-  id         String      @id @default(cuid())
-  user_id    String
-  contest_id String
-  status     StatusType?
-  user       users       @relation(fields: [user_id], references: [id])
-  contest    contests    @relation(fields: [contest_id], references: [id])
-
-  @@unique([user_id, contest_id])
-  @@index([user_id])
-  @@index([contest_id])
+  addedContest  contests[]
+  contestStatus contest_status[]
 }
 
 enum UserType {
   STANDARD
   POWER
   ADMIN
+}
+
+model contests {
+  id          String           @id @default(cuid())
+  title       String
+  url         String
+  description String
+  difficulty  Difficulty
+  tags        contests_tags[]
+  status      contest_status[]
+  type        ContestType
+  approved    Boolean          @default(false)
+  added_by    String
+  created_at  DateTime         @default(now())
+  updated_at  DateTime         @updatedAt
+
+  addedBy users @relation(fields: [added_by], references: [id])
 }
 
 enum Difficulty {
@@ -88,8 +61,38 @@ enum ContestType {
   short_contests
 }
 
+model contest_status {
+  status     StatusType?
+  user_id    String      @unique
+  contest_id String      @unique
+
+  userId    users    @relation(fields: [user_id], references: [id])
+  contestId contests @relation(fields: [contest_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, contest_id])
+}
+
 enum StatusType {
   done
   in_progress
   skipped
+}
+
+model contests_tags {
+  contest_id String
+  tag_id     String
+
+  contestId contests @relation(fields: [contest_id], references: [id], onDelete: Cascade)
+  tagId     tags     @relation(fields: [tag_id], references: [id])
+
+  @@id([contest_id, tag_id])
+}
+
+model tags {
+  id         String   @id @default(cuid())
+  name       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  contestTags contests_tags[]
 }
