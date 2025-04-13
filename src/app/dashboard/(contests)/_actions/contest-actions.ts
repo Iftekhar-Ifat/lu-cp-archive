@@ -37,28 +37,19 @@ const createContestAction = async (
         description: data.description,
         url: data.link,
         difficulty: data.difficulty,
-        contest_type: contestType,
+        type: contestType,
         added_by: user.id,
-        contest_tags: {
+        tags: {
           create: data.tags.map((tag) => ({
-            tag: {
+            tagId: {
               connectOrCreate: {
                 where: { name: tag.text },
                 create: {
                   name: tag.text,
-                  created_at: new Date(),
-                  updated_at: new Date(),
                 },
               },
             },
           })),
-        },
-      },
-      include: {
-        contest_tags: {
-          include: {
-            tag: true,
-          },
         },
       },
     });
