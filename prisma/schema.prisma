@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -73,9 +73,9 @@ model contest_status {
 }
 
 enum StatusType {
-  done
-  in_progress
-  skipped
+  DONE
+  InProgress
+  SKIPPED
 }
 
 model contests_tags {

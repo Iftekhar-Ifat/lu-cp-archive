@@ -37,9 +37,9 @@ export default function ContestCard({
     <Card
       className={cn(
         "flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:border-zinc-400",
-        "[&[data-card-border='skipped']]:border-rose-500",
-        "[&[data-card-border='in_progress']]:border-amber-500",
-        "[&[data-card-border='done']]:border-emerald-500"
+        "[&[data-card-border='SKIPPED']]:border-rose-500",
+        "[&[data-card-border='InProgress']]:border-amber-500",
+        "[&[data-card-border='DONE']]:border-emerald-500"
       )}
       data-card
     >

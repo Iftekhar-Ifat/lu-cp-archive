@@ -28,17 +28,17 @@ type Status = {
 
 const statuses: Status[] = [
   {
-    value: "skipped",
+    value: "SKIPPED",
     label: "Skipped",
     color: "bg-rose-500",
   },
   {
-    value: "in_progress",
+    value: "InProgress",
     label: "In Progress",
     color: "bg-amber-500",
   },
   {
-    value: "done",
+    value: "DONE",
     label: "Done",
     color: "bg-emerald-500",
   },
