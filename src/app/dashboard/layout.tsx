@@ -19,7 +19,7 @@ export default async function DashboardLayout({
     name: "Iftekhar",
     email: "abcd@gmail.com",
     user_name: "iftekhar",
-    user_type: "STANDARD",
+    user_type: "ADMIN",
     created_at: new Date(),
     updated_at: new Date(),
   };

@@ -6,14 +6,13 @@ import { type ContestDifficultyType } from "@/types/types";
 import { isActionError } from "@/utils/error-helper";
 import { hasPermission } from "@/utils/permissions";
 import { type Difficulty, type ContestType } from "@prisma/client";
-import { type Tag } from "emblor";
 
 const createContestAction = async (
   data: {
     name: string;
     description: string;
     link: string;
-    tags: { text: string }[];
+    tags: string[];
     difficulty: Difficulty;
   },
   contestType: ContestType
@@ -43,9 +42,9 @@ const createContestAction = async (
           create: data.tags.map((tag) => ({
             tagId: {
               connectOrCreate: {
-                where: { name: tag.text },
+                where: { name: tag },
                 create: {
-                  name: tag.text,
+                  name: tag,
                 },
               },
             },
@@ -64,7 +63,7 @@ const updateContestAction = async (data: {
   name: string;
   description: string;
   link: string;
-  tags: Tag[];
+  tags: string[];
   difficulty: ContestDifficultyType;
 }) => {
   console.log(data);

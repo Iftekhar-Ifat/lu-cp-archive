@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import { type Tag, TagInput } from "emblor";
+import { type SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -29,9 +28,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { type ContestDifficultyType, type Contest } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { contestFormSchema } from "@/utils/schema/contest-form";
+import {
+  contestFormSchema,
+  MAX_CONTEST_TAG_LENGTH,
+} from "@/utils/schema/contest-form";
 import { DifficultyStatus } from "../shared/difficulty-status";
-import { transformTagStringsToObjects } from "@/utils/helper";
+import {
+  TagsInput,
+  TagsInputInput,
+  TagsInputItem,
+  TagsInputList,
+} from "../ui/tags-input";
 
 type ContestFormValues = z.infer<typeof contestFormSchema>;
 
@@ -41,10 +48,9 @@ export default function ContestEditModal({
   contest,
 }: {
   isOpen: boolean;
-  setIsOpen: Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   contest: Contest;
 }) {
-  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] =
     useState<ContestDifficultyType>(contest.difficulty);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,7 +59,7 @@ export default function ContestEditModal({
     name: contest.name,
     description: contest.description,
     link: contest.link,
-    tags: transformTagStringsToObjects(contest.tags),
+    tags: contest.tags,
   };
 
   const form = useForm<ContestFormValues>({
@@ -61,16 +67,23 @@ export default function ContestEditModal({
     defaultValues,
   });
 
-  const { setValue } = form;
+  const { setValue, setError } = form;
 
-  const handleSetTags = (newTags: React.SetStateAction<Tag[]>) => {
+  const handleTags = (newTags: SetStateAction<string[]>) => {
     const currentTags = form.getValues("tags") || [];
     const tags = typeof newTags === "function" ? newTags(currentTags) : newTags;
 
-    const formattedTags = tags.map((tag) => ({
-      ...tag,
-      text: tag.text.toLowerCase().replace(/\s+/g, "-"),
-    }));
+    if (tags.length > MAX_CONTEST_TAG_LENGTH) {
+      setError("tags", {
+        type: "manual",
+        message: "Maximum 5 tags allowed",
+      });
+      return;
+    }
+
+    const formattedTags = tags.map((tag) =>
+      tag.toLowerCase().replace(/\s+/g, "-")
+    );
 
     setValue("tags", formattedTags, {
       shouldValidate: true,
@@ -193,26 +206,27 @@ export default function ContestEditModal({
                 <FormItem>
                   <FormLabel>Tags</FormLabel>
                   <FormControl>
-                    <TagInput
-                      tags={field.value || []}
-                      setTags={handleSetTags}
-                      placeholder="Add a tag"
-                      activeTagIndex={activeTagIndex}
-                      styleClasses={{
-                        input: "mb-2",
-                        tag: {
-                          body: "pl-2",
-                        },
-                        tagList: {
-                          container: "flex flex-wrap",
-                        },
+                    <TagsInput
+                      className="[&_input]:border-none [&_input]:outline-none [&_input]:ring-0 [&_input]:focus:border-none [&_input]:focus:ring-0 [&_input]:focus-visible:ring-0"
+                      value={field.value || []}
+                      onInvalid={(tag) => {
+                        field.value.includes(tag)
+                          ? toast.error(`${tag} already exists.`)
+                          : null;
                       }}
-                      setActiveTagIndex={setActiveTagIndex}
-                      inlineTags={false}
-                      showCount={true}
-                      maxTags={5}
-                      inputFieldPosition="top"
-                    />
+                      onValueChange={handleTags}
+                      editable
+                      addOnPaste
+                    >
+                      <TagsInputList>
+                        {field.value.map((tag) => (
+                          <TagsInputItem key={tag} value={tag}>
+                            {tag}
+                          </TagsInputItem>
+                        ))}
+                        <TagsInputInput placeholder="Add tags" />
+                      </TagsInputList>
+                    </TagsInput>
                   </FormControl>
                   <FormDescription className="text-xs">
                     Add at least one tag (max 5) related to the contest

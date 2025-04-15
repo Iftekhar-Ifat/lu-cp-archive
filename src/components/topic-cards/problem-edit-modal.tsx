@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import { type Tag, TagInput } from "emblor";
+import { type SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -31,8 +30,17 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { DifficultyStatus } from "../shared/difficulty-status";
 import { transformTagStringsToObjects } from "@/utils/helper";
-import { problemFormSchema } from "@/utils/schema/problem-form";
+import {
+  MAX_PROBLEM_TAG_LENGTH,
+  problemFormSchema,
+} from "@/utils/schema/problem-form";
 import { updateProblemAction } from "@/app/dashboard/topic-wise/[topic]/actions";
+import {
+  TagsInput,
+  TagsInputInput,
+  TagsInputItem,
+  TagsInputList,
+} from "../ui/tags-input";
 
 type ProblemFormValues = z.infer<typeof problemFormSchema>;
 
@@ -42,10 +50,9 @@ export default function ProblemEditModal({
   problem,
 }: {
   isOpen: boolean;
-  setIsOpen: Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   problem: Problem;
 }) {
-  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] =
     useState<ProblemDifficultyType>(problem.difficulty);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,7 +61,7 @@ export default function ProblemEditModal({
     name: problem.name,
     description: problem.description,
     link: problem.link,
-    tags: transformTagStringsToObjects(problem.tags),
+    tags: problem.tags,
   };
 
   const form = useForm<ProblemFormValues>({
@@ -62,16 +69,23 @@ export default function ProblemEditModal({
     defaultValues,
   });
 
-  const { setValue } = form;
+  const { setValue, setError } = form;
 
-  const handleSetTags = (newTags: React.SetStateAction<Tag[]>) => {
-    const currentTags = form.getValues("tags") || [];
-    const tags = typeof newTags === "function" ? newTags(currentTags) : newTags;
+  const handleTags = (newTags: SetStateAction<string[]>) => {
+    const problemTags = form.getValues("tags") || [];
+    const tags = typeof newTags === "function" ? newTags(problemTags) : newTags;
 
-    const formattedTags = tags.map((tag) => ({
-      ...tag,
-      text: tag.text.toLowerCase().replace(/\s+/g, "-"),
-    }));
+    if (tags.length > MAX_PROBLEM_TAG_LENGTH) {
+      setError("tags", {
+        type: "manual",
+        message: "Maximum 5 tags allowed",
+      });
+      return;
+    }
+
+    const formattedTags = tags.map((tag) =>
+      tag.toLowerCase().replace(/\s+/g, "-")
+    );
 
     setValue("tags", formattedTags, {
       shouldValidate: true,
@@ -194,7 +208,37 @@ export default function ProblemEditModal({
                 <FormItem>
                   <FormLabel>Tags</FormLabel>
                   <FormControl>
-                    <TagInput
+                    <FormItem>
+                      <FormLabel>Tags</FormLabel>
+                      <FormControl>
+                        <TagsInput
+                          className="[&_input]:border-none [&_input]:outline-none [&_input]:ring-0 [&_input]:focus:border-none [&_input]:focus:ring-0 [&_input]:focus-visible:ring-0"
+                          value={field.value || []}
+                          onInvalid={(tag) => {
+                            field.value.includes(tag)
+                              ? toast.error(`${tag} already exists.`)
+                              : null;
+                          }}
+                          onValueChange={handleTags}
+                          editable
+                          addOnPaste
+                        >
+                          <TagsInputList>
+                            {field.value.map((tag) => (
+                              <TagsInputItem key={tag} value={tag}>
+                                {tag}
+                              </TagsInputItem>
+                            ))}
+                            <TagsInputInput placeholder="Add tags" />
+                          </TagsInputList>
+                        </TagsInput>
+                      </FormControl>
+                      <FormDescription className="text-xs">
+                        Add at least one tag (max 5) related to the contest
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                    {/* <TagInput
                       tags={field.value || []}
                       setTags={handleSetTags}
                       placeholder="Add a tag"
@@ -213,7 +257,7 @@ export default function ProblemEditModal({
                       showCount={true}
                       maxTags={5}
                       inputFieldPosition="top"
-                    />
+                    /> */}
                   </FormControl>
                   <FormDescription className="text-xs">
                     Add at least one tag (max 5) related to the problem

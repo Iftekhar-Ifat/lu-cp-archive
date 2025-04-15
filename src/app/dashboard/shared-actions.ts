@@ -10,7 +10,7 @@ const getUser = async () => {
       email: "iftekhar@gmail.com",
       name: "Iftekhar",
       user_name: "iftekhar",
-      user_type: "STANDARD",
+      user_type: "ADMIN",
       created_at: new Date(),
       updated_at: new Date(),
     };

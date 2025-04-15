@@ -1,13 +1,12 @@
 "use server";
 
 import { type ContestDifficultyType } from "@/types/types";
-import { type Tag } from "emblor";
 
 const createContestAction = async (data: {
   name: string;
   description: string;
   link: string;
-  tags: Tag[];
+  tags: string[];
   difficulty: ContestDifficultyType;
 }) => {
   console.log(data);
@@ -23,7 +22,7 @@ const updateContestAction = async (data: {
   name: string;
   description: string;
   link: string;
-  tags: Tag[];
+  tags: string[];
   difficulty: ContestDifficultyType;
 }) => {
   console.log(data);

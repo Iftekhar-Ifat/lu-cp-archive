@@ -1,7 +1,6 @@
 "use client";
 
 import { type SetStateAction, useState } from "react";
-import { type Tag, TagInput } from "emblor";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -30,8 +29,17 @@ import { type ProblemDifficultyType } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { DifficultyStatus } from "../shared/difficulty-status";
-import { problemFormSchema } from "@/utils/schema/problem-form";
+import {
+  MAX_PROBLEM_TAG_LENGTH,
+  problemFormSchema,
+} from "@/utils/schema/problem-form";
 import { createProblemAction } from "@/app/dashboard/topic-wise/[topic]/actions";
+import {
+  TagsInput,
+  TagsInputInput,
+  TagsInputItem,
+  TagsInputList,
+} from "../ui/tags-input";
 
 type ProblemFormValues = z.infer<typeof problemFormSchema>;
 
@@ -42,7 +50,6 @@ export default function ProblemAddModal({
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] =
     useState<ProblemDifficultyType>("EASY");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,16 +66,24 @@ export default function ProblemAddModal({
     defaultValues,
   });
 
-  const { setValue } = form;
+  const { setValue, setError } = form;
 
-  const handleSetTags = (newTags: SetStateAction<Tag[]>) => {
+  const handleTags = (newTags: SetStateAction<string[]>) => {
+    console.log(newTags);
     const currentTags = form.getValues("tags") || [];
     const tags = typeof newTags === "function" ? newTags(currentTags) : newTags;
 
-    const formattedTags = tags.map((tag) => ({
-      ...tag,
-      text: tag.text.toLowerCase().replace(/\s+/g, "-"),
-    }));
+    if (tags.length > MAX_PROBLEM_TAG_LENGTH) {
+      setError("tags", {
+        type: "manual",
+        message: "Maximum 5 tags allowed",
+      });
+      return;
+    }
+
+    const formattedTags = tags.map((tag) =>
+      tag.toLowerCase().replace(/\s+/g, "-")
+    );
 
     setValue("tags", formattedTags, {
       shouldValidate: true,
@@ -190,26 +205,27 @@ export default function ProblemAddModal({
                 <FormItem>
                   <FormLabel>Tags</FormLabel>
                   <FormControl>
-                    <TagInput
-                      tags={field.value || []}
-                      setTags={handleSetTags}
-                      placeholder="Add a tag"
-                      activeTagIndex={activeTagIndex}
-                      styleClasses={{
-                        input: "mb-2",
-                        tag: {
-                          body: "pl-2",
-                        },
-                        tagList: {
-                          container: "flex flex-wrap",
-                        },
+                    <TagsInput
+                      className="[&_input]:border-none [&_input]:outline-none [&_input]:ring-0 [&_input]:focus:border-none [&_input]:focus:ring-0 [&_input]:focus-visible:ring-0"
+                      value={field.value || []}
+                      onInvalid={(tag) => {
+                        field.value.includes(tag)
+                          ? toast.error(`${tag} already exists.`)
+                          : null;
                       }}
-                      setActiveTagIndex={setActiveTagIndex}
-                      inlineTags={false}
-                      showCount={true}
-                      maxTags={5}
-                      inputFieldPosition="top"
-                    />
+                      onValueChange={handleTags}
+                      editable
+                      addOnPaste
+                    >
+                      <TagsInputList>
+                        {field.value.map((tag) => (
+                          <TagsInputItem key={tag} value={tag}>
+                            {tag}
+                          </TagsInputItem>
+                        ))}
+                        <TagsInputInput placeholder="Add tags" />
+                      </TagsInputList>
+                    </TagsInput>
                   </FormControl>
                   <FormDescription className="text-xs">
                     Add at least one tag (max 5) related to the problem

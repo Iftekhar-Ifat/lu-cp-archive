@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const MAX_PROBLEM_TAG_LENGTH = 5;
+
 // Validation schema for the problem form
 const problemFormSchema = z.object({
   name: z
@@ -20,13 +22,12 @@ const problemFormSchema = z.object({
     message: "Please enter a valid URL.",
   }),
   tags: z
-    .array(
-      z.object({
-        id: z.string(),
-        text: z.string(),
-      })
-    )
-    .min(1, { message: "Please add at least one tag" }),
+    .array(z.string())
+    .min(1, { message: "Please add at least one tag" })
+    .max(MAX_PROBLEM_TAG_LENGTH, { message: "Maximum 5 tags allowed" })
+    .refine((tags) => new Set(tags).size === tags.length, {
+      message: "Tags must be unique",
+    }),
 });
 
 export { problemFormSchema };
