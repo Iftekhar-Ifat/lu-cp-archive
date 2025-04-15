@@ -12,11 +12,11 @@ import DifficultyBadge from "../shared/difficulty-badge";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import ContestCardFooter from "./contest-card-footer";
-import { type Contest } from "@/types/types";
 import { useUser } from "../user-provider";
 import { cn } from "@/lib/utils";
 import { hasPermission } from "@/utils/permissions";
 import { redirect } from "next/navigation";
+import { type Contest } from "@/types/types";
 
 export default function ContestCard({
   contest,
@@ -46,7 +46,7 @@ export default function ContestCard({
       <CardHeader>
         <div className="flex items-start justify-between space-y-0">
           <CardTitle className="line-clamp-1 max-w-[90%] text-xl leading-tight">
-            {contest.name}
+            {contest.title}
           </CardTitle>
           <ArrowUpRight
             className="text-muted-foreground group-hover:text-primary"
@@ -72,9 +72,9 @@ export default function ContestCard({
         </div>
         <div className="space-y-1">
           <span className="mr-1 text-xs text-muted-foreground">Tags:</span>
-          {contest.tags.map((tag, tagIndex) => (
+          {contest.tags.map((tag) => (
             <Badge
-              key={tagIndex}
+              key={tag}
               variant="outline"
               className="mr-1 px-2 py-0 text-xs"
             >

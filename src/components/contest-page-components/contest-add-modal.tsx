@@ -29,12 +29,12 @@ import { type ContestDifficultyType } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import {
-  contestFormSchema,
+  contestSchema,
   MAX_CONTEST_TAG_LENGTH,
 } from "@/utils/schema/contest-form";
 import { DifficultyStatus } from "../shared/difficulty-status";
 import { type ContestType } from "@prisma/client";
-import { createContestAction } from "@/app/dashboard/(contests)/_actions/contest-actions";
+import { createContest } from "@/app/dashboard/(contests)/_actions/contest-actions";
 import { isActionError } from "@/utils/error-helper";
 import {
   TagsInput,
@@ -43,7 +43,7 @@ import {
   TagsInputList,
 } from "../ui/tags-input";
 
-type ContestFormValues = z.infer<typeof contestFormSchema>;
+type ContestFormValues = z.infer<typeof contestSchema>;
 
 export default function ContestAddModal({
   isOpen,
@@ -59,14 +59,14 @@ export default function ContestAddModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues: Partial<ContestFormValues> = {
-    name: "",
+    title: "",
     description: "",
-    link: "",
+    url: "",
     tags: [],
   };
 
   const form = useForm<ContestFormValues>({
-    resolver: zodResolver(contestFormSchema),
+    resolver: zodResolver(contestSchema),
     defaultValues,
   });
 
@@ -101,7 +101,7 @@ export default function ContestAddModal({
   const onSubmit = async (data: ContestFormValues) => {
     setIsSubmitting(true);
 
-    const result = await createContestAction(
+    const result = await createContest(
       {
         ...data,
         difficulty: selectedDifficulty,
@@ -148,7 +148,7 @@ export default function ContestAddModal({
             {/* Contest Name Field */}
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Contest Name</FormLabel>
@@ -171,13 +171,13 @@ export default function ContestAddModal({
                     <Textarea
                       placeholder="Describe the contest"
                       className="min-h-[100px] resize-none"
-                      maxLength={contestFormSchema.shape.description.maxLength!}
+                      maxLength={contestSchema.shape.description.maxLength!}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="flex justify-end text-xs">
                     {form.watch("description")?.length || 0}/
-                    {contestFormSchema.shape.description.maxLength} characters
+                    {contestSchema.shape.description.maxLength} characters
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -187,7 +187,7 @@ export default function ContestAddModal({
             {/* Contest Link Field */}
             <FormField
               control={form.control}
-              name="link"
+              name="url"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Contest Link</FormLabel>

@@ -2,16 +2,18 @@
 
 import { getUserData } from "@/components/shared-actions/getUserData";
 import { prisma } from "@/lib/prisma";
-import { type ContestDifficultyType } from "@/types/types";
-import { isActionError } from "@/utils/error-helper";
+import { type Contest, type ContestDifficultyType } from "@/types/types";
+import { type ActionResult, isActionError } from "@/utils/error-helper";
 import { hasPermission } from "@/utils/permissions";
-import { type Difficulty, type ContestType } from "@prisma/client";
+import { contestSchema } from "@/utils/schema/contest-form";
+import { type ContestType, type Difficulty } from "@prisma/client";
+import { z } from "zod";
 
-const createContestAction = async (
+const createContest = async (
   data: {
-    name: string;
+    title: string;
     description: string;
-    link: string;
+    url: string;
     tags: string[];
     difficulty: Difficulty;
   },
@@ -32,9 +34,9 @@ const createContestAction = async (
   try {
     await prisma.contests.create({
       data: {
-        title: data.name,
+        title: data.title,
         description: data.description,
-        url: data.link,
+        url: data.url,
         difficulty: data.difficulty,
         type: contestType,
         added_by: user.id,
@@ -58,6 +60,43 @@ const createContestAction = async (
   }
 };
 
+const getContestData = async (
+  contest_type: ContestType
+): Promise<ActionResult<Contest[]>> => {
+  try {
+    const rawContests = await prisma.contests.findMany({
+      where: { type: contest_type },
+      include: {
+        tags: {
+          select: {
+            tagId: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const contests = rawContests.map((contest) => ({
+      ...contest,
+      tags: contest.tags.map((tag) => tag.tagId.name),
+    }));
+
+    const validation = z.array(contestSchema).safeParse(contests);
+
+    if (!validation.success) {
+      return { error: "Invalid contest data" };
+    }
+
+    return { data: contests };
+  } catch (err) {
+    console.error("Error fetching contests:", err);
+    return { error: "Failed to fetch contests" };
+  }
+};
+
 const updateContestAction = async (data: {
   id: string;
   name: string;
@@ -74,4 +113,4 @@ const updateContestAction = async (data: {
   return { success: true, message: "Contest created successfully" };
 };
 
-export { createContestAction, updateContestAction };
+export { createContest, updateContestAction, getContestData };

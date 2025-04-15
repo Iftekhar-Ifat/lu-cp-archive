@@ -2,7 +2,7 @@
 
 import { type ContestDifficultyType } from "@/types/types";
 
-const createContestAction = async (data: {
+const createContest = async (data: {
   name: string;
   description: string;
   link: string;
@@ -33,4 +33,4 @@ const updateContestAction = async (data: {
   return { success: true, message: "Contest created successfully" };
 };
 
-export { createContestAction, updateContestAction };
+export { createContest, updateContestAction };

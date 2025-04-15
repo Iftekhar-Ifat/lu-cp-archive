@@ -1,32 +1,31 @@
-import { type Difficulty, type UserType } from "@prisma/client";
+import { type contestSchema } from "@/utils/schema/contest-form";
+import { z } from "zod";
 // User Types
-//
-export type USER_TYPE = UserType;
+
+export type USER_TYPE = "STANDARD" | "POWER" | "ADMIN";
 
 // TEMP
 export type User = {
   id: string;
-  email: string;
   name: string;
+  email: string;
   user_name: string;
   user_type: USER_TYPE;
   created_at: Date;
   updated_at: Date;
 };
 
-// Contest Types
+export const Difficulty = z.enum(["EASY", "MEDIUM", "HARD"]);
 
-export type ContestDifficultyType = Difficulty;
+export const ContestType = z.enum([
+  "intra_lu_contests",
+  "marathon_contests",
+  "short_contests",
+]);
 
-export type Contest = {
-  id: string;
-  name: string;
-  description: string;
-  link: string;
-  added_by: string;
-  difficulty: ContestDifficultyType;
-  tags: string[];
-};
+export type ContestDifficultyType = z.infer<typeof Difficulty>;
+
+export type Contest = z.infer<typeof contestSchema>;
 
 // Topic Types
 
@@ -44,7 +43,7 @@ export type TopicWiseCard = {
 };
 
 // Problem Types
-export type ProblemDifficultyType = Difficulty;
+export type ProblemDifficultyType = z.infer<typeof Difficulty>;
 
 export type Problem = {
   id: string;

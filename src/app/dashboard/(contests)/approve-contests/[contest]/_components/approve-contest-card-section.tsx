@@ -15,7 +15,7 @@ export default async function ApproveContestCardSection({
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {approveContestData.map((contest) => (
-        <Link key={contest.id} href={contest.link} className="group">
+        <Link key={contest.id} href={contest.url} className="group">
           <ContestCard contest={contest} approveContestCard={true} />
         </Link>
       ))}

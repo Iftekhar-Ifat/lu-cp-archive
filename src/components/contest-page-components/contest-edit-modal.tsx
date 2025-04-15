@@ -25,11 +25,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type ContestDifficultyType, type Contest } from "@/types/types";
+import { type Contest, type ContestDifficultyType } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import {
-  contestFormSchema,
+  contestSchema,
   MAX_CONTEST_TAG_LENGTH,
 } from "@/utils/schema/contest-form";
 import { DifficultyStatus } from "../shared/difficulty-status";
@@ -40,7 +40,7 @@ import {
   TagsInputList,
 } from "../ui/tags-input";
 
-type ContestFormValues = z.infer<typeof contestFormSchema>;
+type ContestFormValues = z.infer<typeof contestSchema>;
 
 export default function ContestEditModal({
   isOpen,
@@ -56,14 +56,14 @@ export default function ContestEditModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues: Partial<ContestFormValues> = {
-    name: contest.name,
+    title: contest.title,
     description: contest.description,
-    link: contest.link,
+    url: contest.url,
     tags: contest.tags,
   };
 
   const form = useForm<ContestFormValues>({
-    resolver: zodResolver(contestFormSchema),
+    resolver: zodResolver(contestSchema),
     defaultValues,
   });
 
@@ -144,7 +144,7 @@ export default function ContestEditModal({
             {/* Contest Name Field */}
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Contest Name</FormLabel>
@@ -167,13 +167,13 @@ export default function ContestEditModal({
                     <Textarea
                       placeholder="Describe the contest"
                       className="min-h-[100px] resize-none"
-                      maxLength={contestFormSchema.shape.description.maxLength!}
+                      maxLength={contestSchema.shape.description.maxLength!}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="flex justify-end text-xs">
                     {form.watch("description")?.length || 0}/
-                    {contestFormSchema.shape.description.maxLength} characters
+                    {contestSchema.shape.description.maxLength} characters
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -183,7 +183,7 @@ export default function ContestEditModal({
             {/* Contest Link Field */}
             <FormField
               control={form.control}
-              name="link"
+              name="url"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Contest Link</FormLabel>

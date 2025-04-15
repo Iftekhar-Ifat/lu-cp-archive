@@ -5,10 +5,10 @@ import { ContestStatus } from "./contest-status";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import ContestEditModal from "./contest-edit-modal";
-import { type Contest } from "@/types/types";
 import { deleteContestMock } from "@/utils/helper";
 import { DeleteModal } from "../shared/delete-modal";
 import { cn } from "@/lib/utils";
+import { type Contest } from "@/types/types";
 
 export default function ContestCardFooter({
   contest,

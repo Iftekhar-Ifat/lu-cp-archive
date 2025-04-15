@@ -8,59 +8,66 @@ import { type ContestType } from "@prisma/client";
 const fetchedData: Contest[] = [
   {
     id: "1",
-    name: "Topic Wise",
+    title: "Topic Wise",
     description: "Practice Topic wise problems",
-    link: "dashboard/topic-wise",
+    url: "dashboard/topic-wise",
     added_by: "Dewan Abdul Mohaimin Chowdhury",
     difficulty: "EASY",
     tags: ["array", "string", "math", "dp"],
+    type: "intra_lu_contests",
   },
   {
     id: "2",
-    name: "Codeforces Ladder",
+    title: "Codeforces Ladder",
     description: "Practice Codeforces problem by difficulty level",
-    link: "dashboard/codeforces-ladder",
+    url: "dashboard/codeforces-ladder",
     added_by: "Dewan Abdul Mohaimin Chowdhury",
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    type: "intra_lu_contests",
   },
   {
     id: "3",
-    name: "Leaderboard",
+    title: "Leaderboard",
     description: "Leaderboard of LU's competitive programers",
-    link: "dashboard/leaderboard",
+    url: "dashboard/leaderboard",
     added_by: "Iftekhar-Ifat",
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    type: "intra_lu_contests",
   },
   {
     id: "4",
-    name: "Intra LU Contest",
+    title: "Intra LU Contest",
     description: "Problems from previous onsite LU contests",
-    link: "dashboard/intra-lu-contests",
+    url: "dashboard/intra-lu-contests",
     added_by: "Iftekhar-Ifat",
     difficulty: "HARD",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    type: "intra_lu_contests",
   },
   {
     id: "5",
-    name: "LU Problem Solver Short Contest",
+    title: "LU Problem Solver Short Contest",
     description: "Short Contests organized by LU Problem Solvers",
-    link: "dashboard/short-contests",
+    url: "dashboard/short-contests",
     added_by: "Dewan Abdul Mohaimin Chowdhury",
     difficulty: "MEDIUM",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    type: "intra_lu_contests",
   },
   {
     id: "6",
-    name: "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet",
+    title:
+      "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet",
     description:
       "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet Long Contests organized by LU Problem Solvers",
-    link: "dashboard/marathon-contests",
+    url: "dashboard/marathon-contests",
     added_by:
       "Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury",
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    type: "intra_lu_contests",
   },
 ];
 
@@ -162,66 +169,73 @@ export async function fetchTopics() {
 const fetchedContestData: Contest[] = [
   {
     id: "1",
-    name: "Topic Wise",
+    title: "Topic Wise",
     description: "Practice Topic wise problems",
-    link: "dashboard/topic-wise",
+    url: "dashboard/topic-wise",
     added_by: "Dewan Abdul Mohaimin Chowdhury",
     difficulty: "EASY",
     tags: ["array", "string", "math", "dp"],
+    type: "intra_lu_contests",
   },
   {
     id: "2",
-    name: "Codeforces Ladder",
+    title: "Codeforces Ladder",
     description: "Practice Codeforces problem by difficulty level",
-    link: "dashboard/codeforces-ladder",
+    url: "dashboard/codeforces-ladder",
     added_by: "Dewan Abdul Mohaimin Chowdhury",
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    type: "intra_lu_contests",
   },
   {
     id: "3",
-    name: "Leaderboard",
+    title: "Leaderboard",
     description: "Leaderboard of LU's competitive programers",
-    link: "dashboard/leaderboard",
+    url: "dashboard/leaderboard",
     added_by: "Iftekhar-Ifat",
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    type: "intra_lu_contests",
   },
   {
     id: "4",
-    name: "Intra LU Contest",
+    title: "Intra LU Contest",
     description: "Problems from previous onsite LU contests",
-    link: "dashboard/intra-lu-contests",
+    url: "dashboard/intra-lu-contests",
     added_by: "Iftekhar-Ifat",
     difficulty: "HARD",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    type: "intra_lu_contests",
   },
   {
     id: "5",
-    name: "LU Problem Solver Short Contest",
+    title: "LU Problem Solver Short Contest",
     description: "Short Contests organized by LU Problem Solvers",
-    link: "dashboard/short-contests",
+    url: "dashboard/short-contests",
     added_by: "Dewan Abdul Mohaimin Chowdhury",
     difficulty: "MEDIUM",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    type: "intra_lu_contests",
   },
   {
     id: "6",
-    name: "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet",
+    title:
+      "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet",
     description:
       "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet Long Contests organized by LU Problem Solvers",
-    link: "dashboard/marathon-contests",
+    url: "dashboard/marathon-contests",
     added_by:
       "Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury",
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    type: "intra_lu_contests",
   },
 ];
 
 export async function fetchContestData(contestType: ContestType) {
   await new Promise((resolve) => setTimeout(resolve, 4000));
 
-  fetchedContestData[0].name = contestType;
+  fetchedContestData[0].title = contestType;
   return fetchedContestData;
 }
 
@@ -322,7 +336,7 @@ export async function fetchProblemStats() {
 export async function fetchProblemData(problemType: string) {
   await new Promise((resolve) => setTimeout(resolve, 4000));
 
-  fetchedContestData[0].name = problemType;
+  fetchedContestData[0].title = problemType;
   return fetchedContestData;
 }
 
