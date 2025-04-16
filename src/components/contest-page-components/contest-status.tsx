@@ -58,9 +58,7 @@ export function ContestStatus({
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  // Initialize selectedStatus from the prop
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(() => {
-    // Find and set the initial status from props
     const initialStatus =
       statuses.find((status) => status.value === contestStatus) || null;
     return initialStatus;
@@ -73,11 +71,9 @@ export function ContestStatus({
     try {
       setLoading(true);
 
-      // Calculate the next status (null if already selected)
       const nextStatus =
         selectedStatus?.value === newStatus?.value ? null : newStatus;
 
-      // Invoke the update function with null or the new status value
       const result = await updateContestStatus(
         contestId,
         nextStatus?.value ?? null
