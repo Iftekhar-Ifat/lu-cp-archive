@@ -25,13 +25,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type ContestDifficultyType } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import {
-  contestSchema,
+  ContestFormSchema,
   MAX_CONTEST_TAG_LENGTH,
-} from "@/utils/schema/contest-form";
+} from "@/utils/schema/contest";
 import { DifficultyStatus } from "../shared/difficulty-status";
 import { type ContestType } from "@prisma/client";
 import { createContest } from "@/app/dashboard/(contests)/_actions/contest-actions";
@@ -43,7 +42,7 @@ import {
   TagsInputList,
 } from "../ui/tags-input";
 
-type ContestFormValues = z.infer<typeof contestSchema>;
+type ContestFormValues = z.infer<typeof ContestFormSchema>;
 
 export default function ContestAddModal({
   isOpen,
@@ -54,20 +53,17 @@ export default function ContestAddModal({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   contestType: ContestType;
 }) {
-  const [selectedDifficulty, setSelectedDifficulty] =
-    useState<ContestDifficultyType>("EASY");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const defaultValues: Partial<ContestFormValues> = {
-    title: "",
-    description: "",
-    url: "",
-    tags: [],
-  };
-
   const form = useForm<ContestFormValues>({
-    resolver: zodResolver(contestSchema),
-    defaultValues,
+    resolver: zodResolver(ContestFormSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      url: "",
+      tags: [],
+      difficulty: "EASY",
+    },
   });
 
   const { setValue, setError } = form;
@@ -94,20 +90,10 @@ export default function ContestAddModal({
     });
   };
 
-  const handleDifficultyChange = (difficulty: ContestDifficultyType) => {
-    setSelectedDifficulty(difficulty);
-  };
-
   const onSubmit = async (data: ContestFormValues) => {
     setIsSubmitting(true);
 
-    const result = await createContest(
-      {
-        ...data,
-        difficulty: selectedDifficulty,
-      },
-      contestType
-    );
+    const result = await createContest(data, contestType);
 
     if (isActionError(result)) {
       toast.error(result.error, {
@@ -171,13 +157,13 @@ export default function ContestAddModal({
                     <Textarea
                       placeholder="Describe the contest"
                       className="min-h-[100px] resize-none"
-                      maxLength={contestSchema.shape.description.maxLength!}
+                      maxLength={ContestFormSchema.shape.description.maxLength!}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="flex justify-end text-xs">
                     {form.watch("description")?.length || 0}/
-                    {contestSchema.shape.description.maxLength} characters
+                    {ContestFormSchema.shape.description.maxLength} characters
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -241,13 +227,22 @@ export default function ContestAddModal({
             />
 
             {/* Difficulty Status Section */}
-            <div className="space-x-2 space-y-2">
-              <FormLabel>Difficulty Level</FormLabel>
-              <DifficultyStatus
-                onDifficultyChange={handleDifficultyChange}
-                initialDifficulty="EASY"
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="difficulty"
+              render={({ field }) => (
+                <FormItem className="space-x-2 space-y-2">
+                  <FormLabel>Difficulty Level</FormLabel>
+                  <FormControl>
+                    <DifficultyStatus
+                      onDifficultyChange={field.onChange}
+                      initialDifficulty={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <DialogFooter className="flex-col gap-2 sm:flex-row sm:gap-0">
               <Button

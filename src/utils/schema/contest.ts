@@ -4,7 +4,7 @@ import { z } from "zod";
 export const MAX_CONTEST_TAG_LENGTH = 5;
 
 // Validation schema for the contest form
-const contestSchema = z.object({
+const ContestSchema = z.object({
   id: z.string().cuid(),
   title: z
     .string()
@@ -25,9 +25,17 @@ const contestSchema = z.object({
     }),
   difficulty: Difficulty,
   type: ContestType,
-  approved: z.boolean().optional(),
+  approved: z.boolean(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
 });
 
-export { contestSchema };
+const ContestFormSchema = ContestSchema.pick({
+  title: true,
+  description: true,
+  url: true,
+  tags: true,
+  difficulty: true,
+});
+
+export { ContestSchema, ContestFormSchema };

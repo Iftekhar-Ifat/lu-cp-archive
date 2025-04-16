@@ -16,6 +16,7 @@ export default function IntraLUContestCardSection() {
     data: intraLUContestData,
     isPending,
     isError,
+    error,
     refetch,
   } = useQuery({
     queryKey: ["intra-lu-contests"],
@@ -38,7 +39,7 @@ export default function IntraLUContestCardSection() {
   }
 
   if (isError) {
-    return <Error refetch={refetch} />;
+    return <Error refetch={refetch} message={error.message} />;
   }
 
   return (

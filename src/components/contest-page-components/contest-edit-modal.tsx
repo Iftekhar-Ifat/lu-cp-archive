@@ -28,10 +28,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { type Contest, type ContestDifficultyType } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import {
-  contestSchema,
-  MAX_CONTEST_TAG_LENGTH,
-} from "@/utils/schema/contest-form";
+import { ContestSchema, MAX_CONTEST_TAG_LENGTH } from "@/utils/schema/contest";
 import { DifficultyStatus } from "../shared/difficulty-status";
 import {
   TagsInput,
@@ -40,7 +37,7 @@ import {
   TagsInputList,
 } from "../ui/tags-input";
 
-type ContestFormValues = z.infer<typeof contestSchema>;
+type ContestFormValues = z.infer<typeof ContestSchema>;
 
 export default function ContestEditModal({
   isOpen,
@@ -63,7 +60,7 @@ export default function ContestEditModal({
   };
 
   const form = useForm<ContestFormValues>({
-    resolver: zodResolver(contestSchema),
+    resolver: zodResolver(ContestSchema),
     defaultValues,
   });
 
@@ -167,13 +164,13 @@ export default function ContestEditModal({
                     <Textarea
                       placeholder="Describe the contest"
                       className="min-h-[100px] resize-none"
-                      maxLength={contestSchema.shape.description.maxLength!}
+                      maxLength={ContestSchema.shape.description.maxLength!}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="flex justify-end text-xs">
                     {form.watch("description")?.length || 0}/
-                    {contestSchema.shape.description.maxLength} characters
+                    {ContestSchema.shape.description.maxLength} characters
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

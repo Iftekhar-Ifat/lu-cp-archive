@@ -1,4 +1,4 @@
-import { type contestSchema } from "@/utils/schema/contest-form";
+import { type ContestSchema } from "@/utils/schema/contest";
 import { z } from "zod";
 // User Types
 
@@ -25,7 +25,7 @@ export const ContestType = z.enum([
 
 export type ContestDifficultyType = z.infer<typeof Difficulty>;
 
-export type Contest = z.infer<typeof contestSchema>;
+export type Contest = z.infer<typeof ContestSchema>;
 
 // Topic Types
 

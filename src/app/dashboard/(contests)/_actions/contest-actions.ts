@@ -5,8 +5,8 @@ import { prisma } from "@/lib/prisma";
 import { type Contest, type ContestDifficultyType } from "@/types/types";
 import { type ActionResult, isActionError } from "@/utils/error-helper";
 import { hasPermission } from "@/utils/permissions";
-import { contestSchema } from "@/utils/schema/contest-form";
-import { type ContestType, type Difficulty } from "@prisma/client";
+import { ContestFormSchema, ContestSchema } from "@/utils/schema/contest";
+import { type ContestType } from "@prisma/client";
 import { z } from "zod";
 
 const createContest = async (
@@ -15,10 +15,16 @@ const createContest = async (
     description: string;
     url: string;
     tags: string[];
-    difficulty: Difficulty;
+    difficulty: ContestDifficultyType;
   },
   contestType: ContestType
 ) => {
+  const validateData = ContestFormSchema.safeParse(data);
+
+  if (validateData.error) {
+    return { error: "Invalid data type" };
+  }
+
   const user = await getUserData();
 
   if (isActionError(user)) {
@@ -84,9 +90,9 @@ const getContestData = async (
       tags: contest.tags.map((tag) => tag.tagId.name),
     }));
 
-    const validation = z.array(contestSchema).safeParse(contests);
+    const validation = z.array(ContestSchema).safeParse(contests);
 
-    if (!validation.success) {
+    if (validation.error) {
       return { error: "Invalid contest data" };
     }
 
