@@ -2,7 +2,11 @@
 
 import { getUserData } from "@/components/shared-actions/getUserData";
 import { prisma } from "@/lib/prisma";
-import { type Contest, type ContestDifficultyType } from "@/types/types";
+import {
+  type ContestStatusType,
+  type Contest,
+  type ContestDifficultyType,
+} from "@/types/types";
 import { type ActionResult, isActionError } from "@/utils/error-helper";
 import { hasPermission } from "@/utils/permissions";
 import { ContestFormSchema, ContestSchema } from "@/utils/schema/contest";
@@ -69,9 +73,18 @@ async function createContest(
 async function getContestData(
   contest_type: ContestType
 ): Promise<ActionResult<Contest[]>> {
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
   try {
     const rawContests = await prisma.contests.findMany({
-      where: { type: contest_type },
+      where: {
+        type: contest_type,
+        approved: true,
+      },
       include: {
         tags: {
           select: {
@@ -82,12 +95,21 @@ async function getContestData(
             },
           },
         },
+        status: {
+          where: {
+            user_id: user.id,
+          },
+          select: {
+            status: true,
+          },
+        },
       },
     });
 
     const contests = rawContests.map((contest) => ({
       ...contest,
       tags: contest.tags.map((tag) => tag.tagId.name),
+      status: contest.status[0]?.status ?? null, // Handle if no status entry exists
     }));
 
     const validation = z.array(ContestSchema).safeParse(contests);
@@ -146,4 +168,45 @@ async function deleteContest(contestId: string) {
   }
 }
 
-export { createContest, updateContestAction, getContestData, deleteContest };
+async function updateContestStatus(
+  contestId: string,
+  status: ContestStatusType | null
+) {
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  try {
+    const updatedStatus = await prisma.contest_status.upsert({
+      where: {
+        user_id_contest_id: {
+          user_id: user.id,
+          contest_id: contestId,
+        },
+      },
+      update: {
+        status,
+      },
+      create: {
+        user_id: user.id,
+        contest_id: contestId,
+        status,
+      },
+    });
+
+    return { success: true, data: updatedStatus };
+  } catch (error) {
+    console.error("Error updating contest status:", error);
+    return { error: "Failed to update contest status" };
+  }
+}
+
+export {
+  createContest,
+  updateContestAction,
+  getContestData,
+  deleteContest,
+  updateContestStatus,
+};

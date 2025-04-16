@@ -42,6 +42,7 @@ export default function ContestCard({
         "[&[data-card-border='DONE']]:border-emerald-500"
       )}
       data-card
+      data-card-border={contest.status || undefined}
     >
       <CardHeader>
         <div className="flex items-start justify-between space-y-0">

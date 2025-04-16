@@ -54,7 +54,12 @@ export default function ContestCardFooter({
             </Button>
           </div>
         )}
-        {showContestStatus && <ContestStatus />}
+        {showContestStatus && (
+          <ContestStatus
+            contestId={contest.id}
+            contestStatus={contest.status}
+          />
+        )}
         {showApproveButton && (
           <Button variant="outline">
             Approve

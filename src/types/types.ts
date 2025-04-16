@@ -1,4 +1,5 @@
 import { type ContestSchema } from "@/utils/schema/contest";
+import { type StatusType } from "@prisma/client";
 import { z } from "zod";
 // User Types
 
@@ -28,6 +29,12 @@ export type ContestType = z.infer<typeof ContestTypeSchema>;
 export type ContestDifficultyType = z.infer<typeof DifficultySchema>;
 
 export type Contest = z.infer<typeof ContestSchema>;
+
+export const StatusSchema = z
+  .enum(["DONE", "InProgress", "SKIPPED"])
+  .nullable();
+
+export type ContestStatusType = z.infer<typeof StatusSchema>;
 
 // Topic Types
 

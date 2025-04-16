@@ -63,8 +63,8 @@ enum ContestType {
 
 model contest_status {
   status     StatusType?
-  user_id    String      @unique
-  contest_id String      @unique
+  user_id    String
+  contest_id String
 
   userId    users    @relation(fields: [user_id], references: [id])
   contestId contests @relation(fields: [contest_id], references: [id], onDelete: Cascade)
