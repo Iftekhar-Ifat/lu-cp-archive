@@ -1,4 +1,4 @@
-import { ContestType, Difficulty } from "@/types/types";
+import { ContestTypeSchema, DifficultySchema } from "@/types/types";
 import { z } from "zod";
 
 export const MAX_CONTEST_TAG_LENGTH = 5;
@@ -23,8 +23,8 @@ const ContestSchema = z.object({
     .refine((tags) => new Set(tags).size === tags.length, {
       message: "Tags must be unique",
     }),
-  difficulty: Difficulty,
-  type: ContestType,
+  difficulty: DifficultySchema,
+  type: ContestTypeSchema,
   approved: z.boolean(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),

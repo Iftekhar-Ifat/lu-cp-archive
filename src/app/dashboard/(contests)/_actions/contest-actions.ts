@@ -9,7 +9,7 @@ import { ContestFormSchema, ContestSchema } from "@/utils/schema/contest";
 import { type ContestType } from "@prisma/client";
 import { z } from "zod";
 
-const createContest = async (
+async function createContest(
   data: {
     title: string;
     description: string;
@@ -18,7 +18,7 @@ const createContest = async (
     difficulty: ContestDifficultyType;
   },
   contestType: ContestType
-) => {
+) {
   const validateData = ContestFormSchema.safeParse(data);
 
   if (validateData.error) {
@@ -64,11 +64,11 @@ const createContest = async (
     console.error("Error creating contest:", error);
     return { error: `Failed to create contest` };
   }
-};
+}
 
-const getContestData = async (
+async function getContestData(
   contest_type: ContestType
-): Promise<ActionResult<Contest[]>> => {
+): Promise<ActionResult<Contest[]>> {
   try {
     const rawContests = await prisma.contests.findMany({
       where: { type: contest_type },
@@ -101,7 +101,7 @@ const getContestData = async (
     console.error("Error fetching contests:", err);
     return { error: "Failed to fetch contests" };
   }
-};
+}
 
 const updateContestAction = async (data: {
   id: string;
@@ -119,4 +119,31 @@ const updateContestAction = async (data: {
   return { success: true, message: "Contest created successfully" };
 };
 
-export { createContest, updateContestAction, getContestData };
+async function deleteContest(contestId: string) {
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  const hasAddPermission = hasPermission(user.user_type, "mutate-contest");
+
+  if (!hasAddPermission) {
+    return { error: "You do not have permission to create a contest" };
+  }
+
+  try {
+    await prisma.contests.delete({
+      where: {
+        id: contestId,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error creating contest:", error);
+    return { error: `Failed to create contest` };
+  }
+}
+
+export { createContest, updateContestAction, getContestData, deleteContest };

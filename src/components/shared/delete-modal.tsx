@@ -7,27 +7,44 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { isActionError } from "@/utils/error-helper";
+import { useQueryClient } from "@tanstack/react-query";
 import { type SetStateAction, useState } from "react";
 import { type Dispatch } from "react";
+import { toast } from "sonner";
 
 export function DeleteModal({
   isOpen,
   setIsOpen,
   itemType,
   actionFunction,
+  revalidateKey,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   itemType: string;
   actionFunction: () => Promise<unknown>;
+  revalidateKey?: string;
 }) {
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await actionFunction();
-      setIsOpen(false);
+      const result = await actionFunction();
+      if (isActionError(result)) {
+        toast.error(result.error, {
+          position: "top-center",
+        });
+      } else {
+        queryClient.invalidateQueries({ queryKey: [revalidateKey] });
+        toast.success("Contest successfully deleted", {
+          position: "top-center",
+        });
+        setIsOpen(false);
+      }
     } catch (error) {
       console.error(`Failed to delete ${itemType}:`, error);
     } finally {

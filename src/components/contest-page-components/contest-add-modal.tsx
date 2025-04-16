@@ -32,7 +32,6 @@ import {
   MAX_CONTEST_TAG_LENGTH,
 } from "@/utils/schema/contest";
 import { DifficultyStatus } from "../shared/difficulty-status";
-import { type ContestType } from "@prisma/client";
 import { createContest } from "@/app/dashboard/(contests)/_actions/contest-actions";
 import { isActionError } from "@/utils/error-helper";
 import {
@@ -41,6 +40,8 @@ import {
   TagsInputItem,
   TagsInputList,
 } from "../ui/tags-input";
+import { useQueryClient } from "@tanstack/react-query";
+import { type ContestType } from "@/types/types";
 
 type ContestFormValues = z.infer<typeof ContestFormSchema>;
 
@@ -53,6 +54,8 @@ export default function ContestAddModal({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   contestType: ContestType;
 }) {
+  const queryClient = useQueryClient();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<ContestFormValues>({
@@ -100,6 +103,7 @@ export default function ContestAddModal({
         position: "top-center",
       });
     } else {
+      queryClient.invalidateQueries({ queryKey: [contestType] });
       toast.success("Contest successfully added", {
         position: "top-center",
       });

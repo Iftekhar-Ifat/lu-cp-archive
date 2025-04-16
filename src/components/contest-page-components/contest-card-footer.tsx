@@ -5,10 +5,10 @@ import { ContestStatus } from "./contest-status";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import ContestEditModal from "./contest-edit-modal";
-import { deleteContestMock } from "@/utils/helper";
 import { DeleteModal } from "../shared/delete-modal";
 import { cn } from "@/lib/utils";
 import { type Contest } from "@/types/types";
+import { deleteContest } from "@/app/dashboard/(contests)/_actions/contest-actions";
 
 export default function ContestCardFooter({
   contest,
@@ -71,7 +71,8 @@ export default function ContestCardFooter({
         isOpen={isDeleteModalOpen}
         setIsOpen={setIsDeleteModalOpen}
         itemType="contest"
-        actionFunction={() => deleteContestMock(contest.id)}
+        actionFunction={() => deleteContest(contest.id)}
+        revalidateKey={contest.type}
       />
     </div>
   );

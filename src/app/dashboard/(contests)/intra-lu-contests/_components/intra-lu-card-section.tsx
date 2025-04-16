@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import FilterByDifficulty from "@/components/shared/filtering/filter-by-difficulty";
 import { getContestData } from "../../_actions/contest-actions";
 import { unwrapActionResult } from "@/utils/error-helper";
-import { type Contest } from "@/types/types";
+import { ContestTypeSchema, type Contest } from "@/types/types";
 
 export default function IntraLUContestCardSection() {
   const {
@@ -19,9 +19,11 @@ export default function IntraLUContestCardSection() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["intra-lu-contests"],
+    queryKey: [ContestTypeSchema.Enum.intra_lu_contests],
     queryFn: async () => {
-      const result = await getContestData("intra_lu_contests");
+      const result = await getContestData(
+        ContestTypeSchema.Enum.intra_lu_contests
+      );
       return unwrapActionResult(result);
     },
   });

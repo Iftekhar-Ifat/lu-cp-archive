@@ -15,15 +15,17 @@ export type User = {
   updated_at: Date;
 };
 
-export const Difficulty = z.enum(["EASY", "MEDIUM", "HARD"]);
+export const DifficultySchema = z.enum(["EASY", "MEDIUM", "HARD"]);
 
-export const ContestType = z.enum([
+export const ContestTypeSchema = z.enum([
   "intra_lu_contests",
   "marathon_contests",
   "short_contests",
 ]);
 
-export type ContestDifficultyType = z.infer<typeof Difficulty>;
+export type ContestType = z.infer<typeof ContestTypeSchema>;
+
+export type ContestDifficultyType = z.infer<typeof DifficultySchema>;
 
 export type Contest = z.infer<typeof ContestSchema>;
 
@@ -43,7 +45,7 @@ export type TopicWiseCard = {
 };
 
 // Problem Types
-export type ProblemDifficultyType = z.infer<typeof Difficulty>;
+export type ProblemDifficultyType = z.infer<typeof DifficultySchema>;
 
 export type Problem = {
   id: string;
