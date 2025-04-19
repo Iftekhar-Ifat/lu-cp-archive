@@ -4,11 +4,10 @@ import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { ClerkProvider } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
 import { ToasterProvider } from "@/components/ui/toaster-provider";
 import ReactQueryProvider from "@/components/query-client-provider";
 import { type ReactNode } from "react";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,17 +26,13 @@ export const metadata: Metadata = {
   description: "Leading University Competitive Programming Archive",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        baseTheme: dark,
-      }}
-    >
+    <SessionProvider>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -54,6 +49,6 @@ export default function RootLayout({
           </ReactQueryProvider>
         </body>
       </html>
-    </ClerkProvider>
+    </SessionProvider>
   );
 }

@@ -1,6 +1,15 @@
 "use server";
 
+import { signIn, signOut } from "@/lib/auth";
 import { type User } from "@/types/types";
+
+async function signInAction() {
+  await signIn("github", { redirectTo: "/dashboard" });
+}
+
+async function signOutAction() {
+  await signOut({ redirectTo: "/" });
+}
 
 // Mock function to get user
 const getUser = async () => {
@@ -22,4 +31,4 @@ const getUser = async () => {
   }
 };
 
-export { getUser };
+export { getUser, signInAction, signOutAction };

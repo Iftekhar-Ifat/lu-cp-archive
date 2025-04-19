@@ -151,7 +151,7 @@ async function deleteContest(contestId: string) {
   const hasAddPermission = hasPermission(user.user_type, "mutate-contest");
 
   if (!hasAddPermission) {
-    return { error: "You do not have permission to create a contest" };
+    return { error: "You do not have permission to delete a contest" };
   }
 
   try {

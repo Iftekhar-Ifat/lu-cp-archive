@@ -2,17 +2,17 @@
 
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Globe from "./_components/Globe";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
-  const { user, isLoaded } = useUser();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   const handleClick = () => {
-    if (user) {
+    if (session) {
       router.push("/dashboard");
     } else {
       toast.error("Please log in to continue", {
@@ -36,9 +36,9 @@ export default function Home() {
             size="lg"
             className="py-8 font-mono text-xl font-bold"
             onClick={handleClick}
-            disabled={!isLoaded}
+            disabled={status === "loading"}
           >
-            {!isLoaded ? "Loading..." : "Get Started"}
+            {status === "loading" ? "Loading..." : "Get Started"}
           </Button>
         </div>
       </div>

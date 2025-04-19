@@ -17,6 +17,7 @@ model users {
   id         String   @id @default(cuid())
   name       String
   email      String   @unique
+  image      String?
   user_name  String   @unique
   user_type  UserType @default(STANDARD)
   created_at DateTime @default(now())

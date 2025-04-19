@@ -1,18 +1,18 @@
 "use server";
 
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { currentUser } from "@clerk/nextjs/server";
 
 export async function getUserData() {
-  const user = await currentUser();
+  const session = await auth();
 
-  if (!user) {
+  if (!session?.user.email) {
     return { error: "User not found" };
   }
 
   const userData = await prisma.users.findUnique({
     where: {
-      email: user.primaryEmailAddress?.emailAddress,
+      email: session.user.email,
     },
   });
 

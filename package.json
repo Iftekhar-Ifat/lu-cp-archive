@@ -24,9 +24,6 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.0.2",
-    "@clerk/themes": "^2.1.39",
-    "@clerk/types": "^4.28.0",
     "@diceui/tags-input": "^0.7.2",
     "@hookform/resolvers": "^4.1.2",
     "@prisma/client": "^6.3.1",
@@ -48,6 +45,7 @@
     "dotenv-cli": "^8.0.0",
     "lucide-react": "^0.453.0",
     "next": "^14.2.24",
+    "next-auth": "^5.0.0-beta.25",
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
