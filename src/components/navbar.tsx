@@ -14,8 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Icons } from "./icons";
-import { useSession, signOut as clientSignOut } from "next-auth/react";
-import { signInAction } from "@/app/dashboard/shared-actions";
+import { signOut, useSession, signIn } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -26,7 +25,7 @@ export default function Navbar() {
   const handleSignIn = async () => {
     setIsLoading(true);
     try {
-      await signInAction();
+      await signIn("github", { redirectTo: "/dashboard" });
     } catch (error) {
       console.error("Sign in failed:", error);
       toast.error("Failed to sign in", {
@@ -40,7 +39,7 @@ export default function Navbar() {
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
-      await clientSignOut({ redirect: true, callbackUrl: "/" });
+      await signOut({ redirect: true, callbackUrl: "/" });
       await update();
     } catch (error) {
       console.error("Sign out failed:", error);
