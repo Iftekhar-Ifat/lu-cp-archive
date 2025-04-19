@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Binary, LogIn, LogOut, Palette, User } from "lucide-react";
+import { LogIn, LogOut, Palette, User } from "lucide-react";
 import MaxWidthWrapper from "./max-width-wrapper";
 import ThemeToggle from "./ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { Icons } from "./icons";
 
 export default function Navbar() {
   const { user, isLoaded } = useUser();
@@ -26,7 +27,7 @@ export default function Navbar() {
             className="flex items-center gap-2 text-lg font-semibold"
             prefetch={false}
           >
-            <Binary className="h-8 w-8" />
+            <Icons.logo className="h-8 w-8" />
             <span className="sr-only">LU-CP-Archive</span>
           </Link>
           {isLoaded && (
