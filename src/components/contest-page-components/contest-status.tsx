@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { type ContestStatusType } from "@/types/types";
-import { updateContestStatus } from "@/app/dashboard/(contests)/_actions/contest-actions";
+import { updateContestStatus } from "@/app/dashboard/(contests)/contest-actions";
 import { isActionError } from "@/utils/error-helper";
 import { toast } from "sonner";
 

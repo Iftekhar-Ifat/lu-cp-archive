@@ -1,8 +1,7 @@
 import { type ContestSchema } from "@/utils/schema/contest";
-import { type StatusType } from "@prisma/client";
 import { z } from "zod";
-// User Types
 
+// User Types
 export type USER_TYPE = "STANDARD" | "POWER" | "ADMIN";
 
 // TEMP

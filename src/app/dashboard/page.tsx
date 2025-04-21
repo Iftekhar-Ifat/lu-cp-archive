@@ -37,19 +37,19 @@ const dashboardCardData = [
     href: "dashboard/leaderboard",
   },
   {
-    title: "Intra LU Contest",
+    title: "Intra LU Contests",
     description: "Problems from previous onsite LU contests",
     icon: Users,
     href: "dashboard/intra-lu-contests",
   },
   {
-    title: "LU Problem Solver Short Contest",
+    title: "Short Contests",
     description: "Short Contests organized by LU Problem Solvers",
     icon: Timer,
     href: "dashboard/short-contests",
   },
   {
-    title: "LU Problem Solver Marathon Contest",
+    title: "Marathon Contests",
     description: "Long Contests organized by LU Problem Solvers",
     icon: Hourglass,
     href: "dashboard/marathon-contests",

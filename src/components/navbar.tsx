@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LogIn, LogOut, Palette, User, Loader2 } from "lucide-react";
 import MaxWidthWrapper from "./max-width-wrapper";
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from "./theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,

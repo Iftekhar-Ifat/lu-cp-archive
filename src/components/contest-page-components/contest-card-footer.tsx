@@ -8,7 +8,7 @@ import ContestEditModal from "./contest-edit-modal";
 import { DeleteModal } from "../shared/delete-modal";
 import { cn } from "@/lib/utils";
 import { type Contest } from "@/types/types";
-import { deleteContest } from "@/app/dashboard/(contests)/_actions/contest-actions";
+import { deleteContest } from "@/app/dashboard/(contests)/contest-actions";
 
 export default function ContestCardFooter({
   contest,

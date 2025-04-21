@@ -32,7 +32,7 @@ import {
   MAX_CONTEST_TAG_LENGTH,
 } from "@/utils/schema/contest";
 import { DifficultyStatus } from "../shared/difficulty-status";
-import { createContest } from "@/app/dashboard/(contests)/_actions/contest-actions";
+import { createContest } from "@/app/dashboard/(contests)/contest-actions";
 import { isActionError } from "@/utils/error-helper";
 import {
   TagsInput,

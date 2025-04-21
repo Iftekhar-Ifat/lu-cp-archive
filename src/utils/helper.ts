@@ -45,10 +45,26 @@ function formatLastPathSegment(pathname: string): string {
     .join(" ");
 }
 
+function formatContestTypeTitle(value: string): string {
+  return value
+    .split("_")
+    .map((word) =>
+      word.toUpperCase() === "LU" // Special case for acronyms
+        ? "LU"
+        : word.charAt(0).toUpperCase() + word.slice(1)
+    )
+    .join(" ");
+}
+
+export function hyphenToUnderscore(value: string): string {
+  return value.replace(/-/g, "_");
+}
+
 export {
   capitalize,
   transformTagStringsToObjects,
   deleteContestMock,
   deleteTopicWiseCardMock,
   formatLastPathSegment,
+  formatContestTypeTitle,
 };

@@ -1,10 +1,10 @@
-import ApproveContestCardSection from "@/app/dashboard/(contests)/approve-contests/[contest]/_components/approve-contest-card-section";
 import { getUser } from "@/app/dashboard/shared-actions";
 import { formatLastPathSegment } from "@/utils/helper";
 import { hasPermission } from "@/utils/permissions";
 import { type ContestType } from "@prisma/client";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import ApproveContestCardSection from "./_components/approve-contest-card-section";
 
 type ApproveContestProps = {
   params: { contest: string };
@@ -22,7 +22,7 @@ export default async function ApproveContest({ params }: ApproveContestProps) {
     notFound();
   }
 
-  const contest_type = formatLastPathSegment(params.contest);
+  const contestName = formatLastPathSegment(params.contest);
 
   const user = await getUser();
 
@@ -35,7 +35,7 @@ export default async function ApproveContest({ params }: ApproveContestProps) {
       <div className="mb-8 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
         <div className="flex items-center">
           <span className="text-center font-mono text-2xl font-bold tracking-wide md:text-left">
-            Approve {contest_type}
+            Approve {contestName}
           </span>
         </div>
       </div>
