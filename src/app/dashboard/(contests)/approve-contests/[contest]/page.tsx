@@ -1,34 +1,31 @@
 import { getUser } from "@/app/dashboard/shared-actions";
-import { formatLastPathSegment } from "@/utils/helper";
+import { formatContestTypeTitle, hyphenToUnderscore } from "@/utils/helper";
 import { hasPermission } from "@/utils/permissions";
 import { type ContestType } from "@prisma/client";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import ApproveContestCardSection from "./_components/approve-contest-card-section";
+import { ContestTypeSchema } from "@/types/types";
 
 type ApproveContestProps = {
   params: { contest: string };
 };
 
-const contest_prefix = [
-  "intra-lu-contests",
-  "marathon-contests",
-  "short-contests",
-];
-
 export default async function ApproveContest({ params }: ApproveContestProps) {
   // This might change if dynamic contests are required or number of contest increases
-  if (!contest_prefix.includes(params.contest)) {
+
+  const formattedSlug = hyphenToUnderscore(params.contest);
+
+  if (ContestTypeSchema.safeParse(formattedSlug).error) {
     notFound();
   }
-
-  const contestName = formatLastPathSegment(params.contest);
 
   const user = await getUser();
 
   if (!user || !hasPermission(user.user_type, "approve-contest")) {
     notFound();
   }
+
+  const contestName = formatContestTypeTitle(formattedSlug);
 
   return (
     <div className="py-8">
@@ -39,12 +36,7 @@ export default async function ApproveContest({ params }: ApproveContestProps) {
           </span>
         </div>
       </div>
-
-      <Suspense fallback={"Loading ..."}>
-        <ApproveContestCardSection
-          contestType={params.contest as ContestType}
-        />
-      </Suspense>
+      <ApproveContestCardSection contestType={formattedSlug as ContestType} />
     </div>
   );
 }

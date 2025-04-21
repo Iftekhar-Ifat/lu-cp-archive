@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Filter } from "lucide-react";
-import { type Contest, type Problem } from "@/types/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,31 +13,20 @@ import {
 import { Button } from "@/components/ui/button";
 import DifficultyBadge from "../difficulty-badge";
 
-type FilterOption = "EASY" | "MEDIUM" | "HARD" | "ALL";
+export type FilterOption = "EASY" | "MEDIUM" | "HARD" | "ALL";
 
 type ItemFilterProps = {
-  items: (Problem | Contest)[];
-  onFilterChange: (filteredProblems: (Problem | Contest)[]) => void;
+  onFilterChange: (filter: FilterOption) => void;
 };
 
 export default function FilterByDifficulty({
-  items,
   onFilterChange,
 }: ItemFilterProps) {
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>("ALL");
 
   const handleFilterChange = (difficulty: FilterOption) => {
     setSelectedFilter(difficulty);
-    applyFilter(difficulty);
-  };
-
-  const applyFilter = (option: FilterOption) => {
-    if (option === "ALL") {
-      onFilterChange(items);
-    } else {
-      const filteredItems = items.filter((i) => i.difficulty === option);
-      onFilterChange(filteredItems);
-    }
+    onFilterChange(difficulty);
   };
 
   return (

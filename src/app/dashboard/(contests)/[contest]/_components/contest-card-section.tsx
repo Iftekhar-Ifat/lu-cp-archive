@@ -2,42 +2,42 @@
 
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { getContestData } from "../../contest-actions";
-import { type Contest, type ContestType } from "@/types/types";
+import { useState } from "react";
+import { getContests } from "../../contest-actions";
+import { type ContestType } from "@/types/types";
 import { unwrapActionResult } from "@/utils/error-helper";
 import Loading from "@/components/shared/loading";
 import Error from "@/components/shared/error";
 import FilterByDifficulty from "@/components/shared/filtering/filter-by-difficulty";
 import ContestCard from "@/components/contest-page-components/contest-card";
 import NoData from "@/components/shared/no-data";
+import {
+  type FilterOption,
+  useDifficultyFilter,
+} from "@/hooks/use-difficulty-filter";
 
 export default function ContestCardSection({
-  contest_type,
+  contestType,
 }: {
-  contest_type: ContestType;
+  contestType: ContestType;
 }) {
   const {
-    data: intraLUContestData,
+    data: contestData,
     isPending,
     isError,
     error,
     refetch,
   } = useQuery({
-    queryKey: [contest_type],
+    queryKey: [contestType],
     queryFn: async () => {
-      const result = await getContestData(contest_type);
+      const result = await getContests(contestType);
       return unwrapActionResult(result);
     },
   });
 
-  const [filteredContests, setFilteredContests] = useState<Contest[]>([]);
+  const [filter, setFilter] = useState<FilterOption>("ALL");
 
-  useEffect(() => {
-    if (intraLUContestData) {
-      setFilteredContests(intraLUContestData);
-    }
-  }, [intraLUContestData]);
+  const filteredContests = useDifficultyFilter(contestData, filter);
 
   if (isPending) {
     return <Loading />;
@@ -50,12 +50,7 @@ export default function ContestCardSection({
   return (
     <div>
       <div className="mb-4 flex justify-end">
-        <FilterByDifficulty
-          items={intraLUContestData || []}
-          onFilterChange={(filtered) =>
-            setFilteredContests(filtered as Contest[])
-          }
-        />
+        <FilterByDifficulty onFilterChange={setFilter} />
       </div>
       {filteredContests.length === 0 ? (
         <NoData

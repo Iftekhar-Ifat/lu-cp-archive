@@ -70,7 +70,7 @@ async function createContest(
   }
 }
 
-async function getContestData(
+async function getContests(
   contest_type: ContestType
 ): Promise<ActionResult<Contest[]>> {
   const user = await getUserData();
@@ -125,21 +125,16 @@ async function getContestData(
   }
 }
 
-const updateContestAction = async (data: {
+async function updateContest(data: {
   id: string;
   name: string;
   description: string;
   link: string;
   tags: string[];
   difficulty: ContestDifficultyType;
-}) => {
-  console.log(data);
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
-  // Mock success response
-  return { success: true, message: "Contest created successfully" };
-};
+}) {
+  // TODO
+}
 
 async function deleteContest(contestId: string) {
   const user = await getUserData();
@@ -205,8 +200,8 @@ async function updateContestStatus(
 
 export {
   createContest,
-  updateContestAction,
-  getContestData,
+  updateContest,
+  getContests,
   deleteContest,
   updateContestStatus,
 };

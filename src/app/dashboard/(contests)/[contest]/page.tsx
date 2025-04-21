@@ -28,7 +28,7 @@ export default function ContestPage({ params }: ContestPageProps) {
         </div>
         <ContestAddApproveSection />
       </div>
-      <ContestCardSection contest_type={formattedSlug as ContestType} />
+      <ContestCardSection contestType={formattedSlug as ContestType} />
     </div>
   );
 }
