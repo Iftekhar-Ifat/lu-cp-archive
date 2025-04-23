@@ -17,7 +17,6 @@ import { cn } from "@/lib/utils";
 import { hasPermission } from "@/utils/permissions";
 import { redirect, useRouter } from "next/navigation";
 import { type Contest } from "@/types/types";
-import Link from "next/link";
 
 export default function ContestCard({
   contest,
@@ -71,7 +70,7 @@ export default function ContestCard({
             className="w-fit max-w-full truncate px-2 text-xs hover:scale-[1.02]"
             onClick={(e) => {
               e.preventDefault();
-              router.push(`@${contest.added_by}`);
+              router.push(`/profile/@${contest.added_by}`);
             }}
           >
             @{contest.added_by}

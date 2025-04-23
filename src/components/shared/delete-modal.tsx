@@ -13,7 +13,7 @@ import { type SetStateAction, useState } from "react";
 import { type Dispatch } from "react";
 import { toast } from "sonner";
 
-type ItemType = "Contest" | "Problem";
+type ItemType = "Contest" | "Problem" | "Topic";
 
 export function DeleteModal({
   isOpen,

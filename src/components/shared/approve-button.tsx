@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, Loader2 } from "lucide-react";
 
-type ItemType = "Contest" | "Problem";
+type ItemType = "Contest" | "Problem" | "Topic";
 
 export default function ApproveButton({
   itemType,

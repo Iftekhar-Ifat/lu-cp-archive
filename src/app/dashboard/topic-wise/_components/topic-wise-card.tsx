@@ -2,8 +2,8 @@
 
 import {
   Card,
+  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -43,13 +43,13 @@ export default function TopicWiseCard({
           </div>
         </div>
       </CardHeader>
-      <CardFooter className="self-end">
+      <CardContent className="space-y-2">
         <TopicWiseCardFooter
           topic={topic}
           topicCardMutationPermission={hasMutationPermission}
           showApproveButton={approveTopicCard ?? false}
         />
-      </CardFooter>
+      </CardContent>
     </Card>
   );
 }

@@ -7,6 +7,7 @@ import type { TopicWiseCard } from "@/types/types";
 import { Check, Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
 import TopicEditModal from "./topic-edit-modal";
+import { cn } from "@/lib/utils";
 
 export default function TopicWiseCardFooter({
   topic,
@@ -20,12 +21,13 @@ export default function TopicWiseCardFooter({
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   return (
-    <div
-      onClick={(e) => {
-        e.preventDefault(), e.stopPropagation();
-      }}
-    >
-      <div className="flex w-full items-center justify-between">
+    <div>
+      <div
+        className={cn(
+          "flex w-full items-center",
+          topicCardMutationPermission ? "justify-between" : "justify-end"
+        )}
+      >
         {topicCardMutationPermission && (
           <div>
             <Button
@@ -60,7 +62,7 @@ export default function TopicWiseCardFooter({
       <DeleteModal
         isOpen={isDeleteModalOpen}
         setIsOpen={setIsDeleteModalOpen}
-        itemType={topic.name}
+        itemType="Topic"
         actionFunction={() => deleteTopicWiseCardMock(topic.id)}
       />
     </div>

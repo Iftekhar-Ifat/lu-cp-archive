@@ -1,18 +1,15 @@
 "use client";
 
-import { Check, Edit, Loader2, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { ContestStatus } from "./contest-status";
 import { Button } from "../ui/button";
-import { type MouseEvent, useState } from "react";
+import { useState } from "react";
 import ContestEditModal from "./contest-edit-modal";
 import { DeleteModal } from "../shared/delete-modal";
 import { cn } from "@/lib/utils";
 import { type Contest } from "@/types/types";
 import { deleteContest } from "@/app/dashboard/(contests)/contest-actions";
 import { approveContest } from "@/app/dashboard/(contests)/approve-contests/[contest]/approve-contest-action";
-import { toast } from "sonner";
-import { isActionError } from "@/utils/error-helper";
-import { useQueryClient } from "@tanstack/react-query";
 import ApproveButton from "../shared/approve-button";
 
 export default function ContestCardFooter({
@@ -26,8 +23,6 @@ export default function ContestCardFooter({
   showContestStatus: boolean;
   showApproveButton: boolean;
 }) {
-  const queryClient = useQueryClient();
-
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
