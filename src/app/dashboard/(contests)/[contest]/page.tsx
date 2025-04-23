@@ -26,7 +26,7 @@ export default function ContestPage({ params }: ContestPageProps) {
             {contestName}
           </span>
         </div>
-        <ContestAddApproveSection />
+        <ContestAddApproveSection contestType={formattedSlug as ContestType} />
       </div>
       <ContestCardSection contestType={formattedSlug as ContestType} />
     </div>

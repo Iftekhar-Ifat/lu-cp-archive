@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/popover";
 import DifficultyBadge from "./difficulty-badge";
 import { type ContestDifficultyType } from "@/types/types";
+import { DialogHeader, DialogTitle } from "../ui/dialog";
 
 type Status = {
   value: ContestDifficultyType;

@@ -1,14 +1,19 @@
 "use client";
 
-import { Check, Edit, Trash2 } from "lucide-react";
+import { Check, Edit, Loader2, Trash2 } from "lucide-react";
 import { ContestStatus } from "./contest-status";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { type MouseEvent, useState } from "react";
 import ContestEditModal from "./contest-edit-modal";
 import { DeleteModal } from "../shared/delete-modal";
 import { cn } from "@/lib/utils";
 import { type Contest } from "@/types/types";
 import { deleteContest } from "@/app/dashboard/(contests)/contest-actions";
+import { approveContest } from "@/app/dashboard/(contests)/approve-contests/[contest]/approve-contest-action";
+import { toast } from "sonner";
+import { isActionError } from "@/utils/error-helper";
+import { useQueryClient } from "@tanstack/react-query";
+import ApproveButton from "../shared/approve-button";
 
 export default function ContestCardFooter({
   contest,
@@ -21,14 +26,13 @@ export default function ContestCardFooter({
   showContestStatus: boolean;
   showApproveButton: boolean;
 }) {
+  const queryClient = useQueryClient();
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   return (
-    <div
-      onClick={(e) => {
-        e.preventDefault(), e.stopPropagation();
-      }}
-    >
+    <div>
       <div
         className={cn(
           "flex w-full items-center",
@@ -40,7 +44,10 @@ export default function ContestCardFooter({
             <Button
               variant="outline"
               size="icon"
-              onClick={() => setIsDeleteModalOpen(true)}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsDeleteModalOpen(true);
+              }}
               className="mr-2"
             >
               <Trash2 className="text-red-500" size={20} />
@@ -48,34 +55,45 @@ export default function ContestCardFooter({
             <Button
               variant="outline"
               size="icon"
-              onClick={() => setIsEditModalOpen(true)}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsEditModalOpen(true);
+              }}
             >
               <Edit className="text-muted-foreground" size={20} />
             </Button>
           </div>
         )}
         {showContestStatus && (
-          <ContestStatus
-            contestId={contest.id}
-            contestStatus={contest.status}
-          />
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <ContestStatus
+              contestId={contest.id}
+              contestStatus={contest.status}
+            />
+          </div>
         )}
         {showApproveButton && (
-          <Button variant="outline">
-            Approve
-            <Check className="text-green-500" size={20} />
-          </Button>
+          <ApproveButton
+            itemType="Contest"
+            actionFunction={() => approveContest(contest.id)}
+            revalidateKey={contest.type}
+          />
         )}
       </div>
       <ContestEditModal
         contest={contest}
         isOpen={isEditModalOpen}
         setIsOpen={setIsEditModalOpen}
+        revalidateKey={contest.type}
       />
       <DeleteModal
         isOpen={isDeleteModalOpen}
         setIsOpen={setIsDeleteModalOpen}
-        itemType="contest"
+        itemType="Contest"
         actionFunction={() => deleteContest(contest.id)}
         revalidateKey={contest.type}
       />

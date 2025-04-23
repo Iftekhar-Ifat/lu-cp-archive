@@ -13,6 +13,8 @@ import { type SetStateAction, useState } from "react";
 import { type Dispatch } from "react";
 import { toast } from "sonner";
 
+type ItemType = "Contest" | "Problem";
+
 export function DeleteModal({
   isOpen,
   setIsOpen,
@@ -22,7 +24,7 @@ export function DeleteModal({
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  itemType: string;
+  itemType: ItemType;
   actionFunction: () => Promise<unknown>;
   revalidateKey?: string;
 }) {
@@ -40,13 +42,13 @@ export function DeleteModal({
         });
       } else {
         queryClient.invalidateQueries({ queryKey: [revalidateKey] });
-        toast.success("Contest successfully deleted", {
+        toast.success(`${itemType} successfully deleted`, {
           position: "top-center",
         });
         setIsOpen(false);
       }
     } catch (error) {
-      console.error(`Failed to delete ${itemType}:`, error);
+      console.error(`Failed to delete ${itemType.toLowerCase()}:`, error);
     } finally {
       setIsDeleting(false);
     }
@@ -56,11 +58,9 @@ export function DeleteModal({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="max-w-[95%] font-sans sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-red-500">
-            Delete <span className="capitalize">{itemType}</span>
-          </DialogTitle>
+          <DialogTitle className="text-red-500">Delete {itemType}</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete? This action cannot be undone.
+            {`Are you sure you want to delete this ${itemType.toLowerCase()}? This action cannot be undone.`}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2">

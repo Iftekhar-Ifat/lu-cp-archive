@@ -42,31 +42,47 @@ async function createContest(
   }
 
   try {
-    await prisma.contests.create({
-      data: {
-        title: data.title,
-        description: data.description,
-        url: data.url,
-        difficulty: data.difficulty,
-        type: contestType,
-        added_by: user.id,
-        tags: {
-          create: data.tags.map((tag) => ({
-            tagId: {
-              connectOrCreate: {
-                where: { name: tag },
-                create: {
-                  name: tag,
-                },
-              },
-            },
-          })),
+    await prisma.$transaction(async (tx) => {
+      // 1. Upsert all tags
+      const tagRecords = await Promise.all(
+        data.tags.map((tagName) =>
+          tx.tags.upsert({
+            where: { name: tagName },
+            update: {},
+            create: { name: tagName },
+          })
+        )
+      );
+
+      // 2. Create the contest
+      const contest = await tx.contests.create({
+        data: {
+          title: data.title,
+          description: data.description,
+          url: data.url,
+          difficulty: data.difficulty,
+          type: contestType,
+          added_by: user.id,
         },
-      },
+      });
+
+      // 3. Create tag links
+      await Promise.all(
+        tagRecords.map((tag) =>
+          tx.contests_tags.create({
+            data: {
+              contest_id: contest.id,
+              tag_id: tag.id,
+            },
+          })
+        )
+      );
     });
+
+    return { success: true };
   } catch (error) {
     console.error("Error creating contest:", error);
-    return { error: `Failed to create contest` };
+    return { error: "Failed to create contest" };
   }
 }
 
@@ -125,15 +141,101 @@ async function getContests(
   }
 }
 
-async function updateContest(data: {
-  id: string;
-  name: string;
-  description: string;
-  link: string;
-  tags: string[];
-  difficulty: ContestDifficultyType;
-}) {
-  // TODO
+async function updateContest(
+  data: {
+    title: string;
+    description: string;
+    url: string;
+    tags: string[];
+    difficulty: ContestDifficultyType;
+  },
+  contestId: string
+) {
+  const validateData = ContestFormSchema.safeParse(data);
+
+  if (validateData.error) {
+    return { error: "Invalid data type" };
+  }
+
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  const hasAddPermission = hasPermission(user.user_type, "mutate-contest");
+
+  if (!hasAddPermission) {
+    return { error: "You do not have permission to update a contest" };
+  }
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      // Step 1: Get existing tag links
+      const existingLinks = await tx.contests_tags.findMany({
+        where: { contest_id: contestId },
+        select: { tag_id: true },
+      });
+
+      const existingTagIds = existingLinks.map((link) => link.tag_id);
+
+      // Step 2: Ensure all new tags exist
+      const tagRecords = await Promise.all(
+        data.tags.map((tagName) =>
+          tx.tags.upsert({
+            where: { name: tagName },
+            update: {},
+            create: { name: tagName },
+          })
+        )
+      );
+
+      const newTagIds = tagRecords.map((tag) => tag.id);
+
+      // Step 3: Determine tags to add and remove
+      const toAdd = newTagIds.filter((id) => !existingTagIds.includes(id));
+      const toRemove = existingTagIds.filter((id) => !newTagIds.includes(id));
+
+      // Step 4: Add new tags
+      await Promise.all(
+        toAdd.map((tagId) =>
+          tx.contests_tags.create({
+            data: {
+              contest_id: contestId,
+              tag_id: tagId,
+            },
+          })
+        )
+      );
+
+      // Step 5: Remove old tags
+      if (toRemove.length > 0) {
+        await tx.contests_tags.deleteMany({
+          where: {
+            contest_id: contestId,
+            tag_id: { in: toRemove },
+          },
+        });
+      }
+
+      // Step 6: Update the contest fields
+      await tx.contests.update({
+        where: { id: contestId },
+        data: {
+          title: data.title,
+          description: data.description,
+          url: data.url,
+          difficulty: data.difficulty,
+          added_by: user.id,
+        },
+      });
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating contest:", error);
+    return { error: "Failed to update contest" };
+  }
 }
 
 async function deleteContest(contestId: string) {

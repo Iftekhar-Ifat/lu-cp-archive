@@ -9,8 +9,13 @@ import { useUser } from "../user-provider";
 import { redirect, usePathname } from "next/navigation";
 import { hasPermission } from "@/utils/permissions";
 import { Badge } from "../ui/badge";
+import { type ContestType } from "@/types/types";
 
-export default function ContestAddApproveSection() {
+export default function ContestAddApproveSection({
+  contestType,
+}: {
+  contestType: ContestType;
+}) {
   const { user } = useUser();
   const pathname = usePathname().split("/").pop();
   const [isAddContestModalOpen, setIsAddContestModalOpen] = useState(false);
@@ -45,7 +50,7 @@ export default function ContestAddApproveSection() {
       <ContestAddModal
         isOpen={isAddContestModalOpen}
         setIsOpen={setIsAddContestModalOpen}
-        contestType="intra_lu_contests"
+        contestType={contestType}
       />
     </div>
   );

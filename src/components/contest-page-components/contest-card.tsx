@@ -15,8 +15,9 @@ import ContestCardFooter from "./contest-card-footer";
 import { useUser } from "../user-provider";
 import { cn } from "@/lib/utils";
 import { hasPermission } from "@/utils/permissions";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { type Contest } from "@/types/types";
+import Link from "next/link";
 
 export default function ContestCard({
   contest,
@@ -25,6 +26,7 @@ export default function ContestCard({
   contest: Contest;
   approveContestCard?: boolean;
 }) {
+  const router = useRouter();
   const { user } = useUser();
 
   if (!user) {
@@ -67,6 +69,10 @@ export default function ContestCard({
           <Badge
             variant="secondary"
             className="w-fit max-w-full truncate px-2 text-xs hover:scale-[1.02]"
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(`@${contest.added_by}`);
+            }}
           >
             @{contest.added_by}
           </Badge>

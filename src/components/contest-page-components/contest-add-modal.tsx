@@ -1,6 +1,6 @@
 "use client";
 
-import { type SetStateAction, useState } from "react";
+import { type SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -40,7 +40,6 @@ import {
   TagsInputItem,
   TagsInputList,
 } from "../ui/tags-input";
-import { useQueryClient } from "@tanstack/react-query";
 import { type ContestType } from "@/types/types";
 
 type ContestFormValues = z.infer<typeof ContestFormSchema>;
@@ -54,10 +53,6 @@ export default function ContestAddModal({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   contestType: ContestType;
 }) {
-  const queryClient = useQueryClient();
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const form = useForm<ContestFormValues>({
     resolver: zodResolver(ContestFormSchema),
     defaultValues: {
@@ -94,8 +89,6 @@ export default function ContestAddModal({
   };
 
   const onSubmit = async (data: ContestFormValues) => {
-    setIsSubmitting(true);
-
     const result = await createContest(data, contestType);
 
     if (isActionError(result)) {
@@ -103,23 +96,20 @@ export default function ContestAddModal({
         position: "top-center",
       });
     } else {
-      queryClient.invalidateQueries({ queryKey: [contestType] });
-      toast.success("Contest successfully added", {
+      toast.success("Contest successfully submitted. Wait for approval.", {
         position: "top-center",
       });
 
       form.reset();
       setIsOpen(false);
     }
-
-    setIsSubmitting(false);
   };
 
   return (
     <Dialog
       open={isOpen}
       onOpenChange={(open) => {
-        if (!open && !isSubmitting) {
+        if (!open && !form.formState.isSubmitting) {
           form.reset();
         }
         setIsOpen(open);
@@ -127,9 +117,9 @@ export default function ContestAddModal({
     >
       <DialogContent className="max-w-[95%] font-sans sm:max-w-[550px]">
         <DialogHeader>
-          <DialogTitle>Add Contest</DialogTitle>
+          <DialogTitle>Submit Contest</DialogTitle>
           <DialogDescription>
-            Create a new contest with details and difficulty level.
+            Submit a new contest with details and difficulty level.
           </DialogDescription>
         </DialogHeader>
 
@@ -253,18 +243,18 @@ export default function ContestAddModal({
                 type="button"
                 variant="outline"
                 onClick={() => setIsOpen(false)}
-                disabled={isSubmitting}
+                disabled={form.formState.isSubmitting}
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
+                    Submitting...
                   </>
                 ) : (
-                  "Save Contest"
+                  "Submit Contest"
                 )}
               </Button>
             </DialogFooter>

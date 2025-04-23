@@ -70,8 +70,33 @@ async function getApproveContests(
   }
 }
 
-async function approveContest() {
-  // TODO
+async function approveContest(contestId: string) {
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  const hasAddPermission = hasPermission(user.user_type, "approve-contest");
+
+  if (!hasAddPermission) {
+    return { error: "You do not have permission to approve a contest" };
+  }
+
+  try {
+    await prisma.contests.update({
+      where: { id: contestId },
+      data: {
+        approved: true,
+        updated_at: new Date(),
+      },
+    });
+
+    return { success: true };
+  } catch (err) {
+    console.error("Error updating contest:", err);
+    return { error: "Failed to update contest" };
+  }
 }
 
-export { getApproveContests };
+export { getApproveContests, approveContest };

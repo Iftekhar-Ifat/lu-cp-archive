@@ -1,6 +1,6 @@
 "use client";
 
-import { type SetStateAction, useState } from "react";
+import { type SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,10 +25,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type Contest, type ContestDifficultyType } from "@/types/types";
+import { type Contest } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { ContestSchema, MAX_CONTEST_TAG_LENGTH } from "@/utils/schema/contest";
+import {
+  ContestFormSchema,
+  MAX_CONTEST_TAG_LENGTH,
+} from "@/utils/schema/contest";
 import { DifficultyStatus } from "../shared/difficulty-status";
 import {
   TagsInput,
@@ -36,32 +39,34 @@ import {
   TagsInputItem,
   TagsInputList,
 } from "../ui/tags-input";
+import { isActionError } from "@/utils/error-helper";
+import { updateContest } from "@/app/dashboard/(contests)/contest-actions";
+import { useQueryClient } from "@tanstack/react-query";
 
-type ContestFormValues = z.infer<typeof ContestSchema>;
+type ContestFormValues = z.infer<typeof ContestFormSchema>;
 
 export default function ContestEditModal({
   isOpen,
   setIsOpen,
   contest,
+  revalidateKey,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   contest: Contest;
+  revalidateKey: string;
 }) {
-  const [selectedDifficulty, setSelectedDifficulty] =
-    useState<ContestDifficultyType>(contest.difficulty);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const defaultValues: Partial<ContestFormValues> = {
-    title: contest.title,
-    description: contest.description,
-    url: contest.url,
-    tags: contest.tags,
-  };
+  const queryClient = useQueryClient();
 
   const form = useForm<ContestFormValues>({
-    resolver: zodResolver(ContestSchema),
-    defaultValues,
+    resolver: zodResolver(ContestFormSchema),
+    defaultValues: {
+      title: contest.title,
+      description: contest.description,
+      url: contest.url,
+      tags: contest.tags,
+      difficulty: contest.difficulty,
+    },
   });
 
   const { setValue, setError } = form;
@@ -88,33 +93,21 @@ export default function ContestEditModal({
     });
   };
 
-  const handleDifficultyChange = (difficulty: ContestDifficultyType) => {
-    setSelectedDifficulty(difficulty);
-  };
-
   const onSubmit = async (data: ContestFormValues) => {
-    setIsSubmitting(true);
-    try {
-      /* const result = await updateContestAction({
-        id: contest.id,
-        ...data,
-        difficulty: selectedDifficulty,
-      });
+    const result = await updateContest(data, contest.id);
 
-      if (result.success) {
-        toast.success("Contest successfully updated", {
-          position: "top-center",
-        });
-
-        form.reset();
-        setIsOpen(false);
-      } */
-    } catch (error) {
-      toast.error("Something went wrong", {
+    if (isActionError(result)) {
+      toast.error(result.error, {
         position: "top-center",
       });
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      queryClient.invalidateQueries({ queryKey: [revalidateKey] });
+      toast.success("Contest Updated", {
+        position: "top-center",
+      });
+
+      form.reset();
+      setIsOpen(false);
     }
   };
 
@@ -122,7 +115,7 @@ export default function ContestEditModal({
     <Dialog
       open={isOpen}
       onOpenChange={(open) => {
-        if (!open && !isSubmitting) {
+        if (!open && !form.formState.isSubmitting) {
           form.reset();
         }
         setIsOpen(open);
@@ -164,13 +157,13 @@ export default function ContestEditModal({
                     <Textarea
                       placeholder="Describe the contest"
                       className="min-h-[100px] resize-none"
-                      maxLength={ContestSchema.shape.description.maxLength!}
+                      maxLength={ContestFormSchema.shape.description.maxLength!}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="flex justify-end text-xs">
                     {form.watch("description")?.length || 0}/
-                    {ContestSchema.shape.description.maxLength} characters
+                    {ContestFormSchema.shape.description.maxLength} characters
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -234,25 +227,34 @@ export default function ContestEditModal({
             />
 
             {/* Difficulty Status Section */}
-            <div className="space-x-2 space-y-2">
-              <FormLabel>Difficulty Level</FormLabel>
-              <DifficultyStatus
-                onDifficultyChange={handleDifficultyChange}
-                initialDifficulty={contest.difficulty}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="difficulty"
+              render={({ field }) => (
+                <FormItem className="space-x-2 space-y-2">
+                  <FormLabel>Difficulty Level</FormLabel>
+                  <FormControl>
+                    <DifficultyStatus
+                      onDifficultyChange={field.onChange}
+                      initialDifficulty={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <DialogFooter className="flex-col gap-2 sm:flex-row sm:gap-0">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setIsOpen(false)}
-                disabled={isSubmitting}
+                disabled={form.formState.isSubmitting}
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Saving...

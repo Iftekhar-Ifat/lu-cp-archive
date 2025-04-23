@@ -23,10 +23,7 @@ const ContestSchema = z.object({
   tags: z
     .array(z.string())
     .min(1, { message: "Please add at least one tag" })
-    .max(5, { message: "Maximum 5 tags allowed" })
-    .refine((tags) => new Set(tags).size === tags.length, {
-      message: "Tags must be unique",
-    }),
+    .max(5, { message: "Maximum 5 tags allowed" }),
   status: StatusSchema,
   difficulty: DifficultySchema,
   type: ContestTypeSchema,
