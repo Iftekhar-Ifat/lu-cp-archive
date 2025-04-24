@@ -21,7 +21,11 @@ export default function TopicWiseCardFooter({
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   return (
-    <div>
+    <div
+      onClick={(e) => {
+        e.stopPropagation(); // Crucial for prevent bubbling, because parent <a> is default.
+      }}
+    >
       <div
         className={cn(
           "flex w-full items-center",
@@ -33,7 +37,10 @@ export default function TopicWiseCardFooter({
             <Button
               variant="outline"
               size="icon"
-              onClick={() => setIsDeleteModalOpen(true)}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsDeleteModalOpen(true);
+              }}
               className="mr-2"
             >
               <Trash2 className="text-red-500" size={20} />
@@ -41,7 +48,10 @@ export default function TopicWiseCardFooter({
             <Button
               variant="outline"
               size="icon"
-              onClick={() => setIsEditModalOpen(true)}
+              onClick={(e) => {
+                e.preventDefault(); // Crucial for preventing url change
+                setIsEditModalOpen(true);
+              }}
             >
               <Edit className="text-muted-foreground" size={20} />
             </Button>

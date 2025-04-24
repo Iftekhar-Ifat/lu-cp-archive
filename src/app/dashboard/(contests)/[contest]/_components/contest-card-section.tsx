@@ -65,6 +65,7 @@ export default function ContestCardSection({
               href={contest.url}
               className="group"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <ContestCard contest={contest} approveContestCard={false} />
             </Link>

@@ -15,8 +15,9 @@ import ContestCardFooter from "./contest-card-footer";
 import { useUser } from "../user-provider";
 import { cn } from "@/lib/utils";
 import { hasPermission } from "@/utils/permissions";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { type Contest } from "@/types/types";
+import Link from "next/link";
 
 export default function ContestCard({
   contest,
@@ -25,7 +26,6 @@ export default function ContestCard({
   contest: Contest;
   approveContestCard?: boolean;
 }) {
-  const router = useRouter();
   const { user } = useUser();
 
   if (!user) {
@@ -65,16 +65,14 @@ export default function ContestCard({
       <CardContent className="space-y-2">
         <div className="space-y-1">
           <span className="mr-1 text-xs text-muted-foreground">Added by:</span>
-          <Badge
-            variant="secondary"
-            className="w-fit max-w-full truncate px-2 text-xs hover:scale-[1.02]"
-            onClick={(e) => {
-              e.preventDefault();
-              router.push(`/profile/@${contest.added_by}`);
-            }}
-          >
-            @{contest.added_by}
-          </Badge>
+          <Link href={`/profile/@${contest.added_by}`}>
+            <Badge
+              variant="secondary"
+              className="w-fit max-w-full truncate px-2 text-xs hover:scale-[1.02]"
+            >
+              @{contest.added_by}
+            </Badge>
+          </Link>
         </div>
         <div className="space-y-1">
           <span className="mr-1 text-xs text-muted-foreground">Tags:</span>

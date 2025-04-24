@@ -55,8 +55,9 @@ export default function TopicEditModal({
   });
 
   const onSubmit = async (data: TopicWiseFormValues) => {
-    setIsSubmitting(true);
-    try {
+    console.log(data);
+    // setIsSubmitting(true);
+    /* try {
       const result = await updateTopicWiseItemAction({
         id: topic.id,
         ...data,
@@ -76,7 +77,7 @@ export default function TopicEditModal({
       });
     } finally {
       setIsSubmitting(false);
-    }
+    } */
   };
 
   return (

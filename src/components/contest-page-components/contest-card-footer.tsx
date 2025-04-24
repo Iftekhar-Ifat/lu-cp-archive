@@ -27,7 +27,10 @@ export default function ContestCardFooter({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   return (
-    <div>
+    <div
+    // Here e.stopPropagation() is not required because,
+    // Parent <a> using target="_blank". So, only preventing default is enough
+    >
       <div
         className={cn(
           "flex w-full items-center",

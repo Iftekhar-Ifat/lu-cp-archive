@@ -9,6 +9,7 @@ export default function Footer() {
         href="https://github.com/Iftekhar-Ifat/lu-cp-archive"
         className="font-mono"
         target="_blank"
+        rel="noopener noreferrer"
       >
         <div className="flex items-center justify-center">
           <Copyright size="20px" className="m-1" /> <span>LU-ACM</span>
