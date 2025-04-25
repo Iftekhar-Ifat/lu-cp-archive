@@ -42,3 +42,5 @@ TODO.txt
 # Prisma
 prisma/*
 !prisma/schema.prisma
+!prisma/seed-data
+!prisma/seed.ts

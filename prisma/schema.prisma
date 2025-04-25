@@ -97,3 +97,12 @@ model tags {
 
   contestTags contests_tags[]
 }
+
+model topics {
+  id          String   @id @default(cuid())
+  title       String   @unique
+  description String
+  slug        String   @unique
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
