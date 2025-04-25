@@ -4,21 +4,22 @@ import { Plus, Check } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import Link from "next/link";
-import ContestAddModal from "./contest-add-modal";
 import { useUser } from "../user-provider";
 import { redirect, usePathname } from "next/navigation";
 import { hasPermission } from "@/utils/permissions";
 import { Badge } from "../ui/badge";
 import { type ContestType } from "@/types/types";
+import ContestSubmitModal from "./contest-submit-modal";
 
-export default function ContestAddApproveSection({
+export default function ContestSubmitApproveSection({
   contestType,
 }: {
   contestType: ContestType;
 }) {
   const { user } = useUser();
   const pathname = usePathname().split("/").pop();
-  const [isAddContestModalOpen, setIsAddContestModalOpen] = useState(false);
+  const [isSubmitContestModalOpen, setIsSubmitContestModalOpen] =
+    useState(false);
 
   const count = 5;
 
@@ -30,9 +31,12 @@ export default function ContestAddApproveSection({
 
   return (
     <div className="flex space-x-2">
-      <Button variant="outline" onClick={() => setIsAddContestModalOpen(true)}>
+      <Button
+        variant="outline"
+        onClick={() => setIsSubmitContestModalOpen(true)}
+      >
         <Plus />
-        Add Contest
+        Submit Contest
       </Button>
       {hasApprovePermission && (
         <Button variant="outline" asChild className="relative">
@@ -47,9 +51,9 @@ export default function ContestAddApproveSection({
           </Link>
         </Button>
       )}
-      <ContestAddModal
-        isOpen={isAddContestModalOpen}
-        setIsOpen={setIsAddContestModalOpen}
+      <ContestSubmitModal
+        isOpen={isSubmitContestModalOpen}
+        setIsOpen={setIsSubmitContestModalOpen}
         contestType={contestType}
       />
     </div>

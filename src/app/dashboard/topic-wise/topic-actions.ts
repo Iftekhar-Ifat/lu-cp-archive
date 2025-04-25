@@ -1,62 +1,139 @@
 "use server";
 
+import { getUserData } from "@/components/shared-actions/getUserData";
 import { prisma } from "@/lib/prisma";
 import { type Topic } from "@/types/types";
-import { type ActionResult } from "@/utils/error-helper";
-import { topicFormSchema } from "@/utils/schema/topic-form";
+import { isActionError, type ActionResult } from "@/utils/error-helper";
+import { hasPermission } from "@/utils/permissions";
+import { TopicFormSchema, TopicSchema } from "@/utils/schema/topic-form";
 import { z } from "zod";
 
-const createTopicWiseItemAction = async (data: {
-  name: string;
+const submitTopic = async (data: {
+  title: string;
   description: string;
+  slug: string;
 }) => {
-  console.log(data);
-  // Simulate network delay
-  // Also add link from the given name (eg., Linked List -> linked-list)
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  const validateData = TopicFormSchema.safeParse(data);
 
-  // Mock success response
-  return { success: true, message: "Contest created successfully" };
+  if (validateData.error) {
+    return { error: "Invalid data type" };
+  }
+
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  const hasSubmitPermission = hasPermission(user.user_type, "submit-topic");
+
+  if (!hasSubmitPermission) {
+    return { error: "You do not have permission to submit a topic" };
+  }
+
+  try {
+    await prisma.topics.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        slug: data.slug,
+        approved: false,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error submitting topic:", error);
+    return { error: "Failed to submit topic" };
+  }
 };
 
 async function getTopics(): Promise<ActionResult<Topic[]>> {
   try {
     const topics = await prisma.topics.findMany({
+      where: { approved: true },
       orderBy: {
         created_at: "asc",
       },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        slug: true,
-      },
     });
 
-    const validation = z.array(topicFormSchema).safeParse(topics);
+    const validation = z.array(TopicSchema).safeParse(topics);
 
     if (validation.error) {
-      return { error: "Invalid contest data" };
+      return { error: "Invalid topic data" };
     }
 
     return { data: topics };
   } catch (err) {
-    console.error("Error fetching contests:", err);
-    return { error: "Failed to fetch contests" };
+    console.error("Error fetching topics:", err);
+    return { error: "Failed to fetch topics" };
   }
 }
 
-const updateTopicWiseItemAction = async (data: {
-  id: string;
-  name: string;
-  description: string;
-}) => {
-  console.log(data);
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+const updateTopic = async (
+  data: {
+    title: string;
+    description: string;
+  },
+  topicId: string
+) => {
+  const validateData = TopicFormSchema.safeParse(data);
 
-  // Mock success response
-  return { success: true, message: "Contest created successfully" };
+  if (validateData.error) {
+    return { error: "Invalid data type" };
+  }
+
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  const hasMutatePermission = hasPermission(user.user_type, "mutate-topic");
+
+  if (!hasMutatePermission) {
+    return { error: "You do not have permission to update a topic" };
+  }
+
+  try {
+    await prisma.topics.update({
+      where: { id: topicId },
+      data: {
+        title: data.title,
+        description: data.description,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating topic:", error);
+    return { error: "Failed to update topic" };
+  }
 };
 
-export { createTopicWiseItemAction, updateTopicWiseItemAction, getTopics };
+const deleteTopic = async (topicId: string) => {
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  const hasMutatePermission = hasPermission(user.user_type, "mutate-topic");
+
+  if (!hasMutatePermission) {
+    return { error: "You do not have permission to delete a topic" };
+  }
+
+  try {
+    await prisma.topics.delete({
+      where: { id: topicId },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting topic:", error);
+    return { error: "Failed to delete topic" };
+  }
+};
+
+export { submitTopic, updateTopic, getTopics, deleteTopic };

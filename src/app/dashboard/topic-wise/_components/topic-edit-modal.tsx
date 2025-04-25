@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,7 +9,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { type Dispatch } from "react";
+import { type SetStateAction, type Dispatch } from "react";
 import { type z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,63 +27,57 @@ import { Textarea } from "@/components/ui/textarea";
 import { type Topic } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { updateTopicWiseItemAction } from "../topic-actions";
-import { topicFormSchema } from "@/utils/schema/topic-form";
+import { updateTopic } from "../topic-actions";
+import { TopicFormSchema } from "@/utils/schema/topic-form";
+import { isActionError } from "@/utils/error-helper";
+import { useQueryClient } from "@tanstack/react-query";
 
-type TopicWiseFormValues = z.infer<typeof topicFormSchema>;
+type TopicWiseFormValues = z.infer<typeof TopicFormSchema>;
 
 export default function TopicEditModal({
   isOpen,
   setIsOpen,
   topic,
+  revalidateKey,
 }: {
   isOpen: boolean;
-  setIsOpen: Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   topic: Topic;
+  revalidateKey: string;
 }) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const defaultValues: Partial<TopicWiseFormValues> = {
-    name: topic.name,
-    description: topic.description,
-  };
+  const queryClient = useQueryClient();
 
   const form = useForm<TopicWiseFormValues>({
-    resolver: zodResolver(topicFormSchema),
-    defaultValues,
+    resolver: zodResolver(TopicFormSchema),
+    defaultValues: {
+      title: topic.title,
+      description: topic.description,
+    },
   });
 
   const onSubmit = async (data: TopicWiseFormValues) => {
-    console.log(data);
-    // setIsSubmitting(true);
-    /* try {
-      const result = await updateTopicWiseItemAction({
-        id: topic.id,
-        ...data,
-      });
+    const result = await updateTopic(data, topic.id);
 
-      if (result.success) {
-        toast.success("Topic successfully updated", {
-          position: "top-center",
-        });
-
-        form.reset();
-        setIsOpen(false);
-      }
-    } catch (error) {
-      toast.error("Something went wrong", {
+    if (isActionError(result)) {
+      toast.error(result.error, {
         position: "top-center",
       });
-    } finally {
-      setIsSubmitting(false);
-    } */
+    } else {
+      queryClient.invalidateQueries({ queryKey: [revalidateKey] });
+      toast.success("Topic Updated", {
+        position: "top-center",
+      });
+
+      form.reset();
+      setIsOpen(false);
+    }
   };
 
   return (
     <Dialog
       open={isOpen}
       onOpenChange={(open) => {
-        if (!open && !isSubmitting) {
+        if (!open && !form.formState.isSubmitting) {
           form.reset();
         }
         setIsOpen(open);
@@ -103,7 +96,7 @@ export default function TopicEditModal({
             {/* Topic Name Field */}
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Topic Name</FormLabel>
@@ -126,13 +119,13 @@ export default function TopicEditModal({
                     <Textarea
                       placeholder="Describe the topic"
                       className="min-h-[100px] resize-none"
-                      maxLength={topicFormSchema.shape.description.maxLength!}
+                      maxLength={TopicFormSchema.shape.description.maxLength!}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="flex justify-end text-xs">
                     {form.watch("description")?.length || 0}/
-                    {topicFormSchema.shape.description.maxLength} characters
+                    {TopicFormSchema.shape.description.maxLength} characters
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -144,12 +137,12 @@ export default function TopicEditModal({
                 type="button"
                 variant="outline"
                 onClick={() => setIsOpen(false)}
-                disabled={isSubmitting}
+                disabled={form.formState.isSubmitting}
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Saving...

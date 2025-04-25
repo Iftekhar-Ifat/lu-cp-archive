@@ -26,7 +26,7 @@ export function DeleteModal({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   itemType: ItemType;
   actionFunction: () => Promise<unknown>;
-  revalidateKey?: string;
+  revalidateKey: string;
 }) {
   const [isDeleting, setIsDeleting] = useState(false);
 

@@ -1,7 +1,6 @@
 import { hasPermission } from "@/utils/permissions";
 import { getUser } from "../../shared-actions";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import ApproveTopicCardSection from "./_components/approve-topic-card-section";
 
 export default async function ApproveTopic() {
@@ -20,10 +19,7 @@ export default async function ApproveTopic() {
           </span>
         </div>
       </div>
-
-      <Suspense fallback={"Loading ..."}>
-        <ApproveTopicCardSection />
-      </Suspense>
+      <ApproveTopicCardSection />
     </div>
   );
 }

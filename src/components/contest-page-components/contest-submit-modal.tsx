@@ -32,7 +32,7 @@ import {
   MAX_CONTEST_TAG_LENGTH,
 } from "@/utils/schema/contest";
 import { DifficultyStatus } from "../shared/difficulty-status";
-import { createContest } from "@/app/dashboard/(contests)/contest-actions";
+import { submitContest } from "@/app/dashboard/(contests)/contest-actions";
 import { isActionError } from "@/utils/error-helper";
 import {
   TagsInput,
@@ -44,7 +44,7 @@ import { type ContestType } from "@/types/types";
 
 type ContestFormValues = z.infer<typeof ContestFormSchema>;
 
-export default function ContestAddModal({
+export default function ContestSubmitModal({
   isOpen,
   setIsOpen,
   contestType,
@@ -89,7 +89,7 @@ export default function ContestAddModal({
   };
 
   const onSubmit = async (data: ContestFormValues) => {
-    const result = await createContest(data, contestType);
+    const result = await submitContest(data, contestType);
 
     if (isActionError(result)) {
       toast.error(result.error, {

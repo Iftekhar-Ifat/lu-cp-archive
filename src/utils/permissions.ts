@@ -4,9 +4,9 @@ export type actions =
   | "approve-contest"
   | "approve-problem"
   | "approve-topic"
-  | "add-problem"
-  | "add-contest"
-  | "add-topic"
+  | "submit-problem"
+  | "submit-contest"
+  | "submit-topic"
   | "mutate-problem" // edit & delete
   | "mutate-contest" // edit & delete
   | "mutate-topic"; // edit & delete
@@ -16,9 +16,9 @@ const permissions: Record<USER_TYPE, actions[]> = {
     "approve-contest",
     "approve-problem",
     "approve-topic",
-    "add-contest",
-    "add-problem",
-    "add-topic",
+    "submit-contest",
+    "submit-problem",
+    "submit-topic",
     "mutate-contest",
     "mutate-problem",
     "mutate-topic",
@@ -26,13 +26,13 @@ const permissions: Record<USER_TYPE, actions[]> = {
   POWER: [
     "approve-contest",
     "approve-problem",
-    "add-contest",
-    "add-problem",
-    "add-topic",
+    "submit-contest",
+    "submit-problem",
+    "submit-topic",
     "mutate-contest",
     "mutate-problem",
   ],
-  STANDARD: ["add-contest", "add-problem"],
+  STANDARD: ["submit-contest", "submit-problem"],
 } as const;
 
 export function hasPermission(user_type: USER_TYPE, action: actions) {

@@ -1,5 +1,5 @@
-import TopicAddApproveSection from "./_components/topic-add-approve-section";
-import TopicWiseCardSection from "./_components/topic-wise-card-section";
+import TopicSubmitApproveSection from "./_components/topic-submit-approve-section";
+import TopicCardSection from "./_components/topic-card-section";
 
 export default function TopicWise() {
   return (
@@ -10,9 +10,9 @@ export default function TopicWise() {
             Topic Wise Problems
           </span>
         </div>
-        <TopicAddApproveSection />
+        <TopicSubmitApproveSection />
       </div>
-      <TopicWiseCardSection />
+      <TopicCardSection />
     </div>
   );
 }

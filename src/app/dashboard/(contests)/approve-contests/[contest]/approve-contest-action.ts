@@ -18,9 +18,9 @@ async function getApproveContests(
     return { error: user.error };
   }
 
-  const hasAddPermission = hasPermission(user.user_type, "approve-contest");
+  const hasApprovePermission = hasPermission(user.user_type, "approve-contest");
 
-  if (!hasAddPermission) {
+  if (!hasApprovePermission) {
     return { error: "You do not have permission to approve a contest" };
   }
 
@@ -77,9 +77,9 @@ async function approveContest(contestId: string) {
     return { error: user.error };
   }
 
-  const hasAddPermission = hasPermission(user.user_type, "approve-contest");
+  const hasApprovePermission = hasPermission(user.user_type, "approve-contest");
 
-  if (!hasAddPermission) {
+  if (!hasApprovePermission) {
     return { error: "You do not have permission to approve a contest" };
   }
 

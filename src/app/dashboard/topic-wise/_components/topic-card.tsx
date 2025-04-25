@@ -8,17 +8,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useUser } from "@/components/user-provider";
-import { type TopicWiseCard } from "@/types/types";
+import { type Topic } from "@/types/types";
 import React from "react";
-import TopicWiseCardFooter from "./topic-wise-card-footer";
+import TopicCardFooter from "./topic-card-footer";
 import { redirect } from "next/navigation";
 import { hasPermission } from "@/utils/permissions";
 
-export default function TopicWiseCard({
+export default function TopicCard({
   topic,
   approveTopicCard,
 }: {
-  topic: TopicWiseCard;
+  topic: Topic;
   approveTopicCard?: boolean;
 }) {
   const { user } = useUser();
@@ -44,7 +44,7 @@ export default function TopicWiseCard({
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
-        <TopicWiseCardFooter
+        <TopicCardFooter
           topic={topic}
           topicCardMutationPermission={hasMutationPermission}
           showApproveButton={approveTopicCard ?? false}

@@ -4,21 +4,24 @@ import { Check, Plus } from "lucide-react";
 import { useState } from "react";
 import { useUser } from "@/components/user-provider";
 import { Button } from "@/components/ui/button";
-import TopicAddModal from "./topic-add-modal";
+import TopicSubmitModal from "./topic-submit-modal";
 import { hasPermission } from "@/utils/permissions";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 
-export default function TopicAddApproveSection() {
+export default function TopicSubmitApproveSection() {
   const { user } = useUser();
   const pathname = usePathname();
-  const [isAddTopicModalOpen, setIsAddTopicModalOpen] = useState(false);
+  const [isSubmitTopicModalOpen, setIsSubmitTopicModalOpen] = useState(false);
 
   if (!user) {
     return redirect("/");
   }
 
-  const hasAddTopicPermission = hasPermission(user.user_type, "add-topic");
+  const hasSubmitTopicPermission = hasPermission(
+    user.user_type,
+    "submit-topic"
+  );
   const hasApproveTopicPermission = hasPermission(
     user.user_type,
     "approve-topic"
@@ -26,10 +29,13 @@ export default function TopicAddApproveSection() {
 
   return (
     <div className="flex space-x-2">
-      {hasAddTopicPermission && (
-        <Button variant="outline" onClick={() => setIsAddTopicModalOpen(true)}>
+      {hasSubmitTopicPermission && (
+        <Button
+          variant="outline"
+          onClick={() => setIsSubmitTopicModalOpen(true)}
+        >
           <Plus />
-          Add Topic Card
+          Submit Topic Card
         </Button>
       )}
       {hasApproveTopicPermission && (
@@ -40,9 +46,9 @@ export default function TopicAddApproveSection() {
           </Link>
         </Button>
       )}
-      <TopicAddModal
-        isOpen={isAddTopicModalOpen}
-        setIsOpen={setIsAddTopicModalOpen}
+      <TopicSubmitModal
+        isOpen={isSubmitTopicModalOpen}
+        setIsOpen={setIsSubmitTopicModalOpen}
       />
     </div>
   );

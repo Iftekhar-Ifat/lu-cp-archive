@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-const topicFormSchema = z.object({
+const TopicSchema = z.object({
+  id: z.string().cuid(),
   title: z
     .string()
     .min(3, {
@@ -19,6 +20,14 @@ const topicFormSchema = z.object({
     message:
       "Slug must only contain lowercase letters, numbers, and hyphens (no spaces or uppercase).",
   }),
+  approved: z.boolean(),
+  created_at: z.coerce.date().optional(),
+  updated_at: z.coerce.date().optional(),
 });
 
-export { topicFormSchema };
+const TopicFormSchema = TopicSchema.pick({
+  title: true,
+  description: true,
+});
+
+export { TopicSchema, TopicFormSchema };

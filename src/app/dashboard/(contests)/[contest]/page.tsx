@@ -1,4 +1,4 @@
-import ContestAddApproveSection from "@/components/contest-page-components/contest-add-approve-section";
+import ContestSubmitApproveSection from "@/components/contest-page-components/contest-submit-approve-section";
 import { ContestTypeSchema, type ContestType } from "@/types/types";
 import { notFound } from "next/navigation";
 import { formatContestTypeTitle, hyphenToUnderscore } from "@/utils/helper";
@@ -26,7 +26,9 @@ export default function ContestPage({ params }: ContestPageProps) {
             {contestName}
           </span>
         </div>
-        <ContestAddApproveSection contestType={formattedSlug as ContestType} />
+        <ContestSubmitApproveSection
+          contestType={formattedSlug as ContestType}
+        />
       </div>
       <ContestCardSection contestType={formattedSlug as ContestType} />
     </div>

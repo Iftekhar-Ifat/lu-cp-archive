@@ -1,4 +1,5 @@
 import { type ContestSchema } from "@/utils/schema/contest";
+import { type TopicSchema } from "@/utils/schema/topic-form";
 import { z } from "zod";
 
 // User Types
@@ -36,20 +37,7 @@ export const StatusSchema = z
 export type ContestStatusType = z.infer<typeof StatusSchema>;
 
 // Topic Types
-
-export type Topic = {
-  id: string;
-  title: string;
-  description: string;
-  slug: string;
-};
-
-export type TopicWiseCard = {
-  id: string;
-  title: string;
-  description: string;
-  slug: string;
-};
+export type Topic = z.infer<typeof TopicSchema>;
 
 // Problem Types
 export type ProblemDifficultyType = z.infer<typeof DifficultySchema>;

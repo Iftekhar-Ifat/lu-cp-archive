@@ -1,10 +1,3 @@
-function capitalize(value: string) {
-  return value
-    .replace(/_/g, " ")
-    .toLowerCase()
-    .replace(/\b\w/g, (l) => l.toUpperCase());
-}
-
 function transformTagStringsToObjects(
   strings: string[]
 ): { id: string; text: string }[] {
@@ -30,21 +23,6 @@ async function deleteTopicWiseCardMock(data: string) {
   });
 }
 
-function formatLastPathSegment(pathname: string): string {
-  const segments = pathname.split("/").filter((segment) => segment);
-
-  if (segments.length === 0) {
-    return "";
-  }
-
-  const lastSegment = segments[segments.length - 1];
-
-  return lastSegment
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
 function formatContestTypeTitle(value: string): string {
   return value
     .split("_")
@@ -56,15 +34,25 @@ function formatContestTypeTitle(value: string): string {
     .join(" ");
 }
 
-export function hyphenToUnderscore(value: string): string {
+function hyphenToUnderscore(value: string): string {
   return value.replace(/-/g, "_");
 }
 
+function generateTitleToSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/--+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export {
-  capitalize,
   transformTagStringsToObjects,
   deleteContestMock,
   deleteTopicWiseCardMock,
-  formatLastPathSegment,
   formatContestTypeTitle,
+  hyphenToUnderscore,
+  generateTitleToSlug,
 };

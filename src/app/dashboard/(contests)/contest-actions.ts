@@ -13,7 +13,7 @@ import { ContestFormSchema, ContestSchema } from "@/utils/schema/contest";
 import { type ContestType } from "@prisma/client";
 import { z } from "zod";
 
-async function createContest(
+async function submitContest(
   data: {
     title: string;
     description: string;
@@ -35,10 +35,10 @@ async function createContest(
     return { error: user.error };
   }
 
-  const hasAddPermission = hasPermission(user.user_type, "add-contest");
+  const hasSubmitPermission = hasPermission(user.user_type, "submit-contest");
 
-  if (!hasAddPermission) {
-    return { error: "You do not have permission to create a contest" };
+  if (!hasSubmitPermission) {
+    return { error: "You do not have permission to submit a contest" };
   }
 
   try {
@@ -81,8 +81,8 @@ async function createContest(
 
     return { success: true };
   } catch (error) {
-    console.error("Error creating contest:", error);
-    return { error: "Failed to create contest" };
+    console.error("Error submitting contest:", error);
+    return { error: "Failed to submit contest" };
   }
 }
 
@@ -163,9 +163,9 @@ async function updateContest(
     return { error: user.error };
   }
 
-  const hasAddPermission = hasPermission(user.user_type, "mutate-contest");
+  const hasMutatePermission = hasPermission(user.user_type, "mutate-contest");
 
-  if (!hasAddPermission) {
+  if (!hasMutatePermission) {
     return { error: "You do not have permission to update a contest" };
   }
 
@@ -245,9 +245,9 @@ async function deleteContest(contestId: string) {
     return { error: user.error };
   }
 
-  const hasAddPermission = hasPermission(user.user_type, "mutate-contest");
+  const hasDeletePermission = hasPermission(user.user_type, "mutate-contest");
 
-  if (!hasAddPermission) {
+  if (!hasDeletePermission) {
     return { error: "You do not have permission to delete a contest" };
   }
 
@@ -260,8 +260,8 @@ async function deleteContest(contestId: string) {
 
     return { success: true };
   } catch (error) {
-    console.error("Error creating contest:", error);
-    return { error: `Failed to create contest` };
+    console.error("Error deleting contest:", error);
+    return { error: `Failed to deleting contest` };
   }
 }
 
@@ -301,7 +301,7 @@ async function updateContestStatus(
 }
 
 export {
-  createContest,
+  submitContest,
   updateContest,
   getContests,
   deleteContest,

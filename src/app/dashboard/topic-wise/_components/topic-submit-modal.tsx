@@ -1,6 +1,6 @@
 "use client";
 
-import { type SetStateAction, useState } from "react";
+import { type SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,39 +27,39 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { topicFormSchema } from "@/utils/schema/topic-form";
-import { createTopicWiseItemAction } from "../topic-actions";
+import { generateTitleToSlug } from "@/utils/helper";
+import { TopicFormSchema } from "@/utils/schema/topic-form";
+import { submitTopic } from "../topic-actions";
 
-type TopicFormValues = z.infer<typeof topicFormSchema>;
+type TopicFormValues = z.infer<typeof TopicFormSchema>;
 
-export default function TopicAddModal({
+export default function TopicSubmitModal({
   isOpen,
   setIsOpen,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const defaultValues: Partial<TopicFormValues> = {
-    name: "",
+    title: "",
     description: "",
   };
 
   const form = useForm<TopicFormValues>({
-    resolver: zodResolver(topicFormSchema),
+    resolver: zodResolver(TopicFormSchema),
     defaultValues,
   });
 
   const onSubmit = async (data: TopicFormValues) => {
-    setIsSubmitting(true);
     try {
-      const result = await createTopicWiseItemAction({
+      const generatedSlug = generateTitleToSlug(data.title);
+      const result = await submitTopic({
         ...data,
+        slug: generatedSlug,
       });
 
       if (result.success) {
-        toast.success("Successfully added", {
+        toast.success("Topic successfully submitted. Wait for approval.", {
           position: "top-center",
         });
 
@@ -70,8 +70,6 @@ export default function TopicAddModal({
       toast.error("Something went wrong", {
         position: "top-center",
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -79,7 +77,7 @@ export default function TopicAddModal({
     <Dialog
       open={isOpen}
       onOpenChange={(open) => {
-        if (!open && !isSubmitting) {
+        if (!open && !form.formState.isSubmitting) {
           form.reset();
         }
         setIsOpen(open);
@@ -87,18 +85,18 @@ export default function TopicAddModal({
     >
       <DialogContent className="max-w-[95%] font-sans sm:max-w-[550px]">
         <DialogHeader>
-          <DialogTitle>Add Topic</DialogTitle>
+          <DialogTitle>Submit Topic</DialogTitle>
           <DialogDescription>
-            Create a new topic with details.
+            Submit a new topic with details.
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* Topic Name Field */}
+            {/* Topic Title Field */}
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Topic Name</FormLabel>
@@ -121,13 +119,13 @@ export default function TopicAddModal({
                     <Textarea
                       placeholder="Describe the topic"
                       className="min-h-[100px] resize-none"
-                      maxLength={topicFormSchema.shape.description.maxLength!}
+                      maxLength={TopicFormSchema.shape.description.maxLength!}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="flex justify-end text-xs">
                     {form.watch("description")?.length || 0}/
-                    {topicFormSchema.shape.description.maxLength} characters
+                    {TopicFormSchema.shape.description.maxLength} characters
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -139,18 +137,18 @@ export default function TopicAddModal({
                 type="button"
                 variant="outline"
                 onClick={() => setIsOpen(false)}
-                disabled={isSubmitting}
+                disabled={form.formState.isSubmitting}
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
+                    Submitting...
                   </>
                 ) : (
-                  "Save Contest"
+                  "Submit Topic"
                 )}
               </Button>
             </DialogFooter>
