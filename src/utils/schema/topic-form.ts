@@ -1,8 +1,7 @@
 import { z } from "zod";
 
-// Validation schema for the topic-wise form
 const topicFormSchema = z.object({
-  name: z
+  title: z
     .string()
     .min(3, {
       message: "Contest name must be at least 3 characters.",
@@ -16,6 +15,10 @@ const topicFormSchema = z.object({
     .max(100, {
       message: "Description cannot exceed 100 characters.",
     }),
+  slug: z.string().regex(/^[a-z0-9-]+$/, {
+    message:
+      "Slug must only contain lowercase letters, numbers, and hyphens (no spaces or uppercase).",
+  }),
 });
 
 export { topicFormSchema };

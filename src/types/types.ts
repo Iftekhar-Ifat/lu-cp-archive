@@ -39,13 +39,14 @@ export type ContestStatusType = z.infer<typeof StatusSchema>;
 
 export type Topic = {
   id: string;
-  name: string;
+  title: string;
   description: string;
+  slug: string;
 };
 
 export type TopicWiseCard = {
   id: string;
-  name: string;
+  title: string;
   description: string;
   slug: string;
 };

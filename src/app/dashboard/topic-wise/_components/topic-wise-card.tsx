@@ -35,7 +35,7 @@ export default function TopicWiseCard({
         <div className="flex items-start justify-between space-y-0">
           <div className="space-y-2">
             <CardTitle className="line-clamp-2 text-xl leading-tight">
-              {topic.name}
+              {topic.title}
             </CardTitle>
             <CardDescription className="line-clamp-2 text-muted-foreground">
               {topic.description}

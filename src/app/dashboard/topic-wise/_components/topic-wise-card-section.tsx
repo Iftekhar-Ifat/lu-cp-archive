@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import TopicWiseCard from "./topic-wise-card";
-import { fetchTopics } from "@/lib/fetch";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "@/components/shared/loading";
 import Error from "@/components/shared/error";
+import { getTopics } from "../topic-actions";
+import { unwrapActionResult } from "@/utils/error-helper";
+import NoData from "@/components/shared/no-data";
 
 export default function TopicWiseCardSection() {
   const {
@@ -15,7 +17,10 @@ export default function TopicWiseCardSection() {
     refetch,
   } = useQuery({
     queryKey: ["topics"],
-    queryFn: async () => await fetchTopics(),
+    queryFn: async () => {
+      const result = await getTopics();
+      return unwrapActionResult(result);
+    },
   });
 
   if (isPending) {
@@ -28,15 +33,22 @@ export default function TopicWiseCardSection() {
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {topics.map((topic) => (
-        <Link
-          key={topic.id}
-          href={`topic-wise/${topic.slug}`}
-          className="group"
-        >
-          <TopicWiseCard topic={topic} />
-        </Link>
-      ))}
+      {topics.length === 0 ? (
+        <NoData
+          title="No topics available"
+          subtitle="There are currently no topics available"
+        />
+      ) : (
+        topics.map((topic) => (
+          <Link
+            key={topic.id}
+            href={`topic-wise/${topic.slug}`}
+            className="group"
+          >
+            <TopicWiseCard topic={topic} />
+          </Link>
+        ))
+      )}
     </div>
   );
 }
