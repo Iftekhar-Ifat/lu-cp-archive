@@ -45,6 +45,8 @@ export type Problem = z.infer<typeof ProblemSchema>;
 
 export type ProblemDifficulty = z.infer<typeof DifficultySchema>;
 
+export type ProblemStatusType = z.infer<typeof StatusSchema>;
+
 export type ProblemProgressStats = {
   difficulty: ProblemDifficulty;
   skipped: number;

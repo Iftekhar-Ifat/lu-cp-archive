@@ -1,14 +1,16 @@
 "use client";
 
-import { Check, Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { type Problem } from "@/types/types";
-import { deleteContestMock } from "@/utils/helper";
 import { DeleteModal } from "../shared/delete-modal";
 import { ProblemStatus } from "./problem-status";
 import ProblemEditModal from "./problem-edit-modal";
 import { cn } from "@/lib/utils";
+import ApproveButton from "../shared/approve-button";
+import { approveProblem } from "@/app/dashboard/topic-wise/[topic]/[approve-problem]/approve-problem-actions";
+import { deleteProblem } from "@/app/dashboard/topic-wise/[topic]/problem-actions";
 
 export default function ProblemCardFooter({
   problem,
@@ -59,25 +61,38 @@ export default function ProblemCardFooter({
             </Button>
           </div>
         )}
-        {showProblemStatus && <ProblemStatus />}
+        {showProblemStatus && (
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <ProblemStatus
+              problemId={problem.id}
+              problemStatus={problem.status}
+            />
+          </div>
+        )}
         {showApproveButton && (
-          <Button variant="outline">
-            Approve
-            <Check className="text-green-500" size={20} />
-          </Button>
+          <ApproveButton
+            itemType="Problem"
+            actionFunction={() => approveProblem(problem.id)}
+            revalidateKey={problem.topic}
+          />
         )}
       </div>
       <ProblemEditModal
         problem={problem}
         isOpen={isEditModalOpen}
         setIsOpen={setIsEditModalOpen}
+        revalidateKey={problem.topic}
       />
       <DeleteModal
         isOpen={isDeleteModalOpen}
         setIsOpen={setIsDeleteModalOpen}
         itemType="Problem"
-        actionFunction={() => deleteContestMock(problem.id)}
-        revalidateKey={problem.topicId}
+        actionFunction={() => deleteProblem(problem.id)}
+        revalidateKey={problem.topic}
       />
     </div>
   );

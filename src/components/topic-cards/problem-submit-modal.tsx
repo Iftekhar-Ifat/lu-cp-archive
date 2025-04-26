@@ -1,6 +1,6 @@
 "use client";
 
-import { type SetStateAction, useState } from "react";
+import { type SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type ProblemDifficulty } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { DifficultyStatus } from "../shared/difficulty-status";
@@ -33,43 +32,40 @@ import {
   MAX_PROBLEM_TAG_LENGTH,
   ProblemFormSchema,
 } from "@/utils/schema/problem";
-import { createProblemAction } from "@/app/dashboard/topic-wise/[topic]/problem-actions";
 import {
   TagsInput,
   TagsInputInput,
   TagsInputItem,
   TagsInputList,
 } from "../ui/tags-input";
+import { isActionError } from "@/utils/error-helper";
+import { submitProblem } from "@/app/dashboard/topic-wise/[topic]/problem-actions";
 
 type ProblemFormValues = z.infer<typeof ProblemFormSchema>;
 
-export default function ProblemAddModal({
+export default function ProblemSubmitModal({
   isOpen,
   setIsOpen,
+  topicId,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  topicId: string;
 }) {
-  const [selectedDifficulty, setSelectedDifficulty] =
-    useState<ProblemDifficulty>("EASY");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const defaultValues: Partial<ProblemFormValues> = {
-    title: "",
-    description: "",
-    url: "",
-    tags: [],
-  };
-
   const form = useForm<ProblemFormValues>({
     resolver: zodResolver(ProblemFormSchema),
-    defaultValues,
+    defaultValues: {
+      title: "",
+      description: "",
+      url: "",
+      tags: [],
+      difficulty: "EASY",
+    },
   });
 
   const { setValue, setError } = form;
 
   const handleTags = (newTags: SetStateAction<string[]>) => {
-    console.log(newTags);
     const currentTags = form.getValues("tags") || [];
     const tags = typeof newTags === "function" ? newTags(currentTags) : newTags;
 
@@ -91,34 +87,20 @@ export default function ProblemAddModal({
     });
   };
 
-  const handleDifficultyChange = (difficulty: ProblemDifficulty) => {
-    setSelectedDifficulty(difficulty);
-  };
-
   const onSubmit = async (data: ProblemFormValues) => {
-    setIsSubmitting(true);
-    try {
-      const result = await createProblemAction({
-        ...data,
-        difficulty: selectedDifficulty,
-        name: "",
-        link: "",
-      });
+    const result = await submitProblem(data, topicId);
 
-      if (result.success) {
-        toast.success("Problem successfully added", {
-          position: "top-center",
-        });
-
-        form.reset();
-        setIsOpen(false);
-      }
-    } catch (error) {
-      toast.error("Something went wrong", {
+    if (isActionError(result)) {
+      toast.error(result.error, {
         position: "top-center",
       });
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      toast.success("Problem successfully submitted. Wait for approval.", {
+        position: "top-center",
+      });
+
+      form.reset();
+      setIsOpen(false);
     }
   };
 
@@ -126,7 +108,7 @@ export default function ProblemAddModal({
     <Dialog
       open={isOpen}
       onOpenChange={(open) => {
-        if (!open && !isSubmitting) {
+        if (!open && !form.formState.isSubmitting) {
           form.reset();
         }
         setIsOpen(open);
@@ -134,9 +116,9 @@ export default function ProblemAddModal({
     >
       <DialogContent className="max-w-[95%] font-sans sm:max-w-[550px]">
         <DialogHeader>
-          <DialogTitle>Add Problem</DialogTitle>
+          <DialogTitle>Submit Problem</DialogTitle>
           <DialogDescription>
-            Create a new problem with details and difficulty level.
+            Submit a new problem with details and difficulty level.
           </DialogDescription>
         </DialogHeader>
 
@@ -238,25 +220,34 @@ export default function ProblemAddModal({
             />
 
             {/* Difficulty Status Section */}
-            <div className="space-x-2 space-y-2">
-              <FormLabel>Difficulty Level</FormLabel>
-              <DifficultyStatus
-                onDifficultyChange={handleDifficultyChange}
-                initialDifficulty="EASY"
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="difficulty"
+              render={({ field }) => (
+                <FormItem className="space-x-2 space-y-2">
+                  <FormLabel>Difficulty Level</FormLabel>
+                  <FormControl>
+                    <DifficultyStatus
+                      onDifficultyChange={field.onChange}
+                      initialDifficulty={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <DialogFooter className="flex-col gap-2 sm:flex-row sm:gap-0">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setIsOpen(false)}
-                disabled={isSubmitting}
+                disabled={form.formState.isSubmitting}
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Saving...

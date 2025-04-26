@@ -1,6 +1,5 @@
 import { getTopicBySlug } from "@/lib/db";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import ApproveProblemCardSection from "./_components/approve-problems-card-section";
 import { getUser } from "@/app/dashboard/shared-actions";
 import { hasPermission } from "@/utils/permissions";
@@ -37,10 +36,7 @@ export default async function ApproveProblem({
           </span>
         </div>
       </div>
-
-      <Suspense fallback={"Loading ..."}>
-        <ApproveProblemCardSection problemType={params.topic} />
-      </Suspense>
+      <ApproveProblemCardSection problemType={params.topic} />
     </div>
   );
 }

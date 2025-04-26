@@ -1,6 +1,6 @@
 "use client";
 
-import { type SetStateAction, useState } from "react";
+import { type SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,22 +25,23 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type ProblemDifficulty, type Problem } from "@/types/types";
+import { type Problem } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { DifficultyStatus } from "../shared/difficulty-status";
-import { transformTagStringsToObjects } from "@/utils/helper";
 import {
   MAX_PROBLEM_TAG_LENGTH,
   ProblemFormSchema,
 } from "@/utils/schema/problem";
-import { updateProblemAction } from "@/app/dashboard/topic-wise/[topic]/problem-actions";
+import { updateProblem } from "@/app/dashboard/topic-wise/[topic]/problem-actions";
 import {
   TagsInput,
   TagsInputInput,
   TagsInputItem,
   TagsInputList,
 } from "../ui/tags-input";
+import { isActionError } from "@/utils/error-helper";
+import { useQueryClient } from "@tanstack/react-query";
 
 type ProblemFormValues = z.infer<typeof ProblemFormSchema>;
 
@@ -48,25 +49,24 @@ export default function ProblemEditModal({
   isOpen,
   setIsOpen,
   problem,
+  revalidateKey,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   problem: Problem;
+  revalidateKey: string;
 }) {
-  const [selectedDifficulty, setSelectedDifficulty] =
-    useState<ProblemDifficulty>(problem.difficulty);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const defaultValues: Partial<ProblemFormValues> = {
-    title: problem.title,
-    description: problem.description,
-    url: problem.url,
-    tags: problem.tags,
-  };
+  const queryClient = useQueryClient();
 
   const form = useForm<ProblemFormValues>({
     resolver: zodResolver(ProblemFormSchema),
-    defaultValues,
+    defaultValues: {
+      title: problem.title,
+      description: problem.description,
+      url: problem.url,
+      tags: problem.tags,
+      difficulty: problem.difficulty,
+    },
   });
 
   const { setValue, setError } = form;
@@ -93,35 +93,21 @@ export default function ProblemEditModal({
     });
   };
 
-  const handleDifficultyChange = (difficulty: ProblemDifficulty) => {
-    setSelectedDifficulty(difficulty);
-  };
-
   const onSubmit = async (data: ProblemFormValues) => {
-    setIsSubmitting(true);
-    try {
-      const result = await updateProblemAction({
-        id: problem.id,
-        ...data,
-        difficulty: selectedDifficulty,
-        name: "",
-        link: "",
-      });
+    const result = await updateProblem(data, problem.id, problem.topic);
 
-      if (result.success) {
-        toast.success("Problem successfully updated", {
-          position: "top-center",
-        });
-
-        form.reset();
-        setIsOpen(false);
-      }
-    } catch (error) {
-      toast.error("Something went wrong", {
+    if (isActionError(result)) {
+      toast.error(result.error, {
         position: "top-center",
       });
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      queryClient.invalidateQueries({ queryKey: [revalidateKey] });
+      toast.success("Problem Updated", {
+        position: "top-center",
+      });
+
+      form.reset();
+      setIsOpen(false);
     }
   };
 
@@ -129,7 +115,7 @@ export default function ProblemEditModal({
     <Dialog
       open={isOpen}
       onOpenChange={(open) => {
-        if (!open && !isSubmitting) {
+        if (!open && !form.formState.isSubmitting) {
           form.reset();
         }
         setIsOpen(open);
@@ -210,59 +196,30 @@ export default function ProblemEditModal({
                 <FormItem>
                   <FormLabel>Tags</FormLabel>
                   <FormControl>
-                    <FormItem>
-                      <FormLabel>Tags</FormLabel>
-                      <FormControl>
-                        <TagsInput
-                          className="[&_input]:border-none [&_input]:outline-none [&_input]:ring-0 [&_input]:focus:border-none [&_input]:focus:ring-0 [&_input]:focus-visible:ring-0"
-                          value={field.value || []}
-                          onInvalid={(tag) => {
-                            field.value.includes(tag)
-                              ? toast.error(`${tag} already exists.`)
-                              : null;
-                          }}
-                          onValueChange={handleTags}
-                          editable
-                          addOnPaste
-                        >
-                          <TagsInputList>
-                            {field.value.map((tag) => (
-                              <TagsInputItem key={tag} value={tag}>
-                                {tag}
-                              </TagsInputItem>
-                            ))}
-                            <TagsInputInput placeholder="Add tags" />
-                          </TagsInputList>
-                        </TagsInput>
-                      </FormControl>
-                      <FormDescription className="text-xs">
-                        Add at least one tag (max 5) related to the contest
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                    {/* <TagInput
-                      tags={field.value || []}
-                      setTags={handleSetTags}
-                      placeholder="Add a tag"
-                      activeTagIndex={activeTagIndex}
-                      styleClasses={{
-                        input: "mb-2",
-                        tag: {
-                          body: "pl-2",
-                        },
-                        tagList: {
-                          container: "flex flex-wrap",
-                        },
+                    <TagsInput
+                      className="[&_input]:border-none [&_input]:outline-none [&_input]:ring-0 [&_input]:focus:border-none [&_input]:focus:ring-0 [&_input]:focus-visible:ring-0"
+                      value={field.value || []}
+                      onInvalid={(tag) => {
+                        field.value.includes(tag)
+                          ? toast.error(`${tag} already exists.`)
+                          : null;
                       }}
-                      setActiveTagIndex={setActiveTagIndex}
-                      inlineTags={false}
-                      showCount={true}
-                      maxTags={5}
-                      inputFieldPosition="top"
-                    /> */}
+                      onValueChange={handleTags}
+                      editable
+                      addOnPaste
+                    >
+                      <TagsInputList>
+                        {field.value.map((tag) => (
+                          <TagsInputItem key={tag} value={tag}>
+                            {tag}
+                          </TagsInputItem>
+                        ))}
+                        <TagsInputInput placeholder="Add tags" />
+                      </TagsInputList>
+                    </TagsInput>
                   </FormControl>
                   <FormDescription className="text-xs">
-                    Add at least one tag (max 5) related to the problem
+                    Add at least one tag (max 5) related to the contest
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -270,25 +227,34 @@ export default function ProblemEditModal({
             />
 
             {/* Difficulty Status Section */}
-            <div className="space-x-2 space-y-2">
-              <FormLabel>Difficulty Level</FormLabel>
-              <DifficultyStatus
-                onDifficultyChange={handleDifficultyChange}
-                initialDifficulty={problem.difficulty}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="difficulty"
+              render={({ field }) => (
+                <FormItem className="space-x-2 space-y-2">
+                  <FormLabel>Difficulty Level</FormLabel>
+                  <FormControl>
+                    <DifficultyStatus
+                      onDifficultyChange={field.onChange}
+                      initialDifficulty={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <DialogFooter className="flex-col gap-2 sm:flex-row sm:gap-0">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setIsOpen(false)}
-                disabled={isSubmitting}
+                disabled={form.formState.isSubmitting}
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Saving...

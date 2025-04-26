@@ -1,6 +1,6 @@
 "use client";
 
-import ProblemAddModal from "@/components/topic-cards/problem-add-modal";
+import ProblemSubmitModal from "@/components/topic-cards/problem-submit-modal";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/components/user-provider";
 import { hasPermission } from "@/utils/permissions";
@@ -9,7 +9,11 @@ import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 import { useState } from "react";
 
-export default function ProblemAddApproveSection() {
+export default function ProblemSubmitApproveSection({
+  topicId,
+}: {
+  topicId: string;
+}) {
   const { user } = useUser();
   const pathname = usePathname();
   const [isAddProblemModalOpen, setIsAddProblemModalOpen] = useState(false);
@@ -34,9 +38,10 @@ export default function ProblemAddApproveSection() {
           </Link>
         </Button>
       )}
-      <ProblemAddModal
+      <ProblemSubmitModal
         isOpen={isAddProblemModalOpen}
         setIsOpen={setIsAddProblemModalOpen}
+        topicId={topicId}
       />
     </div>
   );

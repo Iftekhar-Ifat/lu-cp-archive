@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
-import TopicProblemAddApproveSection from "./_components/problem-add-approve-section";
 import ProblemCardSection from "./_components/problem-card-section";
 import { Separator } from "@/components/ui/separator";
 import { ChartColumnIncreasing, Terminal } from "lucide-react";
 import ProblemProgressSection from "./_components/topic-progress-section";
 import { getTopicsBySlug } from "./problem-actions";
 import { isActionError } from "@/utils/error-helper";
+import ProblemSubmitApproveSection from "./_components/problem-submit-approve-section";
 
 type TopicPageProps = {
   params: { topic: string };
@@ -26,7 +26,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
             {topic.data.title}
           </span>
         </div>
-        <TopicProblemAddApproveSection />
+        <ProblemSubmitApproveSection topicId={topic.data.id} />
       </div>
       <Separator />
       {/* <div className="mb-8 mt-4">

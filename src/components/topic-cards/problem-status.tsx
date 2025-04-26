@@ -18,36 +18,51 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { type ProblemStatusType } from "@/types/types";
+import { isActionError } from "@/utils/error-helper";
+import { toast } from "sonner";
+import { updateProblemStatus } from "@/app/dashboard/topic-wise/[topic]/problem-actions";
 
 type Status = {
-  value: string;
+  value: ProblemStatusType;
   label: string;
   color: string;
 };
 
 const statuses: Status[] = [
   {
-    value: "skipped",
+    value: "SKIPPED",
     label: "Skipped",
     color: "bg-rose-500",
   },
   {
-    value: "in-progress",
+    value: "InProgress",
     label: "In Progress",
     color: "bg-amber-500",
   },
   {
-    value: "done",
+    value: "DONE",
     label: "Done",
     color: "bg-emerald-500",
   },
 ];
 
-export function ProblemStatus() {
+export function ProblemStatus({
+  problemId,
+  problemStatus,
+}: {
+  problemId: string;
+  problemStatus: ProblemStatusType;
+}) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
+
+  const [selectedStatus, setSelectedStatus] = useState<Status | null>(() => {
+    const initialStatus =
+      statuses.find((status) => status.value === problemStatus) || null;
+    return initialStatus;
+  });
 
   // Button ref to get the card element
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -56,15 +71,24 @@ export function ProblemStatus() {
     try {
       setLoading(true);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
       const nextStatus =
         selectedStatus?.value === newStatus?.value ? null : newStatus;
 
-      setSelectedStatus(nextStatus);
+      const result = await updateProblemStatus(
+        problemId,
+        nextStatus?.value ?? null
+      );
 
-      // why is this??? "im not gonna drill a state 3 layer deep just to update a border"
+      if (isActionError(result)) {
+        toast.error(result.error, {
+          position: "top-center",
+        });
+      } else {
+        toast.success("Status updated successfully");
+        setSelectedStatus(nextStatus);
+      }
+
+      // Update the card element border
       if (buttonRef.current) {
         const cardElement = buttonRef.current.closest("[data-card]");
         if (cardElement instanceof HTMLElement) {
@@ -171,7 +195,7 @@ function StatusList({
           {statuses.map((status) => (
             <CommandItem
               key={status.value}
-              value={status.value}
+              value={status.value as string}
               onSelect={(value) => {
                 const newStatus =
                   statuses.find((s) => s.value === value) || null;

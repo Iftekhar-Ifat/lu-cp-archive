@@ -232,7 +232,6 @@ async function updateContest(
           description: data.description,
           url: data.url,
           difficulty: data.difficulty,
-          added_by: user.id,
         },
       });
     });
