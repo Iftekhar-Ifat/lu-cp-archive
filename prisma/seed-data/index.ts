@@ -97,15 +97,17 @@ export async function seedContestTags(
   tagIds: string[]
 ) {
   console.log("Seeding contest tags...");
-  const contestTagsData = [
-    { contest_id: contestIds[0], tag_id: tagIds[0] }, // algorithms
-    { contest_id: contestIds[0], tag_id: tagIds[6] }, // greedy
-    { contest_id: contestIds[1], tag_id: tagIds[1] }, // data-structures
-    { contest_id: contestIds[1], tag_id: tagIds[4] }, // math
-    { contest_id: contestIds[1], tag_id: tagIds[9] }, // recursion
-    { contest_id: contestIds[2], tag_id: tagIds[7] }, // sorting
-    { contest_id: contestIds[2], tag_id: tagIds[8] }, // binary-search
-  ];
+  const contestTagsData = contestIds.flatMap((contestId, index) => {
+    // Ensure each contest has at least one tag by using the index modulo tagIds.length
+    const primaryTagId = tagIds[index % tagIds.length];
+    const secondaryTagId = tagIds[(index + 1) % tagIds.length];
+
+    // Return one or two tags for each contest
+    return [
+      { contest_id: contestId, tag_id: primaryTagId },
+      { contest_id: contestId, tag_id: secondaryTagId },
+    ];
+  });
 
   try {
     await prisma.$transaction(async (tx) => {
@@ -222,46 +224,18 @@ export async function seedProblemTags(
   tagIds: string[]
 ) {
   console.log("Seeding problem tags...");
-  // Mapping problems to relevant tags
-  const problemTagsData = [
-    // Two Sum - algorithms, arrays
-    { problem_id: problemIds[0], tag_id: tagIds[0] },
-    { problem_id: problemIds[0], tag_id: tagIds[1] },
+  // Ensure every problem has at least one tag by creating a base mapping
+  const problemTagsData = problemIds.flatMap((problemId, index) => {
+    // Ensure each problem has at least one tag by using the index modulo tagIds.length
+    const primaryTag = tagIds[index % tagIds.length];
+    const secondaryTag = tagIds[(index + 1) % tagIds.length];
 
-    // Binary Tree Level Order Traversal - trees, data structures
-    { problem_id: problemIds[1], tag_id: tagIds[5] },
-    { problem_id: problemIds[1], tag_id: tagIds[1] },
-
-    // Dynamic Programming Maximum Path - dp, algorithms
-    { problem_id: problemIds[2], tag_id: tagIds[2] },
-    { problem_id: problemIds[2], tag_id: tagIds[0] },
-
-    // Graph Shortest Path - graphs, algorithms
-    { problem_id: problemIds[3], tag_id: tagIds[3] },
-    { problem_id: problemIds[3], tag_id: tagIds[0] },
-
-    // Stack Implementation - data structures
-    { problem_id: problemIds[4], tag_id: tagIds[1] },
-
-    // Linked List Cycle - data structures, algorithms
-    { problem_id: problemIds[5], tag_id: tagIds[1] },
-    { problem_id: problemIds[5], tag_id: tagIds[0] },
-
-    // String Pattern Matching - strings, algorithms
-    { problem_id: problemIds[6], tag_id: tagIds[5] },
-    { problem_id: problemIds[6], tag_id: tagIds[0] },
-
-    // Array Rotation - arrays, algorithms
-    { problem_id: problemIds[7], tag_id: tagIds[1] },
-    { problem_id: problemIds[7], tag_id: tagIds[0] },
-
-    // BST Validation - trees, data structures
-    { problem_id: problemIds[8], tag_id: tagIds[5] },
-    { problem_id: problemIds[8], tag_id: tagIds[1] },
-
-    // Queue using Stacks - data structures
-    { problem_id: problemIds[9], tag_id: tagIds[1] },
-  ];
+    // Each problem gets at least two tags
+    return [
+      { problem_id: problemId, tag_id: primaryTag },
+      { problem_id: problemId, tag_id: secondaryTag },
+    ];
+  });
 
   try {
     await prisma.$transaction(async (tx) => {
