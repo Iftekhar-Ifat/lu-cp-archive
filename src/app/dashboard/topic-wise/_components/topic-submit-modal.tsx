@@ -28,7 +28,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { generateTitleToSlug } from "@/utils/helper";
-import { TopicFormSchema } from "@/utils/schema/topic-form";
+import { TopicFormSchema } from "@/utils/schema/topic";
 import { submitTopic } from "../topic-actions";
 
 type TopicFormValues = z.infer<typeof TopicFormSchema>;

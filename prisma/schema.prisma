@@ -25,6 +25,8 @@ model users {
 
   addedContest  contests[]
   contestStatus contest_status[]
+  problems      problems[]
+  problemStatus problem_status[]
 }
 
 enum UserType {
@@ -95,7 +97,8 @@ model tags {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  contestTags contests_tags[]
+  contestTags  contests_tags[]
+  problem_tags problem_tags[]
 }
 
 model topics {
@@ -106,4 +109,45 @@ model topics {
   approved    Boolean  @default(false)
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+
+  problems problems[]
+}
+
+model problems {
+  id          String           @id @default(cuid())
+  title       String
+  url         String
+  description String
+  difficulty  Difficulty
+  tags        problem_tags[]
+  status      problem_status[]
+  topic       String
+  approved    Boolean          @default(false)
+  added_by    String
+  created_at  DateTime         @default(now())
+  updated_at  DateTime         @updatedAt
+
+  addedBy      users  @relation(fields: [added_by], references: [id])
+  relatedTopic topics @relation(fields: [topic], references: [id])
+}
+
+model problem_status {
+  status     StatusType?
+  user_id    String
+  problem_id String
+
+  userId    users    @relation(fields: [user_id], references: [id])
+  problemId problems @relation(fields: [problem_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, problem_id])
+}
+
+model problem_tags {
+  problem_id String
+  tag_id     String
+
+  problemId problems @relation(fields: [problem_id], references: [id], onDelete: Cascade)
+  tagId     tags     @relation(fields: [tag_id], references: [id])
+
+  @@id([problem_id, tag_id])
 }

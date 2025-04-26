@@ -1,5 +1,6 @@
 import { type ContestSchema } from "@/utils/schema/contest";
-import { type TopicSchema } from "@/utils/schema/topic-form";
+import { type ProblemSchema } from "@/utils/schema/problem";
+import { type TopicSchema } from "@/utils/schema/topic";
 import { z } from "zod";
 
 // User Types
@@ -26,7 +27,7 @@ export const ContestTypeSchema = z.enum([
 
 export type ContestType = z.infer<typeof ContestTypeSchema>;
 
-export type ContestDifficultyType = z.infer<typeof DifficultySchema>;
+export type ContestDifficulty = z.infer<typeof DifficultySchema>;
 
 export type Contest = z.infer<typeof ContestSchema>;
 
@@ -40,20 +41,12 @@ export type ContestStatusType = z.infer<typeof StatusSchema>;
 export type Topic = z.infer<typeof TopicSchema>;
 
 // Problem Types
-export type ProblemDifficultyType = z.infer<typeof DifficultySchema>;
+export type Problem = z.infer<typeof ProblemSchema>;
 
-export type Problem = {
-  id: string;
-  name: string;
-  description: string;
-  link: string;
-  added_by: string;
-  difficulty: ProblemDifficultyType;
-  tags: string[];
-};
+export type ProblemDifficulty = z.infer<typeof DifficultySchema>;
 
 export type ProblemProgressStats = {
-  difficulty: ProblemDifficultyType;
+  difficulty: ProblemDifficulty;
   skipped: number;
   inProgress: number;
   done: number;

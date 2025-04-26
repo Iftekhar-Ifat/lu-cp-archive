@@ -1,13 +1,13 @@
 "use server";
 
-import { type User, type ContestDifficultyType } from "@/types/types";
+import { type User, type ContestDifficulty } from "@/types/types";
 
 const createProblemAction = async (data: {
   name: string;
   description: string;
   link: string;
   tags: string[];
-  difficulty: ContestDifficultyType;
+  difficulty: ContestDifficulty;
 }) => {
   console.log(data);
   // Simulate network delay
@@ -23,7 +23,7 @@ const updateProblemAction = async (data: {
   description: string;
   link: string;
   tags: string[];
-  difficulty: ContestDifficultyType;
+  difficulty: ContestDifficulty;
 }) => {
   console.log(data);
   // Simulate network delay

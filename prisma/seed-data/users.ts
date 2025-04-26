@@ -13,5 +13,46 @@ export const users = [
     user_name: "poweruser",
     user_type: UserType.POWER,
   },
-  // ...existing users...
+  {
+    name: "Alice Johnson",
+    email: "alice@example.com",
+    user_name: "alice_j",
+    user_type: UserType.POWER,
+  },
+  {
+    name: "Bob Smith",
+    email: "bob@example.com",
+    user_name: "bob_smith",
+    user_type: UserType.STANDARD,
+  },
+  {
+    name: "Carol White",
+    email: "carol@example.com",
+    user_name: "carol_w",
+    user_type: UserType.STANDARD,
+  },
+  {
+    name: "David Brown",
+    email: "david@example.com",
+    user_name: "david_b",
+    user_type: UserType.STANDARD,
+  },
+  {
+    name: "Eve Wilson",
+    email: "eve@example.com",
+    user_name: "eve_wilson",
+    user_type: UserType.POWER,
+  },
+  {
+    name: "Frank Miller",
+    email: "frank@example.com",
+    user_name: "frank_m",
+    user_type: UserType.STANDARD,
+  },
+  {
+    name: "Grace Davis",
+    email: "grace@example.com",
+    user_name: "grace_d",
+    user_type: UserType.STANDARD,
+  },
 ];

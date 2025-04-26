@@ -1,16 +1,22 @@
 import { StatusType } from "@prisma/client";
-import type { PrismaClient } from "@prisma/client";
+import type { contests, PrismaClient, problems } from "@prisma/client";
 import { users } from "./users";
 import { tags } from "./tags";
 import { topics } from "./topics";
 import { getContests } from "./contests";
+import { getProblems } from "./problems";
 
 export async function seedUsers(prisma: PrismaClient) {
   console.log("Seeding users...");
   const createdUsers = [];
   for (const userData of users) {
-    const user = await prisma.users.create({ data: userData });
-    createdUsers.push(user);
+    try {
+      const user = await prisma.users.create({ data: userData });
+      createdUsers.push(user);
+      console.log(`Created user: ${user.name}`);
+    } catch (error) {
+      console.error(`Failed to create user ${userData.name}:`, error);
+    }
   }
   return createdUsers;
 }
@@ -19,8 +25,13 @@ export async function seedTags(prisma: PrismaClient) {
   console.log("Seeding tags...");
   const createdTags = [];
   for (const tagData of tags) {
-    const tag = await prisma.tags.create({ data: tagData });
-    createdTags.push(tag);
+    try {
+      const tag = await prisma.tags.create({ data: tagData });
+      createdTags.push(tag);
+      console.log(`Created tag: ${tag.name}`);
+    } catch (error) {
+      console.error(`Failed to create tag ${tagData.name}:`, error);
+    }
   }
   return createdTags;
 }
@@ -32,9 +43,8 @@ export async function seedTopics(prisma: PrismaClient) {
     try {
       const topic = await prisma.topics.create({
         data: {
-          title: topicData.title,
-          description: topicData.description,
-          slug: topicData.slug,
+          ...topicData,
+          approved: true, // All seed topics are approved
         },
       });
       createdTopics.push(topic);
@@ -49,12 +59,35 @@ export async function seedTopics(prisma: PrismaClient) {
 export async function seedContests(prisma: PrismaClient, userIds: string[]) {
   console.log("Seeding contests...");
   const contests = getContests(userIds);
-  const createdContests = [];
+  const createdContests: contests[] = [];
 
-  for (const contestData of contests) {
-    const contest = await prisma.contests.create({ data: contestData });
-    createdContests.push(contest);
+  try {
+    await prisma.$transaction(async (tx) => {
+      for (const contestData of contests) {
+        const contest = await tx.contests.create({
+          data: {
+            title: contestData.title,
+            description: contestData.description,
+            url: contestData.url,
+            difficulty: contestData.difficulty,
+            type: contestData.type,
+            approved: true,
+            addedBy: {
+              connect: {
+                id: contestData.added_by,
+              },
+            },
+          },
+        });
+        createdContests.push(contest);
+        console.log(`Created contest: ${contest.title}`);
+      }
+    });
+  } catch (error) {
+    console.error("Failed to create contests:", error);
+    throw error;
   }
+
   return createdContests;
 }
 
@@ -72,11 +105,18 @@ export async function seedContestTags(
     { contest_id: contestIds[1], tag_id: tagIds[9] }, // recursion
     { contest_id: contestIds[2], tag_id: tagIds[7] }, // sorting
     { contest_id: contestIds[2], tag_id: tagIds[8] }, // binary-search
-    // Add more contest-tag relationships as needed
   ];
 
-  for (const tagData of contestTagsData) {
-    await prisma.contests_tags.create({ data: tagData });
+  try {
+    await prisma.$transaction(async (tx) => {
+      for (const tagData of contestTagsData) {
+        await tx.contests_tags.create({ data: tagData });
+        console.log(`Created contest tag relationship`);
+      }
+    });
+  } catch (error) {
+    console.error("Failed to create contest tags:", error);
+    throw error;
   }
 }
 
@@ -114,7 +154,171 @@ export async function seedContestStatuses(
     },
   ];
 
-  for (const status of statusData) {
-    await prisma.contest_status.create({ data: status });
+  try {
+    await prisma.$transaction(async (tx) => {
+      for (const status of statusData) {
+        await tx.contest_status.create({ data: status });
+        console.log(`Created contest status for user ${status.user_id}`);
+      }
+    });
+  } catch (error) {
+    console.error("Failed to create contest statuses:", error);
+    throw error;
+  }
+}
+
+export async function seedProblems(
+  prisma: PrismaClient,
+  userIds: string[],
+  topicIds: string[]
+) {
+  console.log("Seeding problems...");
+  const problems = getProblems(userIds);
+  const createdProblems: problems[] = [];
+
+  // Map problems to specific topics
+  const problemsWithRefs = problems.map((problem, index) => ({
+    ...problem,
+    topic: topicIds[index % topicIds.length],
+  }));
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      for (const problemData of problemsWithRefs) {
+        const problem = await tx.problems.create({
+          data: {
+            title: problemData.title,
+            description: problemData.description,
+            url: problemData.url,
+            difficulty: problemData.difficulty,
+            approved: true,
+            addedBy: {
+              connect: {
+                id: problemData.added_by,
+              },
+            },
+            relatedTopic: {
+              connect: {
+                id: problemData.topic,
+              },
+            },
+          },
+        });
+        createdProblems.push(problem);
+        console.log(`Created problem: ${problem.title}`);
+      }
+    });
+  } catch (error) {
+    console.error("Failed to create problems:", error);
+    throw error;
+  }
+
+  return createdProblems;
+}
+
+export async function seedProblemTags(
+  prisma: PrismaClient,
+  problemIds: string[],
+  tagIds: string[]
+) {
+  console.log("Seeding problem tags...");
+  // Mapping problems to relevant tags
+  const problemTagsData = [
+    // Two Sum - algorithms, arrays
+    { problem_id: problemIds[0], tag_id: tagIds[0] },
+    { problem_id: problemIds[0], tag_id: tagIds[1] },
+
+    // Binary Tree Level Order Traversal - trees, data structures
+    { problem_id: problemIds[1], tag_id: tagIds[5] },
+    { problem_id: problemIds[1], tag_id: tagIds[1] },
+
+    // Dynamic Programming Maximum Path - dp, algorithms
+    { problem_id: problemIds[2], tag_id: tagIds[2] },
+    { problem_id: problemIds[2], tag_id: tagIds[0] },
+
+    // Graph Shortest Path - graphs, algorithms
+    { problem_id: problemIds[3], tag_id: tagIds[3] },
+    { problem_id: problemIds[3], tag_id: tagIds[0] },
+
+    // Stack Implementation - data structures
+    { problem_id: problemIds[4], tag_id: tagIds[1] },
+
+    // Linked List Cycle - data structures, algorithms
+    { problem_id: problemIds[5], tag_id: tagIds[1] },
+    { problem_id: problemIds[5], tag_id: tagIds[0] },
+
+    // String Pattern Matching - strings, algorithms
+    { problem_id: problemIds[6], tag_id: tagIds[5] },
+    { problem_id: problemIds[6], tag_id: tagIds[0] },
+
+    // Array Rotation - arrays, algorithms
+    { problem_id: problemIds[7], tag_id: tagIds[1] },
+    { problem_id: problemIds[7], tag_id: tagIds[0] },
+
+    // BST Validation - trees, data structures
+    { problem_id: problemIds[8], tag_id: tagIds[5] },
+    { problem_id: problemIds[8], tag_id: tagIds[1] },
+
+    // Queue using Stacks - data structures
+    { problem_id: problemIds[9], tag_id: tagIds[1] },
+  ];
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      for (const tagData of problemTagsData) {
+        await tx.problem_tags.create({ data: tagData });
+        console.log("Created problem tag relationship");
+      }
+    });
+  } catch (error) {
+    console.error("Failed to create problem tags:", error);
+    throw error;
+  }
+}
+
+export async function seedProblemStatuses(
+  prisma: PrismaClient,
+  userIds: string[],
+  problemIds: string[]
+) {
+  console.log("Seeding problem statuses...");
+  const statusData = [
+    {
+      user_id: userIds[0],
+      problem_id: problemIds[0],
+      status: StatusType.DONE,
+    },
+    {
+      user_id: userIds[1],
+      problem_id: problemIds[1],
+      status: StatusType.InProgress,
+    },
+    {
+      user_id: userIds[2],
+      problem_id: problemIds[2],
+      status: StatusType.SKIPPED,
+    },
+    {
+      user_id: userIds[3],
+      problem_id: problemIds[3],
+      status: StatusType.InProgress,
+    },
+    {
+      user_id: userIds[4],
+      problem_id: problemIds[4],
+      status: StatusType.DONE,
+    },
+  ];
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      for (const status of statusData) {
+        await tx.problem_status.create({ data: status });
+        console.log(`Created problem status for user ${status.user_id}`);
+      }
+    });
+  } catch (error) {
+    console.error("Failed to create problem statuses:", error);
+    throw error;
   }
 }

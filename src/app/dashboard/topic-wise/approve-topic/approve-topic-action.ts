@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { type Topic } from "@/types/types";
 import { isActionError, type ActionResult } from "@/utils/error-helper";
 import { hasPermission } from "@/utils/permissions";
-import { TopicSchema } from "@/utils/schema/topic-form";
+import { TopicSchema } from "@/utils/schema/topic";
 import { z } from "zod";
 
 async function getApproveTopics(): Promise<ActionResult<Topic[]>> {

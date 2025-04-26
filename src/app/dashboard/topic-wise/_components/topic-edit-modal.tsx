@@ -28,7 +28,7 @@ import { type Topic } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { updateTopic } from "../topic-actions";
-import { TopicFormSchema } from "@/utils/schema/topic-form";
+import { TopicFormSchema } from "@/utils/schema/topic";
 import { isActionError } from "@/utils/error-helper";
 import { useQueryClient } from "@tanstack/react-query";
 

@@ -25,14 +25,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type ProblemDifficultyType } from "@/types/types";
+import { type ProblemDifficulty } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { DifficultyStatus } from "../shared/difficulty-status";
 import {
   MAX_PROBLEM_TAG_LENGTH,
-  problemFormSchema,
-} from "@/utils/schema/problem-form";
+  ProblemFormSchema,
+} from "@/utils/schema/problem";
 import { createProblemAction } from "@/app/dashboard/topic-wise/[topic]/actions";
 import {
   TagsInput,
@@ -41,7 +41,7 @@ import {
   TagsInputList,
 } from "../ui/tags-input";
 
-type ProblemFormValues = z.infer<typeof problemFormSchema>;
+type ProblemFormValues = z.infer<typeof ProblemFormSchema>;
 
 export default function ProblemAddModal({
   isOpen,
@@ -51,18 +51,18 @@ export default function ProblemAddModal({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [selectedDifficulty, setSelectedDifficulty] =
-    useState<ProblemDifficultyType>("EASY");
+    useState<ProblemDifficulty>("EASY");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues: Partial<ProblemFormValues> = {
-    name: "",
+    title: "",
     description: "",
-    link: "",
+    url: "",
     tags: [],
   };
 
   const form = useForm<ProblemFormValues>({
-    resolver: zodResolver(problemFormSchema),
+    resolver: zodResolver(ProblemFormSchema),
     defaultValues,
   });
 
@@ -91,7 +91,7 @@ export default function ProblemAddModal({
     });
   };
 
-  const handleDifficultyChange = (difficulty: ProblemDifficultyType) => {
+  const handleDifficultyChange = (difficulty: ProblemDifficulty) => {
     setSelectedDifficulty(difficulty);
   };
 
@@ -101,6 +101,8 @@ export default function ProblemAddModal({
       const result = await createProblemAction({
         ...data,
         difficulty: selectedDifficulty,
+        name: "",
+        link: "",
       });
 
       if (result.success) {
@@ -143,7 +145,7 @@ export default function ProblemAddModal({
             {/* Problem Name Field */}
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Problem Name</FormLabel>
@@ -166,13 +168,13 @@ export default function ProblemAddModal({
                     <Textarea
                       placeholder="Describe the problem"
                       className="min-h-[100px] resize-none"
-                      maxLength={problemFormSchema.shape.description.maxLength!}
+                      maxLength={ProblemFormSchema.shape.description.maxLength!}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription className="flex justify-end text-xs">
                     {form.watch("description")?.length || 0}/
-                    {problemFormSchema.shape.description.maxLength} characters
+                    {ProblemFormSchema.shape.description.maxLength} characters
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -182,7 +184,7 @@ export default function ProblemAddModal({
             {/* Problem Link Field */}
             <FormField
               control={form.control}
-              name="link"
+              name="url"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Problem Link</FormLabel>

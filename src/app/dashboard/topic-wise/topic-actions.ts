@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { type Topic } from "@/types/types";
 import { isActionError, type ActionResult } from "@/utils/error-helper";
 import { hasPermission } from "@/utils/permissions";
-import { TopicFormSchema, TopicSchema } from "@/utils/schema/topic-form";
+import { TopicFormSchema, TopicSchema } from "@/utils/schema/topic";
 import { z } from "zod";
 
 const submitTopic = async (data: {

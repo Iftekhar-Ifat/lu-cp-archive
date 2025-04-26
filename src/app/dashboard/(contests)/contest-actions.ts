@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import {
   type ContestStatusType,
   type Contest,
-  type ContestDifficultyType,
+  type ContestDifficulty,
 } from "@/types/types";
 import { type ActionResult, isActionError } from "@/utils/error-helper";
 import { hasPermission } from "@/utils/permissions";
@@ -19,7 +19,7 @@ async function submitContest(
     description: string;
     url: string;
     tags: string[];
-    difficulty: ContestDifficultyType;
+    difficulty: ContestDifficulty;
   },
   contestType: ContestType
 ) {
@@ -147,7 +147,7 @@ async function updateContest(
     description: string;
     url: string;
     tags: string[];
-    difficulty: ContestDifficultyType;
+    difficulty: ContestDifficulty;
   },
   contestId: string
 ) {
