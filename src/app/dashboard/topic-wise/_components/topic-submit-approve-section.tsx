@@ -8,11 +8,22 @@ import TopicSubmitModal from "./topic-submit-modal";
 import { hasPermission } from "@/utils/permissions";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getUnapprovedTopicCount } from "../topic-actions";
+import ApproveCountBadge from "@/components/shared/approve-count-badge";
 
 export default function TopicSubmitApproveSection() {
   const { user } = useUser();
   const pathname = usePathname();
   const [isSubmitTopicModalOpen, setIsSubmitTopicModalOpen] = useState(false);
+
+  const { data: unapprovedTopic } = useQuery({
+    queryKey: ["unapproved-contests"],
+    queryFn: async () => {
+      const count = await getUnapprovedTopicCount();
+      return count;
+    },
+  });
 
   if (!user) {
     return redirect("/");
@@ -39,10 +50,11 @@ export default function TopicSubmitApproveSection() {
         </Button>
       )}
       {hasApproveTopicPermission && (
-        <Button variant="outline" asChild>
+        <Button variant="outline" asChild className="relative">
           <Link href={`${pathname}/approve-topic`}>
             <Check />
             Approve Topic
+            <ApproveCountBadge count={unapprovedTopic} />
           </Link>
         </Button>
       )}

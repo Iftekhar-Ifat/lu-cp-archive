@@ -4,10 +4,13 @@ import ProblemSubmitModal from "@/components/topic-cards/problem-submit-modal";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/components/user-provider";
 import { hasPermission } from "@/utils/permissions";
+import { useQuery } from "@tanstack/react-query";
 import { Check, Plus } from "lucide-react";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 import { useState } from "react";
+import { getUnapprovedProblemCount } from "../problem-actions";
+import ApproveCountBadge from "@/components/shared/approve-count-badge";
 
 export default function ProblemSubmitApproveSection({
   topicId,
@@ -17,6 +20,14 @@ export default function ProblemSubmitApproveSection({
   const { user } = useUser();
   const pathname = usePathname();
   const [isAddProblemModalOpen, setIsAddProblemModalOpen] = useState(false);
+
+  const { data: unapprovedProblems } = useQuery({
+    queryKey: ["unapproved-contests"],
+    queryFn: async () => {
+      const count = await getUnapprovedProblemCount(topicId);
+      return count;
+    },
+  });
 
   if (!user) {
     redirect("/");
@@ -31,10 +42,11 @@ export default function ProblemSubmitApproveSection({
         Submit Problem
       </Button>
       {hasApprovePermission && (
-        <Button variant="outline" asChild>
+        <Button variant="outline" asChild className="relative">
           <Link href={`${pathname}/approve-problem`}>
             <Check />
             Approve Problem
+            <ApproveCountBadge count={unapprovedProblems} />
           </Link>
         </Button>
       )}

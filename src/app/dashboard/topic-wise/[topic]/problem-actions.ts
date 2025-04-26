@@ -337,6 +337,16 @@ async function updateProblemStatus(
   }
 }
 
+async function getUnapprovedProblemCount(topicId: string) {
+  const count = await prisma.problems.count({
+    where: {
+      topic: topicId,
+      approved: false,
+    },
+  });
+  return count;
+}
+
 export {
   submitProblem,
   updateProblem,
@@ -344,4 +354,5 @@ export {
   getProblemsByTopic,
   deleteProblem,
   updateProblemStatus,
+  getUnapprovedProblemCount,
 };

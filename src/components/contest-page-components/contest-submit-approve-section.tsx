@@ -7,11 +7,11 @@ import Link from "next/link";
 import { useUser } from "../user-provider";
 import { redirect, usePathname } from "next/navigation";
 import { hasPermission } from "@/utils/permissions";
-import { Badge } from "../ui/badge";
 import { type ContestType } from "@/types/types";
 import ContestSubmitModal from "./contest-submit-modal";
 import { useQuery } from "@tanstack/react-query";
 import { getUnapprovedContestCount } from "@/app/dashboard/(contests)/contest-actions";
+import ApproveCountBadge from "../shared/approve-count-badge";
 
 export default function ContestSubmitApproveSection({
   contestType,
@@ -51,11 +51,7 @@ export default function ContestSubmitApproveSection({
           <Link href={`/dashboard/approve-contests/${pathname}`}>
             <Check />
             Approve Contest
-            {unapprovedContests && unapprovedContests > 0 && (
-              <Badge className="pointer-events-none absolute -top-2 left-full min-w-5 -translate-x-1/2 justify-center bg-green-100 px-1 text-sm text-emerald-500 dark:bg-green-500/20">
-                {unapprovedContests > 99 ? "99+" : unapprovedContests}
-              </Badge>
-            )}
+            <ApproveCountBadge count={unapprovedContests} />
           </Link>
         </Button>
       )}

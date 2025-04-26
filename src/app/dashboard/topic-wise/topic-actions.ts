@@ -136,4 +136,17 @@ const deleteTopic = async (topicId: string) => {
   }
 };
 
-export { submitTopic, updateTopic, getTopics, deleteTopic };
+async function getUnapprovedTopicCount() {
+  const count = await prisma.topics.count({
+    where: { approved: false },
+  });
+  return count;
+}
+
+export {
+  submitTopic,
+  updateTopic,
+  getTopics,
+  deleteTopic,
+  getUnapprovedTopicCount,
+};
