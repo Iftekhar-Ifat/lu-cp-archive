@@ -15,6 +15,8 @@ const fetchedData: Contest[] = [
     difficulty: "EASY",
     tags: ["array", "string", "math", "dp"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
   {
     id: "2",
@@ -25,6 +27,8 @@ const fetchedData: Contest[] = [
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
   {
     id: "3",
@@ -35,6 +39,8 @@ const fetchedData: Contest[] = [
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
   {
     id: "4",
@@ -45,6 +51,8 @@ const fetchedData: Contest[] = [
     difficulty: "HARD",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
   {
     id: "5",
@@ -55,6 +63,8 @@ const fetchedData: Contest[] = [
     difficulty: "MEDIUM",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
   {
     id: "6",
@@ -68,6 +78,8 @@ const fetchedData: Contest[] = [
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
 ];
 
@@ -176,6 +188,8 @@ const fetchedContestData: Contest[] = [
     difficulty: "EASY",
     tags: ["array", "string", "math", "dp"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
   {
     id: "2",
@@ -186,6 +200,8 @@ const fetchedContestData: Contest[] = [
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
   {
     id: "3",
@@ -196,6 +212,8 @@ const fetchedContestData: Contest[] = [
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
   {
     id: "4",
@@ -206,6 +224,8 @@ const fetchedContestData: Contest[] = [
     difficulty: "HARD",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
   {
     id: "5",
@@ -216,6 +236,8 @@ const fetchedContestData: Contest[] = [
     difficulty: "MEDIUM",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
   {
     id: "6",
@@ -229,6 +251,8 @@ const fetchedContestData: Contest[] = [
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
     type: "intra_lu_contests",
+    status: null,
+    approved: false,
   },
 ];
 
@@ -242,59 +266,78 @@ export async function fetchContestData(contestType: ContestType) {
 const topicWiseProblem: Problem[] = [
   {
     id: "1",
-    name: "Topic Wise",
+    title: "Topic Wise",
     description: "Practice Topic wise problems",
-    link: "dashboard/topic-wise",
+    url: "dashboard/topic-wise",
     added_by: "Dewan Abdul Mohaimin Chowdhury",
     difficulty: "EASY",
     tags: ["array", "string", "math", "dp"],
+    status: null,
+    approved: false,
+    topic: "",
   },
   {
     id: "2",
-    name: "Codeforces Ladder",
+    title: "Codeforces Ladder",
     description: "Practice Codeforces problem by difficulty level",
-    link: "dashboard/codeforces-ladder",
+    url: "dashboard/codeforces-ladder",
     added_by: "Dewan Abdul Mohaimin Chowdhury",
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    status: null,
+    approved: false,
+    topic: "",
   },
   {
     id: "3",
-    name: "Leaderboard",
+    title: "Leaderboard",
     description: "Leaderboard of LU's competitive programers",
-    link: "dashboard/leaderboard",
+    url: "dashboard/leaderboard",
     added_by: "Iftekhar-Ifat",
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    status: null,
+    approved: false,
+    topic: "",
   },
   {
     id: "4",
-    name: "Intra LU Contest",
+    title: "Intra LU Contest",
     description: "Problems from previous onsite LU contests",
-    link: "dashboard/intra-lu-contests",
+    url: "dashboard/intra-lu-contests",
     added_by: "Iftekhar-Ifat",
     difficulty: "HARD",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    status: null,
+    approved: false,
+    topic: "",
   },
   {
     id: "5",
-    name: "LU Problem Solver Short Contest",
+    title: "LU Problem Solver Short Contest",
     description: "Short Contests organized by LU Problem Solvers",
-    link: "dashboard/short-contests",
+    url: "dashboard/short-contests",
     added_by: "Dewan Abdul Mohaimin Chowdhury",
     difficulty: "MEDIUM",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    status: null,
+    approved: false,
+    topic: "",
   },
   {
     id: "6",
-    name: "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet",
+    title:
+      "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet",
     description:
       "LU Problem Solver Marathon Contest lorem ipsum dolor sit amet LU Problem Solver Marathon Contest lorem ipsum dolor sit amet Long Contests organized by LU Problem Solvers",
-    link: "dashboard/marathon-contests",
+    url: "dashboard/marathon-contests",
     added_by:
       "Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury Dewan Abdul Mohaimin Chowdhury",
     difficulty: "EASY",
     tags: ["Array", "String", "Math", "DP", "Greedy", "Graph", "Tree"],
+    status: null,
+    approved: false,
+    topic: "",
   },
 ];
 
