@@ -17,6 +17,7 @@ import ProblemCardFooter from "./problem-card-footer";
 import { cn } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { hasPermission } from "@/utils/permissions";
+import Link from "next/link";
 
 export default function ProblemCard({
   problem,
@@ -46,7 +47,7 @@ export default function ProblemCard({
       <CardHeader>
         <div className="flex items-start justify-between space-y-0">
           <CardTitle className="line-clamp-1 max-w-[90%] text-xl leading-tight">
-            {problem.name}
+            {problem.title}
           </CardTitle>
           <ArrowUpRight
             className="text-muted-foreground group-hover:text-primary"
@@ -63,12 +64,14 @@ export default function ProblemCard({
       <CardContent className="space-y-2">
         <div className="space-y-1">
           <span className="mr-1 text-xs text-muted-foreground">Added by:</span>
-          <Badge
-            variant="secondary"
-            className="w-fit max-w-full truncate px-2 text-xs hover:scale-[1.02]"
-          >
-            @{problem.added_by}
-          </Badge>
+          <Link href={`/profile/@${problem.added_by}`}>
+            <Badge
+              variant="secondary"
+              className="w-fit max-w-full truncate px-2 text-xs hover:scale-[1.02]"
+            >
+              @{problem.added_by}
+            </Badge>
+          </Link>
         </div>
         <div className="space-y-1">
           <span className="mr-1 text-xs text-muted-foreground">Tags:</span>

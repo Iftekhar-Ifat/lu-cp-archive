@@ -2,42 +2,41 @@
 
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { getContests } from "../../contest-actions";
-import { type ContestType } from "@/types/types";
-import { unwrapActionResult } from "@/utils/error-helper";
-import Loading from "@/components/shared/loading";
 import Error from "@/components/shared/error";
+import Loading from "@/components/shared/loading";
+import ProblemCard from "@/components/topic-cards/problem-card";
+import { useState } from "react";
 import FilterByDifficulty from "@/components/shared/filtering/filter-by-difficulty";
-import ContestCard from "@/components/contest-page-components/contest-card";
-import NoData from "@/components/shared/no-data";
+import { unwrapActionResult } from "@/utils/error-helper";
+import { getProblemsByTopic } from "../problem-actions";
 import {
   type FilterOption,
   useDifficultyFilter,
 } from "@/hooks/use-difficulty-filter";
+import NoData from "@/components/shared/no-data";
 
-export default function ContestCardSection({
-  contestType,
+export default function ProblemCardSection({
+  topicSlug,
 }: {
-  contestType: ContestType;
+  topicSlug: string;
 }) {
   const {
-    data: contestData,
+    data: problemData,
     isPending,
     isError,
     error,
     refetch,
   } = useQuery({
-    queryKey: [contestType],
+    queryKey: [`${topicSlug}-problems`],
     queryFn: async () => {
-      const result = await getContests(contestType);
+      const result = await getProblemsByTopic(topicSlug);
       return unwrapActionResult(result);
     },
   });
 
   const [filter, setFilter] = useState<FilterOption>("ALL");
 
-  const filteredContests = useDifficultyFilter(contestData, filter);
+  const filteredProblems = useDifficultyFilter(problemData, filter);
 
   if (isPending) {
     return <Loading />;
@@ -52,22 +51,22 @@ export default function ContestCardSection({
       <div className="mb-4 flex justify-end">
         <FilterByDifficulty onFilterChange={setFilter} />
       </div>
-      {filteredContests.length === 0 ? (
+      {filteredProblems.length === 0 ? (
         <NoData
-          title="No contest available"
-          subtitle="Currently no contest available. Please contribute by submitting a new contest"
+          title="No problem available"
+          subtitle="Currently no problem available. Please contribute by submitting a new problem"
         />
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredContests.map((contest) => (
+          {filteredProblems.map((problem) => (
             <Link
-              key={contest.id}
-              href={contest.url}
+              key={problem.id}
+              href={problem.url}
               className="group"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <ContestCard contest={contest} approveContestCard={false} />
+              <ProblemCard problem={problem} approveContestCard={false} />
             </Link>
           ))}
         </div>

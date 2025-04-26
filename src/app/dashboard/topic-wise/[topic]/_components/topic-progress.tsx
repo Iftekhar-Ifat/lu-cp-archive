@@ -10,10 +10,10 @@ import {
 import { Progress } from "@/components/ui/progress";
 import {
   type ProblemProgressStats,
-  type ProblemDifficultyType,
+  type ProblemDifficulty,
 } from "@/types/types";
 
-export default function ProblemProgress({
+export default function TopicProgress({
   stats,
 }: {
   stats: ProblemProgressStats[];
@@ -55,7 +55,7 @@ export default function ProblemProgress({
     );
   }, [stats]); // Run when stats change
 
-  const getDifficultyColor = (difficulty: ProblemDifficultyType): string => {
+  const getDifficultyColor = (difficulty: ProblemDifficulty): string => {
     switch (difficulty) {
       case "EASY":
         return "text-emerald-500";

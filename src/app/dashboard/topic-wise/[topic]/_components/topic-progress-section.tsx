@@ -1,17 +1,13 @@
 "use client";
 
 import { ExpandableWrapper } from "@/components/shared/expandable-wrapper";
-import ProblemProgress from "./topic-wise-progress-bar";
+import ProblemProgress from "./topic-progress";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProblemStats } from "@/lib/fetch";
 import Loading from "../loading";
 import Error from "@/components/shared/error";
 
-export default function TopicProblemProgressSection({
-  topic,
-}: {
-  topic: string;
-}) {
+export default function TopicProgressSection({ topic }: { topic: string }) {
   const {
     data: progressData,
     isPending,

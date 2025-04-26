@@ -9,7 +9,7 @@ import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 import { useState } from "react";
 
-export default function TopicProblemAddApproveSection() {
+export default function ProblemAddApproveSection() {
   const { user } = useUser();
   const pathname = usePathname();
   const [isAddProblemModalOpen, setIsAddProblemModalOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function TopicProblemAddApproveSection() {
     <div className="flex space-x-2">
       <Button variant="outline" onClick={() => setIsAddProblemModalOpen(true)}>
         <Plus />
-        Add Problem
+        Submit Problem
       </Button>
       {hasApprovePermission && (
         <Button variant="outline" asChild>

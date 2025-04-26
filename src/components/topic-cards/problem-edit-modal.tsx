@@ -34,7 +34,7 @@ import {
   MAX_PROBLEM_TAG_LENGTH,
   ProblemFormSchema,
 } from "@/utils/schema/problem";
-import { updateProblemAction } from "@/app/dashboard/topic-wise/[topic]/actions";
+import { updateProblemAction } from "@/app/dashboard/topic-wise/[topic]/problem-actions";
 import {
   TagsInput,
   TagsInputInput,

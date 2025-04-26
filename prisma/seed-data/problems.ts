@@ -7,7 +7,7 @@ export const getProblems = (userIds: string[]) => [
     description:
       "Given an array of integers nums and an integer target, return indices of the two numbers that add up to target.",
     difficulty: Difficulty.EASY,
-    topic: "", // Will be filled with actual topic ID during seeding
+    topicId: "", // Will be filled with actual topicId ID during seeding
     added_by: userIds[0],
   },
   {
@@ -16,7 +16,7 @@ export const getProblems = (userIds: string[]) => [
     description:
       "Given the root of a binary tree, return the level order traversal of its nodes' values.",
     difficulty: Difficulty.MEDIUM,
-    topic: "",
+    topicId: "",
     added_by: userIds[1],
   },
   {
@@ -25,7 +25,7 @@ export const getProblems = (userIds: string[]) => [
     description:
       "Find the maximum path sum from top to bottom in a triangle of numbers.",
     difficulty: Difficulty.HARD,
-    topic: "",
+    topicId: "",
     added_by: userIds[2],
   },
   {
@@ -34,7 +34,7 @@ export const getProblems = (userIds: string[]) => [
     description:
       "Find the shortest path between two vertices in a weighted graph.",
     difficulty: Difficulty.HARD,
-    topic: "",
+    topicId: "",
     added_by: userIds[3],
   },
   {
@@ -43,7 +43,7 @@ export const getProblems = (userIds: string[]) => [
     description:
       "Implement a stack data structure with push, pop, and getMin operations in O(1) time.",
     difficulty: Difficulty.MEDIUM,
-    topic: "",
+    topicId: "",
     added_by: userIds[4],
   },
   {
@@ -52,7 +52,7 @@ export const getProblems = (userIds: string[]) => [
     description:
       "Detect if a linked list has a cycle and return the node where the cycle begins.",
     difficulty: Difficulty.MEDIUM,
-    topic: "",
+    topicId: "",
     added_by: userIds[5],
   },
   {
@@ -61,7 +61,7 @@ export const getProblems = (userIds: string[]) => [
     description:
       "Find all occurrences of a pattern in a string using KMP algorithm.",
     difficulty: Difficulty.HARD,
-    topic: "",
+    topicId: "",
     added_by: userIds[6],
   },
   {
@@ -70,7 +70,7 @@ export const getProblems = (userIds: string[]) => [
     description:
       "Rotate an array to the right by k steps in O(n) time and O(1) space.",
     difficulty: Difficulty.EASY,
-    topic: "",
+    topicId: "",
     added_by: userIds[7],
   },
   {
@@ -78,7 +78,7 @@ export const getProblems = (userIds: string[]) => [
     url: "https://example.com/problems/bst-validation",
     description: "Determine if a binary tree is a valid binary search tree.",
     difficulty: Difficulty.MEDIUM,
-    topic: "",
+    topicId: "",
     added_by: userIds[8],
   },
   {
@@ -87,7 +87,7 @@ export const getProblems = (userIds: string[]) => [
     description:
       "Implement a first-in-first-out (FIFO) queue using only two stacks.",
     difficulty: Difficulty.MEDIUM,
-    topic: "",
+    topicId: "",
     added_by: userIds[0], // Wrap back to first user
   },
 ];

@@ -25,9 +25,8 @@ export default function ProblemCardFooter({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   return (
     <div
-      onClick={(e) => {
-        e.preventDefault(), e.stopPropagation();
-      }}
+    // Here e.stopPropagation() is not required because,
+    // Parent <a> using target="_blank". So, only preventing default is enough
     >
       <div
         className={cn(
@@ -40,7 +39,10 @@ export default function ProblemCardFooter({
             <Button
               variant="outline"
               size="icon"
-              onClick={() => setIsDeleteModalOpen(true)}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsDeleteModalOpen(true);
+              }}
               className="mr-2"
             >
               <Trash2 className="text-red-500" size={20} />
@@ -48,7 +50,10 @@ export default function ProblemCardFooter({
             <Button
               variant="outline"
               size="icon"
-              onClick={() => setIsEditModalOpen(true)}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsEditModalOpen(true);
+              }}
             >
               <Edit className="text-muted-foreground" size={20} />
             </Button>
@@ -70,8 +75,9 @@ export default function ProblemCardFooter({
       <DeleteModal
         isOpen={isDeleteModalOpen}
         setIsOpen={setIsDeleteModalOpen}
-        itemType="problem"
+        itemType="Problem"
         actionFunction={() => deleteContestMock(problem.id)}
+        revalidateKey={problem.topicId}
       />
     </div>
   );

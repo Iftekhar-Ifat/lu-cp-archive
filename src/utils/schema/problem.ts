@@ -22,7 +22,7 @@ const ProblemSchema = z.object({
     .max(5, { message: "Maximum 5 tags allowed" }),
   status: StatusSchema,
   difficulty: DifficultySchema,
-  topic: z.string().cuid(),
+  topic: z.string().min(1, { message: "Problem topic needed" }),
   approved: z.boolean(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
