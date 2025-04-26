@@ -10,6 +10,8 @@ import { hasPermission } from "@/utils/permissions";
 import { Badge } from "../ui/badge";
 import { type ContestType } from "@/types/types";
 import ContestSubmitModal from "./contest-submit-modal";
+import { useQuery } from "@tanstack/react-query";
+import { getUnapprovedContestCount } from "@/app/dashboard/(contests)/contest-actions";
 
 export default function ContestSubmitApproveSection({
   contestType,
@@ -21,7 +23,13 @@ export default function ContestSubmitApproveSection({
   const [isSubmitContestModalOpen, setIsSubmitContestModalOpen] =
     useState(false);
 
-  const count = 5;
+  const { data: unapprovedContests } = useQuery({
+    queryKey: ["unapproved-contests"],
+    queryFn: async () => {
+      const count = await getUnapprovedContestCount();
+      return count;
+    },
+  });
 
   if (!user) {
     return redirect("/");
@@ -43,9 +51,9 @@ export default function ContestSubmitApproveSection({
           <Link href={`/dashboard/approve-contests/${pathname}`}>
             <Check />
             Approve Contest
-            {count > 0 && (
+            {unapprovedContests && unapprovedContests > 0 && (
               <Badge className="pointer-events-none absolute -top-2 left-full min-w-5 -translate-x-1/2 justify-center bg-green-100 px-1 text-sm text-emerald-500 dark:bg-green-500/20">
-                {count > 99 ? "99+" : count}
+                {unapprovedContests > 99 ? "99+" : unapprovedContests}
               </Badge>
             )}
           </Link>

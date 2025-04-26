@@ -305,10 +305,20 @@ async function updateContestStatus(
   }
 }
 
+async function getUnapprovedContestCount() {
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+  const count = await prisma.contests.count({
+    where: { approved: false },
+  });
+
+  return count;
+}
+
 export {
   submitContest,
   updateContest,
   getContests,
   deleteContest,
   updateContestStatus,
+  getUnapprovedContestCount,
 };
