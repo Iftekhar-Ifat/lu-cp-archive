@@ -12,12 +12,11 @@ import DifficultyBadge from "../shared/difficulty-badge";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import ContestCardFooter from "./contest-card-footer";
-import { useUser } from "../user-provider";
 import { cn } from "@/lib/utils";
 import { hasPermission } from "@/utils/permissions";
-import { redirect } from "next/navigation";
 import { type Contest } from "@/types/types";
 import Link from "next/link";
+import { useStrictSession } from "@/hooks/use-strict-session";
 
 export default function ContestCard({
   contest,
@@ -26,13 +25,12 @@ export default function ContestCard({
   contest: Contest;
   approveContestCard?: boolean;
 }) {
-  const { user } = useUser();
+  const session = useStrictSession();
 
-  if (!user) {
-    redirect("/");
-  }
-
-  const hasMutationPermission = hasPermission(user.user_type, "mutate-contest");
+  const hasMutationPermission = hasPermission(
+    session.user.user_type,
+    "mutate-contest"
+  );
 
   return (
     <Card

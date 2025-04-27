@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import { prisma } from "./prisma";
+import { type USER_TYPE } from "@/types/types";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -11,6 +12,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: profile.email,
           image: profile.avatar_url,
           user_name: profile.login,
+          user_type: "STANDARD",
         };
       },
     }),
@@ -21,7 +23,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        await prisma.users.upsert({
+        const dbUser = await prisma.users.upsert({
           where: { email: user.email! },
           update: {
             name: user.name!,
@@ -37,13 +39,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             user_type: "STANDARD",
           },
         });
+        token.id = dbUser.id;
+        token.user_type = dbUser.user_type;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
+        session.user.id = token.id as string;
+        session.user.user_type = token.user_type as USER_TYPE;
         session.user.name = token.name;
-        session.user.email = token.email!;
+        session.user.email = token.email as string;
         session.user.image = token.picture;
       }
       return session;

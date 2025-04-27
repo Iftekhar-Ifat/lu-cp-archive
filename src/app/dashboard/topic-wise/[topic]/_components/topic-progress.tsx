@@ -30,13 +30,7 @@ export default function TopicProgress({
     animationRan.current = true;
 
     const timer = setTimeout(() => {
-      setProgressValues(
-        stats.map((stat) => ({
-          done: stat.done,
-          inProgress: stat.inProgress,
-          skipped: stat.skipped,
-        }))
-      );
+      setProgressValues(stats);
     }, 100);
 
     return () => clearTimeout(timer);
@@ -46,27 +40,17 @@ export default function TopicProgress({
   useEffect(() => {
     if (!animationRan.current) return;
 
-    setProgressValues(
-      stats.map((stat) => ({
-        done: stat.done,
-        inProgress: stat.inProgress,
-        skipped: stat.skipped,
-      }))
-    );
+    setProgressValues(stats);
   }, [stats]); // Run when stats change
 
-  const getDifficultyColor = (difficulty: ProblemDifficulty): string => {
-    switch (difficulty) {
-      case "EASY":
-        return "text-emerald-500";
-      case "MEDIUM":
-        return "text-sky-500";
-      case "HARD":
-        return "text-rose-500";
-      default:
-        return "rgb(59, 130, 246)";
-    }
-  };
+  const getDifficultyColor = (difficulty: ProblemDifficulty) =>
+    (
+      ({
+        EASY: "text-emerald-500",
+        MEDIUM: "text-sky-500",
+        HARD: "text-rose-500",
+      }) as const
+    )[difficulty];
 
   const calculatePercentage = (count: number, total: number): number => {
     return total > 0 ? (count / total) * 100 : 0;
@@ -91,7 +75,7 @@ export default function TopicProgress({
           const difficulty = stat.difficulty;
 
           return (
-            <Card key={stat.difficulty}>
+            <Card key={`${stat.difficulty}-${index}`}>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <span

@@ -2,7 +2,6 @@
 
 import ProblemSubmitModal from "@/components/topic-cards/problem-submit-modal";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/components/user-provider";
 import { hasPermission } from "@/utils/permissions";
 import { useQuery } from "@tanstack/react-query";
 import { Check, Plus } from "lucide-react";
@@ -11,13 +10,15 @@ import { redirect, usePathname } from "next/navigation";
 import { useState } from "react";
 import { getUnapprovedProblemCount } from "../problem-actions";
 import ApproveCountBadge from "@/components/shared/approve-count-badge";
+import { useSession } from "next-auth/react";
+import { useStrictSession } from "@/hooks/use-strict-session";
 
 export default function ProblemSubmitApproveSection({
   topicId,
 }: {
   topicId: string;
 }) {
-  const { user } = useUser();
+  const session = useStrictSession();
   const pathname = usePathname();
   const [isAddProblemModalOpen, setIsAddProblemModalOpen] = useState(false);
 
@@ -29,11 +30,10 @@ export default function ProblemSubmitApproveSection({
     },
   });
 
-  if (!user) {
-    redirect("/");
-  }
-
-  const hasApprovePermission = hasPermission(user.user_type, "approve-problem");
+  const hasApprovePermission = hasPermission(
+    session.user.user_type,
+    "approve-problem"
+  );
 
   return (
     <div className="flex space-x-2">

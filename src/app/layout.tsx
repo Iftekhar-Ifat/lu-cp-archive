@@ -7,7 +7,8 @@ import Footer from "@/components/footer";
 import { ToasterProvider } from "@/components/ui/toaster-provider";
 import ReactQueryProvider from "@/components/query-client-provider";
 import { type ReactNode } from "react";
-import { SessionProvider } from "next-auth/react";
+import { auth } from "@/lib/auth";
+import AuthProvider from "@/components/auth-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,8 +32,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const session = await auth();
   return (
-    <SessionProvider>
+    <AuthProvider session={session}>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -49,6 +51,6 @@ export default async function RootLayout({
           </ReactQueryProvider>
         </body>
       </html>
-    </SessionProvider>
+    </AuthProvider>
   );
 }

@@ -7,12 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useUser } from "@/components/user-provider";
 import { type Topic } from "@/types/types";
 import React from "react";
 import TopicCardFooter from "./topic-card-footer";
-import { redirect } from "next/navigation";
 import { hasPermission } from "@/utils/permissions";
+import { useStrictSession } from "@/hooks/use-strict-session";
 
 export default function TopicCard({
   topic,
@@ -21,13 +20,12 @@ export default function TopicCard({
   topic: Topic;
   approveTopicCard?: boolean;
 }) {
-  const { user } = useUser();
+  const session = useStrictSession();
 
-  if (!user) {
-    redirect("/");
-  }
-
-  const hasMutationPermission = hasPermission(user.user_type, "mutate-topic");
+  const hasMutationPermission = hasPermission(
+    session.user.user_type,
+    "mutate-topic"
+  );
 
   return (
     <Card className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:border-zinc-400">

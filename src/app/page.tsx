@@ -25,7 +25,7 @@ export default function Home() {
     <MaxWidthWrapper className="flex flex-1 flex-col">
       <div className="flex flex-1 flex-col py-5">
         <div className="flex flex-1 flex-col">
-          <h1 className="relative z-10 mx-auto bg-gradient-to-b from-neutral-700 to-neutral-300 bg-clip-text text-center font-sans text-3xl font-bold leading-tight text-transparent dark:from-neutral-300 dark:to-neutral-700 sm:text-4xl md:text-6xl lg:text-7xl">
+          <h1 className="relative z-10 mx-auto bg-gradient-to-b from-neutral-700 to-neutral-300 bg-clip-text text-center font-sans text-3xl font-bold leading-tight text-transparent dark:from-neutral-300 dark:to-neutral-700 sm:text-4xl md:text-6xl">
             Leading University Competitive Programming Archive
           </h1>
 

@@ -29,13 +29,13 @@ export default async function TopicPage({ params }: TopicPageProps) {
         <ProblemSubmitApproveSection topicId={topic.data.id} />
       </div>
       <Separator />
-      {/* <div className="mb-8 mt-4">
+      <div className="mb-8 mt-4">
         <div className="mb-4 flex text-center font-mono text-xl font-bold tracking-wide md:text-left">
           <ChartColumnIncreasing className="mr-2" />
           Progress
         </div>
-        <ProblemProgressSection topic={topic.data.title} />
-      </div> */}
+        <ProblemProgressSection topicSlug={topic.data.slug} />
+      </div>
       <Separator />
       <div className="my-4">
         <div className="mb-4 flex text-center font-mono text-xl font-bold tracking-wide md:text-left">

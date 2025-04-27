@@ -4,21 +4,21 @@ import { Plus, Check } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import Link from "next/link";
-import { useUser } from "../user-provider";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { hasPermission } from "@/utils/permissions";
 import { type ContestType } from "@/types/types";
 import ContestSubmitModal from "./contest-submit-modal";
 import { useQuery } from "@tanstack/react-query";
 import { getUnapprovedContestCount } from "@/app/dashboard/(contests)/contest-actions";
 import ApproveCountBadge from "../shared/approve-count-badge";
+import { useStrictSession } from "@/hooks/use-strict-session";
 
 export default function ContestSubmitApproveSection({
   contestType,
 }: {
   contestType: ContestType;
 }) {
-  const { user } = useUser();
+  const session = useStrictSession();
   const pathname = usePathname().split("/").pop();
   const [isSubmitContestModalOpen, setIsSubmitContestModalOpen] =
     useState(false);
@@ -31,11 +31,10 @@ export default function ContestSubmitApproveSection({
     },
   });
 
-  if (!user) {
-    return redirect("/");
-  }
-
-  const hasApprovePermission = hasPermission(user.user_type, "approve-contest");
+  const hasApprovePermission = hasPermission(
+    session.user.user_type,
+    "approve-contest"
+  );
 
   return (
     <div className="flex space-x-2">

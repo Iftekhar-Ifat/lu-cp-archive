@@ -6,13 +6,13 @@ import { prisma } from "@/lib/prisma";
 export async function getUserData() {
   const session = await auth();
 
-  if (!session?.user.email) {
+  if (!session?.user.id) {
     return { error: "User not found" };
   }
 
   const userData = await prisma.users.findUnique({
     where: {
-      email: session.user.email,
+      id: session.user.id,
     },
   });
 

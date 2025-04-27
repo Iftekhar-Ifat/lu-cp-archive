@@ -6,6 +6,7 @@ import {
   type ProblemDifficulty,
   type Problem,
   type ProblemStatusType,
+  type ProblemProgressStats,
 } from "@/types/types";
 import { type ActionResult, isActionError } from "@/utils/error-helper";
 import { hasPermission } from "@/utils/permissions";
@@ -347,6 +348,82 @@ async function getUnapprovedProblemCount(topicId: string) {
   return count;
 }
 
+async function getProblemProgressStats(
+  topicSlug: string
+): Promise<ActionResult<ProblemProgressStats[]>> {
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  // Why raw sql?
+  // :> allows conditional aggregation, more efficient and concise
+  const result = await prisma.$queryRaw<
+    {
+      difficulty: ProblemDifficulty;
+      total: number;
+      skipped: number;
+      inProgress: number;
+      done: number;
+    }[]
+  >`
+    SELECT
+      p.difficulty                               AS difficulty,
+      SUM(CASE WHEN ps.status = 'SKIPPED'     THEN 1 ELSE 0 END) AS skipped,
+      SUM(CASE WHEN ps.status = 'InProgress'  THEN 1 ELSE 0 END) AS "inProgress",
+      SUM(CASE WHEN ps.status = 'DONE'        THEN 1 ELSE 0 END) AS done,
+      COUNT(p.id)                                               AS total
+    FROM   problems           p
+    LEFT   JOIN problem_status ps
+           ON  ps.problem_id = p.id
+           AND ps.user_id    = ${user.id}
+    WHERE  p.topic = (SELECT id FROM topics WHERE slug = ${topicSlug})
+    GROUP  BY p.difficulty
+    ORDER  BY
+      CASE p.difficulty          -- keep EASY → MEDIUM → HARD order
+        WHEN 'EASY'   THEN 1
+        WHEN 'MEDIUM' THEN 2
+        ELSE 3
+      END;
+  `;
+
+  /* // Use this query when work with postgres also change the number conversion in UI
+  `SELECT
+    p.difficulty::text                       AS difficulty,              
+    SUM( (ps.status = 'SKIPPED')::int )      AS skipped,                
+    SUM( (ps.status = 'InProgress')::int )   AS "inProgress",
+    SUM( (ps.status = 'DONE')::int )         AS done,
+    COUNT(*)::int                            AS total
+  FROM   problems           p
+  LEFT   JOIN problem_status ps
+         ON  ps.problem_id = p.id
+         AND ps.user_id    = ${user.id}
+  WHERE  p.topic = (SELECT id FROM topics WHERE slug = ${topicSlug})
+  GROUP  BY p.difficulty
+  ORDER  BY
+    CASE p.difficulty
+      WHEN 'EASY'   THEN 1
+      WHEN 'MEDIUM' THEN 2
+      ELSE 3
+    END;`; */
+
+  const difficulties: ProblemDifficulty[] = ["EASY", "MEDIUM", "HARD"];
+
+  return {
+    data: difficulties.map((diff) => {
+      const stats = result.find((r) => r.difficulty === diff);
+      return {
+        difficulty: diff,
+        total: stats?.total ?? 0,
+        skipped: stats?.skipped ?? 0,
+        inProgress: stats?.inProgress ?? 0,
+        done: stats?.done ?? 0,
+      };
+    }),
+  };
+}
+
 export {
   submitProblem,
   updateProblem,
@@ -355,4 +432,5 @@ export {
   deleteProblem,
   updateProblemStatus,
   getUnapprovedProblemCount,
+  getProblemProgressStats,
 };
