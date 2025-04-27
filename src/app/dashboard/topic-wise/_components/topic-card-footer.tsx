@@ -63,7 +63,7 @@ export default function TopicCardFooter({
           <ApproveButton
             itemType="Topic"
             actionFunction={() => approveTopic(topic.id)}
-            revalidateKey="approve-topics"
+            revalidateKey="topics"
           />
         )}
       </div>
@@ -71,14 +71,14 @@ export default function TopicCardFooter({
         topic={topic}
         isOpen={isEditModalOpen}
         setIsOpen={setIsEditModalOpen}
-        revalidateKey="approve-topics"
+        revalidateKey="topics"
       />
       <DeleteModal
         isOpen={isDeleteModalOpen}
         setIsOpen={setIsDeleteModalOpen}
         itemType="Topic"
         actionFunction={() => deleteTopic(topic.id)}
-        revalidateKey="approve-topics"
+        revalidateKey="topics"
       />
     </div>
   );

@@ -305,9 +305,12 @@ async function updateContestStatus(
   }
 }
 
-async function getUnapprovedContestCount() {
+async function getUnapprovedContestCount(contestType: ContestType) {
   const count = await prisma.contests.count({
-    where: { approved: false },
+    where: {
+      type: contestType,
+      approved: false,
+    },
   });
   return count;
 }

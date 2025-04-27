@@ -36,7 +36,7 @@ export default async function ApproveProblem({
           </span>
         </div>
       </div>
-      <ApproveProblemCardSection problemType={params.topic} />
+      <ApproveProblemCardSection problemTopic={params.topic} />
     </div>
   );
 }

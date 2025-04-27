@@ -16,7 +16,7 @@ export default function ApproveTopicCardSection() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["approve-topics"],
+    queryKey: ["topics"],
     queryFn: async () => {
       const result = await getApproveTopics();
       return unwrapActionResult(result);

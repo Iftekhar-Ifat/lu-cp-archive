@@ -8,7 +8,9 @@ import { hasPermission } from "@/utils/permissions";
 import { ProblemSchema } from "@/utils/schema/problem";
 import { z } from "zod";
 
-async function getApproveProblems(): Promise<ActionResult<Problem[]>> {
+async function getApproveProblemsByTopic(
+  topic: string
+): Promise<ActionResult<Problem[]>> {
   const user = await getUserData();
 
   if (isActionError(user)) {
@@ -18,6 +20,9 @@ async function getApproveProblems(): Promise<ActionResult<Problem[]>> {
   try {
     const rawProblems = await prisma.problems.findMany({
       where: {
+        relatedTopic: {
+          slug: topic,
+        },
         approved: false,
       },
       include: {
@@ -101,4 +106,4 @@ async function approveProblem(problemId: string) {
   }
 }
 
-export { getApproveProblems, approveProblem };
+export { getApproveProblemsByTopic, approveProblem };

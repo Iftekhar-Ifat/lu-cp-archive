@@ -13,12 +13,12 @@ import Loading from "@/components/shared/loading";
 import Error from "@/components/shared/error";
 import FilterByDifficulty from "@/components/shared/filtering/filter-by-difficulty";
 import NoData from "@/components/shared/no-data";
-import { getApproveProblems } from "../approve-problem-actions";
+import { getApproveProblemsByTopic } from "../approve-problem-actions";
 
 export default function ApproveProblemCardSection({
-  problemType,
+  problemTopic,
 }: {
-  problemType: string;
+  problemTopic: string;
 }) {
   const {
     data: approveProblemData,
@@ -27,9 +27,9 @@ export default function ApproveProblemCardSection({
     error,
     refetch,
   } = useQuery({
-    queryKey: [problemType],
+    queryKey: [problemTopic],
     queryFn: async () => {
-      const result = await getApproveProblems();
+      const result = await getApproveProblemsByTopic(problemTopic);
       return unwrapActionResult(result);
     },
   });

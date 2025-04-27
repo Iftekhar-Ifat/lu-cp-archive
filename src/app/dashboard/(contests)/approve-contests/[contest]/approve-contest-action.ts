@@ -48,11 +48,17 @@ async function getApproveContests(
             status: true,
           },
         },
+        addedBy: {
+          select: {
+            user_name: true,
+          },
+        },
       },
     });
 
     const contests = rawContests.map((contest) => ({
       ...contest,
+      added_by: contest.addedBy.user_name,
       tags: contest.tags.map((tag) => tag.tagId.name),
       status: contest.status[0]?.status ?? null, // Handle if no status entry exists
     }));

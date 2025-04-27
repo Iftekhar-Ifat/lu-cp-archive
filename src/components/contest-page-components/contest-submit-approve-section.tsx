@@ -24,9 +24,9 @@ export default function ContestSubmitApproveSection({
     useState(false);
 
   const { data: unapprovedContests } = useQuery({
-    queryKey: ["unapproved-contests"],
+    queryKey: ["unapproved-contests", contestType],
     queryFn: async () => {
-      const count = await getUnapprovedContestCount();
+      const count = await getUnapprovedContestCount(contestType);
       return count;
     },
   });
