@@ -41,7 +41,7 @@ export default async function RootLayout({
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
               <main className="relative flex min-h-screen flex-col font-sans">
                 <Navbar />
-                <div className="flex-1 flex-grow">{children}</div>
+                <div className="flex flex-1 flex-col">{children}</div>
                 <Footer />
               </main>
               <ToasterProvider />

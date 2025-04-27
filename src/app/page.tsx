@@ -22,15 +22,19 @@ export default function Home() {
   };
 
   return (
-    <MaxWidthWrapper>
-      <div className="mt-5">
-        <h1 className="relative z-10 bg-gradient-to-b from-neutral-700 to-neutral-300 bg-clip-text text-center font-sans text-3xl font-bold text-transparent dark:from-neutral-300 dark:to-neutral-700 md:text-7xl">
-          Leading University Competitive Programming Archive
-        </h1>
-        <div className="full flex justify-center">
-          <Globe />
+    <MaxWidthWrapper className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col py-5">
+        <div className="flex flex-1 flex-col">
+          <h1 className="relative z-10 mx-auto bg-gradient-to-b from-neutral-700 to-neutral-300 bg-clip-text text-center font-sans text-3xl font-bold leading-tight text-transparent dark:from-neutral-300 dark:to-neutral-700 sm:text-4xl md:text-6xl lg:text-7xl">
+            Leading University Competitive Programming Archive
+          </h1>
+
+          <div className="full flex justify-center">
+            <Globe />
+          </div>
         </div>
-        <div className="z-10 my-5 flex items-center justify-center md:mb-5 md:mt-0">
+
+        <div className="z-10 flex items-center justify-center">
           <Button
             variant="outline"
             size="lg"
