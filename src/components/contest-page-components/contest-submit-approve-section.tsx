@@ -23,12 +23,13 @@ export default function ContestSubmitApproveSection({
   const [isSubmitContestModalOpen, setIsSubmitContestModalOpen] =
     useState(false);
 
-  const { data: unapprovedContests } = useQuery({
-    queryKey: ["unapproved-contests", contestType],
+  const { data: unapprovedContestCount } = useQuery({
+    queryKey: [`unapproved_${contestType}_count`],
     queryFn: async () => {
       const count = await getUnapprovedContestCount(contestType);
       return count;
     },
+    staleTime: Infinity,
   });
 
   const hasApprovePermission = hasPermission(
@@ -50,7 +51,7 @@ export default function ContestSubmitApproveSection({
           <Link href={`/dashboard/approve-contests/${pathname}`}>
             <Check />
             Approve Contest
-            <ApproveCountBadge count={unapprovedContests} />
+            <ApproveCountBadge count={unapprovedContestCount} />
           </Link>
         </Button>
       )}

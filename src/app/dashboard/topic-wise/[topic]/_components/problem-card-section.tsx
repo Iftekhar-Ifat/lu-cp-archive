@@ -32,6 +32,7 @@ export default function ProblemCardSection({
       const result = await getProblemsByTopic(topicSlug);
       return unwrapActionResult(result);
     },
+    staleTime: Infinity,
   });
 
   const [filter, setFilter] = useState<FilterOption>("ALL");

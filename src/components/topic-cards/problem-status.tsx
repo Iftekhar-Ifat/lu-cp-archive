@@ -22,6 +22,7 @@ import { type ProblemStatusType } from "@/types/types";
 import { isActionError } from "@/utils/error-helper";
 import { toast } from "sonner";
 import { updateProblemStatus } from "@/app/dashboard/topic-wise/[topic]/problem-actions";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Status = {
   value: ProblemStatusType;
@@ -50,13 +51,17 @@ const statuses: Status[] = [
 export function ProblemStatus({
   problemId,
   problemStatus,
+  revalidateKey,
 }: {
   problemId: string;
   problemStatus: ProblemStatusType;
+  revalidateKey: string;
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const queryClient = useQueryClient();
 
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(() => {
     const initialStatus =
@@ -86,6 +91,7 @@ export function ProblemStatus({
       } else {
         toast.success("Status updated successfully");
         setSelectedStatus(nextStatus);
+        queryClient.invalidateQueries({ queryKey: [revalidateKey] });
       }
 
       // Update the card element border

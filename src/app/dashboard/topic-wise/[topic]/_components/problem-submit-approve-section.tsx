@@ -6,11 +6,10 @@ import { hasPermission } from "@/utils/permissions";
 import { useQuery } from "@tanstack/react-query";
 import { Check, Plus } from "lucide-react";
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { getUnapprovedProblemCount } from "../problem-actions";
 import ApproveCountBadge from "@/components/shared/approve-count-badge";
-import { useSession } from "next-auth/react";
 import { useStrictSession } from "@/hooks/use-strict-session";
 
 export default function ProblemSubmitApproveSection({
@@ -23,11 +22,12 @@ export default function ProblemSubmitApproveSection({
   const [isAddProblemModalOpen, setIsAddProblemModalOpen] = useState(false);
 
   const { data: unapprovedProblems } = useQuery({
-    queryKey: ["unapproved-contests"],
+    queryKey: ["unapproved-problems"],
     queryFn: async () => {
       const count = await getUnapprovedProblemCount(topicId);
       return count;
     },
+    staleTime: Infinity,
   });
 
   const hasApprovePermission = hasPermission(

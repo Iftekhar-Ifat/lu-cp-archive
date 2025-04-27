@@ -33,6 +33,7 @@ export default function ContestCardSection({
       const result = await getContests(contestType);
       return unwrapActionResult(result);
     },
+    staleTime: Infinity,
   });
 
   const [filter, setFilter] = useState<FilterOption>("ALL");

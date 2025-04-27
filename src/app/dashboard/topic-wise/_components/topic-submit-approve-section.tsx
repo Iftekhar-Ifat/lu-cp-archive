@@ -18,11 +18,12 @@ export default function TopicSubmitApproveSection() {
   const [isSubmitTopicModalOpen, setIsSubmitTopicModalOpen] = useState(false);
 
   const { data: unapprovedTopic } = useQuery({
-    queryKey: ["unapproved-contests"],
+    queryKey: ["unapproved-topics-count"],
     queryFn: async () => {
       const count = await getUnapprovedTopicCount();
       return count;
     },
+    staleTime: Infinity,
   });
 
   const hasSubmitTopicPermission = hasPermission(

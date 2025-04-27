@@ -21,6 +21,7 @@ export default function TopicCardSection() {
       const result = await getTopics();
       return unwrapActionResult(result);
     },
+    staleTime: Infinity,
   });
 
   if (isPending) {

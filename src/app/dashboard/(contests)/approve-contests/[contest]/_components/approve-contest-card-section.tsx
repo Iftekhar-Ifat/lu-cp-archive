@@ -28,11 +28,12 @@ export default function ApproveContestCardSection({
     error,
     refetch,
   } = useQuery({
-    queryKey: [contestType],
+    queryKey: [`unapproved_${contestType}`],
     queryFn: async () => {
       const result = await getApproveContests(contestType);
       return unwrapActionResult(result);
     },
+    staleTime: Infinity,
   });
 
   const [filter, setFilter] = useState<FilterOption>("ALL");
