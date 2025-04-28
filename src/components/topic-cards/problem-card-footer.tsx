@@ -70,7 +70,7 @@ export default function ProblemCardFooter({
             <ProblemStatus
               problemId={problem.id}
               problemStatus={problem.status}
-              revalidateKey={`${problem.topic}-progress`}
+              revalidateKey={problem.topic}
             />
           </div>
         )}

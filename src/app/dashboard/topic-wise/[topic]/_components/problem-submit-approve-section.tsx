@@ -14,15 +14,17 @@ import { useStrictSession } from "@/hooks/use-strict-session";
 
 export default function ProblemSubmitApproveSection({
   topicId,
+  topicSlug,
 }: {
   topicId: string;
+  topicSlug: string;
 }) {
   const session = useStrictSession();
   const pathname = usePathname();
   const [isAddProblemModalOpen, setIsAddProblemModalOpen] = useState(false);
 
   const { data: unapprovedProblems } = useQuery({
-    queryKey: ["unapproved-problems"],
+    queryKey: [topicSlug, "unapproved_count"],
     queryFn: async () => {
       const count = await getUnapprovedProblemCount(topicId);
       return count;
@@ -54,6 +56,7 @@ export default function ProblemSubmitApproveSection({
         isOpen={isAddProblemModalOpen}
         setIsOpen={setIsAddProblemModalOpen}
         topicId={topicId}
+        revalidateKey={topicSlug}
       />
     </div>
   );

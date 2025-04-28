@@ -41,6 +41,7 @@ import {
   TagsInputList,
 } from "../ui/tags-input";
 import { type ContestType } from "@/types/types";
+import { useQueryClient } from "@tanstack/react-query";
 
 type ContestFormValues = z.infer<typeof ContestFormSchema>;
 
@@ -53,6 +54,8 @@ export default function ContestSubmitModal({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   contestType: ContestType;
 }) {
+  const queryClient = useQueryClient();
+
   const form = useForm<ContestFormValues>({
     resolver: zodResolver(ContestFormSchema),
     defaultValues: {
@@ -96,6 +99,9 @@ export default function ContestSubmitModal({
         position: "top-center",
       });
     } else {
+      queryClient.invalidateQueries({
+        queryKey: [contestType, "unapproved_count"],
+      });
       toast.success("Contest successfully submitted. Wait for approval.", {
         position: "top-center",
       });

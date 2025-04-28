@@ -4,7 +4,6 @@ import { Plus, Check } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { hasPermission } from "@/utils/permissions";
 import { type ContestType } from "@/types/types";
 import ContestSubmitModal from "./contest-submit-modal";
@@ -12,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUnapprovedContestCount } from "@/app/dashboard/(contests)/contest-actions";
 import ApproveCountBadge from "../shared/approve-count-badge";
 import { useStrictSession } from "@/hooks/use-strict-session";
+import { underscoreToHyphen } from "@/utils/helper";
 
 export default function ContestSubmitApproveSection({
   contestType,
@@ -19,12 +19,13 @@ export default function ContestSubmitApproveSection({
   contestType: ContestType;
 }) {
   const session = useStrictSession();
-  const pathname = usePathname().split("/").pop();
+  const contestPath = underscoreToHyphen(contestType);
+
   const [isSubmitContestModalOpen, setIsSubmitContestModalOpen] =
     useState(false);
 
   const { data: unapprovedContestCount } = useQuery({
-    queryKey: [`unapproved_${contestType}_count`],
+    queryKey: [contestType, "unapproved_count"],
     queryFn: async () => {
       const count = await getUnapprovedContestCount(contestType);
       return count;
@@ -48,7 +49,7 @@ export default function ContestSubmitApproveSection({
       </Button>
       {hasApprovePermission && (
         <Button variant="outline" asChild className="relative">
-          <Link href={`/dashboard/approve-contests/${pathname}`}>
+          <Link href={`/dashboard/approve-contests/${contestPath}`}>
             <Check />
             Approve Contest
             <ApproveCountBadge count={unapprovedContestCount} />

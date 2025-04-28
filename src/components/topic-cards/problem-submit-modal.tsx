@@ -40,6 +40,7 @@ import {
 } from "../ui/tags-input";
 import { isActionError } from "@/utils/error-helper";
 import { submitProblem } from "@/app/dashboard/topic-wise/[topic]/problem-actions";
+import { useQueryClient } from "@tanstack/react-query";
 
 type ProblemFormValues = z.infer<typeof ProblemFormSchema>;
 
@@ -47,11 +48,15 @@ export default function ProblemSubmitModal({
   isOpen,
   setIsOpen,
   topicId,
+  revalidateKey,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   topicId: string;
+  revalidateKey: string;
 }) {
+  const queryClient = useQueryClient();
+
   const form = useForm<ProblemFormValues>({
     resolver: zodResolver(ProblemFormSchema),
     defaultValues: {
@@ -95,6 +100,9 @@ export default function ProblemSubmitModal({
         position: "top-center",
       });
     } else {
+      queryClient.invalidateQueries({
+        queryKey: [revalidateKey, "unapproved_count"],
+      });
       toast.success("Problem successfully submitted. Wait for approval.", {
         position: "top-center",
       });

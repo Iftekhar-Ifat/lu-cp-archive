@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import { generateTitleToSlug } from "@/utils/helper";
 import { TopicFormSchema } from "@/utils/schema/topic";
 import { submitTopic } from "../topic-actions";
+import { useQueryClient } from "@tanstack/react-query";
 
 type TopicFormValues = z.infer<typeof TopicFormSchema>;
 
@@ -40,6 +41,8 @@ export default function TopicSubmitModal({
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+  const queryClient = useQueryClient();
+
   const defaultValues: Partial<TopicFormValues> = {
     title: "",
     description: "",
@@ -59,6 +62,9 @@ export default function TopicSubmitModal({
       });
 
       if (result.success) {
+        queryClient.invalidateQueries({
+          queryKey: ["topic", "unapproved_count"],
+        });
         toast.success("Topic successfully submitted. Wait for approval.", {
           position: "top-center",
         });

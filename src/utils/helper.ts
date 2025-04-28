@@ -38,6 +38,10 @@ function hyphenToUnderscore(value: string): string {
   return value.replace(/-/g, "_");
 }
 
+function underscoreToHyphen(value: string): string {
+  return value.replace(/_/g, "-");
+}
+
 function generateTitleToSlug(title: string): string {
   return title
     .toLowerCase()
@@ -54,5 +58,6 @@ export {
   deleteTopicWiseCardMock,
   formatContestTypeTitle,
   hyphenToUnderscore,
+  underscoreToHyphen,
   generateTitleToSlug,
 };

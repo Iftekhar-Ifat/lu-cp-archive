@@ -28,7 +28,7 @@ export default function ApproveContestCardSection({
     error,
     refetch,
   } = useQuery({
-    queryKey: [`unapproved_${contestType}`],
+    queryKey: [contestType, "unapproved"],
     queryFn: async () => {
       const result = await getApproveContests(contestType);
       return unwrapActionResult(result);

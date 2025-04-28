@@ -14,7 +14,7 @@ export default function ApproveButton({
 }: {
   itemType: ItemType;
   actionFunction: () => Promise<unknown>;
-  revalidateKey?: string;
+  revalidateKey: string;
 }) {
   const queryClient = useQueryClient();
 

@@ -20,7 +20,7 @@ export default function TopicProgressSection({
     isError,
     refetch,
   } = useQuery({
-    queryKey: [`${topicSlug}-progress`],
+    queryKey: [topicSlug, "progress"],
     queryFn: async () => {
       const result = await getProblemProgressStats(topicSlug);
       // No need when working with postgres

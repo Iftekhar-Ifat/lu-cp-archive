@@ -16,7 +16,7 @@ export default function TopicCardSection() {
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["topics"],
+    queryKey: ["topic"],
     queryFn: async () => {
       const result = await getTopics();
       return unwrapActionResult(result);

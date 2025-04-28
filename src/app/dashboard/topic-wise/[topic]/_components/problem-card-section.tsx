@@ -27,7 +27,7 @@ export default function ProblemCardSection({
     error,
     refetch,
   } = useQuery({
-    queryKey: [`${topicSlug}`],
+    queryKey: [topicSlug],
     queryFn: async () => {
       const result = await getProblemsByTopic(topicSlug);
       return unwrapActionResult(result);

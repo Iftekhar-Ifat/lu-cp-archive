@@ -26,7 +26,10 @@ export default async function TopicPage({ params }: TopicPageProps) {
             {topic.data.title}
           </span>
         </div>
-        <ProblemSubmitApproveSection topicId={topic.data.id} />
+        <ProblemSubmitApproveSection
+          topicId={topic.data.id}
+          topicSlug={topic.data.slug}
+        />
       </div>
       <Separator />
       <div className="mb-8 mt-4">
