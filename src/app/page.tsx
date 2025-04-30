@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Globe from "./_components/Globe";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -34,7 +35,17 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="z-10 flex items-center justify-center">
+        <div className="z-10 flex items-center justify-center gap-4">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="py-8 font-mono text-xl font-bold"
+            disabled={status === "loading"}
+            asChild
+          >
+            <Link href="/user-guide">Take a tour</Link>
+          </Button>
+
           <Button
             variant="outline"
             size="lg"

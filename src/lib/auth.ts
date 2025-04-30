@@ -26,21 +26,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const dbUser = await prisma.users.upsert({
           where: { email: user.email! },
           update: {
-            name: user.name!,
+            name: user.name as string,
             image: user.image,
             user_name: user.user_name,
             updated_at: new Date(),
           },
           create: {
-            name: user.name!,
-            email: user.email!,
+            name: user.name as string,
+            email: user.email as string,
             image: user.image,
-            user_name: user.user_name!,
+            user_name: user.user_name as string,
             user_type: "STANDARD",
           },
         });
         token.id = dbUser.id;
         token.user_type = dbUser.user_type;
+        token.user_name = dbUser.user_name;
       }
       return token;
     },
@@ -49,6 +50,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.id as string;
         session.user.user_type = token.user_type as USER_TYPE;
         session.user.name = token.name;
+        session.user.user_name = token.user_name as string;
         session.user.email = token.email as string;
         session.user.image = token.picture;
       }
