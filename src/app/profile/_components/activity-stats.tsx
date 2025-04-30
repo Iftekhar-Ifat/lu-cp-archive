@@ -7,8 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useQuery } from "@tanstack/react-query";
 import { Activity } from "lucide-react";
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
+import { getUserStats } from "../profile-actions";
+import { useStrictSession } from "@/hooks/use-strict-session";
+import { unwrapActionResult } from "@/utils/error-helper";
 
 type StatItemProps = {
   label: string;
@@ -25,11 +30,23 @@ function StatItem({ label, value }: StatItemProps) {
 }
 
 export default function ActivityStats() {
-  const problemsSolved = 2;
-  const totalProblems = 100;
+  const session = useStrictSession();
 
-  const contestSolved = 7;
-  const totalContest = 100;
+  const {
+    data: stats,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["user-stats"],
+    queryFn: async () => {
+      const result = await getUserStats(session.user.id);
+      return unwrapActionResult(result);
+    },
+    staleTime: Infinity,
+  });
+
+  const renderStatValue = (value: ReactNode) =>
+    isLoading ? <Skeleton className="h-10 w-24" /> : value;
 
   return (
     <Card className="transition-all duration-300 hover:shadow-md">
@@ -48,50 +65,54 @@ export default function ActivityStats() {
       </CardHeader>
 
       <CardContent>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <StatItem
-            label="Problem Added"
-            value={
-              <p className="font-mono text-3xl font-semibold tracking-tight">
-                0
-              </p>
-            }
-          />
-          <StatItem
-            label="Contest Added"
-            value={
-              <p className="font-mono text-3xl font-semibold tracking-tight">
-                0
-              </p>
-            }
-          />
-          <StatItem
-            label="Problem Solved"
-            value={
-              <div className="flex items-baseline gap-1 font-mono">
-                <span className="text-3xl font-semibold tracking-tight">
-                  {problemsSolved}
-                </span>
-                <span className="text-sm font-medium text-muted-foreground">
-                  /{totalProblems}
-                </span>
-              </div>
-            }
-          />
-          <StatItem
-            label="Contest Solved"
-            value={
-              <div className="flex items-baseline gap-1 font-mono">
-                <span className="text-3xl font-semibold tracking-tight">
-                  {contestSolved}
-                </span>
-                <span className="text-sm font-medium text-muted-foreground">
-                  /{totalContest}
-                </span>
-              </div>
-            }
-          />
-        </div>
+        {isError ? (
+          <p className="text-sm text-destructive">Failed to load stats.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <StatItem
+              label="Problem Added"
+              value={renderStatValue(
+                <p className="font-mono text-3xl font-semibold tracking-tight">
+                  {stats?.problemsAdded ?? 0}
+                </p>
+              )}
+            />
+            <StatItem
+              label="Contest Added"
+              value={renderStatValue(
+                <p className="font-mono text-3xl font-semibold tracking-tight">
+                  {stats?.contestsAdded ?? 0}
+                </p>
+              )}
+            />
+            <StatItem
+              label="Problem Solved"
+              value={renderStatValue(
+                <div className="flex items-baseline gap-1 font-mono">
+                  <span className="text-3xl font-semibold tracking-tight">
+                    {stats?.problemsSolved ?? 0}
+                  </span>
+                  <span className="text-sm font-medium text-muted-foreground">
+                    /{stats?.totalProblems ?? 0}
+                  </span>
+                </div>
+              )}
+            />
+            <StatItem
+              label="Contest Solved"
+              value={renderStatValue(
+                <div className="flex items-baseline gap-1 font-mono">
+                  <span className="text-3xl font-semibold tracking-tight">
+                    {stats?.contestsSolved ?? 0}
+                  </span>
+                  <span className="text-sm font-medium text-muted-foreground">
+                    /{stats?.totalContests ?? 0}
+                  </span>
+                </div>
+              )}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );
