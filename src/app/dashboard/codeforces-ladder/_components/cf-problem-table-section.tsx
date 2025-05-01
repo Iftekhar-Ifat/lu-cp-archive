@@ -1,45 +1,31 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { CFProblemTable } from "../../../../components/codeforces-ladder/cf-problem-table/cf-problem-table";
-import { columns } from "../../../../components/codeforces-ladder/cf-problem-table/cf-problem-table-columns";
-import { getCFProblemsByDifficulty } from "../cf-ladder-actions";
-import { unwrapActionResult } from "@/utils/error-helper";
-import Error from "@/components/shared/error";
-import Loading from "@/components/shared/loading";
+import { Terminal } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { getDifficultyColor } from "@/components/codeforces-ladder/cf-ladder-helper";
+import CFProblemTableWrapper from "../../../../components/codeforces-ladder/cf-problem-table/cf-problem-table-wrapper";
+import { useSearchParams } from "next/navigation";
 
-export default function CFProblemTableSection({
-  difficultyLevel,
-}: {
-  difficultyLevel: number;
-}) {
-  const {
-    data: cfProblemData,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: [difficultyLevel],
-    queryFn: async () => {
-      const result = await getCFProblemsByDifficulty(difficultyLevel);
-      return unwrapActionResult(result);
-    },
-  });
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError || !cfProblemData) {
-    return <Error message={error?.message} refetch={refetch} />;
-  }
+export default function CFProblemTableSection() {
+  const searchParams = useSearchParams();
+  const difficultyLevel = Number(searchParams.get("difficulty"));
 
   return (
-    <CFProblemTable
-      columns={columns}
-      data={cfProblemData}
-      difficultyLevel={difficultyLevel}
-    />
+    <div className="my-4">
+      <div className="mb-4 flex items-center gap-2 text-center font-mono text-xl font-bold tracking-wide md:text-left">
+        <Terminal />
+        <span>Problems</span>
+        <span>of</span>
+        <code
+          className={cn(
+            "rounded bg-muted px-[0.3rem] py-[0.2rem] font-semibold",
+            getDifficultyColor(difficultyLevel)
+          )}
+        >
+          {difficultyLevel}
+        </code>
+      </div>
+      <CFProblemTableWrapper difficultyLevel={difficultyLevel} />
+    </div>
   );
 }

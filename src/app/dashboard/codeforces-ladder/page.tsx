@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import CFSelectDifficultySection from "./_components/cf-select-difficulty-section";
 import { CFDifficultyLevelsSchema } from "./_components/constants";
+import { Separator } from "@/components/ui/separator";
+import CFProblemTableSection from "./_components/cf-problem-table-section";
 
 type Props = {
   searchParams: {
@@ -22,7 +24,12 @@ export default function CodeforcesLadder({ searchParams }: Props) {
           </span>
         </div>
       </div>
-      <CFSelectDifficultySection />
+      <div>
+        <Separator />
+        <CFSelectDifficultySection />
+        <Separator />
+        <CFProblemTableSection />
+      </div>
     </div>
   );
 }

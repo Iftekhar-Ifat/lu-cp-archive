@@ -77,6 +77,8 @@ export default function CodeforcesSettings() {
   const onSubmit = async (data: CodeforcesFormValues) => {
     const result = await updateCFProfile(data, session.user.id);
 
+    console.log(result);
+
     if (isActionError(result)) {
       toast.error(result.error, { position: "top-center" });
     } else {
