@@ -14,12 +14,15 @@ datasource db {
 }
 
 model users {
-  id         String   @id @default(cuid())
-  name       String
-  email      String   @unique
-  image      String?
-  user_name  String   @unique
-  user_type  UserType @default(STANDARD)
+  id                  String   @id @default(cuid())
+  name                String
+  email               String   @unique
+  image               String?
+  user_name           String   @unique
+  user_type           UserType @default(STANDARD)
+  cf_handle           String?
+  show_on_leaderboard Boolean  @default(false)
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

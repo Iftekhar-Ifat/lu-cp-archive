@@ -1,25 +1,20 @@
 "use server";
 
-import { type User } from "@/types/types";
+import { prisma } from "@/lib/prisma";
 
-// Mock function to get user
-const getUser = async () => {
+export async function getUserById(userId: string) {
   try {
-    const userData: User = {
-      id: "1",
-      email: "iftekhar@gmail.com",
-      name: "Iftekhar",
-      user_name: "iftekhar",
-      user_type: "ADMIN",
-      created_at: new Date(),
-      updated_at: new Date(),
-    };
+    const user = await prisma.users.findUnique({
+      where: { id: userId },
+    });
 
-    new Promise((resolve) => setTimeout(resolve, 2000));
-    return userData;
+    if (!user) {
+      return { error: "No user found" };
+    }
+
+    return { success: true, data: user };
   } catch (error) {
-    console.error("Error fetching user data:", error);
+    console.error("Error getting user profile:", error);
+    return { error: "Failed to fetch user profile" };
   }
-};
-
-export { getUser };
+}

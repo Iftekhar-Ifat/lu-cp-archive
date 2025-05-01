@@ -1,39 +1,48 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import axios, { isAxiosError } from "axios";
 
-/*
-import { prisma } from "@/lib/prisma";
-import { getUserData } from "@/components/shared-actions/getUserData";
-import { isActionError } from "@/utils/error-helper";
-
-export async function updateUserCompetitiveProfile(
-  codeforcesHandle: string | null,
-  showOnLeaderboard: boolean
+export async function updateCFProfile(
+  data: { handle: string; showOnLeaderboard: boolean },
+  userId: string
 ) {
-  const user = await getUserData();
-
-  if (isActionError(user)) {
-    return { error: user.error };
-  }
-
   try {
-    const updatedUser = await prisma.users.update({
-      where: { id: user.id },
+    const response = await axios.get(
+      `https://codeforces.com/api/user.info?handles=${data.handle}`
+    );
+
+    // If no user CF throws 400 but just to be safe
+    if (response.data.status !== "OK") {
+      return { error: "Codeforces user not found" };
+    }
+
+    await prisma.users.update({
+      where: { id: userId },
       data: {
-        codeforces_handle: codeforcesHandle,
-        show_on_leaderboard: showOnLeaderboard,
+        cf_handle: data.handle,
+        show_on_leaderboard: data.showOnLeaderboard,
         updated_at: new Date(),
       },
     });
 
-    return { success: true, data: updatedUser };
-  } catch (error) {
+    return { success: true };
+  } catch (error: unknown) {
     console.error("Error updating user profile:", error);
+    if (isAxiosError(error)) {
+      if (
+        error.response?.status === 400 ||
+        error.response?.data?.status === "FAILED"
+      ) {
+        return {
+          error: "Invalid Codeforces handle, Or Codeforces server is down",
+        };
+      }
+    }
+
     return { error: "Failed to update profile" };
   }
 }
- */
 
 async function getUserStats(userId: string) {
   try {
