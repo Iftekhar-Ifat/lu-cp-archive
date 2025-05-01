@@ -1,10 +1,10 @@
 "use client";
 
-import CFDifficultySelector from "./cf-difficulty-selector";
+import CFDifficultySelector from "../../../../components/codeforces-ladder/cf-difficulty-selector";
 import { Terminal } from "lucide-react";
 import { ExpandableWrapper } from "@/components/shared/expandable-wrapper";
 import { cn } from "@/lib/utils";
-import { getDifficultyColor } from "./cf-ladder-helper";
+import { getDifficultyColor } from "../../../../components/codeforces-ladder/cf-ladder-helper";
 import CFProblemTableSection from "./cf-problem-table-section";
 import { useSearchParams } from "next/navigation";
 import { Separator } from "@/components/ui/separator";

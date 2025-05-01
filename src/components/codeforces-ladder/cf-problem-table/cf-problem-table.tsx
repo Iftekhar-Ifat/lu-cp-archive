@@ -15,31 +15,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { type CFProblem } from "./cf-problem-table-columns";
+import { mockCheckSolvedProblems } from "../check-problem-solved/check-solved-problems";
 
-interface DataTableProps<TData extends CFProblem, TValue> {
+interface CFProblemTableProps<TData extends CFProblem, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-}
-
-// 🧪 Mock solved checker with delay
-async function mockCheckSolvedProblems(
-  problems: CFProblem[]
-): Promise<Set<string>> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Simulate some problems being solved
-      const solvedIds = new Set<string>(
-        problems.filter((_, idx) => idx % 2 === 0).map((p) => p.id)
-      );
-      resolve(solvedIds);
-    }, 1500); // simulate 1.5s delay
-  });
+  difficultyLevel: number;
 }
 
 export function CFProblemTable<TValue>({
   columns,
   data,
-}: DataTableProps<CFProblem, TValue>) {
+  difficultyLevel,
+}: CFProblemTableProps<CFProblem, TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -49,9 +37,12 @@ export function CFProblemTable<TValue>({
   const [solvedProblems, setSolvedProblems] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    // Simulate API fetch
-    mockCheckSolvedProblems(data).then(setSolvedProblems);
-  }, [data]);
+    async function solvedProblemSetHandler() {
+      const result = await mockCheckSolvedProblems(difficultyLevel, data);
+      setSolvedProblems(result);
+    }
+    solvedProblemSetHandler();
+  }, [data, difficultyLevel]);
 
   return (
     <div className="rounded-md border">

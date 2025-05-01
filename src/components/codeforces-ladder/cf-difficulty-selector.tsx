@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { CFDifficultyLevels } from "./constants";
+import { CFDifficultyLevels } from "../../app/dashboard/codeforces-ladder/_components/constants";
 import { getDifficultyColorWithBG } from "./cf-ladder-helper";
 
 export default function CFDifficultySelector() {

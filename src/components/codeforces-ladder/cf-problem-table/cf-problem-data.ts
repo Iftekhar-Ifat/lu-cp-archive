@@ -7,7 +7,6 @@ export const problems: CFProblem[] = [
     url: "https://codeforces.com/problemset/problem/4/A",
     difficulty: 800,
     addedBy: "alex_coder",
-    solved: true,
   },
   {
     id: "2",

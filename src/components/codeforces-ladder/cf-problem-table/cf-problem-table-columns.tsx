@@ -9,7 +9,6 @@ export type CFProblem = {
   url: string;
   difficulty: number;
   addedBy: string;
-  solved?: boolean;
 };
 
 // Define the columns for the data table

@@ -1,8 +1,8 @@
 "use server";
 
 import { type ActionResult } from "@/utils/error-helper";
-import { type CFProblem } from "./_components/cf-problem-table/cf-problem-table-columns";
-import { problems } from "./_components/cf-problem-table/cf-problem-data";
+import { type CFProblem } from "../../../components/codeforces-ladder/cf-problem-table/cf-problem-table-columns";
+import { problems } from "../../../components/codeforces-ladder/cf-problem-table/cf-problem-data";
 
 async function getCFProblemsByDifficulty(
   difficultyLevel: number

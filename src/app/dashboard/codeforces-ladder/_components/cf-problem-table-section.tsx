@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { CFProblemTable } from "./cf-problem-table/cf-problem-table";
-import { columns } from "./cf-problem-table/cf-problem-table-columns";
+import { CFProblemTable } from "../../../../components/codeforces-ladder/cf-problem-table/cf-problem-table";
+import { columns } from "../../../../components/codeforces-ladder/cf-problem-table/cf-problem-table-columns";
 import { getCFProblemsByDifficulty } from "../cf-ladder-actions";
 import { unwrapActionResult } from "@/utils/error-helper";
 import Error from "@/components/shared/error";
@@ -35,5 +35,11 @@ export default function CFProblemTableSection({
     return <Error message={error?.message} refetch={refetch} />;
   }
 
-  return <CFProblemTable columns={columns} data={cfProblemData} />;
+  return (
+    <CFProblemTable
+      columns={columns}
+      data={cfProblemData}
+      difficultyLevel={difficultyLevel}
+    />
+  );
 }
