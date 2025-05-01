@@ -1,12 +1,12 @@
 import { hasPermission } from "@/utils/permissions";
-import { getUser } from "../../shared-actions";
 import { notFound } from "next/navigation";
 import ApproveTopicCardSection from "./_components/approve-topic-card-section";
+import { auth } from "@/lib/auth";
 
 export default async function ApproveTopic() {
-  const user = await getUser();
+  const session = await auth();
 
-  if (!user || !hasPermission(user.user_type, "approve-topic")) {
+  if (!session || !hasPermission(session.user.user_type, "approve-topic")) {
     notFound();
   }
 

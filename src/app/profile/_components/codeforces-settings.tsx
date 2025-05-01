@@ -30,8 +30,8 @@ import { updateCFProfile } from "../profile-actions";
 import { isActionError, unwrapActionResult } from "@/utils/error-helper";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
-import { getUserById } from "@/app/dashboard/shared-actions";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getUserById } from "@/components/shared-actions/getUserData";
 
 const CodeforcesFormSchema = z.object({
   handle: z.string().min(1, { message: "Codeforces handle is required" }),

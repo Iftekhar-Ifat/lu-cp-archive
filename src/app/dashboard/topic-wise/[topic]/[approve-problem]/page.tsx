@@ -1,8 +1,8 @@
 import { getTopicBySlug } from "@/lib/db";
 import { notFound } from "next/navigation";
 import ApproveProblemCardSection from "./_components/approve-problems-card-section";
-import { getUser } from "@/app/dashboard/shared-actions";
 import { hasPermission } from "@/utils/permissions";
+import { auth } from "@/lib/auth";
 
 type ApproveProblemPageProps = {
   params: { topic: string };
@@ -17,9 +17,9 @@ export default async function ApproveProblem({
     notFound();
   }
 
-  const user = await getUser();
+  const session = await auth();
 
-  if (!user || !hasPermission(user.user_type, "approve-problem")) {
+  if (!session || !hasPermission(session.user.user_type, "approve-problem")) {
     notFound();
   }
 

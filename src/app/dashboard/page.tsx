@@ -28,7 +28,7 @@ const dashboardCardData = [
     title: "Codeforces Ladder",
     description: "Practice Codeforces problem by difficulty level",
     icon: LineChart,
-    href: "dashboard/codeforces-ladder",
+    href: "dashboard/codeforces-ladder?difficulty=800",
   },
   {
     title: "Leaderboard",

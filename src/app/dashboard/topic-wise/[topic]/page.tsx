@@ -33,16 +33,16 @@ export default async function TopicPage({ params }: TopicPageProps) {
       </div>
       <Separator />
       <div className="mb-8 mt-4">
-        <div className="mb-4 flex text-center font-mono text-xl font-bold tracking-wide md:text-left">
-          <ChartColumnIncreasing className="mr-2" />
+        <div className="mb-4 flex gap-2 text-center font-mono text-xl font-bold tracking-wide md:text-left">
+          <ChartColumnIncreasing />
           Progress
         </div>
         <ProblemProgressSection topicSlug={topic.data.slug} />
       </div>
       <Separator />
       <div className="my-4">
-        <div className="mb-4 flex text-center font-mono text-xl font-bold tracking-wide md:text-left">
-          <Terminal className="mr-2" />
+        <div className="mb-4 flex gap-2 text-center font-mono text-xl font-bold tracking-wide md:text-left">
+          <Terminal />
           Problems
         </div>
         <ProblemCardSection topicSlug={topic.data.slug} />

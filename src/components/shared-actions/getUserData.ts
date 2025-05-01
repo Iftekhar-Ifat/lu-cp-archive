@@ -3,7 +3,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-export async function getUserData() {
+async function getUserData() {
   const session = await auth();
 
   if (!session?.user.id) {
@@ -22,3 +22,22 @@ export async function getUserData() {
 
   return userData;
 }
+
+async function getUserById(userId: string) {
+  try {
+    const user = await prisma.users.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      return { error: "No user found" };
+    }
+
+    return { success: true, data: user };
+  } catch (error) {
+    console.error("Error getting user profile:", error);
+    return { error: "Failed to fetch user profile" };
+  }
+}
+
+export { getUserData, getUserById };

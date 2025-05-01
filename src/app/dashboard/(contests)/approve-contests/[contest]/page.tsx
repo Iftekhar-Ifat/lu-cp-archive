@@ -1,10 +1,10 @@
-import { getUser } from "@/app/dashboard/shared-actions";
 import { formatContestTypeTitle, hyphenToUnderscore } from "@/utils/helper";
 import { hasPermission } from "@/utils/permissions";
 import { type ContestType } from "@prisma/client";
 import { notFound } from "next/navigation";
 import ApproveContestCardSection from "./_components/approve-contest-card-section";
 import { ContestTypeSchema } from "@/types/types";
+import { auth } from "@/lib/auth";
 
 type ApproveContestProps = {
   params: { contest: string };
@@ -19,9 +19,9 @@ export default async function ApproveContest({ params }: ApproveContestProps) {
     notFound();
   }
 
-  const user = await getUser();
+  const session = await auth();
 
-  if (!user || !hasPermission(user.user_type, "approve-contest")) {
+  if (!session || !hasPermission(session.user.user_type, "approve-contest")) {
     notFound();
   }
 

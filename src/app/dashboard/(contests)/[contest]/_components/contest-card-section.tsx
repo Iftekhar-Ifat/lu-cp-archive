@@ -23,7 +23,7 @@ export default function ContestCardSection({
 }) {
   const {
     data: contestData,
-    isPending,
+    isLoading,
     isError,
     error,
     refetch,
@@ -40,7 +40,7 @@ export default function ContestCardSection({
 
   const filteredContests = useDifficultyFilter(contestData, filter);
 
-  if (isPending) {
+  if (isLoading) {
     return <Loading />;
   }
 
