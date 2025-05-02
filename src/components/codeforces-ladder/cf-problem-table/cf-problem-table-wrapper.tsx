@@ -10,8 +10,10 @@ import Loading from "@/components/shared/loading";
 
 export default function CFProblemTableWrapper({
   difficultyLevel,
+  cf_handle,
 }: {
   difficultyLevel: number;
+  cf_handle: string | null;
 }) {
   const {
     data: cfProblemData,
@@ -40,6 +42,7 @@ export default function CFProblemTableWrapper({
       columns={columns}
       data={cfProblemData}
       difficultyLevel={difficultyLevel}
+      cf_handle={cf_handle}
     />
   );
 }

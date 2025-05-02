@@ -1,17 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -20,11 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
-import { Trophy, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useStrictSession } from "@/hooks/use-strict-session";
 import { updateCFProfile } from "../profile-actions";
 import { isActionError, unwrapActionResult } from "@/utils/error-helper";
@@ -32,22 +18,20 @@ import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUserById } from "@/components/shared-actions/getUserData";
-
-const CodeforcesFormSchema = z.object({
-  handle: z.string().min(1, { message: "Codeforces handle is required" }),
-  showOnLeaderboard: z.boolean(),
-});
-
-type CodeforcesFormValues = z.infer<typeof CodeforcesFormSchema>;
+import CodeforcesForm, {
+  type CodeforcesFormValues,
+} from "@/components/profile/codeforces-settings-form";
 
 export default function CodeforcesSettings() {
   const session = useStrictSession();
   const [isEditing, setIsEditing] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const {
     data: user,
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: ["user-cf-info"],
     queryFn: async () => {
@@ -57,35 +41,52 @@ export default function CodeforcesSettings() {
     staleTime: Infinity,
   });
 
-  const form = useForm<CodeforcesFormValues>({
-    resolver: zodResolver(CodeforcesFormSchema),
-    defaultValues: {
-      handle: "",
-      showOnLeaderboard: false,
-    },
-  });
-
-  useEffect(() => {
-    if (user) {
-      form.reset({
-        handle: user.cf_handle ?? "",
-        showOnLeaderboard: user.show_on_leaderboard,
-      });
-    }
-  }, [user, form]);
-
-  const onSubmit = async (data: CodeforcesFormValues) => {
-    const result = await updateCFProfile(data, session.user.id);
-
-    console.log(result);
+  const handleSubmit = async (data: CodeforcesFormValues) => {
+    const result = await updateCFProfile(
+      {
+        handle: data.handle || null,
+        showOnLeaderboard: data.showOnLeaderboard,
+      },
+      session.user.id
+    );
 
     if (isActionError(result)) {
       toast.error(result.error, { position: "top-center" });
     } else {
+      // clean up localstorage for `cfProblemCache`
+      localStorage.removeItem("cfSolvedCache");
+
       toast.success("Status Updated", { position: "top-center" });
       setIsEditing(false);
-      form.reset(data);
+      refetch();
     }
+  };
+
+  const handleRemoveCFHandle = async () => {
+    const result = await updateCFProfile(
+      {
+        handle: null,
+        showOnLeaderboard: false,
+      },
+      session.user.id
+    );
+
+    if (isActionError(result)) {
+      toast.error(result.error, { position: "top-center" });
+    } else {
+      // clean up localstorage for `cfProblemCache`
+      localStorage.removeItem("cfSolvedCache");
+
+      toast.success("Codeforces handle removed", { position: "top-center" });
+      refetch();
+
+      setIsDialogOpen(false);
+    }
+  };
+
+  const defaultValues = {
+    handle: user?.cf_handle ?? "",
+    showOnLeaderboard: user?.show_on_leaderboard ?? false,
   };
 
   return (
@@ -106,7 +107,7 @@ export default function CodeforcesSettings() {
             size="sm"
             className="flex items-center gap-1.5"
             onClick={() => setIsEditing((prev) => !prev)}
-            disabled={isLoading || isError || form.formState.isSubmitting}
+            disabled={isLoading || isError}
           >
             {!isEditing && <Pencil className="h-3.5 w-3.5" />}
             {isEditing ? "Cancel" : "Edit"}
@@ -127,67 +128,16 @@ export default function CodeforcesSettings() {
         ) : isError || !user ? (
           <p className="text-destructive">Failed to load Codeforces data.</p>
         ) : (
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="handle"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Codeforces Handle</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter your Codeforces handle"
-                          {...field}
-                          disabled={!isEditing}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="showOnLeaderboard"
-                  render={({ field }) => (
-                    <FormItem className="rounded-lg border p-4">
-                      <div className="flex items-start space-x-4">
-                        <div className="flex-1 space-y-1">
-                          <div className="flex items-center">
-                            <Trophy className="mr-2 h-4 w-4 text-muted-foreground" />
-                            <Label className="font-medium">
-                              Appear on Leaderboard
-                            </Label>
-                          </div>
-                          <p className="text-[13px] text-muted-foreground">
-                            Enable this option to display your profile on the
-                            leaderboard
-                          </p>
-                        </div>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            disabled={!isEditing}
-                          />
-                        </FormControl>
-                      </div>
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              {isEditing && (
-                <div className="flex items-center justify-end pt-2">
-                  <Button type="submit" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
-                  </Button>
-                </div>
-              )}
-            </form>
-          </Form>
+          <CodeforcesForm
+            defaultValues={defaultValues}
+            isEditing={isEditing}
+            isSubmitting={false}
+            hasExistingHandle={!!user.cf_handle}
+            onSubmit={handleSubmit}
+            onRemoveHandle={handleRemoveCFHandle}
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+          />
         )}
       </CardContent>
     </Card>

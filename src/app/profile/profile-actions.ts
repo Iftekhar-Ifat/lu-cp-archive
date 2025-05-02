@@ -4,29 +4,42 @@ import { prisma } from "@/lib/prisma";
 import axios, { isAxiosError } from "axios";
 
 export async function updateCFProfile(
-  data: { handle: string; showOnLeaderboard: boolean },
+  data: { handle: string | null; showOnLeaderboard: boolean },
   userId: string
 ) {
   try {
-    const response = await axios.get(
-      `https://codeforces.com/api/user.info?handles=${data.handle}`
-    );
+    if (!data.handle) {
+      await prisma.users.update({
+        where: { id: userId },
+        data: {
+          cf_handle: null,
+          show_on_leaderboard: data.showOnLeaderboard,
+          updated_at: new Date(),
+        },
+      });
 
-    // If no user CF throws 400 but just to be safe
-    if (response.data.status !== "OK") {
-      return { error: "Codeforces user not found" };
+      return { success: true };
+    } else {
+      const response = await axios.get(
+        `https://codeforces.com/api/user.info?handles=${data.handle}`
+      );
+
+      // If no user CF throws 400 but just to be safe
+      if (response.data.status !== "OK") {
+        return { error: "Codeforces user not found" };
+      }
+
+      await prisma.users.update({
+        where: { id: userId },
+        data: {
+          cf_handle: data.handle,
+          show_on_leaderboard: data.showOnLeaderboard,
+          updated_at: new Date(),
+        },
+      });
+
+      return { success: true };
     }
-
-    await prisma.users.update({
-      where: { id: userId },
-      data: {
-        cf_handle: data.handle,
-        show_on_leaderboard: data.showOnLeaderboard,
-        updated_at: new Date(),
-      },
-    });
-
-    return { success: true };
   } catch (error: unknown) {
     console.error("Error updating user profile:", error);
     if (isAxiosError(error)) {

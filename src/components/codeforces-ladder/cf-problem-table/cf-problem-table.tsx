@@ -15,18 +15,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { type CFProblem } from "./cf-problem-table-columns";
-import { mockCheckSolvedProblems } from "../check-problem-solved/check-solved-problems";
+import { checkSolvedProblems } from "../check-problem-solved/check-solved-problems";
 
 interface CFProblemTableProps<TData extends CFProblem, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   difficultyLevel: number;
+  cf_handle: string | null;
 }
 
 export function CFProblemTable<TValue>({
   columns,
   data,
   difficultyLevel,
+  cf_handle,
 }: CFProblemTableProps<CFProblem, TValue>) {
   const table = useReactTable({
     data,
@@ -37,12 +39,18 @@ export function CFProblemTable<TValue>({
   const [solvedProblems, setSolvedProblems] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    async function solvedProblemSetHandler() {
-      const result = await mockCheckSolvedProblems(difficultyLevel, data);
+    async function solvedProblemSetHandler(cf_handle: string) {
+      const result = await checkSolvedProblems(
+        difficultyLevel,
+        data,
+        cf_handle
+      );
       setSolvedProblems(result);
     }
-    solvedProblemSetHandler();
-  }, [data, difficultyLevel]);
+    if (cf_handle) {
+      solvedProblemSetHandler(cf_handle);
+    }
+  }, [data, difficultyLevel, cf_handle]);
 
   return (
     <div className="rounded-md border">

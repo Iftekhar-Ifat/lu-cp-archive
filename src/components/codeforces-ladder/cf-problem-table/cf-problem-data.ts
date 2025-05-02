@@ -78,4 +78,11 @@ export const problems: CFProblem[] = [
     difficulty: 1200,
     addedBy: "competitive_pro",
   },
+  {
+    id: "12",
+    name: "Spy Detected!",
+    url: "https://codeforces.com/contest/1512/problem/A",
+    difficulty: 800,
+    addedBy: "competitive_pro",
+  },
 ];
