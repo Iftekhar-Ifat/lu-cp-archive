@@ -37,12 +37,13 @@ type SolvedCache = {
   // e.g., 800: {4-A: true, 71-A: true, 231-A: true, 158-A: true}
 };
 
-const LOCAL_STORAGE_KEY = "cfSolvedCache";
+// exporting to invalidate if user changes cf handle
+export const CF_CACHE_LS_KEY = "cfSolvedCache";
 
 function getCFSolvedCache(): SolvedCache {
   if (typeof window === "undefined") return {};
   try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const raw = localStorage.getItem(CF_CACHE_LS_KEY);
     return raw ? JSON.parse(raw) : {};
   } catch {
     return {};
@@ -51,7 +52,7 @@ function getCFSolvedCache(): SolvedCache {
 
 function saveCFSolvedCache(cache: SolvedCache) {
   if (typeof window === "undefined") return;
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cache));
+  localStorage.setItem(CF_CACHE_LS_KEY, JSON.stringify(cache));
 }
 
 function parseProblemKey(url: string): string | null {

@@ -7,14 +7,16 @@ import { getCFProblemsByDifficulty } from "../../../app/dashboard/codeforces-lad
 import { unwrapActionResult } from "@/utils/error-helper";
 import Error from "@/components/shared/error";
 import Loading from "@/components/shared/loading";
+import { useStrictSession } from "@/hooks/use-strict-session";
+import { getUserById } from "@/components/shared-actions/getUserData";
 
 export default function CFProblemTableWrapper({
   difficultyLevel,
-  cf_handle,
 }: {
   difficultyLevel: number;
-  cf_handle: string | null;
 }) {
+  const session = useStrictSession();
+
   const {
     data: cfProblemData,
     isLoading,
@@ -27,14 +29,33 @@ export default function CFProblemTableWrapper({
       const result = await getCFProblemsByDifficulty(difficultyLevel);
       return unwrapActionResult(result);
     },
+    staleTime: Infinity,
   });
 
-  if (isLoading) {
+  const {
+    data: userData,
+    isLoading: userDataLoading,
+    error: userError,
+  } = useQuery({
+    queryKey: ["user-data"],
+    queryFn: async () => {
+      const result = await getUserById(session.user.id);
+      return unwrapActionResult(result);
+    },
+    staleTime: Infinity,
+  });
+
+  if (isLoading || userDataLoading) {
     return <Loading />;
   }
 
-  if (isError || !cfProblemData) {
-    return <Error message={error?.message} refetch={refetch} />;
+  if (isError || !cfProblemData || !userData) {
+    if (!cfProblemData) {
+      return <Error message={error?.message} refetch={refetch} />;
+    }
+    if (!userData) {
+      return <Error message={userError?.message} />;
+    }
   }
 
   return (
@@ -42,7 +63,7 @@ export default function CFProblemTableWrapper({
       columns={columns}
       data={cfProblemData}
       difficultyLevel={difficultyLevel}
-      cf_handle={cf_handle}
+      cf_handle={userData.cf_handle}
     />
   );
 }

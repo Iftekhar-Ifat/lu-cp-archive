@@ -6,11 +6,7 @@ import { getDifficultyColor } from "@/components/codeforces-ladder/cf-ladder-hel
 import CFProblemTableWrapper from "../../../../components/codeforces-ladder/cf-problem-table/cf-problem-table-wrapper";
 import { useSearchParams } from "next/navigation";
 
-export default function CFProblemTableSection({
-  cf_handle,
-}: {
-  cf_handle: string | null;
-}) {
+export default function CFProblemTableSection() {
   const searchParams = useSearchParams();
   const difficultyLevel = Number(searchParams.get("difficulty"));
 
@@ -29,10 +25,7 @@ export default function CFProblemTableSection({
           {difficultyLevel}
         </code>
       </div>
-      <CFProblemTableWrapper
-        difficultyLevel={difficultyLevel}
-        cf_handle={cf_handle}
-      />
+      <CFProblemTableWrapper difficultyLevel={difficultyLevel} />
     </div>
   );
 }

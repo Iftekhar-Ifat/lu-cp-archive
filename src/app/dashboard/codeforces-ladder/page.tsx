@@ -3,8 +3,6 @@ import CFSelectDifficultySection from "./_components/cf-select-difficulty-sectio
 import { CFDifficultyLevelsSchema } from "./_components/constants";
 import { Separator } from "@/components/ui/separator";
 import CFProblemTableSection from "./_components/cf-problem-table-section";
-import { getUserData } from "@/components/shared-actions/getUserData";
-import { isActionError } from "@/utils/error-helper";
 
 type Props = {
   searchParams: {
@@ -15,13 +13,7 @@ type Props = {
 export default async function CodeforcesLadder({ searchParams }: Props) {
   const result = CFDifficultyLevelsSchema.safeParse(searchParams);
   if (!result.success) {
-    return notFound();
-  }
-
-  const user = await getUserData();
-
-  if (isActionError(user)) {
-    return notFound();
+    notFound();
   }
 
   return (
@@ -37,7 +29,7 @@ export default async function CodeforcesLadder({ searchParams }: Props) {
         <Separator />
         <CFSelectDifficultySection />
         <Separator />
-        <CFProblemTableSection cf_handle={user.cf_handle} />
+        <CFProblemTableSection />
       </div>
     </div>
   );

@@ -21,6 +21,7 @@ import { getUserById } from "@/components/shared-actions/getUserData";
 import CodeforcesForm, {
   type CodeforcesFormValues,
 } from "@/components/profile/codeforces-settings-form";
+import { CF_CACHE_LS_KEY } from "@/components/codeforces-ladder/check-problem-solved/check-solved-problems";
 
 export default function CodeforcesSettings() {
   const session = useStrictSession();
@@ -54,7 +55,7 @@ export default function CodeforcesSettings() {
       toast.error(result.error, { position: "top-center" });
     } else {
       // clean up localstorage for `cfProblemCache`
-      localStorage.removeItem("cfSolvedCache");
+      localStorage.removeItem(CF_CACHE_LS_KEY);
 
       toast.success("Status Updated", { position: "top-center" });
       setIsEditing(false);
@@ -75,7 +76,7 @@ export default function CodeforcesSettings() {
       toast.error(result.error, { position: "top-center" });
     } else {
       // clean up localstorage for `cfProblemCache`
-      localStorage.removeItem("cfSolvedCache");
+      localStorage.removeItem(CF_CACHE_LS_KEY);
 
       toast.success("Codeforces handle removed", { position: "top-center" });
       refetch();
