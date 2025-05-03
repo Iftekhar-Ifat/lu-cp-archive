@@ -5,6 +5,7 @@ import { tags } from "./tags";
 import { topics } from "./topics";
 import { getContests } from "./contests";
 import { getProblems } from "./problems";
+import { getCFProblems } from "./cf-problems";
 
 export async function seedUsers(prisma: PrismaClient) {
   console.log("Seeding users...");
@@ -293,6 +294,35 @@ export async function seedProblemStatuses(
     });
   } catch (error) {
     console.error("Failed to create problem statuses:", error);
+    throw error;
+  }
+}
+
+export async function seedCFProblems(prisma: PrismaClient, userIds: string[]) {
+  console.log("Seeding CF problems...");
+  const cfProblems = getCFProblems(userIds);
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      for (const problemData of cfProblems) {
+        const problem = await tx.cf_problems.create({
+          data: {
+            title: problemData.title,
+            url: problemData.url,
+            difficulty_level: problemData.difficulty,
+            approved: problemData.approved,
+            addedBy: {
+              connect: {
+                id: problemData.added_by,
+              },
+            },
+          },
+        });
+        console.log(`Created CF problem: ${problem.title}`);
+      }
+    });
+  } catch (error) {
+    console.error("Failed to create CF problems:", error);
     throw error;
   }
 }

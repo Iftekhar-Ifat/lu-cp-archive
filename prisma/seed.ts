@@ -9,6 +9,7 @@ import {
   seedProblems,
   seedProblemTags,
   seedProblemStatuses,
+  seedCFProblems,
 } from "./seed-data";
 
 const prisma = new PrismaClient();
@@ -20,6 +21,7 @@ async function clearDatabase() {
   await prisma.problem_tags.deleteMany({});
   await prisma.problem_status.deleteMany({});
   await prisma.problems.deleteMany({});
+  await prisma.cf_problems.deleteMany({});
   await prisma.contests_tags.deleteMany({});
   await prisma.contest_status.deleteMany({});
   await prisma.contests.deleteMany({});
@@ -55,6 +57,9 @@ async function main() {
   const problemIds = createdProblems.map((problem) => problem.id);
   await seedProblemTags(prisma, problemIds, tagIds);
   await seedProblemStatuses(prisma, userIds, problemIds);
+
+  // Seed CF problems
+  await seedCFProblems(prisma, userIds);
 
   console.log("Seed completed successfully!");
 }

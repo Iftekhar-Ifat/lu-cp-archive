@@ -30,7 +30,10 @@ export default function CFProblemSubmitApproveSection({
     staleTime: Infinity,
   });
  */
-  const hasApprovePermission = hasPermission("ADMIN", "approve-cf-problem");
+  const hasApprovePermission = hasPermission(
+    session.user.user_type,
+    "approve-cf-problem"
+  );
 
   return (
     <div className="flex space-x-2">

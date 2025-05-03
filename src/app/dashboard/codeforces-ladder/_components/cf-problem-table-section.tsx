@@ -26,7 +26,7 @@ export default function CFProblemTableSection() {
           {difficultyLevel}
         </code>
       </div>
-      {/* <CFProblemTableWrapper difficultyLevel={difficultyLevel} /> */}
+      <CFProblemTableWrapper difficultyLevel={difficultyLevel} />
     </div>
   );
 }

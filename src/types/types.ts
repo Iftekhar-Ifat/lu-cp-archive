@@ -1,3 +1,4 @@
+import { type CFProblemSchema } from "@/utils/schema/cf-problem";
 import { type ContestSchema } from "@/utils/schema/contest";
 import { type ProblemSchema } from "@/utils/schema/problem";
 import { type TopicSchema } from "@/utils/schema/topic";
@@ -45,3 +46,5 @@ export type ProblemProgressStats = {
   done: number;
   total: number;
 };
+
+export type CFProblem = z.infer<typeof CFProblemSchema>;

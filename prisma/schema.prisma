@@ -30,6 +30,7 @@ model users {
   contestStatus contest_status[]
   problems      problems[]
   problemStatus problem_status[]
+  cf_problems   cf_problems[]
 }
 
 enum UserType {
@@ -153,4 +154,17 @@ model problem_tags {
   tagId     tags     @relation(fields: [tag_id], references: [id])
 
   @@id([problem_id, tag_id])
+}
+
+model cf_problems {
+  id               String   @id @default(cuid())
+  title            String
+  url              String
+  difficulty_level Int
+  approved         Boolean  @default(false)
+  added_by         String
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  addedBy users @relation(fields: [added_by], references: [id])
 }

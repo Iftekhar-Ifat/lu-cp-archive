@@ -1,15 +1,7 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-
-// Define the Problem type
-export type CFProblem = {
-  id: string;
-  name: string;
-  url: string;
-  difficulty: number;
-  addedBy: string;
-};
+import { type CFProblem } from "@/types/types";
 
 // Define the columns for the data table
 export const columns: ColumnDef<CFProblem>[] = [
@@ -20,7 +12,7 @@ export const columns: ColumnDef<CFProblem>[] = [
       const problem = row.original;
       return (
         <Link href={problem.url} target="_blank" className="font-medium">
-          {problem.name}
+          {problem.title}
         </Link>
       );
     },
@@ -29,7 +21,7 @@ export const columns: ColumnDef<CFProblem>[] = [
     accessorKey: "difficulty",
     header: "Difficulty",
     cell: ({ row }) => {
-      return <div className="font-bold">{row.original.difficulty}</div>;
+      return <div className="font-bold">{row.original.difficulty_level}</div>;
     },
   },
   {
@@ -37,12 +29,12 @@ export const columns: ColumnDef<CFProblem>[] = [
     header: "Added By",
     cell: ({ row }) => {
       return (
-        <Link href={`/profile/@${row.original.addedBy}`}>
+        <Link href={`/profile/@${row.original.added_by}`}>
           <Badge
             variant="secondary"
             className="w-fit max-w-full truncate px-2 text-xs hover:scale-[1.02]"
           >
-            @{row.original.addedBy}
+            @{row.original.added_by}
           </Badge>
         </Link>
       );
