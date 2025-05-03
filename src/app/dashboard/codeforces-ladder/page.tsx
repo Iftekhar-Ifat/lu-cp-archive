@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import CFSelectDifficultySection from "./_components/cf-select-difficulty-section";
-import { CFDifficultyLevelsSchema } from "./_components/constants";
 import { Separator } from "@/components/ui/separator";
 import CFProblemTableSection from "./_components/cf-problem-table-section";
+import CFProblemSubmitApproveSection from "./_components/cf-problem-submit-approve-section";
+import { CFDifficultyLevelsSchema } from "@/utils/schema/cf-problem";
 
 type Props = {
   searchParams: {
@@ -24,6 +25,9 @@ export default async function CodeforcesLadder({ searchParams }: Props) {
             Codeforces Ladder
           </span>
         </div>
+        <CFProblemSubmitApproveSection
+          difficultyLevel={result.data.difficulty}
+        />
       </div>
       <div>
         <Separator />

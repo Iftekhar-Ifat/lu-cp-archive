@@ -3,8 +3,9 @@
 import { Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getDifficultyColor } from "@/components/codeforces-ladder/cf-ladder-helper";
-import CFProblemTableWrapper from "../../../../components/codeforces-ladder/cf-problem-table/cf-problem-table-wrapper";
 import { useSearchParams } from "next/navigation";
+import CFProblemSubmitApproveSection from "./cf-problem-submit-approve-section";
+import CFProblemTableWrapper from "@/components/codeforces-ladder/cf-problem-table/cf-problem-table-wrapper";
 
 export default function CFProblemTableSection() {
   const searchParams = useSearchParams();
@@ -25,7 +26,7 @@ export default function CFProblemTableSection() {
           {difficultyLevel}
         </code>
       </div>
-      <CFProblemTableWrapper difficultyLevel={difficultyLevel} />
+      {/* <CFProblemTableWrapper difficultyLevel={difficultyLevel} /> */}
     </div>
   );
 }

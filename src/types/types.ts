@@ -6,18 +6,9 @@ import { z } from "zod";
 // User Types
 export type USER_TYPE = "STANDARD" | "POWER" | "ADMIN";
 
-// TEMP
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  user_name: string;
-  user_type: USER_TYPE;
-  created_at: Date;
-  updated_at: Date;
-};
-
 export const DifficultySchema = z.enum(["EASY", "MEDIUM", "HARD"]);
+
+export type DifficultyType = z.infer<typeof DifficultySchema>;
 
 export const ContestTypeSchema = z.enum([
   "intra_lu_contests",

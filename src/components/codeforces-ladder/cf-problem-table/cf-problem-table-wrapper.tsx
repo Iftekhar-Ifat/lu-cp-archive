@@ -32,11 +32,7 @@ export default function CFProblemTableWrapper({
     staleTime: Infinity,
   });
 
-  const {
-    data: userData,
-    isLoading: userDataLoading,
-    error: userError,
-  } = useQuery({
+  const { data: userData } = useQuery({
     queryKey: ["user-data"],
     queryFn: async () => {
       const result = await getUserById(session.user.id);
@@ -45,16 +41,13 @@ export default function CFProblemTableWrapper({
     staleTime: Infinity,
   });
 
-  if (isLoading || userDataLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
-  if (isError || !cfProblemData || !userData) {
+  if (isError || !cfProblemData) {
     if (!cfProblemData) {
       return <Error message={error?.message} refetch={refetch} />;
-    }
-    if (!userData) {
-      return <Error message={userError?.message} />;
     }
   }
 
@@ -63,7 +56,7 @@ export default function CFProblemTableWrapper({
       columns={columns}
       data={cfProblemData}
       difficultyLevel={difficultyLevel}
-      cf_handle={userData.cf_handle}
+      cf_handle={userData?.cf_handle ?? null}
     />
   );
 }

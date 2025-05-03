@@ -3,7 +3,6 @@ import { z } from "zod";
 
 export const MAX_PROBLEM_TAG_LENGTH = 5;
 
-// Validation schema for the contest form
 const ProblemSchema = z.object({
   id: z.string().cuid(),
   title: z

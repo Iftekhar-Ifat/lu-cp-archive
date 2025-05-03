@@ -19,11 +19,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import DifficultyBadge from "./difficulty-badge";
-import { type ContestDifficulty } from "@/types/types";
-import { DialogHeader, DialogTitle } from "../ui/dialog";
+import { type DifficultyType } from "@/types/types";
 
 type Status = {
-  value: ContestDifficulty;
+  value: DifficultyType;
   label: string;
 };
 
@@ -44,13 +43,14 @@ const statuses: Status[] = [
 
 export function DifficultyStatus({
   onDifficultyChange,
-  initialDifficulty = "EASY",
+  initialDifficulty,
 }: {
-  onDifficultyChange?: (difficulty: ContestDifficulty) => void;
-  initialDifficulty?: ContestDifficulty;
+  onDifficultyChange: (difficulty: DifficultyType) => void;
+  initialDifficulty: DifficultyType;
 }) {
-  const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const [open, setOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<Status>(
     statuses.find((status) => status.value === initialDifficulty) || statuses[0]
   );
@@ -121,14 +121,12 @@ function StatusList({
   onStatusChange,
   selectedStatus,
 }: {
-  // eslint-disable-next-line no-unused-vars
   setOpen: (open: boolean) => void;
-  // eslint-disable-next-line no-unused-vars
   onStatusChange: (status: Status) => void;
   selectedStatus: Status;
 }) {
   return (
-    <Command>
+    <Command value={selectedStatus.value}>
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
@@ -143,12 +141,12 @@ function StatusList({
                 setOpen(false);
               }}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex w-full items-center justify-between">
                 <div className="pointer-events-none">
                   <DifficultyBadge difficulty={status.value} />
                 </div>
                 {selectedStatus.value === status.value && (
-                  <Check className="ml-auto h-4 w-4" />
+                  <Check className="h-4 w-4" />
                 )}
               </div>
             </CommandItem>
