@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { type CFProblem } from "@/types/types";
 
-// Define the columns for the data table
 export const columns: ColumnDef<CFProblem>[] = [
   {
     accessorKey: "name",

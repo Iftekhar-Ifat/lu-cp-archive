@@ -90,6 +90,7 @@ TagsInputItem.displayName = TagsInputPrimitive.Item.displayName;
 const TagsInputClear = React.forwardRef<
   React.ComponentRef<typeof TagsInputPrimitive.Clear>,
   React.ComponentPropsWithoutRef<typeof TagsInputPrimitive.Clear>
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 >(({ className, ...props }, ref) => (
   <TagsInputPrimitive.Clear data-slot="tags-input-clear" ref={ref} {...props} />
 ));

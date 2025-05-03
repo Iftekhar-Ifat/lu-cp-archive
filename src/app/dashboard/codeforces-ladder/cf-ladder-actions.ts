@@ -1,24 +1,25 @@
 "use server";
 
-import { type ActionResult } from "@/utils/error-helper";
+import { isActionError, type ActionResult } from "@/utils/error-helper";
 import {
   CFDifficultyLevelsSchema,
+  CFProblemFormSchema,
   CFProblemSchema,
 } from "@/utils/schema/cf-problem";
 import { prisma } from "@/lib/prisma";
 import { type CFProblem } from "@/types/types";
 import { z } from "zod";
+import { getUserData } from "@/components/shared-actions/getUserData";
+import { hasPermission } from "@/utils/permissions";
 
 async function getCFProblemsByDifficulty(
   difficultyLevel: number
 ): Promise<ActionResult<CFProblem[]>> {
-  const validation = CFDifficultyLevelsSchema.safeParse({
+  const validationDifficulty = CFDifficultyLevelsSchema.safeParse({
     difficulty: difficultyLevel,
   });
 
-  console.log(validation.error);
-
-  if (validation.error) {
+  if (validationDifficulty.error) {
     return { error: "Invalid difficulty level" };
   }
   try {
@@ -41,9 +42,9 @@ async function getCFProblemsByDifficulty(
       added_by: problem.addedBy.user_name,
     }));
 
-    const validation = z.array(CFProblemSchema).safeParse(cfProblems);
+    const validateData = z.array(CFProblemSchema).safeParse(cfProblems);
 
-    if (validation.error) {
+    if (validateData.error) {
       return { error: "Invalid codeforces problem data" };
     }
 
@@ -54,4 +55,60 @@ async function getCFProblemsByDifficulty(
   }
 }
 
-export { getCFProblemsByDifficulty };
+async function submitCFProblem(data: {
+  title: string;
+  url: string;
+  difficulty_level: number;
+}) {
+  const validateData = CFProblemFormSchema.safeParse(data);
+
+  if (validateData.error) {
+    return { error: "Invalid data type" };
+  }
+
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  const hasSubmitPermission = hasPermission(
+    user.user_type,
+    "submit-cf-problem"
+  );
+
+  if (!hasSubmitPermission) {
+    return { error: "You do not have permission to submit a problem" };
+  }
+
+  try {
+    await prisma.cf_problems.create({
+      data: {
+        title: data.title,
+        url: data.url,
+        difficulty_level: data.difficulty_level,
+        added_by: user.id,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error submitting problem:", error);
+    return { error: "Failed to submit problem" };
+  }
+}
+
+async function getUnapprovedCFProblemCount() {
+  const count = await prisma.cf_problems.count({
+    where: {
+      approved: false,
+    },
+  });
+  return count;
+}
+
+export {
+  getCFProblemsByDifficulty,
+  submitCFProblem,
+  getUnapprovedCFProblemCount,
+};

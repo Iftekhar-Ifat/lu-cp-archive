@@ -1,6 +1,5 @@
 "use client";
 
-import ProblemSubmitModal from "@/components/topic-cards/problem-submit-modal";
 import { Button } from "@/components/ui/button";
 import { hasPermission } from "@/utils/permissions";
 import { useQuery } from "@tanstack/react-query";
@@ -11,6 +10,7 @@ import { useState } from "react";
 import ApproveCountBadge from "@/components/shared/approve-count-badge";
 import { useStrictSession } from "@/hooks/use-strict-session";
 import CFProblemSubmitModal from "@/components/codeforces-ladder/cf-problem-submit-modal";
+import { getUnapprovedCFProblemCount } from "../cf-ladder-actions";
 
 export default function CFProblemSubmitApproveSection({
   difficultyLevel,
@@ -20,16 +20,16 @@ export default function CFProblemSubmitApproveSection({
   const session = useStrictSession();
   const pathname = usePathname();
   const [isAddProblemModalOpen, setIsAddProblemModalOpen] = useState(false);
-  /*  
-  const { data: unapprovedProblems } = useQuery({
-    queryKey: [difficultyLevel, "unapproved_count"],
+
+  const { data: unapprovedCFProblems } = useQuery({
+    queryKey: [difficultyLevel.toString(), "unapproved_count"],
     queryFn: async () => {
-      const count = await getUnapprovedProblemCount(difficultyLevel);
+      const count = await getUnapprovedCFProblemCount();
       return count;
     },
     staleTime: Infinity,
   });
- */
+
   const hasApprovePermission = hasPermission(
     session.user.user_type,
     "approve-cf-problem"
@@ -46,14 +46,13 @@ export default function CFProblemSubmitApproveSection({
           <Link href={`${pathname}/approve-problem`}>
             <Check />
             Approve Problem
-            {/* <ApproveCountBadge count={unapprovedProblems} /> */}
+            <ApproveCountBadge count={unapprovedCFProblems} />
           </Link>
         </Button>
       )}
       <CFProblemSubmitModal
         isOpen={isAddProblemModalOpen}
         setIsOpen={setIsAddProblemModalOpen}
-        difficultyLevel={difficultyLevel}
         revalidateKey={difficultyLevel.toString()}
       />
     </div>

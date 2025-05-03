@@ -26,25 +26,23 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { isActionError } from "@/utils/error-helper";
-import { submitProblem } from "@/app/dashboard/topic-wise/[topic]/problem-actions";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   CFDifficultyLevels,
   CFProblemFormSchema,
 } from "@/utils/schema/cf-problem";
 import CFDifficultySelect from "../shared/cf-difficulty-select";
+import { submitCFProblem } from "@/app/dashboard/codeforces-ladder/cf-ladder-actions";
 
 type CFProblemFormValues = z.infer<typeof CFProblemFormSchema>;
 
 export default function CFProblemSubmitModal({
   isOpen,
   setIsOpen,
-  difficultyLevel,
   revalidateKey,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  difficultyLevel: number;
   revalidateKey: string;
 }) {
   const queryClient = useQueryClient();
@@ -58,11 +56,8 @@ export default function CFProblemSubmitModal({
     },
   });
 
-  const { setValue, setError } = form;
-
-  const onSubmit = async (data: unknown) => {
-    console.log(data);
-    /* const result = await submitProblem(data, topicId);
+  const onSubmit = async (data: CFProblemFormValues) => {
+    const result = await submitCFProblem(data);
 
     if (isActionError(result)) {
       toast.error(result.error, {
@@ -78,7 +73,7 @@ export default function CFProblemSubmitModal({
 
       form.reset();
       setIsOpen(false);
-    } */
+    }
   };
 
   return (
