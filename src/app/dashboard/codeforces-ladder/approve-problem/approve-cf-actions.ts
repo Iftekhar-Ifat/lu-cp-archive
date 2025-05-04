@@ -47,7 +47,7 @@ async function getUnapprovedCFProblems(): Promise<ActionResult<CFProblem[]>> {
   }
 }
 
-async function approveProblem(problemId: string) {
+async function approveCFProblem(problemId: string) {
   const user = await getUserData();
 
   if (isActionError(user)) {
@@ -61,7 +61,7 @@ async function approveProblem(problemId: string) {
   }
 
   try {
-    await prisma.problems.update({
+    await prisma.cf_problems.update({
       where: { id: problemId },
       data: {
         approved: true,
@@ -76,4 +76,4 @@ async function approveProblem(problemId: string) {
   }
 }
 
-export { getUnapprovedCFProblems, approveProblem };
+export { getUnapprovedCFProblems, approveCFProblem };

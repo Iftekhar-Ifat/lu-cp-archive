@@ -27,8 +27,8 @@
  *        - Use cached data to determine solved/unsolved status.
  */
 
+import { type CFProblem } from "@/types/types";
 import axios, { isAxiosError } from "axios";
-import { type CFProblem } from "../cf-problem-table/cf-problem-table-columns";
 
 type SolvedCache = {
   [difficulty: number]: {

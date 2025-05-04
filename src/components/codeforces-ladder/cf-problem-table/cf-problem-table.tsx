@@ -4,6 +4,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  type VisibilityState,
 } from "@tanstack/react-table";
 
 import {
@@ -16,6 +17,8 @@ import {
 } from "@/components/ui/table";
 import { checkSolvedProblems } from "../check-problem-solved/check-solved-problems";
 import { type CFProblem } from "@/types/types";
+import { hasPermission } from "@/utils/permissions";
+import { useStrictSession } from "@/hooks/use-strict-session";
 
 interface CFProblemTableProps<TData extends CFProblem, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -30,9 +33,23 @@ export function CFProblemTable<TValue>({
   difficultyLevel,
   cf_handle,
 }: CFProblemTableProps<CFProblem, TValue>) {
+  const session = useStrictSession();
+  const hasMutatePermission = hasPermission(
+    session.user.user_type,
+    "mutate-cf-problem"
+  );
+
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    actions: hasMutatePermission,
+  });
+
   const table = useReactTable({
     data,
     columns,
+    state: {
+      columnVisibility,
+    },
+    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
   });
 

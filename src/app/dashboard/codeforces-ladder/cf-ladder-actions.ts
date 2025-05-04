@@ -107,8 +107,84 @@ async function getUnapprovedCFProblemCount() {
   return count;
 }
 
+async function updateCFProblem(
+  data: {
+    title: string;
+    url: string;
+    difficulty_level: number;
+  },
+  problem_id: string
+) {
+  const validateData = CFProblemFormSchema.safeParse(data);
+
+  if (validateData.error) {
+    return { error: "Invalid data type" };
+  }
+
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  const hasSubmitPermission = hasPermission(
+    user.user_type,
+    "mutate-cf-problem"
+  );
+
+  if (!hasSubmitPermission) {
+    return { error: "You do not have permission to edit a problem" };
+  }
+
+  try {
+    await prisma.cf_problems.update({
+      where: { id: problem_id },
+      data: {
+        title: data.title,
+        url: data.url,
+        difficulty_level: data.difficulty_level,
+        added_by: user.id,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error submitting problem:", error);
+    return { error: "Failed to submit problem" };
+  }
+}
+
+async function deleteCFProblem(problemId: string) {
+  const user = await getUserData();
+
+  if (isActionError(user)) {
+    return { error: user.error };
+  }
+
+  const hasDeletePermission = hasPermission(user.user_type, "mutate-problem");
+
+  if (!hasDeletePermission) {
+    return { error: "You do not have permission to delete a problem" };
+  }
+
+  try {
+    await prisma.cf_problems.delete({
+      where: {
+        id: problemId,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting problem:", error);
+    return { error: `Failed to deleting problems` };
+  }
+}
+
 export {
   getCFProblemsByDifficulty,
   submitCFProblem,
   getUnapprovedCFProblemCount,
+  updateCFProblem,
+  deleteCFProblem,
 };

@@ -258,10 +258,10 @@ export default function ProblemSubmitModal({
                 {form.formState.isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
+                    Submitting...
                   </>
                 ) : (
-                  "Save Problem"
+                  "Submit Problem"
                 )}
               </Button>
             </DialogFooter>

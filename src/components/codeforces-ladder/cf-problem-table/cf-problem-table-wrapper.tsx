@@ -24,7 +24,7 @@ export default function CFProblemTableWrapper({
     error,
     refetch,
   } = useQuery({
-    queryKey: [difficultyLevel],
+    queryKey: [difficultyLevel.toString()],
     queryFn: async () => {
       const result = await getCFProblemsByDifficulty(difficultyLevel);
       return unwrapActionResult(result);
