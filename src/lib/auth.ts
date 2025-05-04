@@ -8,6 +8,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     GitHub({
       profile(profile) {
         return {
+          id: profile.id.toString(),
           name: profile.name || profile.login,
           email: profile.email,
           image: profile.avatar_url,
