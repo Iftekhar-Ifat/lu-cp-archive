@@ -14,14 +14,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { type CFProblem } from "./cf-problem-table-columns";
 import { checkSolvedProblems } from "../check-problem-solved/check-solved-problems";
+import { type CFProblem } from "@/types/types";
 
 interface CFProblemTableProps<TData extends CFProblem, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  difficultyLevel: number;
-  cf_handle: string | null;
+  difficultyLevel?: number;
+  cf_handle?: string;
 }
 
 export function CFProblemTable<TValue>({
@@ -38,8 +38,12 @@ export function CFProblemTable<TValue>({
 
   const [solvedProblems, setSolvedProblems] = useState<Set<string>>(new Set());
 
+  // for check solved cf problems
   useEffect(() => {
-    async function solvedProblemSetHandler(cf_handle: string) {
+    async function solvedProblemSetHandler(
+      cf_handle: string,
+      difficultyLevel: number
+    ) {
       const result = await checkSolvedProblems(
         difficultyLevel,
         data,
@@ -47,8 +51,8 @@ export function CFProblemTable<TValue>({
       );
       setSolvedProblems(result);
     }
-    if (cf_handle) {
-      solvedProblemSetHandler(cf_handle);
+    if (cf_handle && difficultyLevel) {
+      solvedProblemSetHandler(cf_handle, difficultyLevel);
     }
   }, [data, difficultyLevel, cf_handle]);
 

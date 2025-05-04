@@ -13,7 +13,7 @@ import Loading from "@/components/shared/loading";
 import Error from "@/components/shared/error";
 import FilterByDifficulty from "@/components/shared/filtering/filter-by-difficulty";
 import NoData from "@/components/shared/no-data";
-import { getApproveProblemsByTopic } from "../approve-problem-actions";
+import { getUnapprovedProblemsByTopic } from "../approve-problem-actions";
 
 export default function ApproveProblemCardSection({
   problemTopic,
@@ -21,7 +21,7 @@ export default function ApproveProblemCardSection({
   problemTopic: string;
 }) {
   const {
-    data: approveProblemData,
+    data: unapprovedProblemData,
     isPending,
     isError,
     error,
@@ -29,14 +29,14 @@ export default function ApproveProblemCardSection({
   } = useQuery({
     queryKey: [problemTopic, "unapproved"],
     queryFn: async () => {
-      const result = await getApproveProblemsByTopic(problemTopic);
+      const result = await getUnapprovedProblemsByTopic(problemTopic);
       return unwrapActionResult(result);
     },
   });
 
   const [filter, setFilter] = useState<FilterOption>("ALL");
 
-  const filteredProblems = useDifficultyFilter(approveProblemData, filter);
+  const filteredProblems = useDifficultyFilter(unapprovedProblemData, filter);
 
   if (isPending) {
     return <Loading />;

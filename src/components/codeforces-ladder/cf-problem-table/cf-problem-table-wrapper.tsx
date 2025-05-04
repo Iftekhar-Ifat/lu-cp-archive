@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { CFProblemTable } from "./cf-problem-table";
-import { columns } from "./cf-problem-table-columns";
+import { cf_problem_columns } from "./cf-problem-table-columns";
 import { getCFProblemsByDifficulty } from "../../../app/dashboard/codeforces-ladder/cf-ladder-actions";
 import { unwrapActionResult } from "@/utils/error-helper";
 import Error from "@/components/shared/error";
@@ -53,10 +53,10 @@ export default function CFProblemTableWrapper({
 
   return (
     <CFProblemTable
-      columns={columns}
+      columns={cf_problem_columns}
       data={cfProblemData}
       difficultyLevel={difficultyLevel}
-      cf_handle={userData?.cf_handle ?? null}
+      cf_handle={userData?.cf_handle ?? undefined}
     />
   );
 }

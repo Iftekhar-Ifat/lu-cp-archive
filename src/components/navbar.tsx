@@ -17,6 +17,7 @@ import { Icons } from "./icons";
 import { signOut, useSession, signIn } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { localStorageCleanUp } from "@/utils/helper";
 
 export default function Navbar() {
   const { data: session, update, status } = useSession();
@@ -40,6 +41,7 @@ export default function Navbar() {
     setIsLoading(true);
     try {
       await signOut({ redirect: true, callbackUrl: "/" });
+      localStorageCleanUp();
       await update();
     } catch (error) {
       console.error("Sign out failed:", error);

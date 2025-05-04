@@ -22,6 +22,7 @@ import CodeforcesForm, {
   type CodeforcesFormValues,
 } from "@/components/profile/codeforces-settings-form";
 import { CF_CACHE_LS_KEY } from "@/components/codeforces-ladder/check-problem-solved/check-solved-problems";
+import { localStorageCleanUp } from "@/utils/helper";
 
 export default function CodeforcesSettings() {
   const session = useStrictSession();
@@ -76,7 +77,7 @@ export default function CodeforcesSettings() {
       toast.error(result.error, { position: "top-center" });
     } else {
       // clean up localstorage for `cfProblemCache`
-      localStorage.removeItem(CF_CACHE_LS_KEY);
+      localStorageCleanUp();
 
       toast.success("Codeforces handle removed", { position: "top-center" });
       refetch();

@@ -2,15 +2,13 @@
 
 import { getUserData } from "@/components/shared-actions/getUserData";
 import { prisma } from "@/lib/prisma";
-import { type Problem } from "@/types/types";
+import { type CFProblem } from "@/types/types";
 import { type ActionResult, isActionError } from "@/utils/error-helper";
 import { hasPermission } from "@/utils/permissions";
-import { ProblemSchema } from "@/utils/schema/problem";
+import { CFProblemSchema } from "@/utils/schema/cf-problem";
 import { z } from "zod";
 
-async function getUnapprovedProblemsByTopic(
-  topic: string
-): Promise<ActionResult<Problem[]>> {
+async function getUnapprovedCFProblems(): Promise<ActionResult<CFProblem[]>> {
   const user = await getUserData();
 
   if (isActionError(user)) {
@@ -18,59 +16,31 @@ async function getUnapprovedProblemsByTopic(
   }
 
   try {
-    const rawProblems = await prisma.problems.findMany({
+    const rawCFProblems = await prisma.cf_problems.findMany({
       where: {
-        relatedTopic: {
-          slug: topic,
-        },
         approved: false,
       },
       include: {
-        tags: {
-          select: {
-            tagId: {
-              select: {
-                name: true,
-              },
-            },
-          },
-        },
-        status: {
-          where: {
-            user_id: user.id,
-          },
-          select: {
-            status: true,
-          },
-        },
         addedBy: {
           select: {
             user_name: true,
           },
         },
-        relatedTopic: {
-          select: {
-            slug: true,
-          },
-        },
       },
     });
 
-    const problems = rawProblems.map((problem) => ({
+    const cfProblems = rawCFProblems.map((problem) => ({
       ...problem,
-      topic: problem.relatedTopic.slug,
       added_by: problem.addedBy.user_name,
-      tags: problem.tags.map((tag) => tag.tagId.name),
-      status: problem.status[0]?.status ?? null,
     }));
 
-    const validation = z.array(ProblemSchema).safeParse(problems);
+    const validation = z.array(CFProblemSchema).safeParse(cfProblems);
 
     if (validation.error) {
       return { error: "Invalid problem data" };
     }
 
-    return { data: problems };
+    return { data: cfProblems };
   } catch (err) {
     console.error("Error fetching problems:", err);
     return { error: "Failed to fetch problems" };
@@ -106,4 +76,4 @@ async function approveProblem(problemId: string) {
   }
 }
 
-export { getUnapprovedProblemsByTopic, approveProblem };
+export { getUnapprovedCFProblems, approveProblem };

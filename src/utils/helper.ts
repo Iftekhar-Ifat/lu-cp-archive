@@ -1,26 +1,9 @@
+import { CF_CACHE_LS_KEY } from "@/components/codeforces-ladder/check-problem-solved/check-solved-problems";
+
 function transformTagStringsToObjects(
   strings: string[]
 ): { id: string; text: string }[] {
   return strings.map((text, index) => ({ id: String(index), text }));
-}
-
-// Mock database delete function
-async function deleteContestMock(data: string) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log(data);
-      resolve(true);
-    }, 2000); // Simulate 2 second delay
-  });
-}
-
-async function deleteTopicWiseCardMock(data: string) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log(data);
-      resolve(true);
-    }, 2000); // Simulate 2 second delay
-  });
 }
 
 function formatContestTypeTitle(value: string): string {
@@ -52,12 +35,15 @@ function generateTitleToSlug(title: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+function localStorageCleanUp() {
+  localStorage.removeItem(CF_CACHE_LS_KEY);
+}
+
 export {
   transformTagStringsToObjects,
-  deleteContestMock,
-  deleteTopicWiseCardMock,
   formatContestTypeTitle,
   hyphenToUnderscore,
   underscoreToHyphen,
   generateTitleToSlug,
+  localStorageCleanUp,
 };
