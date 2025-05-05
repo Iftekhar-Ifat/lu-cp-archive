@@ -1,11 +1,17 @@
 import { StatusType } from "@prisma/client";
-import type { contests, PrismaClient, problems } from "@prisma/client";
+import type {
+  contests,
+  PrismaClient,
+  problems,
+  users as USERS,
+} from "@prisma/client";
 import { users } from "./users";
 import { tags } from "./tags";
 import { topics } from "./topics";
 import { getContests } from "./contests";
 import { getProblems } from "./problems";
 import { getCFProblems } from "./cf-problems";
+import { getLastNMonths, getMonthlyLeaderboard } from "./leaderboard";
 
 export async function seedUsers(prisma: PrismaClient) {
   console.log("Seeding users...");
@@ -20,6 +26,20 @@ export async function seedUsers(prisma: PrismaClient) {
     }
   }
   return createdUsers;
+}
+
+export async function getUsers(prisma: PrismaClient) {
+  console.log("Seeding users...");
+  const allUsers = [];
+  for (const userData of users) {
+    try {
+      const user = await prisma.users.findMany();
+      allUsers.push(user);
+    } catch (error) {
+      console.error(`Failed to create user ${userData.name}:`, error);
+    }
+  }
+  return allUsers;
 }
 
 export async function seedTags(prisma: PrismaClient) {
@@ -323,6 +343,54 @@ export async function seedCFProblems(prisma: PrismaClient, userIds: string[]) {
     });
   } catch (error) {
     console.error("Failed to create CF problems:", error);
+    throw error;
+  }
+}
+
+export async function seedLeaderboard(
+  prisma: PrismaClient,
+  users2D: USERS[][]
+) {
+  console.log("Seeding leaderboard for last 3 months...");
+
+  // Flatten the 2D array
+  const users = users2D.flat();
+
+  const months = getLastNMonths(3);
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      for (const { month, year } of months) {
+        const entries = getMonthlyLeaderboard(users, month, year);
+
+        for (const entry of entries) {
+          await tx.leaderboards.upsert({
+            where: {
+              user_id_month_year: {
+                user_id: entry.user_id,
+                month: entry.month,
+                year: entry.year,
+              },
+            },
+            update: {
+              points: entry.points,
+              rank: entry.rank,
+            },
+            create: {
+              user_id: entry.user_id,
+              points: entry.points,
+              rank: entry.rank,
+              month: entry.month,
+              year: entry.year,
+            },
+          });
+        }
+
+        console.log(`Seeded leaderboard for ${month}/${year}`);
+      }
+    });
+  } catch (error) {
+    console.error("Failed to seed leaderboard:", error);
     throw error;
   }
 }

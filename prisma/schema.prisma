@@ -31,6 +31,7 @@ model users {
   problems      problems[]
   problemStatus problem_status[]
   cf_problems   cf_problems[]
+  leaderboards  leaderboards[]
 }
 
 enum UserType {
@@ -167,4 +168,20 @@ model cf_problems {
   updated_at       DateTime @updatedAt
 
   addedBy users @relation(fields: [added_by], references: [id])
+}
+
+model leaderboards {
+  id      String @id @default(cuid())
+  user_id String
+  month   Int // 1-12
+  year    Int
+  points  Float
+  rank    Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user users @relation(fields: [user_id], references: [id])
+
+  @@unique([user_id, month, year])
 }

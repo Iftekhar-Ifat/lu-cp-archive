@@ -10,6 +10,8 @@ import {
   seedProblemTags,
   seedProblemStatuses,
   seedCFProblems,
+  getUsers,
+  seedLeaderboard,
 } from "./seed-data";
 
 const prisma = new PrismaClient();
@@ -33,9 +35,9 @@ async function clearDatabase() {
 }
 
 async function main() {
-  await clearDatabase();
   console.log("Starting seed process...");
 
+  await clearDatabase();
   // Seed data in order of dependencies
   const createdUsers = await seedUsers(prisma);
   const createdTags = await seedTags(prisma);
@@ -60,6 +62,9 @@ async function main() {
 
   // Seed CF problems
   await seedCFProblems(prisma, userIds);
+
+  const users = await getUsers(prisma);
+  await seedLeaderboard(prisma, users);
 
   console.log("Seed completed successfully!");
 }
