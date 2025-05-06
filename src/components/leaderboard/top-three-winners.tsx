@@ -3,23 +3,16 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { type Leaderboard } from "@/utils/schema/leaderboard";
 import { User } from "lucide-react";
-import Loading from "../shared/loading";
 import Link from "next/link";
 
-type TopThreeWinnersProps = {
-  winners: Leaderboard[] | undefined;
-};
-
-export default function TopThreeWinners({ winners }: TopThreeWinnersProps) {
-  if (!winners) {
-    return <Loading />;
-  }
-
+export default function TopThreeWinners({
+  winners,
+}: {
+  winners: Leaderboard[];
+}) {
   const sortedWinners = [...winners].sort((a, b) => a.rank - b.rank);
 
-  const firstPlace = sortedWinners.find((w) => w.rank === 1);
-  const secondPlace = sortedWinners.find((w) => w.rank === 2);
-  const thirdPlace = sortedWinners.find((w) => w.rank === 3);
+  const [firstPlace, secondPlace, thirdPlace] = sortedWinners.slice(0, 3);
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">

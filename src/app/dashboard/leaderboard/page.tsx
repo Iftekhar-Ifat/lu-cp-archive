@@ -1,6 +1,9 @@
 import { leaderboardSearchParamsSchema } from "@/utils/schema/leaderboard";
 import LeaderboardSelectSection from "./_components/leaderboard-select-section";
 import { notFound } from "next/navigation";
+import { getLeaderboardDates } from "./leaderboard-actions";
+import { isActionError } from "@/utils/error-helper";
+import { getInitialDate } from "@/components/leaderboard/leaderboard-helper";
 
 export type SearchParams =
   | {
@@ -24,6 +27,19 @@ export default async function LeaderboardPage({
   if (!result.success) {
     notFound();
   }
+
+  const leaderboardDates = await getLeaderboardDates();
+
+  if (isActionError(leaderboardDates)) {
+    throw new Error("Something went wrong");
+  }
+
+  const initialDate = getInitialDate(leaderboardDates.data, result.data);
+
+  if (!initialDate) {
+    notFound();
+  }
+
   return (
     <div className="py-8">
       <div className="mb-4 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
@@ -33,7 +49,10 @@ export default async function LeaderboardPage({
           </span>
         </div>
       </div>
-      <LeaderboardSelectSection searchParams={result.data} />
+      <LeaderboardSelectSection
+        initialDate={initialDate}
+        allowedMonths={leaderboardDates.data}
+      />
     </div>
   );
 }

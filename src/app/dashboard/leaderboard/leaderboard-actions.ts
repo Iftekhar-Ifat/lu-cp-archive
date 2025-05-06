@@ -7,51 +7,37 @@ import {
 } from "@/utils/schema/leaderboard";
 import { z } from "zod";
 
-async function getLatestLeaderboard() {
+async function getLeaderboard(selectedMonth: number, selectedYear: number) {
   try {
-    const latestEntry = await prisma.leaderboards.findFirst({
-      orderBy: [{ year: "desc" }, { month: "desc" }],
+    const leaderboard = await prisma.leaderboards.findMany({
+      where: {
+        month: selectedMonth,
+        year: selectedYear,
+      },
+      orderBy: {
+        rank: "asc",
+      },
       select: {
-        month: true,
-        year: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            user_name: true,
+            image: true,
+          },
+        },
+        rank: true,
+        points: true,
       },
     });
 
-    if (!latestEntry) {
-      return { success: true, data: [] };
-    } else {
-      const { month, year } = latestEntry;
+    const validation = z.array(leaderboardDataSchema).safeParse(leaderboard);
 
-      const leaderboard = await prisma.leaderboards.findMany({
-        where: {
-          month,
-          year,
-        },
-        orderBy: {
-          rank: "asc",
-        },
-        select: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              user_name: true,
-              image: true,
-            },
-          },
-          rank: true,
-          points: true,
-        },
-      });
-
-      const validation = z.array(leaderboardDataSchema).safeParse(leaderboard);
-
-      if (validation.error) {
-        return { error: "Invalid leaderboard data" };
-      }
-
-      return { success: true, data: [{ leaderboard, latestEntry }] };
+    if (validation.error) {
+      return { error: "Invalid leaderboard data" };
     }
+
+    return { success: true, data: leaderboard };
   } catch (error) {
     console.error("Error fetching leaderboard:", error);
     return { error: "Failed to fetch leaderboard" };
@@ -80,4 +66,4 @@ async function getLeaderboardDates() {
   }
 }
 
-export { getLatestLeaderboard, getLeaderboardDates };
+export { getLeaderboard, getLeaderboardDates };

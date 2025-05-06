@@ -7,48 +7,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
-import { unwrapActionResult } from "@/utils/error-helper";
-import { getLeaderboardDates } from "@/app/dashboard/leaderboard/leaderboard-actions";
-import Loading from "../shared/loading";
-import Error from "../shared/error";
-
-type Props = {
-  month: Date | undefined;
-  onMonthSelect: (month: Date) => void;
-};
+import { type LeaderboardDateType } from "@/utils/schema/leaderboard";
 
 export default function LeaderboardMonthPicker({
-  month,
+  leaderboardDate,
+  allowedMonths,
   onMonthSelect,
-}: Props) {
-  const {
-    data: leaderboardDates,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: ["leaderboard-dates"],
-    queryFn: async () => {
-      const result = await getLeaderboardDates();
-      const unwrappedResult = unwrapActionResult(result);
-      if (unwrappedResult) {
-        const latestMonth = unwrappedResult[0];
-        onMonthSelect(new Date(latestMonth.year, latestMonth.month - 1));
-      }
-      return unwrappedResult;
-    },
-    staleTime: Infinity,
-  });
-
-  if (isError || !leaderboardDates) {
-    <Error message={error?.message} refetch={refetch} />;
-  }
-
+}: {
+  leaderboardDate: Date | undefined;
+  allowedMonths: LeaderboardDateType[];
+  onMonthSelect: (leaderboardDate: Date) => void;
+}) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -56,22 +28,22 @@ export default function LeaderboardMonthPicker({
           variant="outline"
           className={cn(
             "justify-start text-left font-normal",
-            !month && "text-muted-foreground"
+            !leaderboardDate && "text-muted-foreground"
           )}
         >
-          {isLoading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {leaderboardDate ? (
+            format(leaderboardDate, "MMM yyyy")
           ) : (
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <span>Pick a month</span>
           )}
-          {month ? format(month, "MMM yyyy") : <span>Loading...</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <MonthPicker
-          selectedMonth={month}
+          selectedMonth={leaderboardDate}
           onMonthSelect={onMonthSelect}
-          allowedMonths={leaderboardDates}
+          allowedMonths={allowedMonths}
         />
       </PopoverContent>
     </Popover>

@@ -5,21 +5,15 @@ import { unwrapActionResult } from "@/utils/error-helper";
 import Error from "@/components/shared/error";
 import Loading from "@/components/shared/loading";
 import { LeaderboardTable } from "./leaderboard-table";
-import { getLatestLeaderboard } from "@/app/dashboard/leaderboard/leaderboard-actions";
+import { getLeaderboard } from "@/app/dashboard/leaderboard/leaderboard-actions";
 import { leaderboard_table_column } from "./leaderboard-table-column";
-import { type SearchParams } from "@/app/dashboard/leaderboard/page";
-import { type Dispatch, type SetStateAction } from "react";
 import { isolateTopThree } from "../leaderboard-helper";
-import { type Leaderboard } from "@/utils/schema/leaderboard";
+import TopThreeWinners from "../top-three-winners";
 
 export default function LeaderboardTableWrapper({
-  searchParams,
-  month,
-  setTopThreeWinners,
+  leaderboardDate,
 }: {
-  searchParams: SearchParams;
-  month: Date | undefined;
-  setTopThreeWinners: Dispatch<SetStateAction<Leaderboard[] | undefined>>;
+  leaderboardDate: Date;
 }) {
   const {
     data: leaderboardData,
@@ -28,38 +22,30 @@ export default function LeaderboardTableWrapper({
     error,
     refetch,
   } = useQuery({
-    queryKey: ["leaderboard"],
+    queryKey: [
+      "leaderboard",
+      `${leaderboardDate.getFullYear()}-${leaderboardDate.getMonth() + 1}`,
+    ],
     queryFn: async () => {
-      let result;
-      if (searchParams.latest) {
-        result = await getLatestLeaderboard();
-      }
+      const result = await getLeaderboard(
+        leaderboardDate.getMonth() + 1,
+        leaderboardDate.getFullYear()
+      );
 
-      /* if (searchParams.year && searchParams.month) {
-        result = await ;
-      } */
+      const unwrappedResult = unwrapActionResult(result);
+      if (!unwrappedResult) return undefined;
 
-      if (result) {
-        const unwrappedResult = unwrapActionResult(result);
-        if (!unwrappedResult) return undefined;
+      const { topThree, rest } = isolateTopThree(unwrappedResult);
 
-        const fullLeaderboard = unwrappedResult[0]?.leaderboard ?? [];
-
-        const { topThree, rest } = isolateTopThree(fullLeaderboard);
-
-        setTopThreeWinners(topThree);
-
-        return {
-          latestEntry: unwrappedResult[0].latestEntry,
-          leaderboard: rest,
-        };
-      }
-      return undefined;
+      return {
+        topThree,
+        rest,
+      };
     },
-    staleTime: Infinity,
+    // staleTime: Infinity,
   });
 
-  if (isLoading || !month) {
+  if (isLoading || !leaderboardDate) {
     return <Loading />;
   }
 
@@ -70,9 +56,14 @@ export default function LeaderboardTableWrapper({
   }
 
   return (
-    <LeaderboardTable
-      columns={leaderboard_table_column}
-      data={leaderboardData.leaderboard}
-    />
+    <div>
+      <div className="mb-4">
+        <TopThreeWinners winners={leaderboardData.topThree} />
+      </div>
+      <LeaderboardTable
+        columns={leaderboard_table_column}
+        data={leaderboardData.rest}
+      />
+    </div>
   );
 }
