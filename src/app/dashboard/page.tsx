@@ -34,7 +34,7 @@ const dashboardCardData = [
     title: "Leaderboard",
     description: "Leaderboard of LU's competitive programers",
     icon: Trophy,
-    href: "dashboard/leaderboard",
+    href: "dashboard/leaderboard?latest=true",
   },
   {
     title: "Intra LU Contests",

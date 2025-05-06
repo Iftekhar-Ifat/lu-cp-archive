@@ -26,7 +26,7 @@ export const cf_problem_columns: ColumnDef<CFProblem>[] = [
     accessorKey: "difficulty",
     header: "Difficulty",
     cell: ({ row }) => {
-      return <div className="font-bold">{row.original.difficulty_level}</div>;
+      return <div className="font-medium">{row.original.difficulty_level}</div>;
     },
   },
   {
