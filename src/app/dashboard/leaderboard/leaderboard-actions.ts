@@ -1,10 +1,13 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { leaderboardDataSchema } from "@/utils/schema/leaderboard";
+import {
+  leaderboardDataSchema,
+  leaderboardDateSchema,
+} from "@/utils/schema/leaderboard";
 import { z } from "zod";
 
-async function getLeaderboard() {
+async function getLatestLeaderboard() {
   try {
     const latestEntry = await prisma.leaderboards.findFirst({
       orderBy: [{ year: "desc" }, { month: "desc" }],
@@ -33,6 +36,7 @@ async function getLeaderboard() {
               id: true,
               name: true,
               user_name: true,
+              image: true,
             },
           },
           rank: true,
@@ -54,4 +58,26 @@ async function getLeaderboard() {
   }
 }
 
-export { getLeaderboard };
+async function getLeaderboardDates() {
+  try {
+    const leaderboardDates = await prisma.leaderboards.groupBy({
+      by: ["year", "month"],
+      orderBy: [{ year: "desc" }, { month: "desc" }],
+    });
+
+    const validation = z
+      .array(leaderboardDateSchema)
+      .safeParse(leaderboardDates);
+
+    if (validation.error) {
+      return { error: "Invalid leaderboard date" };
+    }
+
+    return { success: true, data: leaderboardDates };
+  } catch (error) {
+    console.error("Error fetching leaderboard:", error);
+    return { error: "Failed to fetch leaderboard" };
+  }
+}
+
+export { getLatestLeaderboard, getLeaderboardDates };

@@ -5,6 +5,7 @@ import LeaderboardMonthPicker from "@/components/leaderboard/leaderboard-month-p
 import { type SearchParams } from "../page";
 import LeaderboardTableWrapper from "@/components/leaderboard/leaderboard-table/leaderboard-table-wrapper";
 import TopThreeWinners from "@/components/leaderboard/top-three-winners";
+import { type Leaderboard } from "@/utils/schema/leaderboard";
 
 export default function LeaderboardSelectSection({
   searchParams,
@@ -12,6 +13,7 @@ export default function LeaderboardSelectSection({
   searchParams: SearchParams;
 }) {
   const [month, setMonth] = useState<Date>();
+  const [topThreeWinners, setTopThreeWinners] = useState<Leaderboard[]>();
 
   const handleSelectMonth = (selected: Date) => {
     setMonth(selected);
@@ -28,33 +30,13 @@ export default function LeaderboardSelectSection({
       </div>
       <div>
         <div className="mb-4">
-          <TopThreeWinners
-            winners={[
-              {
-                rank: 1,
-                name: "Iftekhar Ahmed",
-                userId: "@iftekhar-ifat",
-                points: 500,
-                image: "/placeholder.svg?height=100&width=100",
-              },
-              {
-                rank: 2,
-                name: "David Brown",
-                userId: "@david_b",
-                points: 490,
-                image: "/placeholder.svg?height=100&width=100",
-              },
-              {
-                rank: 3,
-                name: "Frank Miller",
-                userId: "@frank_m",
-                points: 480,
-                image: "/placeholder.svg?height=100&width=100",
-              },
-            ]}
-          />
+          <TopThreeWinners winners={topThreeWinners} />
         </div>
-        <LeaderboardTableWrapper searchParams={searchParams} month={month} />
+        <LeaderboardTableWrapper
+          searchParams={searchParams}
+          month={month}
+          setTopThreeWinners={setTopThreeWinners}
+        />
       </div>
     </div>
   );

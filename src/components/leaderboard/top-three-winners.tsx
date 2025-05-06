@@ -1,21 +1,20 @@
-import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { type Leaderboard } from "@/utils/schema/leaderboard";
+import { User } from "lucide-react";
+import Loading from "../shared/loading";
+import Link from "next/link";
 
-interface Winner {
-  rank: number;
-  name: string;
-  userId: string;
-  points: number;
-  image: string;
-}
-
-interface TopThreeWinnersProps {
-  winners: Winner[];
-}
+type TopThreeWinnersProps = {
+  winners: Leaderboard[] | undefined;
+};
 
 export default function TopThreeWinners({ winners }: TopThreeWinnersProps) {
+  if (!winners) {
+    return <Loading />;
+  }
+
   const sortedWinners = [...winners].sort((a, b) => a.rank - b.rank);
 
   const firstPlace = sortedWinners.find((w) => w.rank === 1);
@@ -45,11 +44,11 @@ export default function TopThreeWinners({ winners }: TopThreeWinnersProps) {
   );
 }
 
-interface WinnerCardProps {
-  winner: Winner;
+type WinnerCardProps = {
+  winner: Leaderboard;
   variant: "first" | "second" | "third";
   size: "md" | "lg";
-}
+};
 
 function WinnerCard({ winner, variant, size }: WinnerCardProps) {
   const isLarge = size === "lg";
@@ -62,16 +61,16 @@ function WinnerCard({ winner, variant, size }: WinnerCardProps) {
       avatarBorder: "border-rose-500",
     },
     second: {
-      badge: "bg-amber-500 text-amber-900",
-      text: "text-amber-500",
-      glow: "0 0 20px rgba(245, 158, 11, 1)", // amber-500 glow
-      avatarBorder: "border-amber-500",
+      badge: "bg-cyan-500 text-cyan-900",
+      text: "text-cyan-500",
+      glow: "0 0 20px rgba(14, 165, 233, 1)", // sky-500 glow
+      avatarBorder: "border-cyan-500",
     },
     third: {
-      badge: "bg-emerald-500 text-emerald-900",
-      text: "text-emerald-500",
-      glow: "0 0 20px rgba(16, 185, 129, 1)", // emerald-500 glow
-      avatarBorder: "border-emerald-500",
+      badge: "bg-lime-500 text-lime-900",
+      text: "text-lime-500",
+      glow: "0 0 20px rgba(34, 197, 94, 1)", // green-500 glow
+      avatarBorder: "border-lime-500",
     },
   };
 
@@ -97,25 +96,29 @@ function WinnerCard({ winner, variant, size }: WinnerCardProps) {
               }}
             >
               <AvatarImage
-                src={winner.image}
-                alt={winner.name}
+                src={winner.user.image ?? undefined}
+                alt={winner.user.name}
                 className="object-cover"
               />
-              <AvatarFallback>{winner.name.charAt(0)}</AvatarFallback>
+              <AvatarFallback>
+                <User />
+              </AvatarFallback>
             </Avatar>
           </div>
         </div>
 
         <h3 className={`font-bold ${isLarge ? "text-xl" : "text-lg"} mb-1`}>
-          {winner.name}
+          {winner.user.name}
         </h3>
 
-        <Badge
-          variant="outline"
-          className="mb-3 px-3 py-1 text-xs text-muted-foreground"
-        >
-          {winner.userId}
-        </Badge>
+        <Link href={`/profile/@${winner.user.user_name}`}>
+          <Badge
+            variant="secondary"
+            className="mb-3 w-fit max-w-full truncate px-2 py-1 text-xs hover:scale-[1.02]"
+          >
+            @{winner.user.user_name}
+          </Badge>
+        </Link>
 
         <div
           className={`font-mono font-bold ${variantStyle.text} ${isLarge ? "text-3xl" : "text-2xl"}`}

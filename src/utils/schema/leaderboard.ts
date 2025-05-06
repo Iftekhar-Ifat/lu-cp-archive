@@ -37,9 +37,20 @@ const leaderboardDataSchema = z.object({
     id: z.string(),
     name: z.string(),
     user_name: z.string(),
+    image: z.string().url().nullable(),
   }),
 });
 
-export type Leaderboard = z.infer<typeof leaderboardDataSchema>;
+const leaderboardDateSchema = z.object({
+  year: z.number(),
+  month: z.number(),
+});
 
-export { leaderboardSearchParamsSchema, leaderboardDataSchema };
+export type Leaderboard = z.infer<typeof leaderboardDataSchema>;
+export type LeaderboardDateType = z.infer<typeof leaderboardDateSchema>;
+
+export {
+  leaderboardSearchParamsSchema,
+  leaderboardDataSchema,
+  leaderboardDateSchema,
+};

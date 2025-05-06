@@ -48,6 +48,7 @@ type MonthCalProps = {
   };
   minDate?: Date;
   maxDate?: Date;
+  allowedMonths?: { year: number; month: number }[];
   disabledDates?: Date[];
 };
 
@@ -68,6 +69,7 @@ function MonthPicker({
   maxDate,
   disabledDates,
   callbacks,
+  allowedMonths,
   onYearBackward,
   onYearForward,
   variant,
@@ -84,6 +86,7 @@ function MonthPicker({
             selectedMonth={selectedMonth}
             onYearBackward={onYearBackward}
             onYearForward={onYearForward}
+            allowedMonths={allowedMonths}
             variant={variant}
             minDate={minDate}
             maxDate={maxDate}
@@ -102,6 +105,7 @@ function MonthCal({
   variant,
   minDate,
   maxDate,
+  allowedMonths,
   disabledDates,
   onYearBackward,
   onYearForward,
@@ -186,7 +190,11 @@ function MonthCal({
                             ? disabledDatesMapped?.some(
                                 (d) => d.year == menuYear && d.month == m.number
                               )
-                            : false)
+                            : false) ||
+                          !allowedMonths?.some(
+                            (d) =>
+                              d.year === menuYear && d.month - 1 === m.number
+                          )
                         }
                         className={cn(
                           buttonVariants({
