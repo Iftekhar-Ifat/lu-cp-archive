@@ -7,20 +7,25 @@ async function getUserData() {
   const session = await auth();
 
   if (!session?.user.id) {
-    return { error: "User not found" };
+    return { error: "Unauthorized" };
   }
 
-  const userData = await prisma.users.findUnique({
-    where: {
-      id: session.user.id,
-    },
-  });
+  try {
+    const userData = await prisma.users.findUnique({
+      where: {
+        id: session.user.id,
+      },
+    });
 
-  if (!userData) {
-    return { error: "User not found in database" };
+    if (!userData) {
+      return { error: "User not found" };
+    }
+
+    return userData;
+  } catch (error) {
+    console.error("Error getting user profile:", error);
+    return { error: "Failed to fetch user profile" };
   }
-
-  return userData;
 }
 
 async function getUserById(userId: string) {
@@ -30,7 +35,7 @@ async function getUserById(userId: string) {
     });
 
     if (!user) {
-      return { error: "No user found" };
+      return { error: "User not found" };
     }
 
     return { success: true, data: user };
@@ -40,4 +45,21 @@ async function getUserById(userId: string) {
   }
 }
 
-export { getUserData, getUserById };
+async function getUserByUserName(userName: string) {
+  try {
+    const user = await prisma.users.findUnique({
+      where: { user_name: userName },
+    });
+
+    if (!user) {
+      return { error: "User not found" };
+    }
+
+    return { success: true, data: user };
+  } catch (error) {
+    console.error("Error getting user profile:", error);
+    return { error: "Failed to fetch user profile" };
+  }
+}
+
+export { getUserData, getUserById, getUserByUserName };

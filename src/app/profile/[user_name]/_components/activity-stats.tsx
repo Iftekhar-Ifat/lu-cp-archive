@@ -11,9 +11,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { Activity } from "lucide-react";
 import { type ReactNode } from "react";
-import { getUserStats } from "../profile-actions";
-import { useStrictSession } from "@/hooks/use-strict-session";
 import { unwrapActionResult } from "@/utils/error-helper";
+import { getUserStats } from "../profile-actions";
+import { type users } from "@prisma/client";
 
 type StatItemProps = {
   label: string;
@@ -29,17 +29,15 @@ function StatItem({ label, value }: StatItemProps) {
   );
 }
 
-export default function ActivityStats() {
-  const session = useStrictSession();
-
+export default function ActivityStats({ userData }: { userData: users }) {
   const {
     data: stats,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["user-stats"],
+    queryKey: ["user-stats", userData.user_name],
     queryFn: async () => {
-      const result = await getUserStats(session.user.id);
+      const result = await getUserStats(userData.id);
       return unwrapActionResult(result);
     },
     staleTime: Infinity,

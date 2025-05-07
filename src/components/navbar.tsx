@@ -95,7 +95,7 @@ export default function Navbar() {
                     align="end"
                     className="mt-[0.33rem] w-56 rounded-md bg-white/50 backdrop-blur-sm dark:bg-neutral-950/50"
                   >
-                    <Link href="/profile">
+                    <Link href={`/profile/@${session.user.user_name}`}>
                       <DropdownMenuItem className="cursor-pointer rounded-md p-2 text-foreground/80 transition-colors duration-300 hover:text-foreground focus:bg-accent focus:outline-none">
                         <User className="mr-2 h-4 w-4" />
                         <span>Profile</span>

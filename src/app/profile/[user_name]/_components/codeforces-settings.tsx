@@ -11,8 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { Pencil } from "lucide-react";
-import { useStrictSession } from "@/hooks/use-strict-session";
-import { updateCFProfile } from "../profile-actions";
 import { isActionError, unwrapActionResult } from "@/utils/error-helper";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
@@ -23,11 +21,14 @@ import CodeforcesForm, {
 } from "@/components/profile/codeforces-settings-form";
 import { CF_CACHE_LS_KEY } from "@/components/codeforces-ladder/check-problem-solved/check-solved-problems";
 import { localStorageCleanUp } from "@/utils/helper";
+import { updateCFProfile } from "../profile-actions";
+import { type users } from "@prisma/client";
+import { useStrictSession } from "@/hooks/use-strict-session";
 
-export default function CodeforcesSettings() {
+export default function CodeforcesSettings({ userData }: { userData: users }) {
   const session = useStrictSession();
+  const isOwner = session.user.id === userData.id;
   const [isEditing, setIsEditing] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const {
     data: user,
@@ -35,22 +36,21 @@ export default function CodeforcesSettings() {
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["user-cf-info"],
+    queryKey: ["user-cf-info", userData.user_name],
     queryFn: async () => {
-      const result = await getUserById(session.user.id);
+      const result = await getUserById(userData.id);
       return unwrapActionResult(result);
     },
+    initialData: userData,
     staleTime: Infinity,
   });
 
   const handleSubmit = async (data: CodeforcesFormValues) => {
-    const result = await updateCFProfile(
-      {
-        handle: data.handle || null,
-        showOnLeaderboard: data.showOnLeaderboard,
-      },
-      session.user.id
-    );
+    const result = await updateCFProfile({
+      handle: data.handle || null,
+      showOnLeaderboard: data.showOnLeaderboard,
+      profileOwnerId: userData.id,
+    });
 
     if (isActionError(result)) {
       toast.error(result.error, { position: "top-center" });
@@ -65,13 +65,11 @@ export default function CodeforcesSettings() {
   };
 
   const handleRemoveCFHandle = async () => {
-    const result = await updateCFProfile(
-      {
-        handle: null,
-        showOnLeaderboard: false,
-      },
-      session.user.id
-    );
+    const result = await updateCFProfile({
+      handle: null,
+      showOnLeaderboard: false,
+      profileOwnerId: userData.id,
+    });
 
     if (isActionError(result)) {
       toast.error(result.error, { position: "top-center" });
@@ -81,8 +79,6 @@ export default function CodeforcesSettings() {
 
       toast.success("Codeforces handle removed", { position: "top-center" });
       refetch();
-
-      setIsDialogOpen(false);
     }
   };
 
@@ -104,16 +100,18 @@ export default function CodeforcesSettings() {
             </CardTitle>
           </div>
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-1.5"
-            onClick={() => setIsEditing((prev) => !prev)}
-            disabled={isLoading || isError}
-          >
-            {!isEditing && <Pencil className="h-3.5 w-3.5" />}
-            {isEditing ? "Cancel" : "Edit"}
-          </Button>
+          {isOwner ? (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1.5"
+              onClick={() => setIsEditing((prev) => !prev)}
+              disabled={isLoading || isError}
+            >
+              {!isEditing && <Pencil className="h-3.5 w-3.5" />}
+              {isEditing ? "Cancel" : "Edit"}
+            </Button>
+          ) : null}
         </div>
         <CardDescription>
           Connect your Codeforces account and manage your preferences
@@ -133,12 +131,9 @@ export default function CodeforcesSettings() {
           <CodeforcesForm
             defaultValues={defaultValues}
             isEditing={isEditing}
-            isSubmitting={false}
-            hasExistingHandle={!!user.cf_handle}
+            isOwner={isOwner}
             onSubmit={handleSubmit}
             onRemoveHandle={handleRemoveCFHandle}
-            isDialogOpen={isDialogOpen}
-            setIsDialogOpen={setIsDialogOpen}
           />
         )}
       </CardContent>

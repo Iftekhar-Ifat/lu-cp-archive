@@ -76,7 +76,7 @@ function WinnerCard({ winner, variant, size }: WinnerCardProps) {
       <CardContent className="flex w-full flex-col items-center p-0 pt-6">
         <div className="relative mb-4">
           <Badge
-            className={`absolute -right-3 -top-3 flex h-8 w-8 justify-center rounded-full bg-accent text-sm font-extrabold text-primary`}
+            className={`pointer-events-none absolute -right-3 -top-3 flex h-8 w-8 justify-center rounded-full bg-accent text-sm font-extrabold text-primary`}
           >
             {winner.rank}
           </Badge>

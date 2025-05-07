@@ -1,16 +1,26 @@
 "use server";
 
+import { getUserData } from "@/components/shared-actions/getUserData";
 import { prisma } from "@/lib/prisma";
+import { isActionError } from "@/utils/error-helper";
 import axios, { isAxiosError } from "axios";
 
-export async function updateCFProfile(
-  data: { handle: string | null; showOnLeaderboard: boolean },
-  userId: string
-) {
+export async function updateCFProfile(data: {
+  handle: string | null;
+  showOnLeaderboard: boolean;
+  profileOwnerId: string;
+}) {
+  const userData = await getUserData();
+  if (isActionError(userData)) {
+    return { error: "Unauthorized" };
+  }
+  if (userData.id !== data.profileOwnerId) {
+    return { error: "Unauthorized: Cannot modify another user's profile." };
+  }
   try {
     if (!data.handle) {
       await prisma.users.update({
-        where: { id: userId },
+        where: { id: userData.id },
         data: {
           cf_handle: null,
           show_on_leaderboard: data.showOnLeaderboard,
@@ -30,7 +40,7 @@ export async function updateCFProfile(
       }
 
       await prisma.users.update({
-        where: { id: userId },
+        where: { id: userData.id },
         data: {
           cf_handle: data.handle,
           show_on_leaderboard: data.showOnLeaderboard,

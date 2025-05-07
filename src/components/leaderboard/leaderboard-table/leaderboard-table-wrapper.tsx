@@ -42,7 +42,7 @@ export default function LeaderboardTableWrapper({
         rest,
       };
     },
-    // staleTime: Infinity,
+    staleTime: Infinity,
   });
 
   if (isLoading || !leaderboardDate) {

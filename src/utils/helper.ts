@@ -39,6 +39,11 @@ function localStorageCleanUp() {
   localStorage.removeItem(CF_CACHE_LS_KEY);
 }
 
+function parseUsername(rawUserName: string): string {
+  const decoded = decodeURIComponent(rawUserName);
+  return decoded.startsWith("@") ? decoded.slice(1) : decoded;
+}
+
 export {
   transformTagStringsToObjects,
   formatContestTypeTitle,
@@ -46,4 +51,5 @@ export {
   underscoreToHyphen,
   generateTitleToSlug,
   localStorageCleanUp,
+  parseUsername,
 };

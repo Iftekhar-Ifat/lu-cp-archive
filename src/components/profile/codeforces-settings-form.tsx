@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,32 +38,22 @@ export type CodeforcesFormValues = z.infer<typeof CodeforcesFormSchema>;
 interface CodeforcesFormProps {
   defaultValues: CodeforcesFormValues;
   isEditing: boolean;
-  isSubmitting: boolean;
-  hasExistingHandle: boolean;
+  isOwner: boolean;
   onSubmit: (data: CodeforcesFormValues) => Promise<void>;
   onRemoveHandle: () => Promise<void>;
-  isDialogOpen: boolean;
-  setIsDialogOpen: (open: boolean) => void;
 }
 
 export default function CodeforcesForm({
   defaultValues,
   isEditing,
-  isSubmitting,
-  hasExistingHandle,
   onSubmit,
+  isOwner,
   onRemoveHandle,
-  isDialogOpen,
-  setIsDialogOpen,
 }: CodeforcesFormProps) {
   const form = useForm<CodeforcesFormValues>({
     resolver: zodResolver(CodeforcesFormSchema),
     defaultValues,
   });
-
-  useEffect(() => {
-    form.reset(defaultValues);
-  }, [defaultValues, form]);
 
   return (
     <Form {...form}>
@@ -84,11 +73,8 @@ export default function CodeforcesForm({
                       disabled={!isEditing}
                     />
                   </FormControl>
-                  {hasExistingHandle && (
-                    <AlertDialog
-                      open={isDialogOpen}
-                      onOpenChange={setIsDialogOpen}
-                    >
+                  {isOwner && defaultValues.handle && (
+                    <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button
                           type="button"
@@ -162,8 +148,8 @@ export default function CodeforcesForm({
 
         {isEditing && (
           <div className="flex items-center justify-end pt-2">
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save Changes"}
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         )}
