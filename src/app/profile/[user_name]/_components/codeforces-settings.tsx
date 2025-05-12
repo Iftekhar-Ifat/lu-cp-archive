@@ -13,7 +13,7 @@ import { Icons } from "@/components/icons";
 import { Pencil } from "lucide-react";
 import { isActionError, unwrapActionResult } from "@/utils/error-helper";
 import { toast } from "sonner";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUserById } from "@/components/shared-actions/getUserData";
 import CodeforcesForm, {
@@ -30,11 +30,12 @@ export default function CodeforcesSettings({ userData }: { userData: users }) {
   const isOwner = session.user.id === userData.id;
   const [isEditing, setIsEditing] = useState(false);
 
+  const queryClient = useQueryClient();
+
   const {
     data: user,
     isLoading,
     isError,
-    refetch,
   } = useQuery({
     queryKey: ["user-cf-info", userData.user_name],
     queryFn: async () => {
@@ -60,7 +61,7 @@ export default function CodeforcesSettings({ userData }: { userData: users }) {
 
       toast.success("Status Updated", { position: "top-center" });
       setIsEditing(false);
-      refetch();
+      queryClient.invalidateQueries({ queryKey: ["user-cf-info"] });
     }
   };
 
@@ -78,7 +79,7 @@ export default function CodeforcesSettings({ userData }: { userData: users }) {
       localStorageCleanUp();
 
       toast.success("Codeforces handle removed", { position: "top-center" });
-      refetch();
+      queryClient.invalidateQueries({ queryKey: ["user-cf-info"] });
     }
   };
 

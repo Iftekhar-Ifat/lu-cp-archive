@@ -6,6 +6,7 @@ import { parseUsername } from "@/utils/helper";
 import { getUserByUserName } from "@/components/shared-actions/getUserData";
 import { isActionError } from "@/utils/error-helper";
 import { notFound } from "next/navigation";
+import UserManagement from "./_components/user-management";
 
 export default async function Profile({
   params,
@@ -23,9 +24,10 @@ export default async function Profile({
     <MaxWidthWrapper>
       <div className="py-8">
         <UserHeading userData={user.data} />
-        <div className="grid items-start gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2">
           <ActivityStats userData={user.data} />
           <CodeforcesSettings userData={user.data} />
+          {/* <UserManagement /> */}
         </div>
       </div>
     </MaxWidthWrapper>
