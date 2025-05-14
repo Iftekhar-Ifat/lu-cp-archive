@@ -58,7 +58,7 @@ const dashboardCardData = [
     title: "User Guide",
     description: "Check how to get the most out of LUCA",
     icon: BookUser,
-    href: "dashboard/user-guide",
+    href: "/user-guide",
   },
 ];
 

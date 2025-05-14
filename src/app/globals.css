@@ -1,3 +1,4 @@
+@import "@prose-ui/next/prose-ui.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -39,6 +40,9 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --p-font-family: var(--font-geist-sans);
+    --p-font-family-heading: var(--font-geist-sans);
+    --p-font-family-mono: var(--font-geist-mono);
   }
   .dark {
     --background: 240 10% 3.9%;
