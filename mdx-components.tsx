@@ -12,7 +12,6 @@ import {
   TypographySmall,
   TypographyMuted,
   TypographyBlockquote,
-  TypographyInlineCode,
   TypographyList,
   TypographyOrderedList,
   TypographyListItem,
@@ -25,6 +24,7 @@ import {
   TypographyImage,
   TypographyHr,
 } from "@/components/ui/typography";
+import { MDXCodeBlock } from "@/components/mdx-code-block";
 
 export const baseComponents: MDXComponents = {
   h1: ({ children, ...props }) => (
@@ -63,8 +63,10 @@ export const baseComponents: MDXComponents = {
   blockquote: ({ children, ...props }) => (
     <TypographyBlockquote {...props}>{children}</TypographyBlockquote>
   ),
-  code: ({ children, ...props }) => (
-    <TypographyInlineCode {...props}>{children}</TypographyInlineCode>
+  code: ({ children, className, ...props }) => (
+    <MDXCodeBlock className={className} {...props}>
+      {children}
+    </MDXCodeBlock>
   ),
   strong: ({ children, ...props }) => (
     <strong className="font-semibold" {...props}>
