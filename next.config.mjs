@@ -1,5 +1,5 @@
 import createMDX from "@next/mdx";
-import { remarkPlugins } from "@prose-ui/core";
+import remarkGfm from "remark-gfm";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -8,7 +8,8 @@ const nextConfig = {
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: remarkPlugins(),
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [],
   },
 });
 

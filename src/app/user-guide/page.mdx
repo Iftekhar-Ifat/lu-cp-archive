@@ -1,55 +1,91 @@
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 
-<MaxWidthWrapper className="prose-ui">
+<MaxWidthWrapper>
 
-# The Joke Tax Chronicles
+---
 
-Once upon a time, in a far-off land, there was a very lazy king who spent all day lounging on his throne. One day, his advisors came to him with a problem: the kingdom was running out of money.
+title: "Complete MDX Component Demo"
+description: "Testing all MDX components with proper styling"
+date: "2025-05-15"
 
-```python
-print("hello")
-```
+---
 
-## The King's Plan
+# Main Heading (H1)
 
-The king thought long and hard, and finally came up with{" "} [a brilliant plan](#) : he would tax the jokes in the kingdom.
+This is a paragraph with **bold text** and _italic text_ and some `inline code` as well. Let's also add a [link to Google](https://www.google.com) to test that component.
 
-> "After all," he said, "everyone enjoys a good joke, so it's only fair that they should pay for the privilege."
+<lead>
+  This is a lead paragraph that uses the custom typography component. It should
+  be larger and have a muted color to draw attention.
+</lead>
 
-### The Joke Tax
+## Secondary Heading (H2)
 
-The king's subjects were not amused. They grumbled and complained, but the king was firm:
+Here's a paragraph after the H2. The H2 should have a bottom border and proper spacing.
 
-As a result, people stopped telling jokes, and the kingdom fell into a gloom. But there was one person who refused to let the king's foolishness get him down: a court jester named Jokester.
+### Tertiary Heading (H3)
 
-### Jokester's Revolt
+<large>
+  This is large text that should be prominent but not as large as headings.
+</large>
 
-Jokester began sneaking into the castle in the middle of the night and leaving jokes all over the place: under the king's pillow, in his soup, even in the royal toilet. The king was furious, but he couldn't seem to stop Jokester.
+#### Fourth Level Heading (H4)
 
-And then, one day, the people of the kingdom discovered that the jokes left by Jokester were so funny that they couldn't help but laugh. And once they started laughing, they couldn't stop.
+Regular paragraph text continues here. Let's also try some <small>small text</small> and some <muted>muted text</muted> to see how they look.
 
-### The People's Rebellion
+## Lists
 
-The people of the kingdom, feeling uplifted by the laughter, started to tell jokes and puns again, and soon the entire kingdom was in on the joke.
+### Unordered List
 
-King's Treasury
+Here's an unordered list:
 
-People's happiness
+- First item in the list
+- Second item in the list
+  - Nested item one
+  - Nested item two
+- Third item in the list with some longer text that might wrap to multiple lines to test the spacing
 
-Empty
+### Ordered List
 
-Overflowing
+Here's an ordered list:
 
-Modest
+1. First ordered item
+2. Second ordered item
+   1. Nested ordered item one
+   2. Nested ordered item two
+3. Third ordered item
 
-Satisfied
+## Images
 
-Full
+Below is an example image:
 
-Ecstatic
+## Blockquotes
 
-The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax. Jokester was declared a hero, and the kingdom lived happily ever after.
+> This is a blockquote. It should have a left border and be styled distinctly from regular text.
+>
+> This is a second paragraph in the blockquote.
 
-The moral of the story is: never underestimate the power of a good laugh and always be careful of bad ideas.
+## Tables
+
+Here's a table to test the table styling:
+
+| Name        | Role      | Department   |
+| ----------- | --------- | ------------ |
+| John Doe    | Manager   | Engineering  |
+| Jane Smith  | Developer | Product      |
+| Bob Johnson | Designer  | UX/UI        |
+| Alice Brown | Analyst   | Data Science |
+
+## Code Blocks
+
+## Horizontal Rule
+
+Below is a horizontal rule:
+
+---
+
+<large>Final Section</large>
+
+This is the end of our MDX component testing document. All components should display correctly with proper spacing and styling.
 
 </MaxWidthWrapper>
