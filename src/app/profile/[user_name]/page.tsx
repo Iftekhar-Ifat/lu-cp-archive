@@ -27,7 +27,9 @@ export default async function Profile({
         <div className="grid gap-6 md:grid-cols-2">
           <ActivityStats userData={user.data} />
           <CodeforcesSettings userData={user.data} />
-          {/* <UserManagement /> */}
+        </div>
+        <div className="my-6">
+          <UserManagement />
         </div>
       </div>
     </MaxWidthWrapper>

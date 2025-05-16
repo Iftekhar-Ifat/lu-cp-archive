@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { isActionError } from "@/utils/error-helper";
 import axios, { isAxiosError } from "axios";
 
-export async function updateCFProfile(data: {
+async function updateCFProfile(data: {
   handle: string | null;
   showOnLeaderboard: boolean;
   profileOwnerId: string;
@@ -106,4 +106,20 @@ async function getUserStats(userId: string) {
   }
 }
 
-export { getUserStats };
+async function getAdministrativeUsers() {
+  try {
+    const users = await prisma.users.findMany({
+      where: {
+        user_type: {
+          in: ["ADMIN", "POWER"],
+        },
+      },
+    });
+    return { success: true, data: users };
+  } catch (error) {
+    console.error("Error getting users:", error);
+    return { error: "Failed to fetch users" };
+  }
+}
+
+export { getUserStats, updateCFProfile, getAdministrativeUsers };

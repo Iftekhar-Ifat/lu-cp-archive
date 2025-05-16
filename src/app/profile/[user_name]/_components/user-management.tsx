@@ -1,4 +1,5 @@
-import StepDown from "@/components/profile/step-down";
+import AdministrativeTableWrapper from "@/components/profile/user-management/administrative-table-wrapper";
+import StepDown from "@/components/profile/user-management/step-down";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -39,8 +40,9 @@ export default function UserManagement() {
         </div>
         <CardDescription>Manage users in the system</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col gap-4">
         <StepDown />
+        <AdministrativeTableWrapper />
       </CardContent>
     </Card>
   );
