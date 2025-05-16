@@ -8,6 +8,7 @@ import { getAdministrativeUsers } from "@/app/profile/[user_name]/profile-action
 import { unwrapActionResult } from "@/utils/error-helper";
 import { administrative_table_columns } from "./admin-user-table-columns";
 import { useStrictSession } from "@/hooks/use-strict-session";
+import { ShieldUser, Zap } from "lucide-react";
 
 export default function AdministrativeTableWrapper() {
   const session = useStrictSession();
@@ -43,9 +44,12 @@ export default function AdministrativeTableWrapper() {
     }
   }
   return (
-    <div className="rounded border p-4">
+    <div>
       <div>
-        <h3 className="text-xl font-medium">Admins</h3>
+        <h3 className="flex items-center text-xl font-medium">
+          <ShieldUser className="mr-1 text-muted-foreground" />
+          Admins
+        </h3>
         <div className="my-4">
           <AdministrativeUsersTable
             userType={session.user.user_type}
@@ -56,7 +60,10 @@ export default function AdministrativeTableWrapper() {
         </div>
       </div>
       <div>
-        <h3 className="text-xl font-medium">Power Users</h3>
+        <h3 className="flex items-center text-xl font-medium">
+          <Zap className="mr-1 text-muted-foreground" />
+          Power Users
+        </h3>
         <div className="my-4">
           <AdministrativeUsersTable
             userType={session.user.user_type}

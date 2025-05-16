@@ -19,7 +19,7 @@ export default function StepDown() {
   const session = useStrictSession();
   return (
     <div className="rounded border p-4">
-      <div className="flex flex-col items-center justify-between gap-2 md:flex-row">
+      <div className="flex flex-col justify-between gap-2 md:flex-row">
         <div>
           <h3 className="font-medium">
             Your Current Role:{" "}
@@ -34,7 +34,7 @@ export default function StepDown() {
         </div>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button className="md:w-fit" variant="destructive">
+            <Button className="w-full md:w-fit" variant="destructive">
               Step Down
             </Button>
           </AlertDialogTrigger>
