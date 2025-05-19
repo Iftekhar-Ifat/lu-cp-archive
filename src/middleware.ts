@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { auth } from "./lib/auth";
 
-const PUBLIC_ROUTES = ["/", /^\/api\/auth\/.*/];
+const PUBLIC_ROUTES = ["/", /^\/api\/auth\/.*/, "/user-guide"];
 
 const isPublicRoute = (pathname: string) => {
   return PUBLIC_ROUTES.some((route) =>
@@ -15,9 +15,9 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Redirect logged-in users from "/" to "/dashboard"
-  /* if (session && pathname === "/") {
+  if (session && pathname === "/") {
     return NextResponse.redirect(new URL("/dashboard", request.url));
-  } */
+  }
 
   // If not public and not authenticated, redirect to "/"
   if (!isPublicRoute(pathname) && !session) {

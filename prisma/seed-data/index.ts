@@ -83,27 +83,30 @@ export async function seedContests(prisma: PrismaClient, userIds: string[]) {
   const createdContests: contests[] = [];
 
   try {
-    await prisma.$transaction(async (tx) => {
-      for (const contestData of contests) {
-        const contest = await tx.contests.create({
-          data: {
-            title: contestData.title,
-            description: contestData.description,
-            url: contestData.url,
-            difficulty: contestData.difficulty,
-            type: contestData.type,
-            approved: true,
-            addedBy: {
-              connect: {
-                id: contestData.added_by,
+    await prisma.$transaction(
+      async (tx) => {
+        for (const contestData of contests) {
+          const contest = await tx.contests.create({
+            data: {
+              title: contestData.title,
+              description: contestData.description,
+              url: contestData.url,
+              difficulty: contestData.difficulty,
+              type: contestData.type,
+              approved: true,
+              addedBy: {
+                connect: {
+                  id: contestData.added_by,
+                },
               },
             },
-          },
-        });
-        createdContests.push(contest);
-        console.log(`Created contest: ${contest.title}`);
-      }
-    });
+          });
+          createdContests.push(contest);
+          console.log(`Created contest: ${contest.title}`);
+        }
+      },
+      { timeout: 15000 }
+    );
   } catch (error) {
     console.error("Failed to create contests:", error);
     throw error;
@@ -131,12 +134,15 @@ export async function seedContestTags(
   });
 
   try {
-    await prisma.$transaction(async (tx) => {
-      for (const tagData of contestTagsData) {
-        await tx.contests_tags.create({ data: tagData });
-        console.log(`Created contest tag relationship`);
-      }
-    });
+    await prisma.$transaction(
+      async (tx) => {
+        for (const tagData of contestTagsData) {
+          await tx.contests_tags.create({ data: tagData });
+          console.log(`Created contest tag relationship`);
+        }
+      },
+      { timeout: 15000 }
+    );
   } catch (error) {
     console.error("Failed to create contest tags:", error);
     throw error;
@@ -206,31 +212,34 @@ export async function seedProblems(
   }));
 
   try {
-    await prisma.$transaction(async (tx) => {
-      for (const problemData of problemsWithRefs) {
-        const problem = await tx.problems.create({
-          data: {
-            title: problemData.title,
-            description: problemData.description,
-            url: problemData.url,
-            difficulty: problemData.difficulty,
-            approved: true,
-            addedBy: {
-              connect: {
-                id: problemData.added_by,
+    await prisma.$transaction(
+      async (tx) => {
+        for (const problemData of problemsWithRefs) {
+          const problem = await tx.problems.create({
+            data: {
+              title: problemData.title,
+              description: problemData.description,
+              url: problemData.url,
+              difficulty: problemData.difficulty,
+              approved: true,
+              addedBy: {
+                connect: {
+                  id: problemData.added_by,
+                },
+              },
+              relatedTopic: {
+                connect: {
+                  id: problemData.topic,
+                },
               },
             },
-            relatedTopic: {
-              connect: {
-                id: problemData.topic,
-              },
-            },
-          },
-        });
-        createdProblems.push(problem);
-        console.log(`Created problem: ${problem.title}`);
-      }
-    });
+          });
+          createdProblems.push(problem);
+          console.log(`Created problem: ${problem.title}`);
+        }
+      },
+      { timeout: 15000 }
+    );
   } catch (error) {
     console.error("Failed to create problems:", error);
     throw error;
@@ -259,12 +268,15 @@ export async function seedProblemTags(
   });
 
   try {
-    await prisma.$transaction(async (tx) => {
-      for (const tagData of problemTagsData) {
-        await tx.problem_tags.create({ data: tagData });
-        console.log("Created problem tag relationship");
-      }
-    });
+    await prisma.$transaction(
+      async (tx) => {
+        for (const tagData of problemTagsData) {
+          await tx.problem_tags.create({ data: tagData });
+          console.log("Created problem tag relationship");
+        }
+      },
+      { timeout: 15000 }
+    );
   } catch (error) {
     console.error("Failed to create problem tags:", error);
     throw error;
@@ -306,12 +318,15 @@ export async function seedProblemStatuses(
   ];
 
   try {
-    await prisma.$transaction(async (tx) => {
-      for (const status of statusData) {
-        await tx.problem_status.create({ data: status });
-        console.log(`Created problem status for user ${status.user_id}`);
-      }
-    });
+    await prisma.$transaction(
+      async (tx) => {
+        for (const status of statusData) {
+          await tx.problem_status.create({ data: status });
+          console.log(`Created problem status for user ${status.user_id}`);
+        }
+      },
+      { timeout: 15000 }
+    );
   } catch (error) {
     console.error("Failed to create problem statuses:", error);
     throw error;
@@ -323,24 +338,27 @@ export async function seedCFProblems(prisma: PrismaClient, userIds: string[]) {
   const cfProblems = getCFProblems(userIds);
 
   try {
-    await prisma.$transaction(async (tx) => {
-      for (const problemData of cfProblems) {
-        const problem = await tx.cf_problems.create({
-          data: {
-            title: problemData.title,
-            url: problemData.url,
-            difficulty_level: problemData.difficulty,
-            approved: problemData.approved,
-            addedBy: {
-              connect: {
-                id: problemData.added_by,
+    await prisma.$transaction(
+      async (tx) => {
+        for (const problemData of cfProblems) {
+          const problem = await tx.cf_problems.create({
+            data: {
+              title: problemData.title,
+              url: problemData.url,
+              difficulty_level: problemData.difficulty,
+              approved: problemData.approved,
+              addedBy: {
+                connect: {
+                  id: problemData.added_by,
+                },
               },
             },
-          },
-        });
-        console.log(`Created CF problem: ${problem.title}`);
-      }
-    });
+          });
+          console.log(`Created CF problem: ${problem.title}`);
+        }
+      },
+      { timeout: 15000 }
+    );
   } catch (error) {
     console.error("Failed to create CF problems:", error);
     throw error;
@@ -353,42 +371,38 @@ export async function seedLeaderboard(
 ) {
   console.log("Seeding leaderboard for last 3 months...");
 
-  // Flatten the 2D array
   const users = users2D.flat();
-
   const months = getLastNMonths(3);
 
   try {
-    await prisma.$transaction(async (tx) => {
-      for (const { month, year } of months) {
-        const entries = getMonthlyLeaderboard(users, month, year);
+    for (const { month, year } of months) {
+      const entries = getMonthlyLeaderboard(users, month, year);
 
-        for (const entry of entries) {
-          await tx.leaderboards.upsert({
-            where: {
-              user_id_month_year: {
-                user_id: entry.user_id,
-                month: entry.month,
-                year: entry.year,
-              },
-            },
-            update: {
-              points: entry.points,
-              rank: entry.rank,
-            },
-            create: {
+      for (const entry of entries) {
+        await prisma.leaderboards.upsert({
+          where: {
+            user_id_month_year: {
               user_id: entry.user_id,
-              points: entry.points,
-              rank: entry.rank,
               month: entry.month,
               year: entry.year,
             },
-          });
-        }
-
-        console.log(`Seeded leaderboard for ${month}/${year}`);
+          },
+          update: {
+            points: entry.points,
+            rank: entry.rank,
+          },
+          create: {
+            user_id: entry.user_id,
+            points: entry.points,
+            rank: entry.rank,
+            month: entry.month,
+            year: entry.year,
+          },
+        });
       }
-    });
+
+      console.log(`Seeded leaderboard for ${month}/${year}`);
+    }
   } catch (error) {
     console.error("Failed to seed leaderboard:", error);
     throw error;
