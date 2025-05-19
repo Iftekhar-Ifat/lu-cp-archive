@@ -122,4 +122,23 @@ async function getAdministrativeUsers() {
   }
 }
 
-export { getUserStats, updateCFProfile, getAdministrativeUsers };
+async function getStandardUsers() {
+  try {
+    const users = await prisma.users.findMany({
+      where: {
+        user_type: "STANDARD",
+      },
+    });
+    return { success: true, data: users };
+  } catch (error) {
+    console.error("Error getting users:", error);
+    return { error: "Failed to fetch users" };
+  }
+}
+
+export {
+  getUserStats,
+  updateCFProfile,
+  getAdministrativeUsers,
+  getStandardUsers,
+};

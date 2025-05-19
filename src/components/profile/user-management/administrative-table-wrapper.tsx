@@ -6,7 +6,7 @@ import Loading from "@/components/shared/loading";
 import Error from "@/components/shared/error";
 import { getAdministrativeUsers } from "@/app/profile/[user_name]/profile-actions";
 import { unwrapActionResult } from "@/utils/error-helper";
-import { administrative_table_columns } from "./admin-user-table-columns";
+import { administrative_table_columns } from "./administrative-table-columns";
 import { useStrictSession } from "@/hooks/use-strict-session";
 import { ShieldUser, Zap } from "lucide-react";
 
