@@ -34,7 +34,7 @@ export default function AdministrativeTableWrapper() {
     staleTime: Infinity,
   });
 
-  if (isLoading || !administrativeUsers) {
+  if (isLoading) {
     return <Loading />;
   }
 

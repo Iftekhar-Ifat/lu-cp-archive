@@ -2,7 +2,9 @@
 
 import { getUserData } from "@/components/shared-actions/getUserData";
 import { prisma } from "@/lib/prisma";
+import { type USER_TYPE } from "@/types/types";
 import { isActionError } from "@/utils/error-helper";
+import { hasPermission } from "@/utils/permissions";
 import axios, { isAxiosError } from "axios";
 
 async function updateCFProfile(data: {
@@ -10,17 +12,17 @@ async function updateCFProfile(data: {
   showOnLeaderboard: boolean;
   profileOwnerId: string;
 }) {
-  const userData = await getUserData();
-  if (isActionError(userData)) {
+  const requester = await getUserData();
+  if (isActionError(requester)) {
     return { error: "Unauthorized" };
   }
-  if (userData.id !== data.profileOwnerId) {
+  if (requester.id !== data.profileOwnerId) {
     return { error: "Unauthorized: Cannot modify another user's profile." };
   }
   try {
     if (!data.handle) {
       await prisma.users.update({
-        where: { id: userData.id },
+        where: { id: requester.id },
         data: {
           cf_handle: null,
           show_on_leaderboard: data.showOnLeaderboard,
@@ -40,7 +42,7 @@ async function updateCFProfile(data: {
       }
 
       await prisma.users.update({
-        where: { id: userData.id },
+        where: { id: requester.id },
         data: {
           cf_handle: data.handle,
           show_on_leaderboard: data.showOnLeaderboard,
@@ -136,9 +138,42 @@ async function getStandardUsers() {
   }
 }
 
+async function changeUserType({
+  userId,
+  newType,
+}: {
+  userId: string;
+  newType: USER_TYPE;
+}) {
+  const requester = await getUserData();
+  if (isActionError(requester)) {
+    return { error: "Unauthorized" };
+  }
+  const hasUserTypeChangePermission = hasPermission(
+    requester.user_type,
+    "change-user_type"
+  );
+  if (!hasUserTypeChangePermission) {
+    return { error: "Unauthorized: You don't have permission for this action" };
+  }
+  try {
+    await prisma.users.update({
+      where: { id: userId },
+      data: {
+        user_type: newType,
+      },
+    });
+    return { data: { success: true } };
+  } catch (error) {
+    console.error("Error changing user:", error);
+    return { error: "Failed to change user" };
+  }
+}
+
 export {
   getUserStats,
   updateCFProfile,
   getAdministrativeUsers,
   getStandardUsers,
+  changeUserType,
 };

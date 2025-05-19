@@ -21,7 +21,7 @@ import { changeUserType } from "@/app/profile/[user_name]/profile-actions";
 import { unwrapActionResult } from "@/utils/error-helper";
 import { useQueryClient } from "@tanstack/react-query";
 
-export const administrative_table_columns: ColumnDef<users>[] = [
+export const standard_users_table_columns: ColumnDef<users>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -66,7 +66,7 @@ export const administrative_table_columns: ColumnDef<users>[] = [
             const actionResult = await changeUserType({ userId, newType });
             const result = unwrapActionResult(actionResult);
             queryClient.invalidateQueries({
-              queryKey: ["administrative-users"],
+              queryKey: ["standard-users"],
             });
             return result;
           },

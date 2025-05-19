@@ -1,12 +1,9 @@
 "use client";
 
 import Loading from "@/app/loading";
-import {
-  getAdministrativeUsers,
-  getStandardUsers,
-} from "@/app/profile/[user_name]/profile-actions";
-import { administrative_table_columns } from "@/components/profile/user-management/administrative-table-columns";
+import { getStandardUsers } from "@/app/profile/[user_name]/profile-actions";
 import { StandardUsersTable } from "@/components/profile/user-management/standard-users-table";
+import { standard_users_table_columns } from "@/components/profile/user-management/standard-users-table-column";
 import Error from "@/components/shared/error";
 import { useStrictSession } from "@/hooks/use-strict-session";
 import { unwrapActionResult } from "@/utils/error-helper";
@@ -22,7 +19,7 @@ export default function UsersTableWrapper() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["administrative-users"],
+    queryKey: ["standard-users"],
     queryFn: async () => {
       const result = await getStandardUsers();
       return unwrapActionResult(result);
@@ -30,7 +27,7 @@ export default function UsersTableWrapper() {
     staleTime: Infinity,
   });
 
-  if (isLoading || !standardUsers) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -50,7 +47,7 @@ export default function UsersTableWrapper() {
           <div className="my-4">
             <StandardUsersTable
               userType={session.user.user_type}
-              columns={administrative_table_columns}
+              columns={standard_users_table_columns}
               data={standardUsers}
             />
           </div>

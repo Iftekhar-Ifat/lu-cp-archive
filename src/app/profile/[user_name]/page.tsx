@@ -7,18 +7,31 @@ import { getUserByUserName } from "@/components/shared-actions/getUserData";
 import { isActionError } from "@/utils/error-helper";
 import { notFound } from "next/navigation";
 import UserManagement from "./_components/user-management";
+import { auth } from "@/lib/auth";
+import { hasPermission } from "@/utils/permissions";
 
 export default async function Profile({
   params,
 }: {
   params: { user_name: string };
 }) {
+  const session = await auth();
+  if (!session) {
+    notFound();
+  }
   const userName = parseUsername(params.user_name);
   const user = await getUserByUserName(userName);
 
   if (isActionError(user)) {
     notFound();
   }
+
+  const isOwner = session.user.id === user.data.id;
+
+  const hasViewPermission = hasPermission(
+    session.user.user_type,
+    "view-user-management"
+  );
 
   return (
     <MaxWidthWrapper>
@@ -28,9 +41,11 @@ export default async function Profile({
           <ActivityStats userData={user.data} />
           <CodeforcesSettings userData={user.data} />
         </div>
-        <div className="my-6">
-          <UserManagement />
-        </div>
+        {hasViewPermission && isOwner && (
+          <div className="my-6">
+            <UserManagement />
+          </div>
+        )}
       </div>
     </MaxWidthWrapper>
   );
