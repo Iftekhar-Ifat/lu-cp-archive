@@ -368,24 +368,24 @@ async function getProblemProgressStats(
       done: number;
     }[]
   >`
-    SELECT
-      p.difficulty                               AS difficulty,
-      SUM(CASE WHEN ps.status = 'SKIPPED'     THEN 1 ELSE 0 END) AS skipped,
-      SUM(CASE WHEN ps.status = 'InProgress'  THEN 1 ELSE 0 END) AS "inProgress",
-      SUM(CASE WHEN ps.status = 'DONE'        THEN 1 ELSE 0 END) AS done,
-      COUNT(p.id)                                               AS total
-    FROM   problems           p
-    LEFT   JOIN problem_status ps
-           ON  ps.problem_id = p.id
-           AND ps.user_id    = ${user.id}
-    WHERE  p.topic = (SELECT id FROM topics WHERE slug = ${topicSlug})
-    GROUP  BY p.difficulty
-    ORDER  BY
-      CASE p.difficulty          -- keep EASY → MEDIUM → HARD order
-        WHEN 'EASY'   THEN 1
-        WHEN 'MEDIUM' THEN 2
-        ELSE 3
-      END;
+  SELECT
+    p.difficulty::text                       AS difficulty,              
+    SUM( (ps.status = 'SKIPPED')::int )      AS skipped,                
+    SUM( (ps.status = 'InProgress')::int )   AS "inProgress",
+    SUM( (ps.status = 'DONE')::int )         AS done,
+    COUNT(*)::int                            AS total
+  FROM   problems           p
+  LEFT   JOIN problem_status ps
+         ON  ps.problem_id = p.id
+         AND ps.user_id    = ${user.id}
+  WHERE  p.topic = (SELECT id FROM topics WHERE slug = ${topicSlug})
+  GROUP  BY p.difficulty
+  ORDER  BY
+    CASE p.difficulty
+      WHEN 'EASY'   THEN 1
+      WHEN 'MEDIUM' THEN 2
+      ELSE 3
+  END;
   `;
 
   /* // Use this query when work with postgres also change the number conversion in UI
@@ -407,6 +407,26 @@ async function getProblemProgressStats(
       WHEN 'MEDIUM' THEN 2
       ELSE 3
     END;`; */
+
+  // For sqlite
+  /* SELECT
+      p.difficulty                               AS difficulty,
+      SUM(CASE WHEN ps.status = 'SKIPPED'     THEN 1 ELSE 0 END) AS skipped,
+      SUM(CASE WHEN ps.status = 'InProgress'  THEN 1 ELSE 0 END) AS "inProgress",
+      SUM(CASE WHEN ps.status = 'DONE'        THEN 1 ELSE 0 END) AS done,
+      COUNT(p.id)                                               AS total
+    FROM   problems           p
+    LEFT   JOIN problem_status ps
+           ON  ps.problem_id = p.id
+           AND ps.user_id    = ${user.id}
+    WHERE  p.topic = (SELECT id FROM topics WHERE slug = ${topicSlug})
+    GROUP  BY p.difficulty
+    ORDER  BY
+      CASE p.difficulty          -- keep EASY → MEDIUM → HARD order
+        WHEN 'EASY'   THEN 1
+        WHEN 'MEDIUM' THEN 2
+        ELSE 3
+      END; */
 
   const difficulties: ProblemDifficulty[] = ["EASY", "MEDIUM", "HARD"];
 

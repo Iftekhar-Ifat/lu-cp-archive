@@ -37,7 +37,7 @@ async function clearDatabase() {
 async function main() {
   console.log("Starting seed process...");
 
-  await clearDatabase();
+  // await clearDatabase();
   // Seed data in order of dependencies
   const createdUsers = await seedUsers(prisma);
   const createdTags = await seedTags(prisma);
