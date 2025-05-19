@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserData } from "@/components/shared-actions/getUserData";
+import { getUserData } from "@/components/shared-actions/actions";
 import { prisma } from "@/lib/prisma";
 import { type USER_TYPE } from "@/types/types";
 import { isActionError } from "@/utils/error-helper";
@@ -170,10 +170,31 @@ async function changeUserType({
   }
 }
 
+async function userStepDown() {
+  const requester = await getUserData();
+  if (isActionError(requester)) {
+    return { error: "Unauthorized" };
+  }
+
+  try {
+    await prisma.users.update({
+      where: { id: requester.id },
+      data: {
+        user_type: "STANDARD",
+      },
+    });
+    return { data: { success: true } };
+  } catch (error) {
+    console.error("Error changing user:", error);
+    return { error: "Failed to change user" };
+  }
+}
+
 export {
   getUserStats,
   updateCFProfile,
   getAdministrativeUsers,
   getStandardUsers,
   changeUserType,
+  userStepDown,
 };

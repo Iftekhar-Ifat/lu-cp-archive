@@ -3,7 +3,7 @@ import UserHeading from "./_components/user-heading";
 import ActivityStats from "./_components/activity-stats";
 import CodeforcesSettings from "./_components/codeforces-settings";
 import { parseUsername } from "@/utils/helper";
-import { getUserByUserName } from "@/components/shared-actions/getUserData";
+import { getUserByUserName } from "@/components/shared-actions/actions";
 import { isActionError } from "@/utils/error-helper";
 import { notFound } from "next/navigation";
 import UserManagement from "./_components/user-management";

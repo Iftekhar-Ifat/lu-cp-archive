@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserData } from "@/components/shared-actions/getUserData";
+import { getUserData } from "@/components/shared-actions/actions";
 import { prisma } from "@/lib/prisma";
 import { type Contest } from "@/types/types";
 import { type ActionResult, isActionError } from "@/utils/error-helper";

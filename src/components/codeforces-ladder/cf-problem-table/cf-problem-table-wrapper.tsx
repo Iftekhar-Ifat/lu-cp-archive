@@ -8,7 +8,7 @@ import { unwrapActionResult } from "@/utils/error-helper";
 import Error from "@/components/shared/error";
 import Loading from "@/components/shared/loading";
 import { useStrictSession } from "@/hooks/use-strict-session";
-import { getUserById } from "@/components/shared-actions/getUserData";
+import { getUserById } from "@/components/shared-actions/actions";
 
 export default function CFProblemTableWrapper({
   difficultyLevel,

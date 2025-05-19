@@ -14,9 +14,39 @@ import {
   AlertDialogTrigger,
 } from "../../ui/alert-dialog";
 import { useStrictSession } from "@/hooks/use-strict-session";
+import { useState } from "react";
+import { toast } from "sonner";
+import { isActionError } from "@/utils/error-helper";
+import { userStepDown } from "@/app/profile/[user_name]/profile-actions";
 
 export default function StepDown() {
   const session = useStrictSession();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleStepDown = async () => {
+    setIsLoading(true);
+    try {
+      const result = await userStepDown();
+      if (isActionError(result)) {
+        toast.error(result.error, {
+          position: "top-center",
+        });
+      } else {
+        toast.success(
+          "Role updated. Please log out and log back in for the changes to take effect.",
+          {
+            position: "top-center",
+            duration: 5000,
+          }
+        );
+      }
+    } catch (error) {
+      console.error(`Failed to update:`, error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="rounded border p-4">
       <div className="flex flex-col justify-between gap-2 md:flex-row">
@@ -52,9 +82,10 @@ export default function StepDown() {
                 className={buttonVariants({
                   variant: "destructive",
                 })}
-                onClick={() => console.log("first")}
+                onClick={handleStepDown}
+                disabled={isLoading}
               >
-                Step Down
+                {isLoading ? "Stepping Down..." : "Step Down"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

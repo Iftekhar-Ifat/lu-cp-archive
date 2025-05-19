@@ -15,7 +15,7 @@ import { isActionError, unwrapActionResult } from "@/utils/error-helper";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getUserById } from "@/components/shared-actions/getUserData";
+import { getUserById } from "@/components/shared-actions/actions";
 import CodeforcesForm, {
   type CodeforcesFormValues,
 } from "@/components/profile/codeforces-settings-form";

@@ -9,7 +9,7 @@ import {
 import { prisma } from "@/lib/prisma";
 import { type CFProblem } from "@/types/types";
 import { z } from "zod";
-import { getUserData } from "@/components/shared-actions/getUserData";
+import { getUserData } from "@/components/shared-actions/actions";
 import { hasPermission } from "@/utils/permissions";
 
 async function getCFProblemsByDifficulty(

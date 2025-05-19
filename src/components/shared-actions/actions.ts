@@ -62,4 +62,11 @@ async function getUserByUserName(userName: string) {
   }
 }
 
-export { getUserData, getUserById, getUserByUserName };
+async function revokeUserSessions(userId: string) {
+  await prisma.users.update({
+    where: { id: userId },
+    data: { token_version: { increment: 1 } },
+  });
+}
+
+export { getUserData, getUserById, getUserByUserName, revokeUserSessions };
