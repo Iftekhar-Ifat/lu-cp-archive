@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import LeaderboardMonthPicker from "@/components/leaderboard/leaderboard-month-picker";
 import LeaderboardTableWrapper from "@/components/leaderboard/leaderboard-table/leaderboard-table-wrapper";
 import { type LeaderboardDateType } from "@/utils/schema/leaderboard";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function LeaderboardSelectSection({
   initialDate,
@@ -13,7 +13,6 @@ export default function LeaderboardSelectSection({
   initialDate: LeaderboardDateType;
   allowedMonths: LeaderboardDateType[];
 }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const [preservedInitialDate] = useState<Date>(
@@ -41,10 +40,16 @@ export default function LeaderboardSelectSection({
   const handleSelectMonth = (selected: Date) => {
     const selectedYear = selected.getFullYear();
     const selectedMonth = selected.getMonth() + 1;
-    const params = new URLSearchParams();
-    params.set("year", selectedYear.toString());
-    params.set("month", selectedMonth.toString());
-    router.push(`?${params.toString()}`);
+
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+
+      url.searchParams.set("year", selectedYear.toString());
+      url.searchParams.set("month", selectedMonth.toString());
+      url.searchParams.delete("latest");
+
+      window.location.href = url.toString();
+    }
   };
 
   return (

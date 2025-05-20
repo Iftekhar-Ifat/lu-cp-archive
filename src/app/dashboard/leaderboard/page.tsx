@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { leaderboardSearchParamsSchema } from "@/utils/schema/leaderboard";
 import LeaderboardSelectSection from "./_components/leaderboard-select-section";
 import { notFound } from "next/navigation";
