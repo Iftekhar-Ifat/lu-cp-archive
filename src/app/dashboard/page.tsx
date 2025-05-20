@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Card,
@@ -38,8 +40,8 @@ const dashboardCardData = [
     title: "Leaderboard",
     description: "Leaderboard of LU's competitive programers",
     icon: Trophy,
-    href: { pathname: "/dashboard/leaderboard", query: { latest: "true" } },
-    prefetch: false,
+    href: "/dashboard/leaderboard?latest=true",
+    useAnchor: true,
   },
   {
     title: "Intra LU Contests",
@@ -78,31 +80,59 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {dashboardCardData.map(
-          ({ title, description, icon: Icon, href, prefetch }, idx) => (
-            <Link key={idx} href={href} prefetch={prefetch} className="group">
-              <Card className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:border-zinc-400">
-                <CardHeader>
-                  <div className="flex items-start justify-between space-y-0">
-                    <div className="space-y-2">
-                      <div className="h-12 w-12 rounded-lg p-2 transition-colors">
-                        <Icon className="h-full w-full text-muted-foreground" />
+          (
+            { title, description, icon: Icon, href, prefetch, useAnchor },
+            idx
+          ) =>
+            useAnchor ? (
+              <a key={idx} href={href} className="group">
+                <Card className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:border-zinc-400">
+                  <CardHeader>
+                    <div className="flex items-start justify-between space-y-0">
+                      <div className="space-y-2">
+                        <div className="h-12 w-12 rounded-lg p-2 transition-colors">
+                          <Icon className="h-full w-full text-muted-foreground" />
+                        </div>
+                        <CardTitle className="line-clamp-2 text-xl leading-tight">
+                          {title}
+                        </CardTitle>
+                        <CardDescription className="line-clamp-3 text-muted-foreground">
+                          {description}
+                        </CardDescription>
                       </div>
-                      <CardTitle className="line-clamp-2 text-xl leading-tight">
-                        {title}
-                      </CardTitle>
-                      <CardDescription className="line-clamp-3 text-muted-foreground">
-                        {description}
-                      </CardDescription>
+                      <ArrowUpRight
+                        size={25}
+                        className="text-muted-foreground group-hover:text-primary"
+                      />
                     </div>
-                    <ArrowUpRight
-                      size={25}
-                      className="text-muted-foreground group-hover:text-primary"
-                    />
-                  </div>
-                </CardHeader>
-              </Card>
-            </Link>
-          )
+                  </CardHeader>
+                </Card>
+              </a>
+            ) : (
+              <Link key={idx} href={href} prefetch={prefetch} className="group">
+                <Card className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:border-zinc-400">
+                  <CardHeader>
+                    <div className="flex items-start justify-between space-y-0">
+                      <div className="space-y-2">
+                        <div className="h-12 w-12 rounded-lg p-2 transition-colors">
+                          <Icon className="h-full w-full text-muted-foreground" />
+                        </div>
+                        <CardTitle className="line-clamp-2 text-xl leading-tight">
+                          {title}
+                        </CardTitle>
+                        <CardDescription className="line-clamp-3 text-muted-foreground">
+                          {description}
+                        </CardDescription>
+                      </div>
+                      <ArrowUpRight
+                        size={25}
+                        className="text-muted-foreground group-hover:text-primary"
+                      />
+                    </div>
+                  </CardHeader>
+                </Card>
+              </Link>
+            )
         )}
       </div>
     </div>

@@ -37,6 +37,7 @@ export default function StepDown() {
         await update({
           user_type: "STANDARD",
         });
+        window.location.reload();
         toast.success("Role updated successfully.", {
           position: "top-center",
           duration: 5000,
