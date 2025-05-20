@@ -18,10 +18,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { type ContestStatusType } from "@/types/types";
+import { type ContestType, type ContestStatusType } from "@/types/types";
 import { updateContestStatus } from "@/app/dashboard/(contests)/contest-actions";
 import { isActionError } from "@/utils/error-helper";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Status = {
   value: ContestStatusType;
@@ -50,13 +51,16 @@ const statuses: Status[] = [
 export function ContestStatus({
   contestId,
   contestStatus,
+  contestType,
 }: {
   contestId: string;
   contestStatus: ContestStatusType;
+  contestType: ContestType;
 }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const queryClient = useQueryClient();
 
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(() => {
     const initialStatus =
@@ -95,6 +99,9 @@ export function ContestStatus({
           cardElement.dataset.cardBorder = nextStatus?.value || undefined;
         }
       }
+      queryClient.invalidateQueries({
+        queryKey: [contestType],
+      });
     } catch (error) {
       console.error("Status update failed:", error);
     } finally {

@@ -22,7 +22,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         const dbUser = await prisma.users.upsert({
           where: { email: user.email! },
@@ -43,6 +43,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.id = dbUser.id;
         token.user_type = dbUser.user_type;
         token.user_name = dbUser.user_name;
+      }
+      if (trigger === "update" && session) {
+        if (session.user_type) token.user_type = session.user_type;
+        if (session.user_name) token.user_name = session.user_name;
+        if (session.name) token.name = session.name;
+        if (session.image) token.picture = session.image;
+
+        return token;
       }
       return token;
     },

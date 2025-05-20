@@ -18,9 +18,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { isActionError } from "@/utils/error-helper";
 import { userStepDown } from "@/app/profile/[user_name]/profile-actions";
+import { useSession } from "next-auth/react";
 
 export default function StepDown() {
   const session = useStrictSession();
+  const { update, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleStepDown = async () => {
@@ -32,13 +34,13 @@ export default function StepDown() {
           position: "top-center",
         });
       } else {
-        toast.success(
-          "Role updated. Please log out and log back in for the changes to take effect.",
-          {
-            position: "top-center",
-            duration: 5000,
-          }
-        );
+        await update({
+          user_type: "STANDARD",
+        });
+        toast.success("Role updated successfully.", {
+          position: "top-center",
+          duration: 5000,
+        });
       }
     } catch (error) {
       console.error(`Failed to update:`, error);
@@ -64,7 +66,11 @@ export default function StepDown() {
         </div>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button className="w-full md:w-fit" variant="destructive">
+            <Button
+              className="w-full md:w-fit"
+              variant="destructive"
+              disabled={status === "loading"}
+            >
               Step Down
             </Button>
           </AlertDialogTrigger>

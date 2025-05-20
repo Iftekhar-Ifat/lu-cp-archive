@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { localStorageCleanUp } from "@/utils/helper";
 
 export default function Navbar() {
-  const { data: session, update, status } = useSession();
+  const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignIn = async () => {
@@ -42,7 +42,6 @@ export default function Navbar() {
     try {
       await signOut({ redirect: true, callbackUrl: "/" });
       localStorageCleanUp();
-      await update();
     } catch (error) {
       console.error("Sign out failed:", error);
       toast.error("Failed to sign out", {

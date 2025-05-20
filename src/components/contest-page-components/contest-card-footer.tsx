@@ -69,6 +69,7 @@ export default function ContestCardFooter({
             }}
           >
             <ContestStatus
+              contestType={contest.type}
               contestId={contest.id}
               contestStatus={contest.status}
             />
