@@ -14,7 +14,7 @@ export type actions =
   | "mutate-contest" // edit & delete
   | "mutate-topic" // edit & delete
   | "view-user-management"
-  | "change-user_type"; // change user_type either "ADMIN", "POWER" or "STANDARD"
+  | "mutate-user"; // can change user's information
 
 const permissions: Record<USER_TYPE, actions[]> = {
   ADMIN: [
@@ -30,7 +30,7 @@ const permissions: Record<USER_TYPE, actions[]> = {
     "mutate-problem",
     "mutate-cf-problem",
     "mutate-topic",
-    "change-user_type",
+    "mutate-user",
     "view-user-management",
   ],
   POWER: [

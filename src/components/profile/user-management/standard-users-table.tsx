@@ -30,7 +30,7 @@ export function StandardUsersTable<TValue>({
   data,
   userType,
 }: StandardUsersTableProps<users, TValue>) {
-  const hasChangePermission = hasPermission(userType, "change-user_type");
+  const hasChangePermission = hasPermission(userType, "mutate-user");
   const columnVisibility: VisibilityState = {
     actions: hasChangePermission,
   };

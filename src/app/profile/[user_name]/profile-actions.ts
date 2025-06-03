@@ -75,16 +75,19 @@ async function getUserStats(userId: string) {
       prisma.problem_status.count({
         where: { user_id: userId, status: "DONE" },
       }),
-      prisma.problems.count(),
+      prisma.problems.count({ where: { approved: true } }),
       prisma.contest_status.count({
         where: { user_id: userId, status: "DONE" },
       }),
-      prisma.contests.count(),
+      prisma.contests.count({ where: { approved: true } }),
       prisma.problems.count({
-        where: { added_by: userId },
+        where: { added_by: userId, approved: true },
       }),
       prisma.contests.count({
-        where: { added_by: userId },
+        where: { added_by: userId, approved: true },
+      }),
+      prisma.cf_problems.count({
+        where: { added_by: userId, approved: true },
       }),
     ]);
 
@@ -94,6 +97,7 @@ async function getUserStats(userId: string) {
       "contestsSolved",
       "totalContests",
       "problemsAdded",
+      "cfProblemsAdded",
       "contestsAdded",
     ] as const;
 
@@ -151,7 +155,7 @@ async function changeUserType({
   }
   const hasUserTypeChangePermission = hasPermission(
     requester.user_type,
-    "change-user_type"
+    "mutate-user"
   );
   if (!hasUserTypeChangePermission) {
     return { error: "Unauthorized: You don't have permission for this action" };
@@ -167,6 +171,38 @@ async function changeUserType({
   } catch (error) {
     console.error("Error changing user:", error);
     return { error: "Failed to change user" };
+  }
+}
+
+async function changeUserLeaderboardState({
+  userId,
+  newState,
+}: {
+  userId: string;
+  newState: boolean;
+}) {
+  const requester = await getUserData();
+  if (isActionError(requester)) {
+    return { error: "Unauthorized" };
+  }
+  const hasUserChangePermission = hasPermission(
+    requester.user_type,
+    "mutate-user"
+  );
+  if (!hasUserChangePermission) {
+    return { error: "Unauthorized: You don't have permission for this action" };
+  }
+  try {
+    await prisma.users.update({
+      where: { id: userId },
+      data: {
+        show_on_leaderboard: newState,
+      },
+    });
+    return { data: { success: true } };
+  } catch (error) {
+    console.error("Error changing user leaderboard state:", error);
+    return { error: "Failed to change user leaderboard state" };
   }
 }
 
@@ -196,5 +232,6 @@ export {
   getAdministrativeUsers,
   getStandardUsers,
   changeUserType,
+  changeUserLeaderboardState,
   userStepDown,
 };

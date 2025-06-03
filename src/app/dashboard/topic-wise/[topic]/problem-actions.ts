@@ -378,7 +378,8 @@ async function getProblemProgressStats(
   LEFT   JOIN problem_status ps
          ON  ps.problem_id = p.id
          AND ps.user_id    = ${user.id}
-  WHERE  p.topic = (SELECT id FROM topics WHERE slug = ${topicSlug})
+  WHERE p.approved = true
+  AND  p.topic = (SELECT id FROM topics WHERE slug = ${topicSlug})
   GROUP  BY p.difficulty
   ORDER  BY
     CASE p.difficulty
@@ -387,26 +388,6 @@ async function getProblemProgressStats(
       ELSE 3
   END;
   `;
-
-  /* // Use this query when work with postgres also change the number conversion in UI
-  `SELECT
-    p.difficulty::text                       AS difficulty,              
-    SUM( (ps.status = 'SKIPPED')::int )      AS skipped,                
-    SUM( (ps.status = 'InProgress')::int )   AS "inProgress",
-    SUM( (ps.status = 'DONE')::int )         AS done,
-    COUNT(*)::int                            AS total
-  FROM   problems           p
-  LEFT   JOIN problem_status ps
-         ON  ps.problem_id = p.id
-         AND ps.user_id    = ${user.id}
-  WHERE  p.topic = (SELECT id FROM topics WHERE slug = ${topicSlug})
-  GROUP  BY p.difficulty
-  ORDER  BY
-    CASE p.difficulty
-      WHEN 'EASY'   THEN 1
-      WHEN 'MEDIUM' THEN 2
-      ELSE 3
-    END;`; */
 
   // For sqlite
   /* SELECT
@@ -419,7 +400,9 @@ async function getProblemProgressStats(
     LEFT   JOIN problem_status ps
            ON  ps.problem_id = p.id
            AND ps.user_id    = ${user.id}
-    WHERE  p.topic = (SELECT id FROM topics WHERE slug = ${topicSlug})
+
+    WHERE p.approved = true
+    AND  p.topic = (SELECT id FROM topics WHERE slug = ${topicSlug})
     GROUP  BY p.difficulty
     ORDER  BY
       CASE p.difficulty          -- keep EASY → MEDIUM → HARD order

@@ -32,7 +32,7 @@ export function AdministrativeUsersTable<TValue>({
   totalSlots,
   userType,
 }: AdministrativeUsersTableProps<users, TValue>) {
-  const hasChangePermission = hasPermission(userType, "change-user_type");
+  const hasChangePermission = hasPermission(userType, "mutate-user");
   const columnVisibility: VisibilityState = {
     actions: hasChangePermission,
   };

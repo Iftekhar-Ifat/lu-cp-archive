@@ -20,6 +20,9 @@ import { type USER_TYPE } from "@/types/types";
 import { changeUserType } from "@/app/profile/[user_name]/profile-actions";
 import { unwrapActionResult } from "@/utils/error-helper";
 import { useQueryClient } from "@tanstack/react-query";
+import { Switch } from "@/components/ui/switch";
+import { hasPermission } from "@/utils/permissions";
+import { useStrictSession } from "@/hooks/use-strict-session";
 
 export const administrative_table_columns: ColumnDef<users>[] = [
   {
@@ -47,6 +50,23 @@ export const administrative_table_columns: ColumnDef<users>[] = [
     header: "User Type",
     cell: ({ row }) => {
       return <UserTypeBadge user_type={row.original.user_type} />;
+    },
+  },
+  {
+    accessorKey: "show_on_leaderboard",
+    header: "Show on Leaderboard",
+    cell: ({ row }) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const session = useStrictSession();
+
+      const selectedUser = row.original;
+      return (
+        <Switch
+          checked={selectedUser.show_on_leaderboard}
+          id="show-on-leaderboard"
+          disabled={!hasPermission(session.user.user_type, "mutate-user")}
+        />
+      );
     },
   },
   {

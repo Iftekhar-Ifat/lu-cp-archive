@@ -6,7 +6,7 @@ import UsersTableWrapper from "./_components/users-table-wrapper";
 export default async function ManageUsersPage() {
   const session = await auth();
 
-  if (!session || !hasPermission(session.user.user_type, "change-user_type")) {
+  if (!session || !hasPermission(session.user.user_type, "mutate-user")) {
     notFound();
   }
 

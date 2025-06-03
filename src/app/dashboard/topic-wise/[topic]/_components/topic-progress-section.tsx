@@ -23,7 +23,6 @@ export default function TopicProgressSection({
     queryKey: [topicSlug, "progress"],
     queryFn: async () => {
       const result = await getProblemProgressStats(topicSlug);
-      // When working with postgres
       const rawProgressData = unwrapActionResult(result);
       return rawProgressData.map((rawData) => ({
         difficulty: rawData.difficulty as ProblemDifficulty,
