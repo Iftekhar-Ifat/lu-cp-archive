@@ -14,7 +14,8 @@ export type actions =
   | "mutate-contest" // edit & delete
   | "mutate-topic" // edit & delete
   | "view-user-management"
-  | "mutate-user"; // can change user's information
+  | "mutate-user" // can change user's information
+  | "generate-leaderboard";
 
 const permissions: Record<USER_TYPE, actions[]> = {
   ADMIN: [
@@ -32,6 +33,7 @@ const permissions: Record<USER_TYPE, actions[]> = {
     "mutate-topic",
     "mutate-user",
     "view-user-management",
+    "generate-leaderboard",
   ],
   POWER: [
     "approve-contest",
