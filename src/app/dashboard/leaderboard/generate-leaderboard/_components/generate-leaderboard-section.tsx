@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import LeaderboardGenerationModal from "@/components/generate-leaderboard/leaderboard-generation-modal";
 
-export default function GenerateButton() {
+export default function GenerateLeaderboardSection() {
   const [open, setOpen] = useState(false);
   const [isSuccessfulGeneration, setIsSuccessfulGeneration] = useState(false);
   return (

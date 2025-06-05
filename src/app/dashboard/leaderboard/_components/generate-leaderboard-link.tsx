@@ -6,7 +6,7 @@ import { hasPermission } from "@/utils/permissions";
 import { Sparkles } from "lucide-react";
 import Link from "next/link";
 
-export default function GenerateLeaderboardSection() {
+export default function GenerateLeaderboardLink() {
   const session = useStrictSession();
 
   const hasPermissionToGenerate = hasPermission(

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getLeaderboardDates } from "./leaderboard-actions";
 import { isActionError } from "@/utils/error-helper";
 import { getInitialDate } from "@/components/leaderboard/leaderboard-helper";
-import GenerateLeaderboardSection from "./_components/generate-leaderboard-section";
+import GenerateLeaderboardLink from "./_components/generate-leaderboard-link";
 
 export type SearchParams =
   | {
@@ -49,7 +49,7 @@ export default async function LeaderboardPage({
             Leaderboard
           </span>
         </div>
-        <GenerateLeaderboardSection />
+        <GenerateLeaderboardLink />
       </div>
       <LeaderboardSelectSection
         initialDate={initialDate}

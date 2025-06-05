@@ -1,4 +1,4 @@
-import GenerateButton from "./_components/generate-button";
+import GenerateLeaderboardSection from "./_components/generate-leaderboard-section";
 
 export default function GenerateLeaderboardPage() {
   return (
@@ -10,7 +10,7 @@ export default function GenerateLeaderboardPage() {
           </span>
         </div>
       </div>
-      <GenerateButton />
+      <GenerateLeaderboardSection />
     </div>
   );
 }
