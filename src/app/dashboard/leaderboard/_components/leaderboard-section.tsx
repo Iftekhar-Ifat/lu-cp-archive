@@ -6,7 +6,7 @@ import LeaderboardTableWrapper from "@/components/leaderboard/leaderboard-table/
 import { type LeaderboardDateType } from "@/utils/schema/leaderboard";
 import { useSearchParams } from "next/navigation";
 
-export default function LeaderboardSelectSection({
+export default function LeaderboardSection({
   initialDate,
   allowedMonths,
 }: {

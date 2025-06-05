@@ -1,5 +1,5 @@
 import { leaderboardSearchParamsSchema } from "@/utils/schema/leaderboard";
-import LeaderboardSelectSection from "./_components/leaderboard-select-section";
+import LeaderboardSection from "./_components/leaderboard-section";
 import { notFound } from "next/navigation";
 import { getLeaderboardDates } from "./leaderboard-actions";
 import { isActionError } from "@/utils/error-helper";
@@ -51,7 +51,7 @@ export default async function LeaderboardPage({
         </div>
         <GenerateLeaderboardLink />
       </div>
-      <LeaderboardSelectSection
+      <LeaderboardSection
         initialDate={initialDate}
         allowedMonths={leaderboardDates.data}
       />
