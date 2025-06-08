@@ -116,7 +116,7 @@ function WinnerCard({ winner, variant, size }: WinnerCardProps) {
         <div
           className={`font-mono font-bold ${variantStyle.text} ${isLarge ? "text-3xl" : "text-2xl"}`}
         >
-          {winner.points}
+          {winner.total_points}
         </div>
       </CardContent>
     </Card>

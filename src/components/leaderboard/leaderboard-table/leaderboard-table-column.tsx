@@ -40,7 +40,9 @@ export const leaderboard_table_column: ColumnDef<Leaderboard>[] = [
     id: "points",
     header: "Points",
     cell: ({ row }) => {
-      return <div className="font-mono font-medium">{row.original.points}</div>;
+      return (
+        <div className="font-mono font-medium">{row.original.total_points}</div>
+      );
     },
   },
 ];

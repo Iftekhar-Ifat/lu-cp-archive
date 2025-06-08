@@ -97,7 +97,7 @@ export function DeleteCFproblemModal({
           <Trash2 className="h-4 w-4 text-red-500" />
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="max-w-[95%] font-sans sm:max-w-[425px]">
         <AlertDialogHeader>
           <AlertDialogTitle>Delete This Problem?</AlertDialogTitle>
           <AlertDialogDescription>

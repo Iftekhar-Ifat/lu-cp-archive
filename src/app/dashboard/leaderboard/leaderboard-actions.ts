@@ -27,7 +27,7 @@ async function getLeaderboard(selectedMonth: number, selectedYear: number) {
           },
         },
         rank: true,
-        points: true,
+        total_points: true,
       },
     });
 

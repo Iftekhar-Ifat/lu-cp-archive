@@ -8,7 +8,7 @@ const generatedLeaderboardDataSchema = z.object({
   }),
   rank: z.number(),
   generated_point: z.number(),
-  adjustment: z.number(),
+  additional_points: z.number(),
   total_points: z.number(),
 });
 

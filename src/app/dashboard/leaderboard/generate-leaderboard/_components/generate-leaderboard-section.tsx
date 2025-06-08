@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Save, Sparkles } from "lucide-react";
 import LeaderboardGenerationModal from "@/components/generate-leaderboard/leaderboard-generation-modal";
@@ -12,42 +12,42 @@ const initialMockData: GeneratedLeaderboard[] = [
     user: { id: "1", name: "Alice Johnson", user_name: "alicej" },
     rank: 1,
     generated_point: 1250,
-    adjustment: 0,
+    additional_points: 0,
     total_points: 1250,
   },
   {
     user: { id: "2", name: "Bob Smith", user_name: "bobsmith" },
     rank: 2,
     generated_point: 1180,
-    adjustment: 0,
+    additional_points: 0,
     total_points: 1180,
   },
   {
     user: { id: "3", name: "Charlie Brown", user_name: "charlieb" },
     rank: 3,
     generated_point: 1150,
-    adjustment: 0,
+    additional_points: 0,
     total_points: 1150,
   },
   {
     user: { id: "4", name: "Diana Ross", user_name: "dianaross" },
     rank: 4,
     generated_point: 1100,
-    adjustment: 0,
+    additional_points: 0,
     total_points: 1100,
   },
   {
     user: { id: "5", name: "Eve Wilson", user_name: "evew" },
     rank: 5,
     generated_point: 1050,
-    adjustment: 0,
+    additional_points: 0,
     total_points: 1050,
   },
   {
     user: { id: "6", name: "Frank Miller", user_name: "frankm" },
     rank: 6,
     generated_point: 980,
-    adjustment: 0,
+    additional_points: 0,
     total_points: 980,
   },
 ];
@@ -55,35 +55,50 @@ const initialMockData: GeneratedLeaderboard[] = [
 export default function GenerateLeaderboardSection() {
   const [open, setOpen] = useState(false);
   const [isSuccessfulGeneration, setIsSuccessfulGeneration] = useState(false);
-  const [adjustments, setAdjustments] = useState<Record<string, number>>({});
+  const [additional_points, setAdditionalPoints] = useState<
+    Record<string, number>
+  >({});
   const [generatedData] = useState<GeneratedLeaderboard[]>(initialMockData);
 
-  const handleAdjustmentChange = (userId: string, value: string) => {
+  const handleAdditionalPointsChange = (userId: string, value: string) => {
     if (value === "") {
-      setAdjustments((prev) => {
-        const newAdjustments = { ...prev };
-        delete newAdjustments[userId];
-        return newAdjustments;
+      setAdditionalPoints((prev) => {
+        const new_additional_points = { ...prev };
+        delete new_additional_points[userId];
+        return new_additional_points;
       });
     } else {
       const numValue = Number.parseInt(value) || 0;
-      setAdjustments((prev) => ({
+      setAdditionalPoints((prev) => ({
         ...prev,
         [userId]: numValue,
       }));
     }
   };
 
-  // Apply adjustments to the base data
-  const updatedData = generatedData.map((entry) => {
-    const adjustment = adjustments[entry.user.id] ?? 0;
-    const total_points = entry.generated_point + adjustment;
-    return {
+  // Apply additional_points to the base data
+  const updatedData = useMemo(() => {
+    const withTotalPoints = generatedData.map((entry) => {
+      const addedPoints = additional_points[entry.user.id] ?? 0;
+      const newTotalPoints = entry.generated_point + addedPoints;
+      return {
+        ...entry,
+        additional_points: addedPoints,
+        total_points: newTotalPoints,
+      };
+    });
+
+    // Sort by total_points descending
+    const sorted = [...withTotalPoints].sort(
+      (a, b) => b.total_points - a.total_points
+    );
+
+    // Assign ranks
+    return sorted.map((entry, index) => ({
       ...entry,
-      adjustment,
-      total_points,
-    };
-  });
+      rank: index + 1,
+    }));
+  }, [generatedData, additional_points]);
 
   const handleSave = () => {
     console.log("Saving updated leaderboard:", updatedData);
@@ -93,9 +108,9 @@ export default function GenerateLeaderboardSection() {
     <div>
       {isSuccessfulGeneration && (
         <GeneratedLeaderboardTable
-          adjustments={adjustments}
+          additional_points={additional_points}
           data={updatedData}
-          onAdjustmentChange={handleAdjustmentChange}
+          onAdditionalPointsChange={handleAdditionalPointsChange}
         />
       )}
 

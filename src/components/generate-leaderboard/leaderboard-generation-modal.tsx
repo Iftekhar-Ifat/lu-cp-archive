@@ -85,7 +85,7 @@ export default function LeaderboardGenerationModal({
         setOpen(isOpen);
       }}
     >
-      <AlertDialogContent className="sm:max-w-md">
+      <AlertDialogContent className="max-w-[95%] font-sans sm:max-w-[425px]">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             {!isGenerating && !isComplete ? (

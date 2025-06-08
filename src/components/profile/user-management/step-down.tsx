@@ -75,7 +75,7 @@ export default function StepDown() {
               Step Down
             </Button>
           </AlertDialogTrigger>
-          <AlertDialogContent>
+          <AlertDialogContent className="max-w-[95%] font-sans sm:max-w-[425px]">
             <AlertDialogHeader>
               <AlertDialogTitle>Stepping Down?</AlertDialogTitle>
               <AlertDialogDescription>

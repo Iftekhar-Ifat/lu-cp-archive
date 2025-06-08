@@ -45,29 +45,18 @@ function RankColumn({ rank }: { rank: number }) {
 
 type ResultsTableProps = {
   data: GeneratedLeaderboard[];
-  adjustments: Record<string, number>;
-  onAdjustmentChange: (userId: string, value: string) => void;
+  additional_points: Record<string, number>;
+  onAdditionalPointsChange: (userId: string, value: string) => void;
 };
 
 export default function GeneratedLeaderboardTable({
   data,
-  adjustments,
-  onAdjustmentChange,
+  additional_points,
+  onAdditionalPointsChange,
 }: ResultsTableProps) {
   const rankedUsers = useMemo(() => {
-    const usersWithTotals = data.map((item) => ({
-      ...item,
-      adjustment: adjustments[item.user.id] ?? 0,
-      total_points: item.generated_point + (adjustments[item.user.id] ?? 0),
-    }));
-
-    return usersWithTotals
-      .sort((a, b) => b.total_points - a.total_points)
-      .map((user, index) => ({
-        ...user,
-        rank: index + 1,
-      }));
-  }, [data, adjustments]);
+    return [...data].sort((a, b) => a.rank - b.rank);
+  }, [data]);
 
   return (
     <div className="rounded-lg border">
@@ -78,7 +67,7 @@ export default function GeneratedLeaderboardTable({
             <TableHead>Name</TableHead>
             <TableHead>Username</TableHead>
             <TableHead>Generated Points</TableHead>
-            <TableHead>Adjustment</TableHead>
+            <TableHead>additional_points</TableHead>
             <TableHead>Total Points</TableHead>
           </TableRow>
         </TableHeader>
@@ -108,9 +97,9 @@ export default function GeneratedLeaderboardTable({
               <TableCell>
                 <Input
                   type="number"
-                  value={adjustments[item.user.id] ?? ""}
+                  value={additional_points[item.user.id] ?? ""}
                   onChange={(e) =>
-                    onAdjustmentChange(item.user.id, e.target.value)
+                    onAdditionalPointsChange(item.user.id, e.target.value)
                   }
                   className="[&::-moz-appearance]:textfield w-24 text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   placeholder="0"

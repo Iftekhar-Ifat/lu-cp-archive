@@ -32,7 +32,7 @@ const leaderboardSearchParamsSchema = z
 
 const leaderboardDataSchema = z.object({
   rank: z.number(),
-  points: z.number(),
+  total_points: z.number(),
   user: z.object({
     id: z.string(),
     name: z.string(),
