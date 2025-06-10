@@ -388,12 +388,14 @@ export async function seedLeaderboard(
             },
           },
           update: {
-            points: entry.points,
+            total_points: entry.points,
             rank: entry.rank,
           },
           create: {
             user_id: entry.user_id,
-            points: entry.points,
+            generated_points: entry.points,
+            additional_points: entry.points,
+            total_points: entry.points,
             rank: entry.rank,
             month: entry.month,
             year: entry.year,
