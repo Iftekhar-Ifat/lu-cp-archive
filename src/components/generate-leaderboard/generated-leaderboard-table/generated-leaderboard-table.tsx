@@ -13,7 +13,8 @@ import {
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { type GeneratedLeaderboard } from "@/utils/schema/generated-leaderboard";
-import { Award, Medal, Trophy } from "lucide-react";
+import { Award, Medal, Trash2, Trophy } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 function RankColumn({ rank }: { rank: number }) {
   switch (rank) {
@@ -47,12 +48,14 @@ type ResultsTableProps = {
   data: GeneratedLeaderboard[];
   additional_points: Record<string, number>;
   onAdditionalPointsChange: (userId: string, value: string) => void;
+  onDeleteRow: (userId: string) => void;
 };
 
 export default function GeneratedLeaderboardTable({
   data,
   additional_points,
   onAdditionalPointsChange,
+  onDeleteRow,
 }: ResultsTableProps) {
   const rankedUsers = useMemo(() => {
     return [...data].sort((a, b) => a.rank - b.rank);
@@ -107,6 +110,15 @@ export default function GeneratedLeaderboardTable({
               </TableCell>
               <TableCell className="font-mono text-lg font-semibold">
                 {item.total_points}
+              </TableCell>
+              <TableCell>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onDeleteRow(item.user.id)}
+                >
+                  <Trash2 className="h-4 w-4 text-red-500" />
+                </Button>
               </TableCell>
             </TableRow>
           ))}

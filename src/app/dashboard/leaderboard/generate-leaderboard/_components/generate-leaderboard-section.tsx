@@ -58,7 +58,8 @@ export default function GenerateLeaderboardSection() {
   const [additional_points, setAdditionalPoints] = useState<
     Record<string, number>
   >({});
-  const [generatedData] = useState<GeneratedLeaderboard[]>(initialMockData);
+  const [generatedData, setGeneratedData] =
+    useState<GeneratedLeaderboard[]>(initialMockData);
 
   const handleAdditionalPointsChange = (userId: string, value: string) => {
     if (value === "") {
@@ -100,6 +101,19 @@ export default function GenerateLeaderboardSection() {
     }));
   }, [generatedData, additional_points]);
 
+  const handleDeleteRow = (userId: string) => {
+    setGeneratedData((prevData) =>
+      prevData.filter((item) => item.user.id !== userId)
+    );
+
+    // Also remove any additional points for the deleted user
+    setAdditionalPoints((prev) => {
+      const newAdditionalPoints = { ...prev };
+      delete newAdditionalPoints[userId];
+      return newAdditionalPoints;
+    });
+  };
+
   const handleSave = () => {
     console.log("Saving updated leaderboard:", updatedData);
   };
@@ -111,6 +125,7 @@ export default function GenerateLeaderboardSection() {
           additional_points={additional_points}
           data={updatedData}
           onAdditionalPointsChange={handleAdditionalPointsChange}
+          onDeleteRow={handleDeleteRow}
         />
       )}
 

@@ -105,19 +105,21 @@ export default function LeaderboardGenerationModal({
               </>
             )}
           </AlertDialogTitle>
-          <AlertDialogDescription className="space-y-6 pt-2">
-            {!isGenerating && !isComplete ? (
-              <div className="text-sm text-muted-foreground">
-                Are you sure you want to start the generation process? This may
-                take several minutes and cannot be interrupted
-              </div>
-            ) : (
-              <LeaderboardGenerationStepsUI
-                currentStepIndex={currentStepIndex}
-                isGenerating={isGenerating}
-                isComplete={isComplete}
-              />
-            )}
+          <AlertDialogDescription asChild>
+            <div className="space-y-6 pt-2">
+              {!isGenerating && !isComplete ? (
+                <div>
+                  Are you sure you want to start the generation process? This
+                  may take several minutes and cannot be interrupted
+                </div>
+              ) : (
+                <LeaderboardGenerationStepsUI
+                  currentStepIndex={currentStepIndex}
+                  isGenerating={isGenerating}
+                  isComplete={isComplete}
+                />
+              )}
+            </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
