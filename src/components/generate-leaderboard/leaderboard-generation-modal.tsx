@@ -1,12 +1,7 @@
 "use client";
 
 import { CheckCircle2, Sparkles, Loader2, XCircle } from "lucide-react";
-import {
-  type Dispatch,
-  type ReactNode,
-  type SetStateAction,
-  useState,
-} from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -26,16 +21,24 @@ import {
   checkCodeforcesStatus,
   getUsersCFhandle,
 } from "@/app/dashboard/leaderboard/generate-leaderboard/generate-leaderboard-actions";
-import { fetchUserCFData } from "@/utils/generate-leaderboard-helper";
+import {
+  computeInitialScore,
+  fetchUserCFData,
+  finalizedLeaderboardData,
+  mergeUserDataWithScores,
+} from "@/utils/generate-leaderboard-helper";
+import { type GeneratedLeaderboard } from "@/utils/schema/generated-leaderboard";
 
 export default function LeaderboardGenerationModal({
   open,
   setOpen,
   setIsSuccessfulGeneration,
+  setGeneratedData,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   setIsSuccessfulGeneration: Dispatch<SetStateAction<boolean>>;
+  setGeneratedData: Dispatch<SetStateAction<GeneratedLeaderboard[]>>;
 }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [, setGenerationStep] = useState("");
@@ -44,24 +47,12 @@ export default function LeaderboardGenerationModal({
   const [errorMessage, setErrorMessage] = useState("");
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
-  // Mock function to simulate random errors
-  const mockStepExecution = async (stepIndex: number) => {
-    // 20% chance of error on any step after the first one
-    if (stepIndex > 0 && Math.random() < 0.2) {
-      throw new Error(
-        `Failed at step ${stepIndex + 1}: ${leaderboardGenerationSteps[stepIndex].text}`
-      );
-    }
-  };
-
   const startGeneration = async () => {
     try {
       setIsGenerating(true);
       setHasError(false);
 
+      // STEP - 1
       setCurrentStepIndex(0);
       setGenerationStep(leaderboardGenerationSteps[0].text);
       const codeforcesStatus = await checkCodeforcesStatus();
@@ -71,39 +62,69 @@ export default function LeaderboardGenerationModal({
         );
       }
 
+      // STEP - 2
       setCurrentStepIndex(1);
       setGenerationStep(leaderboardGenerationSteps[currentStepIndex + 1].text);
-      const usersCFhandle = await getUsersCFhandle();
-      if (usersCFhandle.error || !usersCFhandle.success) {
+      const usersData = await getUsersCFhandle();
+      if (usersData.error || !usersData.success) {
         throw new Error(
-          `Failed at step ${currentStepIndex + 1}: ${usersCFhandle.error}`
+          `Failed at step ${currentStepIndex + 1}: ${usersData.error}`
         );
       }
 
+      // STEP - 3
       setCurrentStepIndex(2);
       setGenerationStep(leaderboardGenerationSteps[currentStepIndex + 1].text);
-      const codeforcesUserData = await fetchUserCFData(usersCFhandle.data);
+      const cfHandlesArray = usersData.data.map((user) => user.cf_handle);
+      const codeforcesUserData = await fetchUserCFData(cfHandlesArray);
       if (codeforcesUserData.error || !codeforcesUserData.success) {
         throw new Error(
           `Failed at step ${currentStepIndex + 1}: ${codeforcesUserData.error}`
         );
       }
 
-      console.log(codeforcesUserData);
-
+      // STEP - 4
       setCurrentStepIndex(3);
       setGenerationStep(leaderboardGenerationSteps[currentStepIndex + 1].text);
-      await delay(2000);
-      await mockStepExecution(3);
+      const initialScore = computeInitialScore(codeforcesUserData.data);
+      if (initialScore.error || !initialScore.success) {
+        throw new Error(
+          `Failed at step ${currentStepIndex + 1}: ${initialScore.error}`
+        );
+      }
 
+      // STEP - 5
       setCurrentStepIndex(4);
       setGenerationStep(leaderboardGenerationSteps[currentStepIndex + 1].text);
-      await delay(1500);
-      await mockStepExecution(4);
+      const generatedResult = mergeUserDataWithScores(
+        initialScore.data,
+        usersData.data
+      );
+      if (
+        generatedResult.error ||
+        !generatedResult.success ||
+        !generatedResult.data
+      ) {
+        throw new Error(
+          `Failed at step ${currentStepIndex + 1}: ${generatedResult.error}`
+        );
+      }
 
+      // STEP - 6
       setCurrentStepIndex(5);
       setGenerationStep(leaderboardGenerationSteps[currentStepIndex + 1].text);
-      await mockStepExecution(5);
+      const leaderboardData = finalizedLeaderboardData(generatedResult.data);
+      if (
+        leaderboardData.error ||
+        !leaderboardData.success ||
+        !leaderboardData.data
+      ) {
+        throw new Error(
+          `Failed at step ${currentStepIndex + 1}: ${leaderboardData.error}`
+        );
+      }
+
+      setGeneratedData(leaderboardData.data);
 
       setIsGenerating(false);
       setIsComplete(true);

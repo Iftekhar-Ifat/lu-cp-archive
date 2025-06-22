@@ -45,7 +45,7 @@ async function requestWithRetry<T>(
 }
 
 type Solve = {
-  rating: number;
+  rating: number | undefined;
 };
 
 export async function fetchUserCFData(handles: string[]) {
@@ -104,7 +104,7 @@ export async function fetchUserCFData(handles: string[]) {
       return {
         handle,
         max_rating: maxRating,
-        contest_participation: contestsInWindow.length,
+        contest_participation: contestsInWindow.length as number,
         solves,
       };
     });
@@ -114,8 +114,153 @@ export async function fetchUserCFData(handles: string[]) {
   } catch (error) {
     console.error("Error fetching Codeforces data:", error);
     return {
-      success: false,
       error: "Failed to fetch Codeforces data.",
     };
+  }
+}
+
+type UserCFData = {
+  handle: string;
+  max_rating: number;
+  solves: Solve[];
+  contest_participation: number;
+};
+
+function calculateSolvePoints(
+  userMaxRating: number,
+  solveRating: number
+): number {
+  const diff = solveRating - userMaxRating;
+  return Math.max(20, Math.min(200, diff));
+}
+
+export function computeInitialScore(cfUserData: UserCFData[]) {
+  try {
+    const result = cfUserData.map((user) => {
+      const validSolves = user.solves.filter(
+        (solve) => solve.rating !== undefined
+      );
+
+      const pointsForProblems = validSolves.reduce((acc, solve) => {
+        return (
+          acc + calculateSolvePoints(user.max_rating, solve.rating as number)
+        );
+      }, 0);
+
+      const pointsForContests = user.contest_participation * 500;
+      const finalGeneratedScore = pointsForProblems + pointsForContests;
+
+      return {
+        handle: user.handle,
+        rating: user.max_rating,
+        totalProblemSolved: validSolves.length,
+        pointsForProblems,
+        totalContestParticipated: user.contest_participation,
+        pointsForContest: pointsForContests,
+        finalGeneratedScore,
+      };
+    });
+
+    return { success: true, data: result };
+  } catch (error) {
+    console.error("Error generating score:", error);
+    return { error: "Failed to compute leaderboard scores." };
+  }
+}
+
+type InitialScore = {
+  handle: string;
+  rating: number;
+  totalProblemSolved: number;
+  pointsForProblems: number;
+  totalContestParticipated: number;
+  pointsForContest: number;
+  finalGeneratedScore: number;
+};
+
+type UserInfo = {
+  id: string;
+  name: string;
+  user_name: string;
+  cf_handle: string;
+};
+
+export function mergeUserDataWithScores(
+  initialScores: InitialScore[],
+  userData: UserInfo[]
+) {
+  try {
+    const mergedData = initialScores
+      .map((score) => {
+        const userInfo = userData.find(
+          (user) => user.cf_handle === score.handle
+        );
+        // Only include if userInfo exists
+        if (userInfo) {
+          return {
+            ...score,
+            id: userInfo.id,
+            name: userInfo.name,
+            user_name: userInfo.user_name,
+          };
+        }
+        // If not found, skip (do not return null)
+        return undefined;
+      })
+      .filter(
+        (
+          item
+        ): item is InitialScore & {
+          id: string;
+          name: string;
+          user_name: string;
+        } => !!item
+      );
+
+    return { success: true, data: mergedData };
+  } catch (error) {
+    console.error("Merge error:", error);
+    return { error: "Failed to merge data" };
+  }
+}
+
+type MergedDataType = InitialScore & {
+  id: string;
+  name: string;
+  user_name: string;
+};
+
+export function finalizedLeaderboardData(mergedData: MergedDataType[]) {
+  try {
+    const dataWithPoints = mergedData.map((item) => ({
+      ...item,
+      additional_points: 0,
+      total_points: item.finalGeneratedScore,
+    }));
+
+    dataWithPoints.sort((a, b) => b.total_points - a.total_points);
+
+    // Assign ranks (sequential, no tie handling)
+    const rankedData = dataWithPoints.map((item, index) => ({
+      ...item,
+      rank: index + 1,
+    }));
+
+    const leaderboardData = rankedData.map((item) => ({
+      additional_points: item.additional_points,
+      user: {
+        id: item.id,
+        name: item.name,
+        user_name: item.user_name,
+      },
+      rank: item.rank,
+      generated_point: Math.round(item.finalGeneratedScore),
+      total_points: Math.round(item.total_points),
+    }));
+
+    return { success: true, data: leaderboardData };
+  } catch (error) {
+    console.error("Leaderboard generation error:", error);
+    return { error: "Failed to generate leaderboard" };
   }
 }

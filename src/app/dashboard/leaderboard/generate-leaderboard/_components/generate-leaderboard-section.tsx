@@ -2,64 +2,24 @@
 
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Save, Sparkles } from "lucide-react";
+import { Loader2, Save, Sparkles } from "lucide-react";
 import LeaderboardGenerationModal from "@/components/generate-leaderboard/leaderboard-generation-modal";
 import { type GeneratedLeaderboard } from "@/utils/schema/generated-leaderboard";
 import GeneratedLeaderboardTable from "@/components/generate-leaderboard/generated-leaderboard-table/generated-leaderboard-table";
-
-const initialMockData: GeneratedLeaderboard[] = [
-  {
-    user: { id: "1", name: "Alice Johnson", user_name: "alicej" },
-    rank: 1,
-    generated_point: 1250,
-    additional_points: 0,
-    total_points: 1250,
-  },
-  {
-    user: { id: "2", name: "Bob Smith", user_name: "bobsmith" },
-    rank: 2,
-    generated_point: 1180,
-    additional_points: 0,
-    total_points: 1180,
-  },
-  {
-    user: { id: "3", name: "Charlie Brown", user_name: "charlieb" },
-    rank: 3,
-    generated_point: 1150,
-    additional_points: 0,
-    total_points: 1150,
-  },
-  {
-    user: { id: "4", name: "Diana Ross", user_name: "dianaross" },
-    rank: 4,
-    generated_point: 1100,
-    additional_points: 0,
-    total_points: 1100,
-  },
-  {
-    user: { id: "5", name: "Eve Wilson", user_name: "evew" },
-    rank: 5,
-    generated_point: 1050,
-    additional_points: 0,
-    total_points: 1050,
-  },
-  {
-    user: { id: "6", name: "Frank Miller", user_name: "frankm" },
-    rank: 6,
-    generated_point: 980,
-    additional_points: 0,
-    total_points: 980,
-  },
-];
+import { toast } from "sonner";
+import { saveGeneratedLeaderboard } from "../generate-leaderboard-actions";
+import { isActionError } from "@/utils/error-helper";
 
 export default function GenerateLeaderboardSection() {
   const [open, setOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [isSuccessfulGeneration, setIsSuccessfulGeneration] = useState(false);
   const [additional_points, setAdditionalPoints] = useState<
     Record<string, number>
   >({});
-  const [generatedData, setGeneratedData] =
-    useState<GeneratedLeaderboard[]>(initialMockData);
+  const [generatedData, setGeneratedData] = useState<GeneratedLeaderboard[]>(
+    []
+  );
 
   const handleAdditionalPointsChange = (userId: string, value: string) => {
     if (value === "") {
@@ -78,7 +38,7 @@ export default function GenerateLeaderboardSection() {
   };
 
   // Apply additional_points to the base data
-  const updatedData = useMemo(() => {
+  let updatedData = useMemo(() => {
     const withTotalPoints = generatedData.map((entry) => {
       const addedPoints = additional_points[entry.user.id] ?? 0;
       const newTotalPoints = entry.generated_point + addedPoints;
@@ -114,8 +74,23 @@ export default function GenerateLeaderboardSection() {
     });
   };
 
-  const handleSave = () => {
-    console.log("Saving updated leaderboard:", updatedData);
+  const handleSave = async () => {
+    if (updatedData.length <= 0) {
+      return toast.error("Don't have enough data to save");
+    }
+    try {
+      setIsSaving(true);
+      const result = await saveGeneratedLeaderboard(updatedData, new Date());
+
+      if (isActionError(result)) {
+        toast.error(result.error, { position: "top-center" });
+      } else {
+        toast.success("Leaderboard Saved", { position: "top-center" });
+      }
+    } finally {
+      setIsSaving(false);
+      updatedData = [];
+    }
   };
 
   return (
@@ -135,9 +110,23 @@ export default function GenerateLeaderboardSection() {
           {isSuccessfulGeneration ? "Re-Generate" : "Generate"}
         </Button>
         {isSuccessfulGeneration ? (
-          <Button size="lg" className="text-lg" onClick={handleSave}>
-            <Save size={32} />
-            Save
+          <Button
+            disabled={isSaving}
+            size="lg"
+            className="text-lg"
+            onClick={handleSave}
+          >
+            {isSaving ? (
+              <>
+                <Loader2 size={32} className="animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save size={32} />
+                Save
+              </>
+            )}
           </Button>
         ) : null}
 
@@ -145,6 +134,7 @@ export default function GenerateLeaderboardSection() {
           open={open}
           setOpen={setOpen}
           setIsSuccessfulGeneration={setIsSuccessfulGeneration}
+          setGeneratedData={setGeneratedData}
         />
       </div>
     </div>

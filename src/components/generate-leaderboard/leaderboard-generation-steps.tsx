@@ -23,15 +23,15 @@ export const leaderboardGenerationSteps: LeaderboardGenerationStep[] = [
     icon: <Icons.codeforces className="h-5 w-5" />,
   },
   {
-    text: "Getting user's cf-handle from DB...",
+    text: "Getting user's data from DB...",
     icon: <Database className="h-5 w-5 text-indigo-500" />,
   },
   {
-    text: "Processing data structures...",
+    text: "Getting user's cf-data...",
     icon: <Code className="h-5 w-5 text-purple-500" />,
   },
   {
-    text: "Applying transformations...",
+    text: "Calculating points...",
     icon: <Zap className="h-5 w-5 text-amber-500" />,
   },
   {

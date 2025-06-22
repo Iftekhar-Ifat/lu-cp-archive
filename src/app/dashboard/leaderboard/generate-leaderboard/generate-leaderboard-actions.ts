@@ -1,7 +1,9 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { type GeneratedLeaderboard } from "@/utils/schema/generated-leaderboard";
 import axios, { isAxiosError } from "axios";
+import { getMonth, getYear } from "date-fns";
 
 async function checkCodeforcesStatus() {
   try {
@@ -32,30 +34,76 @@ async function checkCodeforcesStatus() {
 
 async function getUsersCFhandle() {
   try {
-    const usersCFhandles = await prisma.users.findMany({
+    const users = await prisma.users.findMany({
       where: {
         show_on_leaderboard: true,
       },
       select: {
+        id: true,
         cf_handle: true,
+        name: true,
+        user_name: true,
       },
     });
 
-    // No need - just to be safe
-    const filteredHandles = usersCFhandles
-      .map((user) => user.cf_handle)
-      .filter((handle): handle is string => handle !== null);
+    // No need - just to be safe and satisfy TS
+    const filteredUsers = users.filter(
+      (
+        user
+      ): user is {
+        id: string;
+        name: string;
+        user_name: string;
+        cf_handle: string;
+      } => user.cf_handle !== null
+    );
 
-    return { success: true, data: filteredHandles };
+    return { success: true, data: filteredUsers };
   } catch (error) {
     console.error("Error getting users:", error);
     return { error: "Failed to fetch users" };
   }
 }
 
-export { checkCodeforcesStatus, getUsersCFhandle };
+async function saveGeneratedLeaderboard(
+  leaderboardData: GeneratedLeaderboard[],
+  date: Date
+) {
+  try {
+    const month = getMonth(date) + 1; // getMonth is 0-indexed
+    const year = getYear(date);
 
-/* const randomNum = Math.random();
-if (randomNum < 0.9) {
-  return { error: "Codeforces server is down" };
-} */
+    // Check if leaderboard already exists for the given month & year
+    const existing = await prisma.leaderboards.findFirst({
+      where: {
+        month,
+        year,
+      },
+    });
+
+    if (existing) {
+      return { error: "Leaderboard for this month already exists." };
+    }
+
+    const dataToInsert = leaderboardData.map((entry) => ({
+      user_id: entry.user.id,
+      month,
+      year,
+      generated_points: entry.generated_point,
+      additional_points: entry.additional_points,
+      total_points: entry.total_points,
+      rank: entry.rank,
+    }));
+
+    await prisma.$transaction(
+      dataToInsert.map((entry) => prisma.leaderboards.create({ data: entry }))
+    );
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error saving leaderboard:", error);
+    return { error: "Failed to save leaderboard" };
+  }
+}
+
+export { checkCodeforcesStatus, getUsersCFhandle, saveGeneratedLeaderboard };
