@@ -1,7 +1,12 @@
 "use client";
 
-import { CheckCircle2, Sparkles, Loader2 } from "lucide-react";
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { CheckCircle2, Sparkles, Loader2, XCircle } from "lucide-react";
+import {
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+  useState,
+} from "react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -12,9 +17,16 @@ import {
   AlertDialogTitle,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
-import LeaderboardGenerationStepsUI, {
+import {
+  LeaderboardGenerationStepsUI,
+  LeaderboardGenerationErrorUI,
   leaderboardGenerationSteps,
 } from "./leaderboard-generation-steps";
+import {
+  checkCodeforcesStatus,
+  getUsersCFhandle,
+} from "@/app/dashboard/leaderboard/generate-leaderboard/generate-leaderboard-actions";
+import { fetchUserCFData } from "@/utils/generate-leaderboard-helper";
 
 export default function LeaderboardGenerationModal({
   open,
@@ -28,52 +40,104 @@ export default function LeaderboardGenerationModal({
   const [isGenerating, setIsGenerating] = useState(false);
   const [, setGenerationStep] = useState("");
   const [isComplete, setIsComplete] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-  const startGeneration = () => {
-    setIsGenerating(true);
-    setGenerationStep(leaderboardGenerationSteps[0].text);
-    setCurrentStepIndex(0);
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
-    // Mock generation process with timeouts
-    setTimeout(() => {
-      setGenerationStep(leaderboardGenerationSteps[1].text);
+  // Mock function to simulate random errors
+  const mockStepExecution = async (stepIndex: number) => {
+    // 20% chance of error on any step after the first one
+    if (stepIndex > 0 && Math.random() < 0.2) {
+      throw new Error(
+        `Failed at step ${stepIndex + 1}: ${leaderboardGenerationSteps[stepIndex].text}`
+      );
+    }
+  };
+
+  const startGeneration = async () => {
+    try {
+      setIsGenerating(true);
+      setHasError(false);
+
+      setCurrentStepIndex(0);
+      setGenerationStep(leaderboardGenerationSteps[0].text);
+      const codeforcesStatus = await checkCodeforcesStatus();
+      if (codeforcesStatus.error) {
+        throw new Error(
+          `Failed at step ${currentStepIndex + 1}: ${codeforcesStatus.error}`
+        );
+      }
+
       setCurrentStepIndex(1);
+      setGenerationStep(leaderboardGenerationSteps[currentStepIndex + 1].text);
+      const usersCFhandle = await getUsersCFhandle();
+      if (usersCFhandle.error || !usersCFhandle.success) {
+        throw new Error(
+          `Failed at step ${currentStepIndex + 1}: ${usersCFhandle.error}`
+        );
+      }
 
-      setTimeout(() => {
-        setGenerationStep(leaderboardGenerationSteps[2].text);
-        setCurrentStepIndex(2);
+      setCurrentStepIndex(2);
+      setGenerationStep(leaderboardGenerationSteps[currentStepIndex + 1].text);
+      const codeforcesUserData = await fetchUserCFData(usersCFhandle.data);
+      if (codeforcesUserData.error || !codeforcesUserData.success) {
+        throw new Error(
+          `Failed at step ${currentStepIndex + 1}: ${codeforcesUserData.error}`
+        );
+      }
 
-        setTimeout(() => {
-          setGenerationStep(leaderboardGenerationSteps[3].text);
-          setCurrentStepIndex(3);
+      console.log(codeforcesUserData);
 
-          setTimeout(() => {
-            setGenerationStep(leaderboardGenerationSteps[4].text);
-            setCurrentStepIndex(4);
+      setCurrentStepIndex(3);
+      setGenerationStep(leaderboardGenerationSteps[currentStepIndex + 1].text);
+      await delay(2000);
+      await mockStepExecution(3);
 
-            setTimeout(() => {
-              setGenerationStep(leaderboardGenerationSteps[5].text);
-              setCurrentStepIndex(5);
-              setIsGenerating(false);
-              setIsComplete(true);
-            }, 1500);
-          }, 2000);
-        }, 1800);
-      }, 1500);
-    }, 1000);
+      setCurrentStepIndex(4);
+      setGenerationStep(leaderboardGenerationSteps[currentStepIndex + 1].text);
+      await delay(1500);
+      await mockStepExecution(4);
+
+      setCurrentStepIndex(5);
+      setGenerationStep(leaderboardGenerationSteps[currentStepIndex + 1].text);
+      await mockStepExecution(5);
+
+      setIsGenerating(false);
+      setIsComplete(true);
+    } catch (error) {
+      setIsGenerating(false);
+      setHasError(true);
+      setErrorMessage(
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      );
+    }
   };
 
   const handleClose = () => {
     setOpen(false);
+
     // Reset states after dialog closes
-    setTimeout(() => {
-      setIsGenerating(false);
-      setGenerationStep("");
-      setIsComplete(false);
-      setCurrentStepIndex(0);
-    }, 300);
-    setIsSuccessfulGeneration(true);
+    setIsGenerating(false);
+    setGenerationStep("");
+    setIsComplete(false);
+    setHasError(false);
+    setErrorMessage("");
+    setCurrentStepIndex(0);
+
+    // Only set successful generation if there was no error
+    if (!hasError) {
+      setIsSuccessfulGeneration(true);
+    }
+  };
+
+  const handleRetry = () => {
+    setHasError(false);
+    setErrorMessage("");
+    setCurrentStepIndex(0);
+    startGeneration();
   };
 
   return (
@@ -88,10 +152,15 @@ export default function LeaderboardGenerationModal({
       <AlertDialogContent className="max-w-[95%] font-sans sm:max-w-[425px]">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
-            {!isGenerating && !isComplete ? (
+            {!isGenerating && !isComplete && !hasError ? (
               <>
                 <Sparkles className="h-5 w-5 text-primary" />
                 Start Generation
+              </>
+            ) : hasError ? (
+              <>
+                <XCircle className="h-5 w-5 text-red-500" />
+                Generation Failed
               </>
             ) : isComplete ? (
               <>
@@ -106,15 +175,17 @@ export default function LeaderboardGenerationModal({
             )}
           </AlertDialogTitle>
           <AlertDialogDescription asChild>
-            <div className="space-y-6 pt-2">
-              {!isGenerating && !isComplete ? (
+            <div className="space-y-6">
+              {!isGenerating && !isComplete && !hasError ? (
                 <div>
                   Are you sure you want to start the generation process? This
                   may take several minutes and cannot be interrupted
                 </div>
+              ) : hasError ? (
+                <LeaderboardGenerationErrorUI errorMessage={errorMessage} />
               ) : (
                 <LeaderboardGenerationStepsUI
-                  currentStepIndex={currentStepIndex}
+                  currentStep={currentStepIndex}
                   isGenerating={isGenerating}
                   isComplete={isComplete}
                 />
@@ -123,12 +194,22 @@ export default function LeaderboardGenerationModal({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          {!isGenerating && !isComplete ? (
+          {!isGenerating && !isComplete && !hasError ? (
             <>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <Button onClick={startGeneration}>
                 <Sparkles />
                 Confirm
+              </Button>
+            </>
+          ) : hasError ? (
+            <>
+              <AlertDialogCancel onClick={handleClose}>
+                Cancel
+              </AlertDialogCancel>
+              <Button onClick={handleRetry} variant="default" className="gap-2">
+                <Sparkles />
+                Retry
               </Button>
             </>
           ) : isComplete ? (

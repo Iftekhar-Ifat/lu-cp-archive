@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   Loader2,
 } from "lucide-react";
+import { Icons } from "../icons";
 
 type LeaderboardGenerationStep = {
   text: string;
@@ -18,11 +19,11 @@ type LeaderboardGenerationStep = {
 
 export const leaderboardGenerationSteps: LeaderboardGenerationStep[] = [
   {
-    text: "Initializing generation process...",
-    icon: <Cpu className="h-5 w-5 text-blue-500" />,
+    text: "Checking codeforces status...",
+    icon: <Icons.codeforces className="h-5 w-5" />,
   },
   {
-    text: "Analyzing input parameters...",
+    text: "Getting user's cf-handle from DB...",
     icon: <Database className="h-5 w-5 text-indigo-500" />,
   },
   {
@@ -44,13 +45,13 @@ export const leaderboardGenerationSteps: LeaderboardGenerationStep[] = [
 ];
 
 type GenerationStepsProps = {
-  currentStepIndex: number;
+  currentStep: number;
   isGenerating: boolean;
   isComplete: boolean;
 };
 
-export default function LeaderboardGenerationStepsUI({
-  currentStepIndex,
+export function LeaderboardGenerationStepsUI({
+  currentStep,
   isGenerating,
   isComplete,
 }: GenerationStepsProps) {
@@ -61,25 +62,24 @@ export default function LeaderboardGenerationStepsUI({
           <div
             key={index}
             className={`flex items-center gap-3 rounded-md p-3 transition-all ${
-              index === currentStepIndex
+              index === currentStep
                 ? "border bg-muted/80 shadow-sm"
-                : index < currentStepIndex
+                : index < currentStep
                   ? "text-muted-foreground"
                   : "opacity-40"
             }`}
           >
-            {index === currentStepIndex && isGenerating ? (
+            {index === currentStep && isGenerating ? (
               <div className="shrink-0">
                 <Loader2 className="h-5 w-5 animate-spin text-primary" />
               </div>
-            ) : index < currentStepIndex ||
-              (index === currentStepIndex && isComplete) ? (
+            ) : index < currentStep || (index === currentStep && isComplete) ? (
               <div className="shrink-0">{step.icon}</div>
             ) : (
               <div className="h-5 w-5 shrink-0 rounded-full border-2 border-muted-foreground/30" />
             )}
             <span
-              className={`text-sm ${index === currentStepIndex ? "font-medium" : ""}`}
+              className={`text-sm ${index === currentStep ? "font-medium" : ""}`}
             >
               {step.text}
             </span>
@@ -92,11 +92,24 @@ export default function LeaderboardGenerationStepsUI({
           <div
             className="h-full rounded-full bg-primary transition-all duration-300 ease-in-out"
             style={{
-              width: `${(currentStepIndex / (leaderboardGenerationSteps.length - 1)) * 100}%`,
+              width: `${(currentStep / (leaderboardGenerationSteps.length - 1)) * 100}%`,
             }}
           ></div>
         </div>
       )}
+    </div>
+  );
+}
+
+export function LeaderboardGenerationErrorUI({
+  errorMessage,
+}: {
+  errorMessage: string;
+}) {
+  return (
+    <div className="space-y-3">
+      <div className="font-medium text-red-600">An error occurred</div>
+      <div className="text-sm text-muted-foreground">{errorMessage}</div>
     </div>
   );
 }
