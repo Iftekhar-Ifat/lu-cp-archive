@@ -70,7 +70,7 @@ export default function GeneratedLeaderboardTable({
             <TableHead>Name</TableHead>
             <TableHead>Username</TableHead>
             <TableHead>Generated Points</TableHead>
-            <TableHead>additional_points</TableHead>
+            <TableHead>Additional Points</TableHead>
             <TableHead>Total Points</TableHead>
           </TableRow>
         </TableHeader>

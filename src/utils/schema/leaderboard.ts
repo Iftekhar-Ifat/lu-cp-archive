@@ -41,6 +41,18 @@ const leaderboardDataSchema = z.object({
   }),
 });
 
+const monthlyLeaderboardDataSchema = z.object({
+  rank: z.number(),
+  total_points: z.number(),
+  additional_points: z.number(),
+  updated_at: z.date(),
+  user: z.object({
+    id: z.string(),
+    name: z.string(),
+    user_name: z.string(),
+  }),
+});
+
 const leaderboardDateSchema = z.object({
   year: z.number(),
   month: z.number(),
@@ -52,5 +64,6 @@ export type LeaderboardDateType = z.infer<typeof leaderboardDateSchema>;
 export {
   leaderboardSearchParamsSchema,
   leaderboardDataSchema,
+  monthlyLeaderboardDataSchema,
   leaderboardDateSchema,
 };

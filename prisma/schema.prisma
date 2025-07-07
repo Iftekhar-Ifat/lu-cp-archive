@@ -26,12 +26,13 @@ model users {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  addedContest  contests[]
-  contestStatus contest_status[]
-  problems      problems[]
-  problemStatus problem_status[]
-  cf_problems   cf_problems[]
-  leaderboards  leaderboards[]
+  addedContest        contests[]
+  contestStatus       contest_status[]
+  problems            problems[]
+  problemStatus       problem_status[]
+  cf_problems         cf_problems[]
+  leaderboards        leaderboards[]
+  monthly_leaderboard monthly_leaderboard[]
 }
 
 enum UserType {
@@ -186,4 +187,18 @@ model leaderboards {
   user users @relation(fields: [user_id], references: [id])
 
   @@unique([user_id, month, year])
+}
+
+model monthly_leaderboard {
+  id                String @id @default(cuid())
+  user_id           String
+  generated_points  Float
+  additional_points Float
+  total_points      Float
+  rank              Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user users @relation(fields: [user_id], references: [id])
 }

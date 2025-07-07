@@ -2,8 +2,10 @@
 
 import { prisma } from "@/lib/prisma";
 import { type GeneratedLeaderboard } from "@/utils/schema/generated-leaderboard";
+import { monthlyLeaderboardDataSchema } from "@/utils/schema/leaderboard";
 import axios, { isAxiosError } from "axios";
 import { getMonth, getYear } from "date-fns";
+import { z } from "zod";
 
 async function checkCodeforcesStatus() {
   try {
@@ -106,4 +108,42 @@ async function saveGeneratedLeaderboard(
   }
 }
 
-export { checkCodeforcesStatus, getUsersCFhandle, saveGeneratedLeaderboard };
+async function getMonthlyLeaderboard() {
+  try {
+    const leaderboard = await prisma.monthly_leaderboard.findMany({
+      select: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            user_name: true,
+          },
+        },
+        rank: true,
+        total_points: true,
+        additional_points: true,
+        updated_at: true,
+      },
+    });
+
+    const validation = z
+      .array(monthlyLeaderboardDataSchema)
+      .safeParse(leaderboard);
+
+    if (validation.error) {
+      return { error: "Invalid monthly leaderboard data" };
+    }
+
+    return { success: true, data: leaderboard };
+  } catch (error) {
+    console.error("Error fetching monthly leaderboard:", error);
+    return { error: "Failed to fetch monthly leaderboard" };
+  }
+}
+
+export {
+  checkCodeforcesStatus,
+  getUsersCFhandle,
+  saveGeneratedLeaderboard,
+  getMonthlyLeaderboard,
+};

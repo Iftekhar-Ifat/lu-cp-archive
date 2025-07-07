@@ -16,7 +16,7 @@ import { subMonths } from "date-fns";
 import Bottleneck from "bottleneck";
 
 const CF_API = "https://codeforces.com/api";
-const WINDOW_MONTHS = 4;
+const WINDOW_MONTHS = 1;
 
 const limiter = new Bottleneck({
   maxConcurrent: 5,

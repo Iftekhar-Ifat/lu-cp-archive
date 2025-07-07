@@ -2,17 +2,24 @@
 
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Loader2, Save, Sparkles } from "lucide-react";
+import {
+  ArrowUpFromLine,
+  Loader2,
+  RefreshCw,
+  Save,
+  Sparkles,
+} from "lucide-react";
 import LeaderboardGenerationModal from "@/components/generate-leaderboard/leaderboard-generation-modal";
 import { type GeneratedLeaderboard } from "@/utils/schema/generated-leaderboard";
 import GeneratedLeaderboardTable from "@/components/generate-leaderboard/generated-leaderboard-table/generated-leaderboard-table";
 import { toast } from "sonner";
 import { saveGeneratedLeaderboard } from "../generate-leaderboard-actions";
 import { isActionError } from "@/utils/error-helper";
+import CurrentMonthLeaderboard from "./current-month-leaderboard";
 
 export default function GenerateLeaderboardSection() {
   const [open, setOpen] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [isSuccessfulGeneration, setIsSuccessfulGeneration] = useState(false);
   const [additional_points, setAdditionalPoints] = useState<
     Record<string, number>
@@ -74,12 +81,12 @@ export default function GenerateLeaderboardSection() {
     });
   };
 
-  const handleSave = async () => {
+  const handleUpdate = async () => {
     if (updatedData.length <= 0) {
       return toast.error("Don't have enough data to save");
     }
     try {
-      setIsSaving(true);
+      setIsUpdating(true);
       const result = await saveGeneratedLeaderboard(updatedData, new Date());
 
       if (isActionError(result)) {
@@ -88,7 +95,7 @@ export default function GenerateLeaderboardSection() {
         toast.success("Leaderboard Saved", { position: "top-center" });
       }
     } finally {
-      setIsSaving(false);
+      setIsUpdating(false);
       updatedData = [];
     }
   };
@@ -104,27 +111,34 @@ export default function GenerateLeaderboardSection() {
         />
       )}
 
-      <div className="flex justify-center gap-4 py-5">
-        <Button size="lg" className="text-lg" onClick={() => setOpen(true)}>
+      <div className="my-4 flex justify-center gap-4">
+        <Button
+          size="lg"
+          className="px-4 text-lg"
+          onClick={() => setOpen(true)}
+        >
           <Sparkles />
-          {isSuccessfulGeneration ? "Re-Generate" : "Generate"}
+          {isSuccessfulGeneration
+            ? "Re-Generate Leaderboard"
+            : "Generate Leaderboard"}
         </Button>
+
         {isSuccessfulGeneration ? (
           <Button
-            disabled={isSaving}
+            disabled={isUpdating}
             size="lg"
             className="text-lg"
-            onClick={handleSave}
+            onClick={handleUpdate}
           >
-            {isSaving ? (
+            {isUpdating ? (
               <>
                 <Loader2 size={32} className="animate-spin" />
-                Saving...
+                Update...
               </>
             ) : (
               <>
                 <Save size={32} />
-                Save
+                Update
               </>
             )}
           </Button>
@@ -137,6 +151,18 @@ export default function GenerateLeaderboardSection() {
           setGeneratedData={setGeneratedData}
         />
       </div>
+      <div className="mb-6 flex justify-center gap-4">
+        <Button size="lg" className="px-4 text-lg">
+          <ArrowUpFromLine />
+          Publish Leaderboard
+        </Button>
+        <Button size="lg" className="px-4 text-lg">
+          <RefreshCw />
+          Update Leaderboard
+        </Button>
+      </div>
+
+      <CurrentMonthLeaderboard />
     </div>
   );
 }
