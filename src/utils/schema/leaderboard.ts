@@ -45,7 +45,6 @@ const monthlyLeaderboardDataSchema = z.object({
   rank: z.number(),
   total_points: z.number(),
   additional_points: z.number(),
-  updated_at: z.date(),
   user: z.object({
     id: z.string(),
     name: z.string(),

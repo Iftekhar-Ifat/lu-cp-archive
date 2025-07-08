@@ -25,6 +25,7 @@ import {
   computeInitialScore,
   fetchUserCFData,
   finalizedLeaderboardData,
+  mergeLeaderboardData,
   mergeUserDataWithScores,
 } from "@/utils/generate-leaderboard-helper";
 import { type GeneratedLeaderboard } from "@/utils/schema/generated-leaderboard";
@@ -34,11 +35,13 @@ export default function LeaderboardGenerationModal({
   setOpen,
   setIsSuccessfulGeneration,
   setGeneratedData,
+  setGeneratedLeaderboard,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   setIsSuccessfulGeneration: Dispatch<SetStateAction<boolean>>;
   setGeneratedData: Dispatch<SetStateAction<GeneratedLeaderboard[]>>;
+  setGeneratedLeaderboard: Dispatch<SetStateAction<GeneratedLeaderboard[]>>;
 }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [, setGenerationStep] = useState("");
@@ -124,7 +127,11 @@ export default function LeaderboardGenerationModal({
         );
       }
 
-      setGeneratedData(leaderboardData.data);
+      setGeneratedLeaderboard(leaderboardData.data);
+
+      setGeneratedData((prev) =>
+        mergeLeaderboardData(prev, leaderboardData.data)
+      );
 
       setIsGenerating(false);
       setIsComplete(true);

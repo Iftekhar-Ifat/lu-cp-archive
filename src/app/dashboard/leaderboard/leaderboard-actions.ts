@@ -9,35 +9,48 @@ import { z } from "zod";
 
 async function getLeaderboard(selectedMonth: number, selectedYear: number) {
   try {
-    const leaderboard = await prisma.leaderboards.findMany({
-      where: {
-        month: selectedMonth,
-        year: selectedYear,
-      },
-      orderBy: {
-        rank: "asc",
-      },
-      select: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            user_name: true,
-            image: true,
-          },
+    const [leaderboard, lastUpdated] = await Promise.all([
+      prisma.leaderboards.findMany({
+        where: {
+          month: selectedMonth,
+          year: selectedYear,
         },
-        rank: true,
-        total_points: true,
-      },
-    });
+        orderBy: {
+          rank: "asc",
+        },
+        select: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              user_name: true,
+              image: true,
+            },
+          },
+          rank: true,
+          total_points: true,
+        },
+      }),
 
+      prisma.monthly_leaderboard.findFirst({
+        select: {
+          updated_at: true,
+        },
+        orderBy: {
+          updated_at: "desc",
+        },
+      }),
+    ]);
     const validation = z.array(leaderboardDataSchema).safeParse(leaderboard);
 
     if (validation.error) {
       return { error: "Invalid leaderboard data" };
     }
 
-    return { success: true, data: leaderboard };
+    return {
+      success: true,
+      data: { leaderboard, last_updated: lastUpdated?.updated_at },
+    };
   } catch (error) {
     console.error("Error fetching leaderboard:", error);
     return { error: "Failed to fetch leaderboard" };

@@ -14,6 +14,7 @@
 import axios, { type AxiosError } from "axios";
 import { subMonths } from "date-fns";
 import Bottleneck from "bottleneck";
+import { type GeneratedLeaderboard } from "./schema/generated-leaderboard";
 
 const CF_API = "https://codeforces.com/api";
 const WINDOW_MONTHS = 1;
@@ -263,4 +264,34 @@ export function finalizedLeaderboardData(mergedData: MergedDataType[]) {
     console.error("Leaderboard generation error:", error);
     return { error: "Failed to generate leaderboard" };
   }
+}
+
+export function mergeLeaderboardData(
+  previousData: GeneratedLeaderboard[],
+  newData: GeneratedLeaderboard[]
+) {
+  const prevDataMap = new Map<string, GeneratedLeaderboard>();
+
+  if (previousData) {
+    previousData.forEach((item) => {
+      prevDataMap.set(item.user.id, item);
+    });
+  }
+
+  return newData.map((newItem) => {
+    const existingItem = prevDataMap.get(newItem.user.id);
+
+    if (existingItem) {
+      // If user exists in previous data, sum up the points
+      return {
+        ...newItem,
+        generated_point: newItem.generated_point + existingItem.generated_point,
+        additional_points:
+          newItem.additional_points + existingItem.additional_points,
+        total_points: newItem.total_points + existingItem.total_points,
+      };
+    }
+
+    return newItem;
+  });
 }

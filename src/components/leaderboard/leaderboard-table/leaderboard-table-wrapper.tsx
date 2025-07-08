@@ -9,6 +9,7 @@ import { getLeaderboard } from "@/app/dashboard/leaderboard/leaderboard-actions"
 import { leaderboard_table_column } from "./leaderboard-table-column";
 import { isolateTopThree } from "../leaderboard-helper";
 import TopThreeWinners from "../top-three-winners";
+import { format } from "date-fns";
 
 export default function LeaderboardTableWrapper({
   leaderboardDate,
@@ -35,11 +36,14 @@ export default function LeaderboardTableWrapper({
       const unwrappedResult = unwrapActionResult(result);
       if (!unwrappedResult) return undefined;
 
-      const { topThree, rest } = isolateTopThree(unwrappedResult);
+      const { topThree, rest } = isolateTopThree(unwrappedResult.leaderboard);
+
+      const lastUpdated = unwrappedResult.last_updated;
 
       return {
         topThree,
         rest,
+        lastUpdated,
       };
     },
     staleTime: Infinity,
@@ -57,6 +61,17 @@ export default function LeaderboardTableWrapper({
 
   return (
     <div>
+      {leaderboardData.lastUpdated && (
+        <div className="mb-4 flex justify-end">
+          <div className="text-sm">
+            <span className="mr-2">Last updated:</span>
+            <span className="text-muted-foreground">
+              {format(new Date(leaderboardData.lastUpdated), "MMMM d, yyyy")}
+            </span>
+          </div>
+        </div>
+      )}
+
       <div className="mb-4">
         <TopThreeWinners winners={leaderboardData.topThree} />
       </div>

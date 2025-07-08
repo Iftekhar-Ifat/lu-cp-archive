@@ -2,20 +2,23 @@
 
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowUpFromLine,
-  Loader2,
-  RefreshCw,
-  Save,
-  Sparkles,
-} from "lucide-react";
+import { ArrowUpFromLine, Loader2, Save, Sparkles } from "lucide-react";
 import LeaderboardGenerationModal from "@/components/generate-leaderboard/leaderboard-generation-modal";
 import { type GeneratedLeaderboard } from "@/utils/schema/generated-leaderboard";
 import GeneratedLeaderboardTable from "@/components/generate-leaderboard/generated-leaderboard-table/generated-leaderboard-table";
 import { toast } from "sonner";
-import { saveGeneratedLeaderboard } from "../generate-leaderboard-actions";
-import { isActionError } from "@/utils/error-helper";
-import CurrentMonthLeaderboard from "./current-month-leaderboard";
+import {
+  getMonthlyLeaderboard,
+  publishGeneratedLeaderboard,
+  updateLeaderboard,
+} from "../generate-leaderboard-actions";
+import { isActionError, unwrapActionResult } from "@/utils/error-helper";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Loading from "@/components/shared/loading";
+import Error from "@/components/shared/error";
+import { format } from "date-fns";
+import { ExpandableWrapper } from "@/components/shared/expandable-wrapper";
+import GeneratedLeaderboardPointsTable from "@/components/generate-leaderboard/generated-leaderboard-table/generated-leaderboard-points-table";
 
 export default function GenerateLeaderboardSection() {
   const [open, setOpen] = useState(false);
@@ -27,6 +30,44 @@ export default function GenerateLeaderboardSection() {
   const [generatedData, setGeneratedData] = useState<GeneratedLeaderboard[]>(
     []
   );
+  const [generatedLeaderboard, setGeneratedLeaderboard] = useState<
+    GeneratedLeaderboard[]
+  >([]);
+  const [lastUpdatedDate, setLastUpdatedDate] = useState<Date | undefined>();
+
+  const queryClient = useQueryClient();
+
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ["monthly-leaderboard"],
+    queryFn: async () => {
+      const result = await getMonthlyLeaderboard();
+
+      const unwrappedResult = unwrapActionResult(result);
+
+      if (!unwrappedResult) return undefined;
+
+      setLastUpdatedDate(unwrappedResult.last_updated);
+
+      const leaderboard = unwrappedResult.leaderboard.map((item) => ({
+        ...item,
+        generated_point: item.total_points,
+      }));
+
+      // Build Record<string, number> from user_id → additional_points
+      const additionalPointsMap: Record<string, number> = {};
+      leaderboard.forEach((item) => {
+        if (item.user?.id && typeof item.additional_points === "number") {
+          additionalPointsMap[item.user.id] = item.additional_points;
+        }
+      });
+
+      setAdditionalPoints(additionalPointsMap);
+      setGeneratedData(leaderboard);
+
+      return { success: true };
+    },
+    staleTime: Infinity,
+  });
 
   const handleAdditionalPointsChange = (userId: string, value: string) => {
     if (value === "") {
@@ -81,18 +122,37 @@ export default function GenerateLeaderboardSection() {
     });
   };
 
-  const handleUpdate = async () => {
+  const handleLeaderboardUpdate = async () => {
+    if (updatedData.length <= 0) {
+      return toast.error("Don't have enough data to update");
+    }
+    try {
+      setIsUpdating(true);
+      const result = await updateLeaderboard(updatedData);
+
+      if (isActionError(result)) {
+        toast.error(result.error, { position: "top-center" });
+      } else {
+        toast.success("Leaderboard Updated", { position: "top-center" });
+      }
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleLeaderboardPublish = async () => {
     if (updatedData.length <= 0) {
       return toast.error("Don't have enough data to save");
     }
     try {
       setIsUpdating(true);
-      const result = await saveGeneratedLeaderboard(updatedData, new Date());
+      const result = await publishGeneratedLeaderboard(updatedData, new Date());
 
       if (isActionError(result)) {
         toast.error(result.error, { position: "top-center" });
       } else {
-        toast.success("Leaderboard Saved", { position: "top-center" });
+        toast.success("Leaderboard Published", { position: "top-center" });
+        queryClient.invalidateQueries({ queryKey: ["monthly-leaderboard"] });
       }
     } finally {
       setIsUpdating(false);
@@ -100,69 +160,114 @@ export default function GenerateLeaderboardSection() {
     }
   };
 
+  if (isLoading || !data) {
+    return <Loading />;
+  }
+
+  if (isError || !data) {
+    if (!data) {
+      return <Error message={error?.message} refetch={refetch} />;
+    }
+  }
+
   return (
     <div>
-      {isSuccessfulGeneration && (
-        <GeneratedLeaderboardTable
-          additional_points={additional_points}
-          data={updatedData}
-          onAdditionalPointsChange={handleAdditionalPointsChange}
-          onDeleteRow={handleDeleteRow}
-        />
-      )}
+      <div>
+        {lastUpdatedDate && (
+          <div>
+            {isSuccessfulGeneration ? (
+              <div className="font-mono">Updated Leaderboard</div>
+            ) : (
+              <div className="font-mono">Monthly Leaderboard</div>
+            )}
+            <div className="mb-4 flex justify-end">
+              <div className="text-sm">
+                <span className="mr-2">Last updated:</span>
+                <span className="text-muted-foreground">
+                  {format(new Date(lastUpdatedDate), "MMMM d, yyyy")}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+        {updatedData.length > 0 && (
+          <GeneratedLeaderboardTable
+            additional_points={additional_points}
+            data={updatedData}
+            onAdditionalPointsChange={handleAdditionalPointsChange}
+            onDeleteRow={handleDeleteRow}
+          />
+        )}
+      </div>
 
-      <div className="my-4 flex justify-center gap-4">
+      <div className="my-4 flex flex-col items-center gap-3 md:flex-row md:justify-center md:gap-4">
         <Button
           size="lg"
-          className="px-4 text-lg"
+          className="w-full px-4 text-lg md:w-auto"
           onClick={() => setOpen(true)}
         >
-          <Sparkles />
+          <Sparkles className="mr-2" />
           {isSuccessfulGeneration
             ? "Re-Generate Leaderboard"
             : "Generate Leaderboard"}
         </Button>
 
-        {isSuccessfulGeneration ? (
+        <Button
+          disabled={isUpdating}
+          size="lg"
+          className="w-full px-4 text-lg md:w-auto"
+          onClick={handleLeaderboardUpdate}
+        >
+          {isUpdating ? (
+            <>
+              <Loader2 size={20} className="mr-2 animate-spin" />
+              Updating Leaderboard...
+            </>
+          ) : (
+            <>
+              <Save size={20} className="mr-2" />
+              Update Leaderboard
+            </>
+          )}
+        </Button>
+      </div>
+      <div className="mb-6 flex flex-col items-center gap-3 md:flex-row md:justify-center md:gap-4">
+        {updatedData.length > 0 && (
           <Button
             disabled={isUpdating}
             size="lg"
-            className="text-lg"
-            onClick={handleUpdate}
+            className="w-full px-4 text-lg md:w-auto"
+            onClick={handleLeaderboardPublish}
           >
             {isUpdating ? (
               <>
-                <Loader2 size={32} className="animate-spin" />
-                Update...
+                <Loader2 size={20} className="mr-2 animate-spin" />
+                Publishing Leaderboard...
               </>
             ) : (
               <>
-                <Save size={32} />
-                Update
+                <ArrowUpFromLine className="mr-2" />
+                Publish Leaderboard
               </>
             )}
           </Button>
-        ) : null}
-
-        <LeaderboardGenerationModal
-          open={open}
-          setOpen={setOpen}
-          setIsSuccessfulGeneration={setIsSuccessfulGeneration}
-          setGeneratedData={setGeneratedData}
-        />
+        )}
       </div>
-      <div className="mb-6 flex justify-center gap-4">
-        <Button size="lg" className="px-4 text-lg">
-          <ArrowUpFromLine />
-          Publish Leaderboard
-        </Button>
-        <Button size="lg" className="px-4 text-lg">
-          <RefreshCw />
-          Update Leaderboard
-        </Button>
-      </div>
-
-      <CurrentMonthLeaderboard />
+      {generatedLeaderboard.length ? (
+        <ExpandableWrapper>
+          <div className="mb-4 font-mono">
+            {"This month's generated points"}
+          </div>
+          <GeneratedLeaderboardPointsTable data={generatedLeaderboard} />
+        </ExpandableWrapper>
+      ) : null}
+      <LeaderboardGenerationModal
+        open={open}
+        setOpen={setOpen}
+        setIsSuccessfulGeneration={setIsSuccessfulGeneration}
+        setGeneratedData={setGeneratedData}
+        setGeneratedLeaderboard={setGeneratedLeaderboard}
+      />
     </div>
   );
 }
