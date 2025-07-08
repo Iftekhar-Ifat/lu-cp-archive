@@ -32,7 +32,7 @@ async function getLeaderboard(selectedMonth: number, selectedYear: number) {
         },
       }),
 
-      prisma.monthly_leaderboard.findFirst({
+      prisma.leaderboards.findFirst({
         select: {
           updated_at: true,
         },
