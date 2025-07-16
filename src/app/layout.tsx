@@ -23,8 +23,21 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://lu-cp-archive.vercel.app/"),
   title: "LU-CP-Archive",
   description: "Leading University Competitive Programming Archive",
+  openGraph: {
+    title: "LU-CP-Archive",
+    description: "Leading University Competitive Programming Archive",
+    type: "website",
+    images: "./opengraph-image.png",
+  },
+  twitter: {
+    title: "LU-CP-Archive",
+    description: "Leading University Competitive Programming Archive",
+    card: "summary_large_image",
+    images: "./opengraph-image.png",
+  },
 };
 
 export default async function RootLayout({
