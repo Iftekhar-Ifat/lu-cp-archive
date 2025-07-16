@@ -2,10 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { type GeneratedLeaderboard } from "@/utils/schema/generated-leaderboard";
-import {
-  leaderboardDataSchema,
-  monthlyLeaderboardDataSchema,
-} from "@/utils/schema/leaderboard";
+import { monthlyLeaderboardDataSchema } from "@/utils/schema/leaderboard";
 import axios, { isAxiosError } from "axios";
 import { getMonth, getYear } from "date-fns";
 import { z } from "zod";

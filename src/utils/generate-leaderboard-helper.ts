@@ -12,12 +12,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import axios, { type AxiosError } from "axios";
-import { subMonths } from "date-fns";
+import { subWeeks } from "date-fns";
 import Bottleneck from "bottleneck";
 import { type GeneratedLeaderboard } from "./schema/generated-leaderboard";
 
 const CF_API = "https://codeforces.com/api";
-const WINDOW_MONTHS = 1;
+// const WINDOW_MONTHS = 1;
+const WINDOW_WEEKS = 1;
 
 const limiter = new Bottleneck({
   maxConcurrent: 5,
@@ -52,7 +53,8 @@ type Solve = {
 export async function fetchUserCFData(handles: string[]) {
   try {
     const windowStartTs = Math.floor(
-      subMonths(new Date(), WINDOW_MONTHS).getTime() / 1000
+      // subMonths(new Date(), WINDOW_MONTHS).getTime() / 1000
+      subWeeks(new Date(), WINDOW_WEEKS).getTime() / 1000
     );
 
     const tasks = handles.map(async (handle) => {
