@@ -64,8 +64,6 @@ export async function fetchUserCFData(handles: string[]) {
           params: { handles: handle },
         })
       );
-      const regTs = userInfoResp?.data?.result[0]?.registrationTimeSeconds;
-      const useWindowForRating = regTs < windowStartTs;
 
       const ratingResp = await requestWithRetry(() =>
         limitedAxios<any>({
@@ -77,10 +75,7 @@ export async function fetchUserCFData(handles: string[]) {
       const contestsInWindow = allRatings.filter(
         (r: any) => r.ratingUpdateTimeSeconds >= windowStartTs
       );
-      const ratingSet = useWindowForRating ? contestsInWindow : allRatings;
-      const maxRating = ratingSet.length
-        ? Math.max(...ratingSet.map((r: any) => r.newRating))
-        : 0;
+      const maxRating = userInfoResp?.data?.result[0].maxRating;
 
       const subsResp = await requestWithRetry(() =>
         limitedAxios<any>({

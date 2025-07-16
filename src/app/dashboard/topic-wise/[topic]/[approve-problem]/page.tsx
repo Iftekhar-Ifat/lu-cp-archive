@@ -1,8 +1,9 @@
-import { getTopicBySlug } from "@/lib/db";
 import { notFound } from "next/navigation";
 import ApproveProblemCardSection from "./_components/approve-problems-card-section";
 import { hasPermission } from "@/utils/permissions";
 import { auth } from "@/lib/auth";
+import { getTopicsBySlug } from "../problem-actions";
+import { isActionError } from "@/utils/error-helper";
 
 type ApproveProblemPageProps = {
   params: { topic: string };
@@ -11,9 +12,9 @@ type ApproveProblemPageProps = {
 export default async function ApproveProblem({
   params,
 }: ApproveProblemPageProps) {
-  const topic = await getTopicBySlug(params.topic);
+  const topic = await getTopicsBySlug(params.topic);
 
-  if (!topic) {
+  if (isActionError(topic)) {
     notFound();
   }
 
