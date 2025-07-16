@@ -1,73 +1,36 @@
-# Leading University Competitive Programming Archive
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-!["background"](./public/images/readme/background.png)
+## Getting Started
 
-## Introduction
+First, run the development server:
 
-LU-CP-Archive is an application aimed to aid students who are competing in programming competitions. The volume of problems provided by all the competitive programming sites overwhelms the students. This platform tries to make their life a bit easier.
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-_**This is also the official website of Leading University ACM Community**_
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Features
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-### Leaderboard
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-!["leaderbaord"](./public/images/readme/leaderboard.png)
+## Learn More
 
-The leaderboard is generated based on the programmer’s codeforces rating, problem solved above his/her rating (in the previous month), problem solved equal to or below his/her rating (in the previous month), and total contest participation (in the previous month)
+To learn more about Next.js, take a look at the following resources:
 
-### Topic Wise Problem Solving
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-!["topic-wise"](./public/images/readme/topic-wise.png)
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-!["topic-wise2"](./public/images/readme/topic-wise2.png)
+## Deploy on Vercel
 
-Students can solve topic-wise problems which are hand-picked by the LU-ACM community
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### Codeforces Ladder
-
-!["cf-ladder"](./public/images/readme/cf-ladder.png)
-
-!["cf-problems"](./public/images/readme/cf-problems.png)
-
-Each codeforces ladder contains 50 problems which are solved by the 5 all-time top LU CP programmers.
-
-### Upcoming Contest
-
-!["upcoming-contest"](./public/images/readme/upcoming-contest.png)
-
-Programmers can also track the upcoming contests from Codeforces, Codechef, and Atcoder.
-
-### Other Contests
-
-!["other-contests"](./public/images/readme/other-contests.png)
-
-## User Guide
-
-### Regular Users / Programmers:
-
--   Programmers can add their codeforces user handle, student ID, and stopstalk ID in their profile section after creating their account
-    !["profile"](./public/images/readme/profile.png)
-    _NB: programmer must add their codeforces handle in order to be featured in the Leaderboard_
-
--   After adding the codeforces account he/she will be able to see his/her solved problem in the codeforces ladder section
-    !["cf-problems"](./public/images/readme/cf-problems.png)
-
--   In the topic-wise problem section,
-    !["topic-wise-problem"](./public/images/readme/topic-wise-problem.png)
-    -   1. The colored circle indicates the problem status. Orange implies it is under the process of you solving it. Green means the problem has been solved. Purple indicates you are reviewing the problem at hand. Lastly, red suggests that you've skipped the problem.
-    -   2. If there is any problem you want the status to be changed, just click on the circle and a menu will pop up. From here you can change the problem status manually. It is a handy feature to keep track of the problems you solve.
-    -   3. The problem difficulty is shown here along with the tags. To see what category any particular problem belongs to, just hover your mouse on the (ℹ).
-
-### Admin
-
--   Admin can Add/Remove Topic wise problems ( problem, problem difficulty, related tags, etc... ) and resources
-    !["admin-topic-wise"](./public/images/readme/admin-topic-wise.png)
-
--   Admin can also add a new topic
-    !["topic-wise"](./public/images/readme/topic-wise.png)
-
--   Admin can also add new problems to each codeforces ladder, Intra LU Contest, LU Short Contest, and LU Marathon Contest.
-
--   Admin can Generate and save the leaderboard, and also make additional changes to the leaderboard
-    !["admin-leaderbaord"](./public/images/readme/admin-leaderboard.png)
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
