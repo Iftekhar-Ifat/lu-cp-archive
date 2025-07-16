@@ -2,7 +2,6 @@
 
 import { type ReactNode } from "react";
 import {
-  Cpu,
   Database,
   Code,
   Zap,
