@@ -101,14 +101,20 @@ export async function fetchUserCFData(handles: string[]) {
 
       return {
         handle,
-        max_rating: maxRating,
-        contest_participation: contestsInWindow.length as number,
+        max_rating: maxRating ?? 0,
+        contest_participation: contestsInWindow.length ?? 0,
         solves,
       };
     });
 
-    const result = await Promise.all(tasks);
-    return { success: true, data: result };
+    const allUsers = await Promise.all(tasks);
+
+    // skip users with 0 maxRating or 0 solves
+    const filteredUsers = allUsers.filter(
+      (user) => user?.max_rating > 0 && (user?.solves?.length ?? 0) > 0
+    );
+
+    return { success: true, data: filteredUsers };
   } catch (error) {
     console.error("Error fetching Codeforces data:", error);
     return {
