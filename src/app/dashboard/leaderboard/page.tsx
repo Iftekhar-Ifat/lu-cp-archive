@@ -1,6 +1,6 @@
 import { leaderboardSearchParamsSchema } from "@/utils/schema/leaderboard";
 import LeaderboardSection from "./_components/leaderboard-section";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getLeaderboardDates } from "./leaderboard-actions";
 import { isActionError } from "@/utils/error-helper";
 import { getInitialDate } from "@/components/leaderboard/leaderboard-helper";
@@ -26,7 +26,7 @@ export default async function LeaderboardPage({
   const result = leaderboardSearchParamsSchema.safeParse(searchParams);
 
   if (!result.success) {
-    notFound();
+    redirect("/dashboard/leaderboard?latest=true");
   }
 
   const leaderboardDates = await getLeaderboardDates();
