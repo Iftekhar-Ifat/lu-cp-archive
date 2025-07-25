@@ -32,12 +32,18 @@ async function updateCFProfile(data: {
 
       return { success: true };
     } else {
-      const response = await axios.get(
+      const userInfoResponse = await axios.get(
         `https://codeforces.com/api/user.info?handles=${data.handle}`
       );
+      const userRatingResponse = await axios.get(
+        `https://codeforces.com/api/user.rating?handle=${data.handle}`
+      );
 
-      // If no user CF throws 400 but just to be safe
-      if (response.data.status !== "OK") {
+      // If no user CF throws 400 but just to be safe (why check both api? -> Ask CF 😑)
+      if (
+        userInfoResponse.data.status !== "OK" ||
+        userRatingResponse.data.status !== "OK"
+      ) {
         return { error: "Codeforces user not found" };
       }
 
@@ -53,7 +59,6 @@ async function updateCFProfile(data: {
       return { success: true };
     }
   } catch (error: unknown) {
-    console.error("Error updating user profile:", error);
     if (isAxiosError(error)) {
       if (
         error.response?.status === 400 ||

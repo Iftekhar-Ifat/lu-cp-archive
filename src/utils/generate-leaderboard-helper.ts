@@ -60,15 +60,13 @@ export async function fetchUserCFData(handles: string[]) {
     const tasks = handles.map(async (handle) => {
       const userInfoResp = await requestWithRetry(() =>
         limitedAxios<any>({
-          url: `${CF_API}/user.info`,
-          params: { handles: handle },
+          url: `${CF_API}/user.info?handles=${handle}`,
         })
       );
 
       const ratingResp = await requestWithRetry(() =>
         limitedAxios<any>({
-          url: `${CF_API}/user.rating`,
-          params: { handle },
+          url: `${CF_API}/user.rating?handle=${handle}`,
         })
       );
       const allRatings = ratingResp?.data?.result;
@@ -107,14 +105,15 @@ export async function fetchUserCFData(handles: string[]) {
       };
     });
 
-    const allUsers = await Promise.all(tasks);
+    const results = await Promise.allSettled(tasks);
 
     // skip users with 0 maxRating or 0 solves
-    const filteredUsers = allUsers.filter(
-      (user) => user?.max_rating > 0 && (user?.solves?.length ?? 0) > 0
-    );
+    const successful = results
+      .filter((r): r is PromiseFulfilledResult<any> => r.status === "fulfilled")
+      .map((r) => r.value)
+      .filter((user) => user.max_rating > 0 && user.solves.length > 0);
 
-    return { success: true, data: filteredUsers };
+    return { success: true, data: successful };
   } catch (error) {
     console.error("Error fetching Codeforces data:", error);
     return {
