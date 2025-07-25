@@ -52,6 +52,16 @@ export const standard_users_table_columns: ColumnDef<users>[] = [
   {
     accessorKey: "cf_handle",
     header: "CF Handle",
+    cell: ({ row }) => {
+      return (
+        <Link
+          href={`https://codeforces.com/profile/${row.original.cf_handle}`}
+          className="underline"
+        >
+          {row.original.user_name}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "cf_handle",

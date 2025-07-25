@@ -22,7 +22,7 @@ const WINDOW_WEEKS = 1;
 
 const limiter = new Bottleneck({
   maxConcurrent: 5,
-  minTime: 200, // at least 200ms between each request ⇒ 5 req/s
+  minTime: 500, // at least 500ms between each request ⇒ 5 req/s
 });
 
 async function limitedAxios<T>(config: Parameters<typeof axios.request>[0]) {
