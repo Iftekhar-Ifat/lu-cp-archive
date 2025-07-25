@@ -50,8 +50,12 @@ export const standard_users_table_columns: ColumnDef<users>[] = [
     },
   },
   {
-    accessorKey: "user_type",
-    header: "User Type",
+    accessorKey: "cf_handle",
+    header: "CF Handle",
+  },
+  {
+    accessorKey: "cf_handle",
+    header: "CF Handle",
     cell: ({ row }) => {
       return <UserTypeBadge user_type={row.original.user_type} />;
     },
