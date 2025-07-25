@@ -30,6 +30,11 @@ import { useState } from "react";
 
 export const standard_users_table_columns: ColumnDef<users>[] = [
   {
+    id: "serial",
+    header: "No",
+    cell: ({ row }) => row.index + 1,
+  },
+  {
     accessorKey: "name",
     header: "Name",
   },
@@ -53,19 +58,21 @@ export const standard_users_table_columns: ColumnDef<users>[] = [
     accessorKey: "cf_handle",
     header: "CF Handle",
     cell: ({ row }) => {
-      return (
+      const { cf_handle, user_name } = row.original;
+
+      return cf_handle ? (
         <Link
-          href={`https://codeforces.com/profile/${row.original.cf_handle}`}
+          href={`https://codeforces.com/profile/${cf_handle}`}
           className="underline"
         >
-          {row.original.user_name}
+          {user_name}
         </Link>
-      );
+      ) : null;
     },
   },
   {
-    accessorKey: "cf_handle",
-    header: "CF Handle",
+    accessorKey: "user_type",
+    header: "User Type",
     cell: ({ row }) => {
       return <UserTypeBadge user_type={row.original.user_type} />;
     },
