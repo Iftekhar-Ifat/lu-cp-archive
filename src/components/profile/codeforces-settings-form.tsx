@@ -15,7 +15,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Trophy, Trash2 } from "lucide-react";
+import { Trophy, Trash2, ArrowUpRight } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import Link from "next/link";
 
 export const CodeforcesFormSchema = z.object({
   handle: z.string().optional(),
@@ -64,7 +65,24 @@ export default function CodeforcesForm({
             name="handle"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Codeforces Handle</FormLabel>
+                <FormLabel>
+                  {defaultValues.handle ? (
+                    <Link
+                      href={`https://codeforces.com/profile/${defaultValues.handle}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mr-1 flex"
+                    >
+                      <span className="mr-1">Codeforces Handle</span>
+                      <ArrowUpRight
+                        size={16}
+                        className="text-muted-foreground"
+                      />
+                    </Link>
+                  ) : (
+                    "Codeforces Handle"
+                  )}
+                </FormLabel>
                 <div className="flex gap-2">
                   <FormControl>
                     <Input
