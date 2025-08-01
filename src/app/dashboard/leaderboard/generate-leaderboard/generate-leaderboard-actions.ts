@@ -116,9 +116,66 @@ async function updateLeaderboard(leaderboardData: GeneratedLeaderboard[]) {
     // 2) build history‐table ops
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let historyOps: any[];
+    let finalLeaderboardData: GeneratedLeaderboard[];
     if (latest) {
-      // update each existing row for that latest month-year
-      historyOps = leaderboardData.map((entry) =>
+      // Fetch existing leaderboard data for the latest month/year
+      const existingData = await prisma.leaderboards.findMany({
+        where: {
+          month: latest.month,
+          year: latest.year,
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              user_name: true,
+            },
+          },
+        },
+      });
+
+      // Convert existing data to GeneratedLeaderboard format
+      const existingLeaderboardData: GeneratedLeaderboard[] = existingData.map(
+        (entry) => ({
+          user: {
+            id: entry.user.id,
+            name: entry.user.name,
+            user_name: entry.user.user_name,
+          },
+          generated_point: entry.generated_points,
+          additional_points: entry.additional_points,
+          total_points: entry.total_points,
+          rank: entry.rank,
+        })
+      );
+
+      // Merge existing data with new data (new data takes precedence)
+      const userMap = new Map<string, GeneratedLeaderboard>();
+
+      // Add existing data to map
+      existingLeaderboardData.forEach((entry) => {
+        userMap.set(entry.user.id, entry);
+      });
+
+      // Override with new data
+      leaderboardData.forEach((entry) => {
+        userMap.set(entry.user.id, entry);
+      });
+
+      // Convert map back to array and sort by total_points (descending)
+      const combinedData = Array.from(userMap.values()).sort(
+        (a, b) => b.total_points - a.total_points
+      );
+
+      // Re-rank based on total points
+      finalLeaderboardData = combinedData.map((entry, index) => ({
+        ...entry,
+        rank: index + 1,
+      }));
+
+      // Update each existing row for that latest month-year
+      historyOps = finalLeaderboardData.map((entry) =>
         prisma.leaderboards.updateMany({
           where: {
             user_id: entry.user.id,
