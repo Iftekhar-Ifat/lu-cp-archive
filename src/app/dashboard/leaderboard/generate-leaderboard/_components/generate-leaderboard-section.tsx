@@ -1,8 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowUpFromLine, Loader2, Save, Sparkles } from "lucide-react";
+import {
+  ArrowUpDown,
+  ArrowUpFromLine,
+  Loader2,
+  Save,
+  Sparkles,
+} from "lucide-react";
 import LeaderboardGenerationModal from "@/components/generate-leaderboard/leaderboard-generation-modal";
 import { type GeneratedLeaderboard } from "@/utils/schema/generated-leaderboard";
 import GeneratedLeaderboardTable from "@/components/generate-leaderboard/generated-leaderboard-table/generated-leaderboard-table";
@@ -19,6 +25,7 @@ import Error from "@/components/shared/error";
 import { format } from "date-fns";
 import { ExpandableWrapper } from "@/components/shared/expandable-wrapper";
 import GeneratedLeaderboardPointsTable from "@/components/generate-leaderboard/generated-leaderboard-table/generated-leaderboard-points-table";
+import LeaderboardGuide from "./LeaderboardGuide";
 
 export default function GenerateLeaderboardSection() {
   const [open, setOpen] = useState(false);
@@ -34,6 +41,9 @@ export default function GenerateLeaderboardSection() {
     GeneratedLeaderboard[]
   >([]);
   const [lastUpdatedDate, setLastUpdatedDate] = useState<Date | undefined>();
+  const [updatedData, setUpdatedData] = useState<GeneratedLeaderboard[] | null>(
+    null
+  );
 
   const queryClient = useQueryClient();
 
@@ -86,7 +96,7 @@ export default function GenerateLeaderboardSection() {
   };
 
   // Apply additional_points to the base data
-  let updatedData = useMemo(() => {
+  const updatedDataMemo = useMemo(() => {
     const withTotalPoints = generatedData.map((entry) => {
       const addedPoints = additional_points[entry.user.id] ?? 0;
       const newTotalPoints = entry.generated_point + addedPoints;
@@ -109,6 +119,10 @@ export default function GenerateLeaderboardSection() {
     }));
   }, [generatedData, additional_points]);
 
+  useEffect(() => {
+    setUpdatedData(updatedDataMemo);
+  }, [updatedDataMemo]);
+
   const handleDeleteRow = (userId: string) => {
     setGeneratedData((prevData) =>
       prevData.filter((item) => item.user.id !== userId)
@@ -123,7 +137,7 @@ export default function GenerateLeaderboardSection() {
   };
 
   const handleLeaderboardUpdate = async () => {
-    if (updatedData.length <= 0) {
+    if (!updatedData || updatedData.length <= 0) {
       return toast.error("Don't have enough data to update");
     }
     try {
@@ -141,7 +155,7 @@ export default function GenerateLeaderboardSection() {
   };
 
   const handleLeaderboardPublish = async () => {
-    if (updatedData.length <= 0) {
+    if (!updatedData || updatedData.length <= 0) {
       return toast.error("Don't have enough data to save");
     }
     try {
@@ -156,7 +170,7 @@ export default function GenerateLeaderboardSection() {
       }
     } finally {
       setIsUpdating(false);
-      updatedData = [];
+      setUpdatedData(null);
     }
   };
 
@@ -172,13 +186,14 @@ export default function GenerateLeaderboardSection() {
 
   return (
     <div>
+      <LeaderboardGuide />
       <div>
         {lastUpdatedDate && (
           <div>
             {isSuccessfulGeneration ? (
               <div className="font-mono">Updated Leaderboard</div>
             ) : (
-              <div className="font-mono">Monthly Leaderboard</div>
+              <div className="font-mono">Weekly Leaderboard</div>
             )}
             <div className="mb-4 flex justify-end">
               <div className="text-sm">
@@ -190,7 +205,7 @@ export default function GenerateLeaderboardSection() {
             </div>
           </div>
         )}
-        {updatedData.length > 0 && (
+        {updatedData && updatedData.length > 0 && (
           <GeneratedLeaderboardTable
             additional_points={additional_points}
             data={updatedData}
@@ -232,32 +247,40 @@ export default function GenerateLeaderboardSection() {
         </Button>
       </div>
       <div className="mb-6 flex flex-col items-center gap-3 md:flex-row md:justify-center md:gap-4">
-        {updatedData.length > 0 && (
-          <Button
-            disabled={isUpdating}
-            size="lg"
-            className="w-full px-4 text-lg md:w-auto"
-            onClick={handleLeaderboardPublish}
-          >
-            {isUpdating ? (
-              <>
-                <Loader2 size={20} className="mr-2 animate-spin" />
-                Publishing Leaderboard...
-              </>
-            ) : (
-              <>
-                <ArrowUpFromLine className="mr-2" />
-                Publish Leaderboard
-              </>
-            )}
-          </Button>
+        {updatedData && updatedData.length > 0 && (
+          <>
+            <Button
+              size="lg"
+              className="w-full px-4 text-lg md:w-auto"
+              onClick={() => setUpdatedData(generatedLeaderboard)}
+            >
+              <ArrowUpDown className="mr-2" />
+              Use Last Week&apos;s Data
+            </Button>
+            <Button
+              disabled={isUpdating}
+              size="lg"
+              className="w-full px-4 text-lg md:w-auto"
+              onClick={handleLeaderboardPublish}
+            >
+              {isUpdating ? (
+                <>
+                  <Loader2 size={20} className="mr-2 animate-spin" />
+                  Publishing Leaderboard...
+                </>
+              ) : (
+                <>
+                  <ArrowUpFromLine className="mr-2" />
+                  Publish Leaderboard
+                </>
+              )}
+            </Button>
+          </>
         )}
       </div>
       {generatedLeaderboard.length ? (
         <ExpandableWrapper>
-          <div className="mb-4 font-mono">
-            {"This month's generated points"}
-          </div>
+          <div className="mb-4 font-mono">{"This week's generated points"}</div>
           <GeneratedLeaderboardPointsTable data={generatedLeaderboard} />
         </ExpandableWrapper>
       ) : null}
