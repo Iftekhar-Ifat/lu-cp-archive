@@ -105,9 +105,25 @@ async function publishGeneratedLeaderboard(
   }
 }
 
+/**
+ * 1. Fetch every user that already exists in the leaderboard table
+ * 2. Merge their old values with the incoming leaderboardData
+ * 3. Re-rank everybody by total_points DESC
+ * 4. Delete *only* the rows for the target month/year
+ * 5. Insert the merged + ranked rows back into leaderboards
+ * 6. Refresh the monthly_leaderboard snapshot
+ */
+
+type UserLeaderboardInfo = {
+  user_id: string;
+  generated_points: number;
+  additional_points: number;
+  total_points: number;
+};
+
 async function updateLeaderboard(leaderboardData: GeneratedLeaderboard[]) {
   try {
-    /* 1) determine target month/year */
+    // 1. decide which month/year we are writing
     const latest = await prisma.leaderboards.findFirst({
       select: { month: true, year: true },
       orderBy: [{ year: "desc" }, { month: "desc" }],
@@ -117,81 +133,73 @@ async function updateLeaderboard(leaderboardData: GeneratedLeaderboard[]) {
     const targetMonth = latest ? latest.month : now.getMonth() + 1;
     const targetYear = latest ? latest.year : now.getFullYear();
 
-    /* 2) build history-table operations */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const historyOps: any[] = [];
+    // 2. pull *all* rows that belong to that month/year
+    const existingRows = await prisma.leaderboards.findMany({
+      where: { month: targetMonth, year: targetYear },
+    });
 
-    if (latest) {
-      /* 2a) update existing rows */
-      historyOps.push(
-        ...leaderboardData.map((entry) =>
-          prisma.leaderboards.updateMany({
-            where: {
-              user_id: entry.user.id,
-              month: targetMonth,
-              year: targetYear,
-            },
-            data: {
-              generated_points: entry.generated_point,
-              additional_points: entry.additional_points,
-              total_points: entry.total_points,
-              rank: entry.rank,
-            },
-          })
-        )
-      );
+    // Build a quick lookup Map<user_id, row>
+    const existingByUser = new Map(
+      existingRows.map((r) => [
+        r.user_id,
+        {
+          user_id: r.user_id,
+          generated_points: r.generated_points,
+          additional_points: r.additional_points,
+          total_points: r.total_points,
+        },
+      ])
+    );
 
-      /* 2b) insert rows for new users */
-      const existingIds = new Set(
-        (
-          await prisma.leaderboards.findMany({
-            where: { month: targetMonth, year: targetYear },
-            select: { user_id: true },
-          })
-        ).map((r) => r.user_id)
-      );
+    // 3. merge incoming payload with existing values
+    const mergedMap = new Map<string, UserLeaderboardInfo>();
 
-      const newRows = leaderboardData
-        .filter((e) => !existingIds.has(e.user.id))
-        .map((e) => ({
-          user_id: e.user.id,
-          month: targetMonth,
-          year: targetYear,
-          generated_points: e.generated_point,
-          additional_points: e.additional_points,
-          total_points: e.total_points,
-          rank: e.rank,
-        }));
+    // start with whatever is already in the DB
+    for (const [userId, row] of Array.from(existingByUser.entries())) {
+      mergedMap.set(userId, row);
+    }
 
-      if (newRows.length) {
-        historyOps.push(prisma.leaderboards.createMany({ data: newRows }));
-      }
-    } else {
-      /* 2c) first time ever – bulk insert for current month/year */
-      const rowsToCreate = leaderboardData.map((entry) => ({
+    // overwrite / add with data from the new payload
+    for (const entry of leaderboardData) {
+      mergedMap.set(entry.user.id, {
         user_id: entry.user.id,
-        month: targetMonth,
-        year: targetYear,
         generated_points: entry.generated_point,
         additional_points: entry.additional_points,
         total_points: entry.total_points,
-        rank: entry.rank,
-      }));
-      historyOps.push(prisma.leaderboards.createMany({ data: rowsToCreate }));
+      });
     }
 
-    /* 3) prepare monthly_leaderboard snapshot */
-    const snapshotRows = leaderboardData.map((entry) => ({
-      user_id: entry.user.id,
-      generated_points: entry.generated_point,
-      additional_points: entry.additional_points,
-      total_points: entry.total_points,
-      rank: entry.rank,
+    // 4. turn the Map back into an array and rank by total_points DESC
+    const finalRows = Array.from(mergedMap.values())
+      .sort((a, b) => b.total_points - a.total_points)
+      .map((row, idx) => ({
+        ...row,
+        month: targetMonth,
+        year: targetYear,
+        rank: idx + 1,
+      }));
+
+    // 5. prepare snapshot rows (same data, no month/year columns)
+    const snapshotRows = finalRows.map((r) => ({
+      user_id: r.user_id,
+      generated_points: r.generated_points,
+      additional_points: r.additional_points,
+      total_points: r.total_points,
+      rank: r.rank,
     }));
 
-    /* 4) execute in one transaction */
+    // 6. atomic swap within one transaction
     await prisma.$transaction([
-      ...historyOps,
+      /* delete *only* the current month/year */
+      prisma.leaderboards.deleteMany({
+        where: { month: targetMonth, year: targetYear },
+      }),
+      /* insert the merged & ranked rows */
+      prisma.leaderboards.createMany({ data: finalRows }),
+    ]);
+
+    await prisma.$transaction([
+      /* refresh the snapshot table */
       prisma.monthly_leaderboard.deleteMany(),
       prisma.monthly_leaderboard.createMany({ data: snapshotRows }),
     ]);
